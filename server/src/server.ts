@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import connectDB from './config/db';
 import { healthRoutes } from './routes/healthRoutes';
 import { notFound, errorHandler } from './middleware/errorMiddleware';
 // Import the functions you need from the SDKs you need
@@ -11,6 +11,9 @@ import { getAnalytics } from "firebase/analytics";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 dotenv.config();
+
+// Connect to MongoDB
+connectDB();
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -34,21 +37,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const uri: string =
-    process.env.MONGODB_URI || 'mongodb://localhost:27017/My Queries';
-
-(async () => {
-    try {
-        await mongoose.connect(uri);
-        console.log('Connected to the database');
-    } catch {
-        console.log('Error connecting to the database');
-    }
-})();
-
 
 // Routes
-app.use('/health', healthRoutes);
+app.use('/api/v1/health', healthRoutes);
 
 // Error handling
 app.use(notFound);
