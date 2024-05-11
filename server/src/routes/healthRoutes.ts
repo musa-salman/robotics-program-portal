@@ -1,12 +1,9 @@
-import { Express } from "express";
+import express from "express";
 
-/**
- * Sets up the server health route.
- * 
- * @param {Express} app - The Express app instance.
- */
-export const healthRoutes = (app: Express) => {
-    app.get('/', (_req, res) => {
-        res.status(200).send('Server is running');
-    });
-};
+const router = express.Router();
+
+router.get("/", (_req, res) => {
+    res.send("API is running...");
+});
+
+export default router;
