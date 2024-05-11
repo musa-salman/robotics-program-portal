@@ -2,6 +2,8 @@ import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import { healthRoutes } from './routes/healthRoutes';
+import { notFound, errorHandler } from './middleware/errorMiddleware';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -44,9 +46,13 @@ const uri: string =
     }
 })();
 
-app.get('/health', (_req: Request, res: Response) => {
-    res.status(200).send('Server is running');
-});
+
+// Routes
+app.use('/health', healthRoutes);
+
+// Error handling
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT: string | number = process.env.PORT || 3000;
 
