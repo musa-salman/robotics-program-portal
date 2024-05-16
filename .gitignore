@@ -2,3 +2,6 @@ node_modules/
 .env
 dist/
 s.json
+pubsub-debug.log
+firestore-debug.log
+database-debug.log
