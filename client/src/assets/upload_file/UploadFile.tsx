@@ -2,137 +2,113 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import Dropdown from 'react-bootstrap/Dropdown';
-import Row from 'react-bootstrap/Row';
+import Badge from 'react-bootstrap/Badge';
+
+import { getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 import { useState } from 'react';
+import { storage } from '../firebase';
+// import { storage } from '../firebase';
 
-class SaveFile {
 
-  private fileName: string;
-  private description: string;
-  private file: File;
-  private dateUpload: string;
 
-  constructor(name: string, description: string, file: File, dateUpload: string) {
-    this.fileName = name;
-    this.description = description;
-    this.file = file;
-    this.dateUpload = dateUpload;
-  }
 
-  getFileName(): string {
-    return this.fileName
-  }
-
-  getFileDescription(): string {
-    return this.description;
-  }
-
-  getFile(): File {
-    return this.file;
-  }
-
-  getFileDateUpload(): string {
-    return this.dateUpload;
-  }
-
-  setFileName(fileName: string) {
-    this.fileName = fileName;
-  }
-
-  setFileDescripshen(description: string) {
-    this.description = description;
-  }
-
-  setFilePath(file: File) {
-    this.file = file;
-  }
-
-  setFileDateUpload(dateUpload: string) {
-    this.dateUpload = dateUpload;
-  }
-
-}
   
+const UploadFileComponent: React.FC<{}> = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
-function UploadFile() {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
 
- 
+  const handleUpload = async () => {
+    if (!file) return;
+    const storageRef = ref(storage,"name.txt");
 
-  const [name, setname] = useState({name: '', weight: '', height: ''});
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    
+    uploadTask.on(
+      'state_changed',
+      (snapshot:any) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setUploadProgress(progress);
+      },
+      (error:any) => {
+        console.error('Error uploading file:', error);
+      },
+      () => {
+        // Upload completed successfully, now get the download URL
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        console.log('File available at', downloadURL);
+      });
+      }
+    );
+  };
+  
+  // function UploadFile() {
+    return (
+      <>
+        <Form  className='bg-light border border-primary rounded shadow-lg bg py-4 px-5 '>
+          <h1>
+            <Badge className='px-5 mb-3' bg="secondary">העלת קובץ</Badge>
+          </h1>
 
-  return (
-    <>
-      <Form  className='bg-light border border-primary rounded shadow-lg bg py-4 px-5'>
-        <Row className="mb-3 position-flex">
+          
           <Form.Group
             as={Col}
             controlId="validationFormik101"
-            className="position-relative"
+            className="position-relative "
+            
           >
-            <Col sm={15}>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="כותרת"
-              >
-                <Form.Control
-                  type="text"
-                  name="nameFile"
-                  // value={values.nameFile}
-                  placeholder="כותרת"
-                  // onChange={handleChange}
-                  // isValid={touched.nameFile && !errors.nameFile}
-                />
-              </FloatingLabel>
-            </Col>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="כותרת"
+            >
+            <Form.Control
+              type="text"
+              id="name"
+              required
+              placeholder="כותרת"
+              
+            />
+          </FloatingLabel>
+            
             <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
 
           </Form.Group>
-          <Form.Group
-              as={Col}
-              md="4"
-              controlId="validationFormik102"
-              className="position-relative"
-            >
-            <ButtonGroup className='mt-3'>
-            <DropdownButton as={ButtonGroup} title="כיתה" id="bg-nested-dropdown ">
-              <Dropdown.Item eventKey="1">א</Dropdown.Item>
-              <Dropdown.Item eventKey="2">ב</Dropdown.Item>
-            </DropdownButton>
-          </ButtonGroup>
+
+          <Form.Group className="position-relative my-3 ">
+            <Form.Control
+              type="file"
+              required
+              name="file"
+              className="position-relative my-4 "
+              onChange={handleFileChange}
+              
+            />
           </Form.Group>
-        </Row>
 
-        <Form.Group className="position-relative my-3">
-          <Form.Control
-            type="file"
-            required
-            name="file"
-            // onChange={handleChange}
-            // isInvalid={!!errors.file}
-          />
-          {/* <Form.Control.Feedback type="invalid" tooltip>
-            {errors.file}
-          </Form.Control.Feedback> */}
-        </Form.Group>
+          <FloatingLabel className='my-3' controlId="floatingTextarea1" label="תיאור">
+            <Form.Control
+              as="textarea"
+              name="description"
+              placeholder="Leave a comment here"
+              style={{ height: '100px' }}
+            />
+          </FloatingLabel>
+  
+          <Button className='px-5 my-3' onSubmit={handleUpload} type="submit">העלה</Button>
+  
+        </Form> 
+      </>
+    );
+  // }
 
-        <FloatingLabel className='my-3' controlId="floatingTextarea1" label="Comments">
-          <Form.Control
-            as="textarea"
-            name="description"
-            placeholder="Leave a comment here"
-            style={{ height: '100px' }}
-          />
-        </FloatingLabel>
+};
 
-        <Button type="submit">Submit form</Button>
 
-      </Form>
-        
-    </>
-  );
-}
 
-export default UploadFile;
+
+export default UploadFileComponent;
