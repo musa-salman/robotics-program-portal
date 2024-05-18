@@ -60,7 +60,7 @@ export default function Login() {
                         <hr />
                         <Button
                             variant="link"
-                            style={{ textDecoration: 'none',  display: 'flex', alignItems: 'center' }}
+                            style={{ textDecoration: 'none',  display: 'flex', alignItems: 'center', justifyContent: 'center'}}
                             onClick={() => LoginWithGoogle(
                                 () => navigate("/dashboard"),
                                 (reason: string) => setError(reason)
