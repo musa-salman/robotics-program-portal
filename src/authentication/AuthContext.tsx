@@ -9,17 +9,18 @@ import PageLoading from "../components/PageLoading";
 export interface IAuth {
     user: User | null;  //type User comes from firebase
     loading: boolean;
-    SignIn: (creds: LoginFormValues, onSuccess : () => void, onFailure : (reason: string) => void) => Promise<void>;
-    LoginWithGoogle: (onSuccess: () => void, onFailure: (reason: string) => void) => Promise<void>;
-    SignOut: (onFailure: (reason: string) => void) => Promise<void>;
+    loginWithEmailAndPassword: (creds: LoginFormValues, onSuccess : () => void, onFailure : (reason: string) => void) => Promise<void>;
+
+    loginWithGoogle: (onSuccess: () => void, onFailure: (reason: string) => void) => Promise<void>;
+    logout: (onFailure: (reason: string) => void) => Promise<void>;
 }
 
 export const AuthContext = React.createContext<IAuth>({
     user: auth.currentUser,
     loading: false,
-    SignIn: async (_creds: LoginFormValues, _onSuccess: () => void, _onFailure: (reason: string) => void): Promise<void> => {},
-    LoginWithGoogle: async (_onSuccess: () => void, _onFailure: (reason: string) => void): Promise<void> => {},
-    SignOut: async (_onFailure: (reason: string) => void) => { },
+    loginWithEmailAndPassword: async (_creds: LoginFormValues, _onSuccess: () => void, _onFailure: (reason: string) => void): Promise<void> => {},
+    loginWithGoogle: async (_onSuccess: () => void, _onFailure: (reason: string) => void): Promise<void> => {},
+    logout: async (_onFailure: (reason: string) => void) => { },
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -31,9 +32,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate();
 
     //Sign in
-    const SignIn = async (creds: LoginFormValues, onSuccess: () => void, onFailure: (reason: string) => void) => {
+    const loginWithEmailAndPassword = async (creds: LoginFormValues, onSuccess: () => void, onFailure: (reason: string) => void) => {
         setIsLoading(true);
-        AuthService.SignIn(creds)
+        AuthService.login(creds)
             .then(userCredential => {
                 const { user } = userCredential;
                 if (user) {
@@ -59,8 +60,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             });
     }
 
-  const LoginWithGoogle = async (onSuccess: () => void, onFailure: (reason: string) => void) => {
-    AuthService.SignInWithGoogle()
+  const loginWithGoogle = async (onSuccess: () => void, onFailure: (reason: string) => void) => {
+    AuthService.loginWithGoogle()
       .then(creds => {
         const { user } = creds;
         if (user) {
@@ -76,10 +77,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
     //Sign out
-    const SignOut = async (onFailure: (reason: string) => void) => {
+    const logout = async (onFailure: (reason: string) => void) => {
         setIsLoading(true);
         try {
-            await AuthService.SignOut();
+            await AuthService.logout();
             setCurrentUser(null);
             navigate('/login', { replace: true });
         } catch (error) {
@@ -92,11 +93,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         () => ({
             user: currentUser,
             loading: isLoading,
-            SignIn,
-            LoginWithGoogle,
-            SignOut
+            loginWithEmailAndPassword: loginWithEmailAndPassword,
+            loginWithGoogle: loginWithGoogle,
+            logout: logout
         }),
-        [currentUser, isLoading, SignIn, LoginWithGoogle, SignOut]
+        [currentUser, isLoading, loginWithEmailAndPassword, loginWithGoogle, logout]
     );
 
     useEffect(() => {

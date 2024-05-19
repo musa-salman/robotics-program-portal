@@ -19,9 +19,9 @@ const SignOut = async () => {
 };
 
 const AuthService = {
-    SignIn,
-    SignInWithGoogle,
-    SignOut
+    login: SignIn,
+    loginWithGoogle: SignInWithGoogle,
+    logout: SignOut
 };
 
 export default AuthService;

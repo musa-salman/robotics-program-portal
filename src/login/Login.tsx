@@ -8,7 +8,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 export default function Login() {
     const emailRef = React.useRef<HTMLInputElement>(null);
     const passwordRef = React.useRef<HTMLInputElement>(null);
-    const { SignIn, LoginWithGoogle } = useAuth();
+    const { loginWithEmailAndPassword: SignIn, loginWithGoogle: LoginWithGoogle } = useAuth();
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
@@ -67,7 +67,7 @@ export default function Login() {
                             )}
                             className="w-100 mt-3 mr-4">
                             <FontAwesomeIcon icon={faGoogle} className="ms-2"/>
-                            <div className="px-4">
+                            <div className="px-3">
                             התחבר/י באמצעות גוגל
                             </div>
                         </Button>
