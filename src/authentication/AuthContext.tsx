@@ -10,7 +10,7 @@ export interface IAuth {
     user: User | null;  //type User comes from firebase
     loading: boolean;
     loginWithEmailAndPassword: (creds: LoginFormValues, onSuccess : () => void, onFailure : (reason: string) => void) => Promise<void>;
-
+    generatePasswordResetLink(email: string, onSuccess: () => void, onFailure: (reason: string) => void): Promise<void>;
     loginWithGoogle: (onSuccess: () => void, onFailure: (reason: string) => void) => Promise<void>;
     logout: (onFailure: (reason: string) => void) => Promise<void>;
 }
@@ -19,6 +19,7 @@ export const AuthContext = React.createContext<IAuth>({
     user: auth.currentUser,
     loading: false,
     loginWithEmailAndPassword: async (_creds: LoginFormValues, _onSuccess: () => void, _onFailure: (reason: string) => void): Promise<void> => {},
+    generatePasswordResetLink: async (_email: string, _onSuccess: () => void, _onFailure: (reason: string) => void): Promise<void> => {},
     loginWithGoogle: async (_onSuccess: () => void, _onFailure: (reason: string) => void): Promise<void> => {},
     logout: async (_onFailure: (reason: string) => void) => { },
 });
@@ -34,7 +35,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     //Sign in
     const loginWithEmailAndPassword = async (creds: LoginFormValues, onSuccess: () => void, onFailure: (reason: string) => void) => {
         setIsLoading(true);
-        AuthService.login(creds)
+        AuthService.loginWithEmailAndPassword(creds)
             .then(userCredential => {
                 const { user } = userCredential;
                 if (user) {
@@ -60,6 +61,16 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             });
     }
 
+    const generatePasswordResetLink = async (email: string, onSuccess: () => void, onFailure: (reason: string) => void) => {
+        AuthService.generatePasswordResetLink(email)
+            .then(() => {
+                onSuccess();
+            })
+            .catch(error => {
+                onFailure("שליחת קישור לאיפוס סיסמה נכשלה, נסה שוב.\n" + error.message);
+            });
+    }
+
   const loginWithGoogle = async (onSuccess: () => void, onFailure: (reason: string) => void) => {
     AuthService.loginWithGoogle()
       .then(creds => {
@@ -72,7 +83,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
       })
       .catch(error => {
-            onFailure("כניסה נכשלה, נסה שוב.\n" + error.message);
+            onFailure("כניסה נכשלה, נסה שוב." + error.message);
       });
   };
 
@@ -94,10 +105,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             user: currentUser,
             loading: isLoading,
             loginWithEmailAndPassword: loginWithEmailAndPassword,
+            generatePasswordResetLink: generatePasswordResetLink,
             loginWithGoogle: loginWithGoogle,
             logout: logout
         }),
-        [currentUser, isLoading, loginWithEmailAndPassword, loginWithGoogle, logout]
+        [currentUser, isLoading, loginWithEmailAndPassword, generatePasswordResetLink, loginWithGoogle, logout]
     );
 
     useEffect(() => {
