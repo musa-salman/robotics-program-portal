@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.rtl.min.css';
 import Login from './login/Login';
 import { Route, Routes } from 'react-router-dom';
 import RoleBasedAccessControl from './authentication/RoleBasedAccessControl';
+import ForgetPassword from './forget-password/ForgetPassword';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <div>Dashboard</div>
           </RoleBasedAccessControl>
         } />
+        <Route path="/forget-password" element={<ForgetPassword/>} />
       </Routes>
     </>
   )
