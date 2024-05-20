@@ -8,7 +8,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 export default function Login() {
     const emailRef = React.useRef<HTMLInputElement>(null);
     const passwordRef = React.useRef<HTMLInputElement>(null);
-    const { loginWithEmailAndPassword: SignIn, loginWithGoogle: LoginWithGoogle } = useAuth();
+    const { loginWithEmailAndPassword: loginWithEmailAndPassword, loginWithGoogle: LoginWithGoogle } = useAuth();
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
@@ -24,7 +24,7 @@ export default function Login() {
         };
 
         try {
-            await SignIn(creds, () => navigate("/dashboard"), (reason: string): void => {
+            await loginWithEmailAndPassword(creds, () => navigate("/dashboard"), (reason: string): void => {
                 setError(reason);
             });
         } catch {
@@ -38,7 +38,7 @@ export default function Login() {
         <>
             <Card>
                 <Card.Body>
-                    <h2 className="text-center mb-4">כניסה למנהל המערכת</h2>
+                    <h2 className="mb-4">כניסה למערכת</h2>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group id="email">
                             <FloatingLabel
@@ -73,7 +73,7 @@ export default function Login() {
                         </Button>
                     </Form>
                     <div className="w-100 text-center mt-3">
-                        <Link to="/forgot-password">שכחחתי סיסימה?</Link>
+                        <Link to="/forget-password">שכחחתי סיסימה?</Link>
                     </div>
                 </Card.Body>
             </Card>
