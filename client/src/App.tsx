@@ -1,36 +1,68 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import  EventContainerShow  from './EventContainer';
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.rtl.min.css';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noopener">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noopener">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <EventContainerShow eventsProps={[]} />
     </>
   )
 }
+
+const events = [
+  {
+    date: "2024-05-22",
+    title: "גשדג",
+    details: "יוומנט",
+    image: "event1.jpg",
+    id:1,
+    isAdmin: true
+  },
+  {
+  
+    date: "2024-05-22",
+    title: "Event 2",
+    details: "Event 2 details",
+    image: "event2.jpg",
+    id:2,
+    isAdmin: true
+  },
+  {
+    date: "2024-05-22",
+    title: "Event 3",
+    details: "Event 3 details",
+    image: "event3.jpg",
+    id:3,
+    isAdmin: true
+  },
+  {
+    date: "2024-05-22",
+    title: "Event 4",
+    details: "Event 3 details",
+    image: "event3.jpg",
+    id:4,
+    isAdmin: true
+  },
+  // {
+  //   date: "2024-05-22",
+  //   title: "Event 5",
+  //   details: "Event 3 details",
+  //   image: "event3.jpg"
+  // },
+  // {
+  //   date: "2024-05-22",
+  //   title: "Event 6",
+  //   details: "Event 3 details",
+  //   image: "event3.jpg"
+  // },
+  // {
+  //   date: "2024-05-22",
+  //   title: "Event 7",
+  //   details: "Event 3 details",
+  //   image: "event3.jpg"
+  // },
+  // Add more events as needed
+];
 
 export default App

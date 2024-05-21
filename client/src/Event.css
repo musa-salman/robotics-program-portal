@@ -1,0 +1,29 @@
+/* .event {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: bisque;
+    width: 300px;
+  }
+  
+  .event img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .event h2 {
+    margin-top: 0;
+  }
+  
+  .event button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .event button.registered {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }   */
