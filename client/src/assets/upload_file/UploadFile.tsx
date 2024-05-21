@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Badge from 'react-bootstrap/Badge';
 import uploadFile from "./FileService"
-
+import Modal from 'react-bootstrap/Modal';
 import { SetStateAction, useEffect, useState } from 'react';
 import { db, storage } from '../firebase';
 import { collection, addDoc, setDoc, doc, getDocs, QuerySnapshot, DocumentData } from 'firebase/firestore';
@@ -29,7 +29,9 @@ const UploadFileComponent: React.FC<{}> = () => {
   const [selectedItem, setSelectedItems] = useState<SelectedItem >(['מיקןם הפיל']);
   const [loading, setLoading] = useState<boolean>(true);
   const [show, setShow] = useState(false);
-
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [clickTime, setClickTime] = useState<string>('');
   // const database :any=collection(db,'files')
   const [fileData, setFileData] = useState({
     title: '',
@@ -40,16 +42,21 @@ const UploadFileComponent: React.FC<{}> = () => {
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
-  //       const querySnapshot = await getDocs(collection(db, "category"));
+  //       const querySnapshot = await getDocs(collection(db, "categories"));
         
   //       querySnapshot.forEach((doc) => {
   //         const data = doc.data() as DocumentData;
-  //         const type :any=data['type'];
-  //         items.push(type);
+  //         console.log("data "+data['category']);
+  //         const type :any=data['category'];
+  //         if (type === "הרצאות" && !items.includes(type)) {
+  //           items.push(type);
+  //         }
+  //         // items.push(type);
   //       });
-  //       for(let i=0;i<items.length;i++){
-  //         console.log("slect ",items[i]);
-  //       }
+  //       // for(let i=0;i<items.length;i++){
+  //       //   console.log("slect ",items);
+  //       // }
+  //       console.log("iteams "+items);
   //     } catch (error) {
   //       console.error("Error fetching documents: ", error);
   //     } finally {
@@ -63,6 +70,19 @@ const UploadFileComponent: React.FC<{}> = () => {
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
+
+  const addCatergories =() =>{
+
+    return(
+      <NavDropdown title="Categories" id="nav-dropdown">
+        {items.map((item, index) => (
+          <NavDropdown.Item eventKey={item} onClick={() => handleSelect(item)} key={index}>
+            {item}
+          </NavDropdown.Item>
+        ))}
+      </NavDropdown>
+    );
+  };
 
   const addItem = async(items:SelectedItem)=>{
     
@@ -80,6 +100,13 @@ const UploadFileComponent: React.FC<{}> = () => {
     setFileData(prevData => ({ ...prevData, [name]: value }));
   };
 
+  const handleClick = () => {
+    const currentTime = new Date().toLocaleString();
+    setClickTime(currentTime);
+
+    // Handle other logic here if needed
+    console.log('Button clicked at:', currentTime);
+  };
   
 
   const handleFileChange = (event:any) => {
@@ -97,11 +124,11 @@ const UploadFileComponent: React.FC<{}> = () => {
 
   const handleSubmit =async ()=>{
       
-      const docRef= await addDoc(collection(db,"files"),{
-        description:fileData.description,
-        name:fileData.name,
-        title:fileData.title
-      })
+      // const docRef= await addDoc(collection(db,"files"),{
+      //   description:fileData.description,
+      //   name:fileData.name,
+      //   title:fileData.title
+      // })
       if(file){
         // uploadFile(file,setUploadProgress,"/study-material/"+docRef.id+"-"+fileData.name)
         // download()
@@ -109,125 +136,116 @@ const UploadFileComponent: React.FC<{}> = () => {
       // console.log("Document written with ID: ", docRef.id);
     
       console.log(fileData)
-
+      handleClose();
+      handleClick();
     
   };
 
     return (
       <>
-        <Form  className='bg-light border border-primary rounded shadow-lg py-4 px-5 ' style={{width:"45rem"}} 
-         
-        >
-          <h1>
-            <Badge className='px-5 mb-3' bg="secondary">העלת קובץ</Badge>
-          </h1>
+        <Button variant="primary" onClick={handleShow}>
+          Launch demo modal
+        </Button>
 
-          <Form.Group
-            as={Col}
-            controlId="validationCustom01"
-            className="position-relative "            
+        <Modal show={show} onHide={handleClose}>
+          {/* <Modal.Header closeButton className=''>
+            {/* <Modal.Title>Modal heading</Modal.Title> */}
+            {/* <h1>
+              <Badge className='px-5 mb-0' bg="secondary">העלת קובץ</Badge>
+            </h1>
+          </Modal.Header> */} 
+
+          <Form  className='bg-light border border-primary rounded shadow-lg py-4 px-5 ' style={{width:"45rem"}} 
+          
           >
-            <FloatingLabel
-              controlId="floatingInput"
-              label="כותרת"
+            {/* <h1>
+              <Badge className='px-5 mb-3' bg="secondary">העלת קובץ</Badge>
+            </h1> */}
+            <Modal.Header closeButton className='mb-3 px-3' style={{backgroundColor: 'gray'}}>
+              <h1>העלת קובץ</h1>
+            </Modal.Header>
+
+            <Form.Group
+              as={Col}
+              controlId="validationCustom01"
+              className="position-relative "            
             >
-            <Form.Control
-              type="text"
-              name='title'
-             
-              required
-              placeholder="כותרת"
-              onChange={event =>handleInpute(event)}
-            />
-          </FloatingLabel>
-            
-            <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
-
-          </Form.Group>
-
-          <Form.Group className="position-relative my-3 " controlId='validationCustom02'>
-            <Form.Control
-              type="file"
-              required
+              <FloatingLabel
+                controlId="floatingInput"
+                label="כותרת"
+              >
+              <Form.Control
+                type="text"
+                name='title'
               
-              name="file"
-              className="position-relative my-4 "
-              onChange={event =>handleFileChange(event)}
+                required
+                placeholder="כותרת"
+                onChange={event =>handleInpute(event)}
+              />
+            </FloatingLabel>
               
-            />
-          </Form.Group>
+              <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
+
+            </Form.Group>
+
+            <Form.Group className="position-relative my-3 " controlId='validationCustom02'>
+              <Form.Control
+                type="file"
+                required
+                
+                name="file"
+                className="position-relative my-4 "
+                onChange={event =>handleFileChange(event)}
+                
+              />
+            </Form.Group>
 
 
-          <Navbar  expand="lg" >
-            <Container fluid>
-              <Navbar.Collapse id="navbar-dark-example">
-                <Nav>
-                  <NavDropdown
-                    id="nav-dropdown-dark-example"
-                    title="בחר מיקום"
-                    menuVariant="dark"
-                    onSelect={handleSelect}
-                  >
-                    <NavDropdown.Item eventKey="הרצאות" onClick={() => handleSelect("הרצאות")}
-                    >הרצאות</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    {/* <Button variant="link" >הוספה/שינוי</Button> */}
-                    {!show && <Button onClick={() => setShow(true)}>Show Alert</Button>}
-                  </NavDropdown>
-                </Nav>
-                <span className='px-4'>{selectedItem}</span>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
-          <Alert show={show} variant="success" >
-            <Alert.Heading>הוספת מיקום</Alert.Heading>
-            <Row className="g-2">
-              <Col >
-                <Form.Group
-                  as={Col}
-                  controlId="validationCustom01"
-                  className="position-relative "            
-                >
-                  <FloatingLabel
-                    controlId="floatingInput"
-                    label="מיקום"
-                  >
-                  <Form.Control
-                    type="text"
-                    name='title'
-                  
-                    required
-                    placeholder="כותרת"
-                    onChange={event =>handleInpute(event)}
-                  />
-                  </FloatingLabel>
-                </Form.Group>
-                </Col>
-                <Col >
-                  <Button className='my-2' >הוספה</Button>
-              </Col>
-            </Row>
-            <div >
-              <Button className='my-3' onClick={() => setShow(false)} variant="outline-success">
-                Close me
-              </Button>
-            </div>
-          </Alert>
-
+            <Navbar  expand="lg" >
+              <Container fluid>
+                <Navbar.Collapse id="navbar-dark-example">
+                  <Nav>
+                    <NavDropdown
+                      id="nav-dropdown-dark-example"
+                      title="בחר מיקום"
+                      menuVariant="dark"
+                      onSelect={handleSelect}
+                    >
+                      <NavDropdown.Item eventKey="הרצאות" onClick={() => handleSelect("הרצאות")}
+                      >הרצאות</NavDropdown.Item>
+                      <NavDropdown.Divider />
+                      <Button variant="link" >הוספה/שינוי</Button>
+                      
+                    </NavDropdown>
+                  </Nav>
+                  <span className='px-4'>{selectedItem}</span>
+                </Navbar.Collapse>
+              </Container>
+            </Navbar>
                     
-          <FloatingLabel className='my-3' controlId="floatingTextarea1" label="תיאור">
-            <Form.Control
-              as="textarea"
-              name="description"
-              placeholder="Leave a comment here"
-              onChange={event =>handleInpute(event)}
-              style={{ height: '100px' }}
-            />
-          </FloatingLabel>
-  
-          <Button className='px-5 my-3' onClick={handleSubmit}  >העלה</Button>
-  
-        </Form> 
+            <FloatingLabel className='my-3' controlId="floatingTextarea1" label="תיאור">
+              <Form.Control
+                as="textarea"
+                name="description"
+                placeholder="Leave a comment here"
+                onChange={event =>handleInpute(event)}
+                style={{ height: '100px' }}
+              />
+            </FloatingLabel>
+    
+            {/* <Button className='justify-content-center align-items-center px-5 my-3' onClick={handleSubmit}  >העלה</Button> */}
+    
+            <Modal.Footer className='justify-content-center'>
+             
+              <Button variant="primary" className='mx-3 px-5' onClick={handleSubmit}>
+                העלה
+              </Button>
+              <Button variant="secondary" className='mx-5 px-5' onClick={handleClose}>
+                סגירה
+              </Button>
+            </Modal.Footer>
+          </Form> 
+        </Modal>
       </>
     );
   // }
