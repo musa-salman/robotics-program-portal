@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Button, Card, Dropdown, Modal, Form } from 'react-bootstrap';
+import { Button, Card, Dropdown, Modal, Form } from 'react-bootstrap';
 
 // import './Event.css';
 
@@ -14,15 +14,15 @@ export interface EventProps {
   id: number;
 }
 
-const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelete, onEventEdit ,isAdmin, id }) => {
-  const [formData, setFormData] = useState<EventProps>({ date, title, details, image, onEventDelete, onEventEdit ,isAdmin, id });
+const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelete, onEventEdit, isAdmin, id }) => {
+  const [formData, setFormData] = useState<EventProps>({ date, title, details, image, onEventDelete, onEventEdit, isAdmin, id });
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData(prevState => ({ ...prevState, title: e.target.value }));
+    setFormData(prevState => ({ ...prevState, title: e.target.value }));
   };
 
   const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setFormData(prevState => ({ ...prevState, details: e.target.value }));
+    setFormData(prevState => ({ ...prevState, details: e.target.value }));
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +33,7 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
     setFormData(prevState => ({ ...prevState, image: e.target.value }));
   };
 
-  const [registerd,setRegister] = useState(false);
+  const [registerd, setRegister] = useState(false);
   const [showModalRegister, setShowModalRegister] = useState(false);
   const handleCloseRegister = () => setShowModalRegister(false);
   const handleShowRegister = () => setShowModalRegister(true);
@@ -77,114 +77,114 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
   };
 
   function adminOptions(isAdmin: boolean) {
-  if(isAdmin) {
-    return (
-      <Dropdown>
-        <Dropdown.Toggle variant="success" id="dropdown-basic">
-          אפשרויות     
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item onClick={handleEdit}>לַעֲרוֹך</Dropdown.Item>
-          <p></p>
-          <Dropdown.Item onClick={handleDelete} style={{ color:'red'}}>לִמְחוֹק</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-    );
-  }
-  return null;
+    if (isAdmin) {
+      return (
+        <Dropdown>
+          <Dropdown.Toggle variant="success" id="dropdown-basic">
+            אפשרויות
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={handleEdit}>לַעֲרוֹך</Dropdown.Item>
+            <p></p>
+            <Dropdown.Item onClick={handleDelete} style={{ color: 'red' }}>לִמְחוֹק</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      );
+    }
+    return null;
   }
 
   function editWindow() {
-  return (
-    <>
-      <Modal show={showModalEdit} onHide={handleCloseEdit} animation={false} style={{display: 'center'}}>
-        <Modal.Header closeButton>
-          <Modal.Title>שינוי אירוע</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {editForm()}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseEdit}>
-            סגור
-          </Button>
-          <Button variant="primary" onClick={handleSaveEdit}>
-            שמור שינויים        
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
+    return (
+      <>
+        <Modal show={showModalEdit} onHide={handleCloseEdit} animation={false} style={{ display: 'center' }}>
+          <Modal.Header closeButton>
+            <Modal.Title>שינוי אירוע</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {editForm()}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseEdit}>
+              סגור
+            </Button>
+            <Button variant="primary" onClick={handleSaveEdit}>
+              שמור שינויים
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
   }
 
   function editForm() {
-  return (
-    <Form>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label>כותרת</Form.Label>
-        <Form.Control type="text" defaultValue={title} onChange={handleTitleChange}/>
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label>תאריך</Form.Label>
-        <Form.Control type="date" defaultValue={date} onChange={handleDateChange} />
-      </Form.Group>
-      <Form.Group controlId="formFile" className="mb-3">
-        <Form.Label>העלאת תמונה</Form.Label>
-        <Form.Control type="file"  onChange={handleImageChange}/>
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-        <Form.Label>פרטים</Form.Label>
-        <Form.Control as="textarea" rows={3} defaultValue={details} onChange={handleDetailsChange}/>
-      </Form.Group>
-    </Form>
-  );
+    return (
+      <Form>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+          <Form.Label>כותרת</Form.Label>
+          <Form.Control type="text" defaultValue={title} onChange={handleTitleChange} />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+          <Form.Label>תאריך</Form.Label>
+          <Form.Control type="date" defaultValue={date} onChange={handleDateChange} />
+        </Form.Group>
+        <Form.Group controlId="formFile" className="mb-3">
+          <Form.Label>העלאת תמונה</Form.Label>
+          <Form.Control type="file" onChange={handleImageChange} />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+          <Form.Label>פרטים</Form.Label>
+          <Form.Control as="textarea" rows={3} defaultValue={details} onChange={handleDetailsChange} />
+        </Form.Group>
+      </Form>
+    );
   }
 
   function deleteWindow() {
-  return (
-    <>
-      <Modal show={showModalDelete} onHide={handleCloseDelete} style={{display: 'center'}}>
-        <Modal.Header closeButton>
-          <Modal.Title>האם אתה בטוח שברצונך למחוק את האירוע הזה</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>אתה לא יכול לחזור אחורה לאחר מחיקת האירוע</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseDelete}>
-            סגור  
-          </Button>
-          <Button variant="danger" onClick={handleSaveDelete}>
-            לִמְחוֹק
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
+    return (
+      <>
+        <Modal show={showModalDelete} onHide={handleCloseDelete} style={{ display: 'center' }}>
+          <Modal.Header closeButton>
+            <Modal.Title>האם אתה בטוח שברצונך למחוק את האירוע הזה</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>אתה לא יכול לחזור אחורה לאחר מחיקת האירוע</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseDelete}>
+              סגור
+            </Button>
+            <Button variant="danger" onClick={handleSaveDelete}>
+              לִמְחוֹק
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
   }
 
   function registerWindow() {
-  return (
-    <>
-      <Modal show={showModalRegister} onHide={handleCloseRegister} style={{display: 'center'}}>
-        <Modal.Header closeButton>
-          <Modal.Title>האם אתה בטוח שאתה רוצה להירשם לאירוע</Modal.Title>
-        </Modal.Header>
-        <Modal.Body   style={{ display: 'flex' , gap: '10px'}}>
-        <Form>
-          <Form.Check aria-label="option 1" feedback="You must agree before submitting."/> 
-        </Form>
-            אני מאשר שאני רוצה להירשם לאירוע  
+    return (
+      <>
+        <Modal show={showModalRegister} onHide={handleCloseRegister} style={{ display: 'center' }}>
+          <Modal.Header closeButton>
+            <Modal.Title>האם אתה בטוח שאתה רוצה להירשם לאירוע</Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{ display: 'flex', gap: '10px' }}>
+            <Form onSubmit={handleSaveRegister}>
+              <Form.Check required aria-label="option 1" feedback="You must agree before submitting." />
+              אני מאשר שאני רוצה להירשם לאירוע
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseRegister}>
+                  סגור
+                </Button>
+                <Button variant="primary" type='submit'>
+                  מאשר
+                </Button>
+              </Modal.Footer>
+            </Form>
           </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseRegister}>
-            סגור  
-          </Button>
-          <Button variant="primary" onClick={handleSaveRegister}>
-            מאשר
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
+        </Modal>
+      </>
+    );
   }
 
   return (
@@ -198,10 +198,10 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
         </Card.Text>
         {registerd ? (
           <Button variant="secondary" disabled>רשום</Button>
-          ) : (
+        ) : (
           <Button variant="primary" onClick={handleRegister}>הירשם</Button>
         )}
-        {adminOptions(true)}       
+        {adminOptions(true)}
       </Card.Body>
       {editWindow()}
       {deleteWindow()}
