@@ -1,4 +1,4 @@
-import  EventContainerShow  from './EventContainer';
+import  EventContainerShow  from './events/EventContainer';
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.rtl.min.css';
 
