@@ -10,7 +10,7 @@ const EventContainerShow: React.FC<EventContainer> = ({ eventsProps }) => {
   const [firstVisibleEventIndex, setFirstVisibleEventIndex] = useState(0);
   const [events, setEvents] = useState<EventProps[]>(eventsProps || []);
   const [showModal, setShowModal] = useState(false);
-  const [render,setRender] = useState(0);
+  const [render, setRender] = useState(0);
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
@@ -57,8 +57,8 @@ const EventContainerShow: React.FC<EventContainer> = ({ eventsProps }) => {
     title: 'title', // Provide initial value for title
     details: '', // Provide initial value for details
     image: 'Robtics.png', // Provide initial value for image
-    onEventDelete: (_id: number) => {},
-    onEventEdit: (_event: EventProps) => {},
+    onEventDelete: (_id: number) => { },
+    onEventEdit: (_event: EventProps) => { },
     isAdmin: false, // Provide initial value for isAdmin
     id: 0 // Provide initial value for id
   });
@@ -96,12 +96,7 @@ const EventContainerShow: React.FC<EventContainer> = ({ eventsProps }) => {
             {addForm()}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              סגור
-            </Button>
-            <Button variant="primary" onClick={handleSaveAdd}>
-              הוסף 
-            </Button>
+
           </Modal.Footer>
         </Modal>
       </>
@@ -110,14 +105,14 @@ const EventContainerShow: React.FC<EventContainer> = ({ eventsProps }) => {
 
   function addForm() {
     return (
-      <Form>
+      <Form onSubmit={handleSaveAdd}>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>כותרת</Form.Label>
-          <Form.Control type="text" placeholder="שם אירוע" onChange={handleTitleChange} />
+          <Form.Control required type="text" placeholder="שם אירוע" onChange={handleTitleChange} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>תאריך</Form.Label>
-          <Form.Control type="date" placeholder="יום /חודש /שנה" onChange={handleDateChange} />
+          <Form.Control required type="date" placeholder="יום /חודש /שנה" onChange={handleDateChange} />
         </Form.Group>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>העלאת תמונה</Form.Label>
@@ -127,6 +122,12 @@ const EventContainerShow: React.FC<EventContainer> = ({ eventsProps }) => {
           <Form.Label>פרטים</Form.Label>
           <Form.Control as="textarea" rows={3} placeholder="פרטי האירוע" onChange={handleDetailsChange} />
         </Form.Group>
+        <Button variant="secondary" onClick={handleClose}>
+          סגור
+        </Button>
+        <Button variant="primary" type="submit">
+          הוסף
+        </Button>
       </Form>
     );
   }
@@ -137,7 +138,7 @@ const EventContainerShow: React.FC<EventContainer> = ({ eventsProps }) => {
         {events.map((event) => (
           <Carousel.Item key={event.id}>
             <Carousel.Caption>
-              <Event 
+              <Event
                 id={event.id}
                 date={event.date}
                 title={event.title}
@@ -153,26 +154,26 @@ const EventContainerShow: React.FC<EventContainer> = ({ eventsProps }) => {
       </Carousel>
     );
   }
-  
+
   return (
     <div>
-      <div className="events" style={{backgroundColor: 'gray', padding:'10px', borderRadius: '10px'}}>
-        <Button variant="primary"onClick={handleShiftEventsRight}>Shift Right</Button>
-          {events.slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
-            <Event 
-              id={event.id}
-              date={event.date}
-              title={event.title}
-              details={event.details}
-              image={event.image}
-              onEventDelete={onEventDelete}
-              onEventEdit={onEventEdit}
-              isAdmin={event.isAdmin}
-            />
-          ))}
-        <Button variant="primary"onClick={handleShiftEventsLeft}>Shift Left</Button>
+      <div className="events" style={{ backgroundColor: 'gray', padding: '10px', borderRadius: '10px' }}>
+        <Button variant="primary" onClick={handleShiftEventsRight}>Shift Right</Button>
+        {events.slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
+          <Event
+            id={event.id}
+            date={event.date}
+            title={event.title}
+            details={event.details}
+            image={event.image}
+            onEventDelete={onEventDelete}
+            onEventEdit={onEventEdit}
+            isAdmin={event.isAdmin}
+          />
+        ))}
+        <Button variant="primary" onClick={handleShiftEventsLeft}>Shift Left</Button>
       </div>
-      <Button variant="success"onClick={handleAddEvent}>הוסף אירוע</Button>
+      <Button variant="success" onClick={handleAddEvent}>הוסף אירוע</Button>
       {addWindow()}
     </div>
   );
