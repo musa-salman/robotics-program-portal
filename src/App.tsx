@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.rtl.min.css';
-import UploadFile from './upload_file/UploadFile.tsx'
+import UploadFile from './upload-file/UploadFile.tsx'
 
 
 function App() {
