@@ -1,10 +1,19 @@
-import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { BaseRepository } from "../repositories/BaseRepository";
+import { User } from "./User";
 
-const getUserRole = async (uid: any): Promise<string> => {
-    const querySnapshot = await getDoc(doc(db, "users", uid));
-    const userData = querySnapshot.data();
-    return userData ? userData.role : "guest";
+export class UserRepository extends BaseRepository<User> {
+    constructor() {
+        super(db, "users");
+    }
+
+    getUserRole(uid: any): Promise<string> {
+        return this.findOne(uid).then((user) => {
+            if (user) {
+                return user.getRole();
+            } else {
+                return "guest";
+            }
+        });
+    }
 }
-
-export { getUserRole };
