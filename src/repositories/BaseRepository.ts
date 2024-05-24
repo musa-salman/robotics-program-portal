@@ -16,13 +16,11 @@ export abstract class BaseRepository<T extends { [x: string]: any; }> implements
     }
 
     async findOne(id: string): Promise<T | null> {
-        const docRef = doc(this._collection, id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            return docSnap.data();
-        } else {
-            return null;
-        }
+        return getDoc(
+            doc(this._collection, id)
+        ).then(
+            (docSnap) => docSnap.exists() ?  docSnap.data() : null
+        );
     }
 
     async create(item: WithFieldValue<T>): Promise<DocumentReference<T, DocumentData>> {
