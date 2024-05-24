@@ -10,6 +10,9 @@ export class UserRepository extends BaseRepository<User> {
     getUserRole(uid: any): Promise<string> {
         return this.findOne(uid).then((user) => {
             if (user) {
+                console.log(user);
+                console.log(typeof user);
+
                 return user.getRole();
             } else {
                 return "guest";
