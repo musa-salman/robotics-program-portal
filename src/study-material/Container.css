@@ -1,0 +1,21 @@
+.primary {
+    border: 2px solid;
+    border-radius: 5px;
+    width: 100%;
+}
+
+
+.body {
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.study-materials-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+    justify-content: left;
+    gap: 10px;
+}
