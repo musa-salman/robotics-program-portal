@@ -1,11 +1,11 @@
-import { FirestoreDataConverter, QueryDocumentSnapshot, SnapshotOptions } from "firebase/firestore";
-import firebase from "firebase/compat/app";
+import { DocumentData, QueryDocumentSnapshot, SnapshotOptions } from "firebase/firestore";
 
-export function createConverter<T extends firebase.firestore.DocumentData>(): FirestoreDataConverter<T> {
+export function createConverter<T>(): any {
     return {
-        toFirestore(data: T): firebase.firestore.DocumentData {
-            return { ...data };
+        toFirestore(data: T): DocumentData {
+            return { ...(data as DocumentData) };
         },
+
         fromFirestore(
             snapshot: QueryDocumentSnapshot,
             options: SnapshotOptions
