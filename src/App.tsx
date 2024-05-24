@@ -4,7 +4,6 @@ import Login from './login/Login';
 import { Route, Routes } from 'react-router-dom';
 import RoleBasedAccessControl from './authentication/RoleBasedAccessControl';
 import ForgetPassword from './forget-password/ForgetPassword';
-import StudyMaterials from './study-material/StudyMaterials';
 import UploadFileComponent from './upload-file/UploadFile';
 
 function App() {
