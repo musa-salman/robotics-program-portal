@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import StudyMaterials from './StudyMaterials'
 // import { SearchBar } from './SearchBar'
-import { db } from './firebaseInit';
+import { db } from '../firebase';
 import  { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import "./Container.css"
