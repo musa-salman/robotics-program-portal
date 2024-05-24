@@ -17,7 +17,6 @@ function App() {
             <div>only admin see this</div>
           </RoleBasedAccessControl><>
             </>Everyone see this</>
-        
         } />
         <Route path="/login" element={<Login />} />
 
