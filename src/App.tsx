@@ -1,37 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.rtl.min.css';
-import UploadFile from './upload-file/UploadFile.tsx'
-
+import Login from './login/Login';
+import { Route, Routes } from 'react-router-dom';
+import RoleBasedAccessControl from './authentication/RoleBasedAccessControl';
+import ForgetPassword from './forget-password/ForgetPassword';
+import StudyMaterials from './study-material/StudyMaterials';
+import UploadFileComponent from './upload-file/UploadFile';
 
 function App() {
-  // const [count, setCount] = useState(0)
-
   return (
     <>
-      <UploadFile />
-      {/* <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noopener">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noopener">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p> */}
+      <Routes>
+        <Route path="/" element={<div>Home</div>} />
+
+        <Route path="/about" element={
+          <><RoleBasedAccessControl allowedRoles={['admin']} unauthorizedAuthenticatedComponent={<></>} unauthorizedUnauthenticatedComponent={<></>}>
+            <div>only admin see this</div>
+          </RoleBasedAccessControl><>
+            </>Everyone see this</>
+        
+        } />
+        <Route path="/login" element={<Login />} />
+
+        <Route path="/study-material" element={<UploadFileComponent  />} />
+
+        <Route path="/dashboard" element={
+          <RoleBasedAccessControl allowedRoles={['admin']}>
+            <div>Dashboard</div>
+          </RoleBasedAccessControl>
+        } />
+        <Route path="/forget-password" element={<ForgetPassword/>} />
+      </Routes>
     </>
   )
 }

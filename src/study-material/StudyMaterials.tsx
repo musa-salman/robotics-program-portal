@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import moment from 'moment';
 import './StudyMaterials.css';
-import { db } from './firebase';
+import { db } from '../firebase';
 import { doc, getDoc ,DocumentData} from 'firebase/firestore';
 import  { useState, useEffect  } from 'react';
 
