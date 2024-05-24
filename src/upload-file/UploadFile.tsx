@@ -2,21 +2,21 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Badge from 'react-bootstrap/Badge';
+// import Badge from 'react-bootstrap/Badge';
 import uploadFile from "./FileService"
 import Modal from 'react-bootstrap/Modal';
 import { SetStateAction, useEffect, useState } from 'react';
-import { db, storage } from '../firebase';
-import { collection, addDoc, setDoc, doc, getDocs, QuerySnapshot, DocumentData } from 'firebase/firestore';
-import download from './FileService';
-import { Alert, Container, Nav, NavDropdown, Navbar, Row } from 'react-bootstrap';
-import { string } from 'yup';
 
+import { Container, InputGroup, Nav, NavDropdown, Navbar, Row } from 'react-bootstrap';
+import "./UploadFile.css"
+
+import {addCategory ,getCategories} from './StudyMaterialRepository'
+let categories: SelectedItem[] = [];
 // import { storage } from '../firebase';
 
-type SelectedItem = string[];
-let items: SelectedItem[] = [];
-items.push(['מיקןם הפיל']);
+type SelectedItem = string;
+
+// items.push('מיקןם הפיל');
 
   
 
@@ -26,12 +26,17 @@ const UploadFileComponent: React.FC<{}> = () => {
   const [file, setFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [validated, setValidated] = useState(false);
-  const [selectedItem, setSelectedItems] = useState<SelectedItem >(['מיקןם הפיל']);
+  const [selectedItem, setSelectedItems] = useState<SelectedItem >('מיקןם הפיל');
+  const [categories,setCategories] =useState<string []| null> (null);
   const [loading, setLoading] = useState<boolean>(true);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [showAddEdit, setShowAddEdit] = useState(false);
+  const handleCloseAddEdit = () => setShowAddEdit(false);
+  const handleShowAddEdit = () => setShowAddEdit(true);
   const [clickTime, setClickTime] = useState<string>('');
+  const [category, setCategory] = useState('');
   // const database :any=collection(db,'files')
   const [fileData, setFileData] = useState({
     title: '',
@@ -39,59 +44,56 @@ const UploadFileComponent: React.FC<{}> = () => {
     name: '',
   });
  
+  let items: SelectedItem[] = [];
+
+ 
+
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
-  //       const querySnapshot = await getDocs(collection(db, "categories"));
-        
-  //       querySnapshot.forEach((doc) => {
-  //         const data = doc.data() as DocumentData;
-  //         console.log("data "+data['category']);
-  //         const type :any=data['category'];
-  //         if (type === "הרצאות" && !items.includes(type)) {
-  //           items.push(type);
-  //         }
-  //         // items.push(type);
-  //       });
-  //       // for(let i=0;i<items.length;i++){
-  //       //   console.log("slect ",items);
-  //       // }
-  //       console.log("iteams "+items);
+      
+  //       setCategories(await getCategories());
+  //       console.log("categories "+categories);
   //     } catch (error) {
-  //       console.error("Error fetching documents: ", error);
-  //     } finally {
+  //       console.error('Error fetching items:', error);
+  //     }
+  //       finally {
   //       setLoading(false);
   //     }
   //   };
+  //   // if (!loading && categories === null){ FIXME:
+  //     fetchData();
 
-  //   fetchData();
-  // }, []);
+  //   // }
+  // }, [categories]);
 
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
 
-  const addCatergories =() =>{
-
-    return(
-      <NavDropdown title="Categories" id="nav-dropdown">
-        {items.map((item, index) => (
-          <NavDropdown.Item eventKey={item} onClick={() => handleSelect(item)} key={index}>
-            {item}
-          </NavDropdown.Item>
-        ))}
-      </NavDropdown>
-    );
+  const handleInputeCatrgores=(event:any) => {
+    setCategory(event.target.value);
   };
 
-  const addItem = async(items:SelectedItem)=>{
-    
+  const addCategories = async ()=>{
+    await addCategory(category);
+    categories?.push(category);
+    setCategories(categories);
+  };
+
+  const editItem=  ()=>{
 
   };
 
+  const handleEditInpute=(event:any) => {
+
+
+
+  };
+  
   const handleSelect = (eventKey: string | null) => {
     if (eventKey) {
-      setSelectedItems([eventKey]);
+      setSelectedItems(eventKey);
     }
   };
 
@@ -147,7 +149,7 @@ const UploadFileComponent: React.FC<{}> = () => {
           Launch demo modal
         </Button>
 
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose} >
           {/* <Modal.Header closeButton className=''>
             {/* <Modal.Title>Modal heading</Modal.Title> */}
             {/* <h1>
@@ -155,13 +157,13 @@ const UploadFileComponent: React.FC<{}> = () => {
             </h1>
           </Modal.Header> */} 
 
-          <Form  className='bg-light border border-primary rounded shadow-lg py-4 px-5 ' style={{width:"45rem"}} 
+          <Form  className=' bg-light border border-primary rounded shadow-lg py-4 px-5 ' style={{width:"45rem"}} 
           
           >
             {/* <h1>
               <Badge className='px-5 mb-3' bg="secondary">העלת קובץ</Badge>
             </h1> */}
-            <Modal.Header closeButton className='mb-3 px-3' style={{backgroundColor: 'gray'}}>
+            <Modal.Header closeButton className='bg mb-3 px-3' style={{backgroundColor: 'gray'}}>
               <h1>העלת קובץ</h1>
             </Modal.Header>
 
@@ -211,14 +213,21 @@ const UploadFileComponent: React.FC<{}> = () => {
                       menuVariant="dark"
                       onSelect={handleSelect}
                     >
-                      <NavDropdown.Item eventKey="הרצאות" onClick={() => handleSelect("הרצאות")}
+                      {/* <NavDropdown.Item eventKey="הרצאות" onClick={() => handleSelect("הרצאות")}
                       >הרצאות</NavDropdown.Item>
-                      <NavDropdown.Divider />
-                      <Button variant="link" >הוספה/שינוי</Button>
+                      <NavDropdown.Divider /> */}
+                      
+                      {(categories || []).map((item, index) => (
+                        <NavDropdown.Item eventKey={item} onClick={() => handleSelect(item)} key={index}>
+                          {item}
+                        </NavDropdown.Item>
+                      ))}
+                     
+                      <Button variant="link" onClick={handleShowAddEdit}>הוספה/שינוי</Button>
                       
                     </NavDropdown>
                   </Nav>
-                  <span className='px-4'>{selectedItem}</span>
+                  <span className='px-4'  >{selectedItem}</span>
                 </Navbar.Collapse>
               </Container>
             </Navbar>
@@ -246,6 +255,73 @@ const UploadFileComponent: React.FC<{}> = () => {
             </Modal.Footer>
           </Form> 
         </Modal>
+
+        <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
+          <Modal.Header closeButton>
+            <Modal.Title>הוספה/שינוי</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Row className="mb-3">
+              <Form.Group
+                  as={Col}
+                  controlId="validationCustom01"
+                  className="position-relative "            
+              >
+                  <FloatingLabel
+                  controlId="floatingInput"
+                  label="כותרת"
+                  >
+                  <Form.Control
+                  type="text"
+                  name='title'
+                  
+                  required
+                  placeholder="כותרת"
+                  onChange={event =>handleInputeCatrgores(event)}
+                  />
+                  </FloatingLabel>
+              </Form.Group>    
+
+              <Form.Group as={Col} md="3" className=' mt-2 px-3' controlId="validationCustom02">
+              <Button  onClick={addCategories}>הוספה</Button> 
+              </Form.Group>
+              
+            </Row>                  
+            <Modal.Footer>
+              {(categories || []).map((item) => (
+                <Row className="mx-3">
+                  <Form.Group
+                  as={Col}
+                  controlId="validationCustom01"
+                  className="position-relative "    
+                          
+                  >
+                  <Form.Control
+                    type="text"
+                    name='title'
+                    defaultValue={item}
+                    required
+                    
+                    onChange={event =>handleEditInpute(event)}
+                  />
+                    
+                  </Form.Group>    
+
+                  <Form.Group as={Col} md="3" className=' mt-2 px-3' controlId="validationCustom02">
+                    <Button  onClick={editItem}>שינוי</Button> 
+                  </Form.Group>
+                </Row>
+              ))}
+              
+            </Modal.Footer>           
+          </Modal.Body>
+          <Modal.Footer className='justify-content-center'>
+            <Button variant="secondary" className=' px-5' onClick={handleCloseAddEdit}>
+                סגירה
+            </Button>
+          </Modal.Footer>
+        </Modal>                
+        
       </>
     );
   // }
