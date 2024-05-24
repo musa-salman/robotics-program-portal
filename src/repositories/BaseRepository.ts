@@ -3,8 +3,8 @@ import { IRead } from "./interfaces/IRead";
 import { IWrite } from "./interfaces/IWrite";
 import { createConverter } from "../utils/db/firestoreDataConverter";
 
-export abstract class BaseRepository<T extends DocumentData> implements IWrite<T>, IRead<T> {
-    public readonly _collection: CollectionReference<DocumentData, DocumentData>;
+export abstract class BaseRepository<T extends { [x: string]: any; }> implements IWrite<T>, IRead<T> {
+    public readonly _collection: CollectionReference<T, DocumentData>;
 
     constructor(db: Firestore, collectionPath: string) {
         this._collection = collection(db, collectionPath).withConverter(createConverter<T>());
@@ -12,29 +12,28 @@ export abstract class BaseRepository<T extends DocumentData> implements IWrite<T
 
     async find(): Promise<T[]> {
         const snapshot = await getDocs(this._collection);
-        return snapshot.docs.map(doc => doc.data() as T);
+        return snapshot.docs.map(doc => doc.data());
     }
 
     async findOne(id: string): Promise<T | null> {
         const docRef = doc(this._collection, id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-            return docSnap.data() as T;
+            return docSnap.data();
         } else {
             return null;
         }
     }
 
-    async create(item: WithFieldValue<T>): Promise<DocumentReference<DocumentData, DocumentData>> {
+    async create(item: WithFieldValue<T>): Promise<DocumentReference<T, DocumentData>> {
         return addDoc(this._collection, item);
     }
 
-    async update(id: string, item: WithFieldValue<T>): Promise<void> {
-        return updateDoc(doc(this._collection, id), item);
+    async update(id: string, item: T): Promise<void> {
+        updateDoc(doc(this._collection, id), item);
     }
 
     async delete(id: string): Promise<void> {
         deleteDoc(doc(this._collection, id));
     }
-
 }
