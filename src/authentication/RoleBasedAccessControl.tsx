@@ -1,8 +1,8 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import { getUserRole } from "./UsersRepository";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import React from "react";
+import { UserContext } from "./UserContext";
 
 enum AuthorizationStatus {
   UnauthorizedAuthenticatedUser = 1,
@@ -24,12 +24,13 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   loadingComponent
 }) => {
   const { user, loading } = useAuth();
+  const userRepository = useContext(UserContext);
   const [authorization, setAuthorization] = useState<AuthorizationStatus | null>(null);
 
   useEffect(() => {
     const checkUserAuthorization = async () => {
       if (user) {
-        const userRole = await getUserRole(user.uid);
+        const userRole = await userRepository?.getUserRole(user.uid) || "guest";
         if (allowedRoles.includes(userRole)) {
           setAuthorization(AuthorizationStatus.AuthorizedUser)
         } else {
