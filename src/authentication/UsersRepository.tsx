@@ -7,16 +7,12 @@ export class UserRepository extends BaseRepository<User> {
         super(db, "users");
     }
 
-    getUserRole(uid: any): Promise<string> {
-        return this.findOne(uid).then((user) => {
-            if (user) {
-                console.log(user);
-                console.log(typeof user);
-
-                return user.getRole();
-            } else {
-                return "guest";
-            }
-        });
+    async getUserRole(uid: any): Promise<string> {
+        const user = await this.findOne(uid);
+        if (user) {
+            return user.role;
+        } else {
+            return "guest";
+        }
     }
 }
