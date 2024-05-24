@@ -53,4 +53,4 @@ const uploadFile = async (file:File | null,setUploadProgress:React.Dispatch<Reac
   };
 
 
-  export default uploadFile
+  export default uploadFile;
