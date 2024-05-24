@@ -1,9 +1,9 @@
-import { CollectionReference, DocumentData, DocumentReference, Firestore, WithFieldValue, addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { AddPrefixToKeys, CollectionReference, DocumentData, DocumentReference, Firestore, WithFieldValue, addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { IRead } from "./interfaces/IRead";
 import { IWrite } from "./interfaces/IWrite";
 import { createConverter } from "../utils/db/firestoreDataConverter";
 
-export abstract class BaseRepository<T extends { [x: string]: any; }> implements IWrite<T>, IRead<T> {
+export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
     public readonly _collection: CollectionReference<T, DocumentData>;
 
     constructor(db: Firestore, collectionPath: string) {
@@ -19,7 +19,7 @@ export abstract class BaseRepository<T extends { [x: string]: any; }> implements
         return getDoc(
             doc(this._collection, id)
         ).then(
-            (docSnap) => docSnap.exists() ?  docSnap.data() : null
+            (docSnap) => docSnap.exists() ?  docSnap.data() as T : null
         );
     }
 
@@ -28,7 +28,7 @@ export abstract class BaseRepository<T extends { [x: string]: any; }> implements
     }
 
     async update(id: string, item: T): Promise<void> {
-        updateDoc(doc(this._collection, id), item);
+        updateDoc(doc(this._collection, id), {...item} as { [x: string]: any; } & AddPrefixToKeys<string, any>);
     }
 
     async delete(id: string): Promise<void> {
