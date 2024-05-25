@@ -10,7 +10,7 @@ import { SetStateAction, useEffect, useState } from 'react';
 import { Container, InputGroup, Nav, NavDropdown, Navbar, Row } from 'react-bootstrap';
 import "./UploadFile.css"
 
-import {addCategory ,getCategories} from './StudyMaterialRepository'
+import {addCategory ,getCategories} from './StudyRepository'
 let categories: SelectedItem[] = [];
 // import { storage } from '../firebase';
 
