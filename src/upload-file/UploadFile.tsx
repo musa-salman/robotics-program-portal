@@ -5,12 +5,13 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 // import Badge from 'react-bootstrap/Badge';
 import uploadFile from "./FileService"
 import Modal from 'react-bootstrap/Modal';
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useContext, useEffect, useState } from 'react';
 
 import { Container, InputGroup, Nav, NavDropdown, Navbar, Row } from 'react-bootstrap';
 import "./UploadFile.css"
-
+import { CategoryContext } from './CategoryContext';
 import {addCategory ,getCategories} from './StudyRepository'
+import { Category } from './Category';
 let categories: SelectedItem[] = [];
 // import { storage } from '../firebase';
 
@@ -38,6 +39,7 @@ const UploadFileComponent: React.FC<{}> = () => {
   const [clickTime, setClickTime] = useState<string>('');
   const [category, setCategory] = useState('');
   // const database :any=collection(db,'files')
+  const categoryRepository=useContext(CategoryContext);
   const [fileData, setFileData] = useState({
     title: '',
     description: '',
@@ -47,29 +49,47 @@ const UploadFileComponent: React.FC<{}> = () => {
   let items: SelectedItem[] = [];
 
  
+  const getCategory=async () =>{
+    try{
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-      
-  //       setCategories(await getCategories());
-  //       console.log("categories "+categories);
-  //     } catch (error) {
-  //       console.error('Error fetching items:', error);
-  //     }
-  //       finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   // if (!loading && categories === null){ FIXME:
-  //     fetchData();
+      const data :Category[] | undefined=await categoryRepository?.find();
+      if(data !== undefined){
+        const dataString:string[]=data.map(category => JSON.stringify(category));
+        console.log("data "+dataString[0]);
+        setCategories(dataString);
+      }
 
-  //   // }
-  // }, [categories]);
+    }catch(error){
+      console.error('Error fetching items:', error);
+    }
+     
+  }
 
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        getCategory();
+        // setCategories(await getCategories());
+        
+        // setCategories(await categoryRepository?.find );
+        console.log("categories "+categories);
+      } catch (error) {
+        
+      }
+        finally {
+        setLoading(false);
+      }
+    };
+    if (loading && categories === null){ FIXME:
+      fetchData();
+
+    }
+  }, [categories]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   const handleInputeCatrgores=(event:any) => {
     setCategory(event.target.value);
