@@ -12,22 +12,21 @@ import "./UploadFile.css"
 import { CategoryContext } from './CategoryContext';
 import {addCategory ,getCategories} from './StudyRepository'
 import { Category } from './Category';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../firebase';
+import { StudyMaterialContext } from './StudyMaterialContext';
+import { StudyMaterial } from './StudyMaterial';
 let categories: SelectedItem[] = [];
 // import { storage } from '../firebase';
 
 type SelectedItem = string;
-
-// items.push('מיקןם הפיל');
-
-  
-
 
   
 const UploadFileComponent: React.FC<{}> = () => {
   const [file, setFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [validated, setValidated] = useState(false);
-  const [selectedItem, setSelectedItems] = useState<SelectedItem >('מיקןם הפיל');
+  const [selectedItem, setSelectedItems] = useState<SelectedItem >('מיקןם הפיל');//FIXME:
   const [categories,setCategories] =useState<string []| null> (null);
   const [loading, setLoading] = useState<boolean>(true);
   const [show, setShow] = useState(false);
@@ -36,27 +35,28 @@ const UploadFileComponent: React.FC<{}> = () => {
   const [showAddEdit, setShowAddEdit] = useState(false);
   const handleCloseAddEdit = () => setShowAddEdit(false);
   const handleShowAddEdit = () => setShowAddEdit(true);
-  const [clickTime, setClickTime] = useState<string>('');
-  const [category, setCategory] = useState('');
-  // const database :any=collection(db,'files')
   const categoryRepository=useContext(CategoryContext);
-  const [fileData, setFileData] = useState({
-    title: '',
-    description: '',
-    name: '',
+  const StudyMaterialRepository=useContext(StudyMaterialContext);
+  const [studyMaterial, setStudyMaterial] = useState<StudyMaterial >({
+    filename: "",
+    filePath: "",
+    category: "",
+    title: "",
+    description: "",
+    date: new Date(),
   });
  
-  let items: SelectedItem[] = [];
+  
 
  
   const getCategory=async () =>{
     try{
 
-      const data :Category[] | undefined=await categoryRepository?.find();
+      const data :Category[] =await categoryRepository.find();
       if(data !== undefined){
-        const dataString:string[]=data.map(category => JSON.stringify(category));
+        const dataString:string[]=data.map(category => JSON.stringify(category.category));
         console.log("data "+dataString[0]);
-        setCategories(dataString);
+        setCategories(dataString);//FIXME:
       }
 
     }catch(error){
@@ -67,22 +67,11 @@ const UploadFileComponent: React.FC<{}> = () => {
 
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        getCategory();
-        // setCategories(await getCategories());
-        
-        // setCategories(await categoryRepository?.find );
-        console.log("categories "+categories);
-      } catch (error) {
-        
-      }
-        finally {
-        setLoading(false);
-      }
-    };
-    if (loading && categories === null){ FIXME:
-      fetchData();
+    
+    if (loading && categories === null){ 
+      getCategory();
+      console.log("categories "+categories);
+      setLoading(false)
 
     }
   }, [categories]);
@@ -91,13 +80,14 @@ const UploadFileComponent: React.FC<{}> = () => {
     return <div>Loading...</div>;
   }
 
-  const handleInputeCatrgores=(event:any) => {
-    setCategory(event.target.value);
+  const handleInputCategories=(event:any) => {
+    setStudyMaterial(prevData => ({ ...prevData, category: event.target.value }));
   };
 
   const addCategories = async ()=>{
-    await addCategory(category);
-    categories?.push(category);
+
+    categoryRepository?.create({category:studyMaterial.category});
+    categories?.push(studyMaterial.category);
     setCategories(categories);
   };
 
@@ -114,27 +104,25 @@ const UploadFileComponent: React.FC<{}> = () => {
   const handleSelect = (eventKey: string | null) => {
     if (eventKey) {
       setSelectedItems(eventKey);
+      setStudyMaterial(prevData => ({ ...prevData, category: eventKey }));
     }
   };
 
-  const handleInpute =(event:any) =>{
+  const handleInput =(event:any) =>{
     const { name, value } = event.target;
-    setFileData(prevData => ({ ...prevData, [name]: value }));
+    setStudyMaterial(prevData => ({ ...prevData, [name]: value }));
   };
 
-  const handleClick = () => {
-    const currentTime = new Date().toLocaleString();
-    setClickTime(currentTime);
-
-    // Handle other logic here if needed
-    console.log('Button clicked at:', currentTime);
+  const handleDate = () => {
+    const currentTime = new Date();
+    setStudyMaterial(prevData => ({ ...prevData, date: currentTime }));
   };
   
 
   const handleFileChange = (event:any) => {
     try{
       if (event.target.files && event.target.files[0]) {
-        setFileData(prevData => ({ ...prevData, name: event.target.files[0].name }));
+        setStudyMaterial(prevData => ({ ...prevData, filename: event.target.files[0].name }));
         setFile(event.target.files[0]);
         
       }
@@ -145,21 +133,18 @@ const UploadFileComponent: React.FC<{}> = () => {
 
 
   const handleSubmit =async ()=>{
+    
+      const docRef=await StudyMaterialRepository.create(studyMaterial);
       
-      // const docRef= await addDoc(collection(db,"files"),{
-      //   description:fileData.description,
-      //   name:fileData.name,
-      //   title:fileData.title
-      // })
       if(file){
-        // uploadFile(file,setUploadProgress,"/study-material/"+docRef.id+"-"+fileData.name)
+        uploadFile(file,setUploadProgress,"/study-material/"+docRef.id+"-"+studyMaterial.filename)
         // download()
       }
       // console.log("Document written with ID: ", docRef.id);
     
-      console.log(fileData)
+      console.log(studyMaterial)
       handleClose();
-      handleClick();
+      handleDate();
     
   };
 
@@ -202,7 +187,7 @@ const UploadFileComponent: React.FC<{}> = () => {
               
                 required
                 placeholder="כותרת"
-                onChange={event =>handleInpute(event)}
+                onChange={event =>handleInput(event)}
               />
             </FloatingLabel>
               
@@ -215,7 +200,7 @@ const UploadFileComponent: React.FC<{}> = () => {
                 type="file"
                 required
                 
-                name="file"
+                name="filename"
                 className="position-relative my-4 "
                 onChange={event =>handleFileChange(event)}
                 
@@ -257,7 +242,7 @@ const UploadFileComponent: React.FC<{}> = () => {
                 as="textarea"
                 name="description"
                 placeholder="Leave a comment here"
-                onChange={event =>handleInpute(event)}
+                onChange={event =>handleInput(event)}
                 style={{ height: '100px' }}
               />
             </FloatingLabel>
@@ -297,7 +282,7 @@ const UploadFileComponent: React.FC<{}> = () => {
                   
                   required
                   placeholder="כותרת"
-                  onChange={event =>handleInputeCatrgores(event)}
+                  onChange={event =>handleInputCategories(event)}
                   />
                   </FloatingLabel>
               </Form.Group>    
@@ -346,7 +331,7 @@ const UploadFileComponent: React.FC<{}> = () => {
     );
   // }
 
-};
+  };
 
 
 
