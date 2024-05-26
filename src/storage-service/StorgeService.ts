@@ -1,16 +1,11 @@
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../firebase";
 import { IStorageService } from "./IStorgeService";
 import { Dispatch, SetStateAction } from "react";
 
 
 class StorageService implements IStorageService{
-    download(path: string): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
-    delete(path: string): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
+    
     
     async upload(file: File, path: string, setUploadProgress: Dispatch<SetStateAction<number>>): Promise<void> {
         const storageRef = ref(storage,path);    
@@ -34,12 +29,43 @@ class StorageService implements IStorageService{
         );
       };
 
-
-
+    async download(path: string): Promise<void> {
+       
+        getDownloadURL(ref(storage, path))
+        .then((url) => {
+        // `url` is the download URL for 'images/stars.jpg'
+    
+        // This can be downloaded directly:
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = 'blob';
+        xhr.onload = (event) => {
+            const blob = xhr.response;
+        };
+        xhr.open('GET', url);
+        xhr.send();
+    
         
+        })
+        .catch((error) => {
+            console.error('Error uploading file:', error);
+        });
     }
 
-   
+    async delete(path: string): Promise<void> {
+
+        const desertRef = ref(storage, path);
+        
+        deleteObject(desertRef).then(() => {
+
+        }).catch((error) => {
+            console.error('Error uploading file:', error);
+        });
+    }
+
+        
+}
+
+
         
        
         
