@@ -1,10 +1,10 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 import { CategoryRepository } from './CategoryRepository';
 
-export const CategoryContext = createContext<CategoryRepository | null>(null);
+export const CategoryContext = createContext<CategoryRepository>(new CategoryRepository());
 
 function CategoryProvider({ children } : { children: React.ReactNode }) {
-  const categoryRepository = new CategoryRepository();
+  const categoryRepository = useContext(CategoryContext);
 
   return (
     <CategoryContext.Provider value={categoryRepository}>

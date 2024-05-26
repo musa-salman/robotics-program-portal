@@ -7,6 +7,4 @@ export class CategoryRepository extends BaseRepository<Category> {
     constructor() {
         super(db, "categories");
     }
-
-    
 }
