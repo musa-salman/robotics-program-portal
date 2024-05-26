@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { useContext, useEffect, useState } from "react";
 import React from "react";
-import { UserContext } from "./UserContext";
+import { UserContext } from "../users/UserContext";
 
 enum AuthorizationStatus {
   UnauthorizedAuthenticatedUser = 1,

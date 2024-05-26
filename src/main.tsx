@@ -5,7 +5,7 @@ import './index.css'
 import ThemeProvider from 'react-bootstrap/esm/ThemeProvider'
 import AuthProvider from './authentication/AuthContext.tsx'
 import { BrowserRouter } from 'react-router-dom'
-import UserProvider from './authentication/UserContext.tsx'
+import UserProvider from './users/UserContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

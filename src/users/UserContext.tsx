@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { UserRepository } from './UsersRepository';
+import { UserRepository } from './UserRepository';
 
 export const UserContext = createContext<UserRepository | null>(null);
 
