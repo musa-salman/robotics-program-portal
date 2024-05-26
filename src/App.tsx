@@ -5,10 +5,12 @@ import { Route, Routes } from 'react-router-dom';
 import RoleBasedAccessControl from './authentication/RoleBasedAccessControl';
 import ForgetPassword from './forget-password/ForgetPassword';
 import UploadFileComponent from './upload-file/UploadFile';
+import EventContainerShow from './events/EventContainer';
 
 function App() {
   return (
     <>
+      <EventContainerShow eventsProps={[]} />
       <Routes>
         <Route path="/" element={<div>Home</div>} />
 

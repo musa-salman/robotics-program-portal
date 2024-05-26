@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Card, Dropdown, Modal, Form } from 'react-bootstrap';
 
-// import './Event.css';
+import './Event.css';
 
 export interface EventProps {
   date: string;
@@ -10,12 +10,11 @@ export interface EventProps {
   image: string;
   onEventDelete: (id: number) => void;
   onEventEdit: (event: EventProps) => void;
-  isAdmin: boolean;
   id: number;
 }
 
-const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelete, onEventEdit, isAdmin, id }) => {
-  const [formData, setFormData] = useState<EventProps>({ date, title, details, image, onEventDelete, onEventEdit, isAdmin, id });
+const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelete, onEventEdit, id }) => {
+  const [formData, setFormData] = useState<EventProps>({ date, title, details, image, onEventDelete, onEventEdit, id });
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prevState => ({ ...prevState, title: e.target.value }));
@@ -76,12 +75,12 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
     //db
   };
 
-  function adminOptions(isAdmin: boolean) {
-    if (isAdmin) {
-      return (
+  function adminOptions() {
+    return (
+      <div className="adminOptions">
         <Dropdown>
           <Dropdown.Toggle variant="success" id="dropdown-basic">
-            אפשרויות
+            
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item onClick={handleEdit}>לַעֲרוֹך</Dropdown.Item>
@@ -89,9 +88,8 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
             <Dropdown.Item onClick={handleDelete} style={{ color: 'red' }}>לִמְחוֹק</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-      );
-    }
-    return null;
+      </div>
+    );
   }
 
   function editWindow() {
@@ -188,7 +186,7 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
   }
 
   return (
-    <Card style={{ width: '18rem', backgroundColor: 'bisque' }}>
+    <Card className="event-card">
       <Card.Img variant="top" src={image} />
       <Card.Body>
         <Card.Title>{title}</Card.Title>
@@ -201,7 +199,7 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
         ) : (
           <Button variant="primary" onClick={handleRegister}>הירשם</Button>
         )}
-        {adminOptions(true)}
+        {adminOptions()}
       </Card.Body>
       {editWindow()}
       {deleteWindow()}

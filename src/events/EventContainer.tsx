@@ -6,7 +6,7 @@ type EventContainer = {
   eventsProps: EventProps[];
 }
 
-const EventContainerShow: React.FC<EventContainer> = ({ eventsProps }) => {
+const EventContainer: React.FC<EventContainer> = ({ eventsProps }) => {
   const [firstVisibleEventIndex, setFirstVisibleEventIndex] = useState(0);
   const [events, setEvents] = useState<EventProps[]>(eventsProps || []);
   const [showModal, setShowModal] = useState(false);
@@ -59,7 +59,6 @@ const EventContainerShow: React.FC<EventContainer> = ({ eventsProps }) => {
     image: 'Robtics.png', // Provide initial value for image
     onEventDelete: (_id: number) => { },
     onEventEdit: (_event: EventProps) => { },
-    isAdmin: false, // Provide initial value for isAdmin
     id: 0 // Provide initial value for id
   });
 
@@ -96,7 +95,6 @@ const EventContainerShow: React.FC<EventContainer> = ({ eventsProps }) => {
             {addForm()}
           </Modal.Body>
           <Modal.Footer>
-
           </Modal.Footer>
         </Modal>
       </>
@@ -146,7 +144,6 @@ const EventContainerShow: React.FC<EventContainer> = ({ eventsProps }) => {
                 image={event.image}
                 onEventDelete={onEventDelete}
                 onEventEdit={onEventEdit}
-                isAdmin={event.isAdmin}
               />
             </Carousel.Caption>
           </Carousel.Item>
@@ -156,9 +153,9 @@ const EventContainerShow: React.FC<EventContainer> = ({ eventsProps }) => {
   }
 
   return (
-    <div>
-      <div className="events" style={{ backgroundColor: 'gray', padding: '10px', borderRadius: '10px' }}>
-        <Button variant="primary" onClick={handleShiftEventsRight}>Shift Right</Button>
+    <div className='events'>
+      <div className="eventsContainer">
+      <Button variant="primary" onClick={handleShiftEventsRight}>Shift Right</Button>
         {events.slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
           <Event
             id={event.id}
@@ -168,14 +165,13 @@ const EventContainerShow: React.FC<EventContainer> = ({ eventsProps }) => {
             image={event.image}
             onEventDelete={onEventDelete}
             onEventEdit={onEventEdit}
-            isAdmin={event.isAdmin}
           />
         ))}
         <Button variant="primary" onClick={handleShiftEventsLeft}>Shift Left</Button>
       </div>
-      <Button variant="success" onClick={handleAddEvent}>הוסף אירוע</Button>
+        <Button variant="success" onClick={handleAddEvent}>הוסף אירוע</Button>
       {addWindow()}
     </div>
   );
 };
-export default EventContainerShow;
+export default EventContainer;
