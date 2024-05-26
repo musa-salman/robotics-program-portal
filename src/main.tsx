@@ -7,6 +7,7 @@ import AuthProvider from './authentication/AuthContext.tsx'
 import { BrowserRouter } from 'react-router-dom'
 import UserProvider from './authentication/UserContext.tsx'
 import CategoryProvider from './upload-file/CategoryContext.tsx'
+import StudyMaterialProvider from './upload-file/StudyMaterialContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -14,9 +15,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <UserProvider>
           <CategoryProvider>
+            <StudyMaterialProvider>
             <AuthProvider>
               <App />
             </AuthProvider>
+            </StudyMaterialProvider>
           </CategoryProvider>
         </UserProvider>
       </BrowserRouter>
