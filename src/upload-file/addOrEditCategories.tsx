@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Col, FloatingLabel, Form, Modal, Row } from "react-bootstrap";
-import {addCategory} from './StudyMaterialRepository'
+import {addCategory} from './StudyRepository'
 
 
 const addEditCategories =(categories:string[])=>{
