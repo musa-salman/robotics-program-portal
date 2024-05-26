@@ -10,7 +10,7 @@ import EventContainerShow from './events/EventContainer';
 function App() {
   return (
     <>
-      <EventContainerShow eventsProps={[]} />
+      {/* <EventContainerShow eventsProps={[]} /> */}
       <Routes>
         <Route path="/" element={<div>Home</div>} />
 

@@ -16,6 +16,7 @@ import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase';
 import { StudyMaterialContext } from './StudyMaterialContext';
 import { StudyMaterial } from './StudyMaterial';
+import { StorageServiceContext } from '../storage-service/storageServiceContext';
 let categories: SelectedItem[] = [];
 // import { storage } from '../firebase';
 
@@ -36,16 +37,16 @@ const UploadFileComponent: React.FC<{}> = () => {
   const handleCloseAddEdit = () => setShowAddEdit(false);
   const handleShowAddEdit = () => setShowAddEdit(true);
   const categoryRepository=useContext(CategoryContext);
-  const StudyMaterialRepository=useContext(StudyMaterialContext);
+  const studyMaterialRepository=useContext(StudyMaterialContext);
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial >({
     filename: "",
-    filePath: "",
+    // filePath: "",
     category: "",
     title: "",
     description: "",
     date: new Date(),
   });
- 
+  const storageService=useContext(StorageServiceContext);
   
 
  
@@ -134,10 +135,11 @@ const UploadFileComponent: React.FC<{}> = () => {
 
   const handleSubmit =async ()=>{
     
-      const docRef=await StudyMaterialRepository.create(studyMaterial);
+      const docRef=await studyMaterialRepository.create(studyMaterial);
       
       if(file){
-        uploadFile(file,setUploadProgress,"/study-material/"+docRef.id+"-"+studyMaterial.filename)
+        storageService.upload(file,"/study-material/"+docRef.id+"-"+studyMaterial.filename,setUploadProgress);
+        // uploadFile(file,setUploadProgress,"/study-material/"+docRef.id+"-"+studyMaterial.filename)
         // download()
       }
       // console.log("Document written with ID: ", docRef.id);

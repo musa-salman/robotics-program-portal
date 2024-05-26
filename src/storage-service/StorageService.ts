@@ -1,10 +1,10 @@
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../firebase";
-import { IStorageService } from "./IStorgeService";
+import { IStorageService } from "./IStorageService";
 import { Dispatch, SetStateAction } from "react";
 
 
-class StorageService implements IStorageService{
+export class StorageService implements IStorageService{
     
     
     async upload(file: File, path: string, setUploadProgress: Dispatch<SetStateAction<number>>): Promise<void> {
