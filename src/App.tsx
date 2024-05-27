@@ -4,6 +4,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import RoleBasedAccessControl from './authentication/RoleBasedAccessControl';
 import { useAuthRoutes } from './authentication/AuthRoutes';
 import { useStudyMaterialRoutes } from './study-material/StudyMaterialRoutes';
+import EventContainer from './events/EventContainer';
 
 function App() {
   const AuthRoutes = useAuthRoutes();
@@ -30,13 +31,16 @@ function App() {
           <Link to="/study-material-upload">
             <button>Upload Study Material</button>
           </Link>
+          <Link to="/events">
+            <button>Events</button>
+          </Link>
         </div></>
       <Routes>
         <Route path="/" element={<div>Home</div>} />
 
         {AuthRoutes}
         {StudyMaterialRoutes}
-
+        <Route path="/events" element={<EventContainer />} />
         <Route path="/dashboard" element={
           <RoleBasedAccessControl allowedRoles={['admin']}>
             <div>Dashboard</div>
