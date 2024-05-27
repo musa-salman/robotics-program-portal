@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom'
 import UserProvider from './users/UserContext.tsx'
 import CategoryProvider from './upload-file/CategoryContext.tsx'
 import StudyMaterialProvider from './upload-file/StudyMaterialContext.tsx'
-import StorageServiceProvider from './storage-service/storageServiceContext.tsx'
+import StorageServiceProvider from './storage-service/StorageServiceContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
