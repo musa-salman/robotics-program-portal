@@ -3,6 +3,8 @@
     border-radius: 5px;
     width: 100%;
     background-color: transparent;
+    display: flex;
+    min-width: 50rem;
 }
 
 
@@ -16,6 +18,38 @@
     display: flex;
     flex-wrap: wrap;
     align-content: space-between;
-    justify-content: center;
+    justify-content: right;
     gap: 10px;
+}
+
+.Card-Header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.add-button {
+    background: url('/plus.png') no-repeat center center;
+    background-size: contain;
+    width: 30px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+
+}
+
+.add-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+
+}
+
+
+
+.header-text {
+    text-align: right;
+    /* flex-grow: 1; */
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
 }

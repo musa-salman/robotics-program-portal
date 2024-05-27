@@ -8,13 +8,15 @@ import UploadFileComponent from './upload-file/UploadFile';
 //mport EventContainerShow from './events/EventContainer';
 import StudyMaterialContainer from './study-material/StudyMaterialContainer';
 //import { Container } from 'react-bootstrap';
-
+import { SearchBar } from './study-material/SearchBar';
 
 function App() {
   return (
     <>
       {/* <EventContainerShow eventsProps={[]} /> */}
       
+      <SearchBar/>
+      <br/>
       <StudyMaterialContainer/>
       <br/>
 

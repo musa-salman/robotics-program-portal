@@ -5,6 +5,7 @@ import "./StudyMaterialContainer.css"
 import { StudyMaterialContext } from './StudyMaterialContext';
 import { StudyMaterial } from './StudyMaterial';
 
+
 function StudyMaterialContainer() {  
 
     const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
@@ -12,27 +13,38 @@ function StudyMaterialContainer() {
 
     useEffect(() => {
         const getStudyMaterials = async () => {
-            setStudyMaterials( await studyMaterialRepository.find());
-            
+            setStudyMaterials( await studyMaterialRepository.find());    
         };
 
        if (studyMaterials === null)getStudyMaterials()
     }, [studyMaterials]); 
-
+ 
+    const categories = studyMaterials?.map((s) =>s.category).filter((item, index , arr)=> arr.indexOf(item) === index);
     return (
 <>
+
+{(categories || []).map(category => (
+
 <Card className="primary" >
-        <Card.Header>Header</Card.Header>
+
+        <Card.Header className="Card-Header"> 
+        <div key={category}>
+          <h2>{category}</h2>
+        </div>
+        <button className="add-button"></button>
+        </Card.Header>
         <br></br>
         <Card.Body className='body'>
             <br></br>
-            <div className="study-materials-container">    
-            {(studyMaterials || [] ).map(studyMaterial=> (
+            <div className="study-materials-container"> 
+
+            {(studyMaterials || [] ).filter((s) => s.category === category).map(studyMaterial=> (
                         <StudyMaterials key={studyMaterial.id}  studyMaterial={studyMaterial} />
                     ))}
             </div>    
         </Card.Body>
       </Card>
+))}
 </>
  );
 }
