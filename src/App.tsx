@@ -2,9 +2,20 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.rtl.min.css';
 import { Link, Route, Routes } from 'react-router-dom';
 import RoleBasedAccessControl from './authentication/RoleBasedAccessControl';
+<<<<<<< HEAD
 import { useAuthRoutes } from './authentication/AuthRoutes';
 import { useStudyMaterialRoutes } from './study-material/StudyMaterialRoutes';
 import EventContainer from './events/EventContainer';
+import { SearchBar } from './study-material/SearchBar';
+import StudyMaterialContainer from './study-material/StudyMaterialContainer';
+=======
+import ForgetPassword from './forget-password/ForgetPassword';
+import UploadFileComponent from './upload-file/UploadFile';
+//mport EventContainerShow from './events/EventContainer';
+import StudyMaterialContainer from './study-material/StudyMaterialContainer';
+//import { Container } from 'react-bootstrap';
+import { SearchBar } from './study-material/SearchBar';
+>>>>>>> 062d1a0dc50f5fee446119ec778c74f827ddeff0
 
 function App() {
   const AuthRoutes = useAuthRoutes();
@@ -35,6 +46,13 @@ function App() {
             <button>Events</button>
           </Link>
         </div></>
+      {/* <EventContainerShow eventsProps={[]} /> */}
+      
+      <SearchBar/>
+      <br/>
+      <StudyMaterialContainer/>
+      <br/>
+
       <Routes>
         <Route path="/" element={<div>Home</div>} />
 
