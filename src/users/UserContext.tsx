@@ -1,10 +1,10 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 import { UserRepository } from './UserRepository';
 
-export const UserContext = createContext<UserRepository | null>(null);
+export const UserContext = createContext<UserRepository>(new UserRepository());
 
 function UserProvider({ children } : { children: React.ReactNode }) {
-  const userRepository = new UserRepository();
+  const userRepository = useContext(UserContext);
 
   return (
     <UserContext.Provider value={userRepository}>
