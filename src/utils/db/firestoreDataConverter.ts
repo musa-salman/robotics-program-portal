@@ -3,7 +3,10 @@ import { DocumentData, FirestoreDataConverter, QueryDocumentSnapshot, SnapshotOp
 export function createConverter<T>(): FirestoreDataConverter<T, DocumentData> {
     return {
         toFirestore(data: T): DocumentData {
-            return { ...(data as DocumentData) };
+            // remove id from data
+            let temp = {...data} as any;
+            delete temp.id;
+            return {...temp} as DocumentData;
         },
 
         fromFirestore(
@@ -11,7 +14,7 @@ export function createConverter<T>(): FirestoreDataConverter<T, DocumentData> {
             options: SnapshotOptions
         ): T {
             const data = snapshot.data(options)!;
-            return { ...data } as T;
+            return {id: snapshot.id , ...data } as T;
         }
     };
 }
