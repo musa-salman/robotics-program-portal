@@ -1,4 +1,5 @@
-export interface StudyMaterial{
+export interface StudyMaterial {
+    id: string;
     filename: string;
     // filePath: string;
     category: string;
