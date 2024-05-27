@@ -66,25 +66,6 @@ const EventContainer: React.FC<EventContainer> = ({ eventsProps }) => {
     id: 0 // Provide initial value for id
   });
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prevState => ({ ...prevState, title: e.target.value }));
-  };
-
-  const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    if (value.length <= MAX_CHARS) {
-      setFormData(prevState => ({ ...prevState, details: value }));
-      setCharCount(value.length);
-    }  };
-
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prevState => ({ ...prevState, date: e.target.value }));
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData(prevState => ({ ...prevState, image: e.target.value }));
-  };
-
   function handleAdd() {
     handleShow();
     events.push(formData);
@@ -109,7 +90,7 @@ const EventContainer: React.FC<EventContainer> = ({ eventsProps }) => {
   }
 
   function addForm() {
-    const MAX_CHARS_Details = 104; // Set the maximum number of characters allowed
+    const MAX_CHARS_Details = 100; // Set the maximum number of characters allowed
     const [charCountDetails, setCharCountDetails] = useState(0); // Track the current character count
 
     const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -130,6 +111,15 @@ const EventContainer: React.FC<EventContainer> = ({ eventsProps }) => {
         setCharCountTitle(value.length);
       }
     };
+
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData(prevState => ({ ...prevState, date: e.target.value }));
+    };
+  
+    const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setFormData(prevState => ({ ...prevState, image: e.target.value }));
+    };
+  
 
     return (
       <Form onSubmit={handleSaveAdd}>

@@ -114,7 +114,7 @@
 
 /* Base styling for the card */
 .event-card {
-  height: 450px;
+  height: 500px;
   width: 18rem;
   background-image: url('EventCard.jpg');
   background-color: bisque;
