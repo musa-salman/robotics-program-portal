@@ -30,7 +30,7 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   useEffect(() => {
     const checkUserAuthorization = async () => {
       if (user) {
-        const userRole = await userRepository?.getUserRole(user.uid) || "guest";
+        const userRole = await userRepository.getUserRole(user.uid);
         if (allowedRoles.includes(userRole)) {
           setAuthorization(AuthorizationStatus.AuthorizedUser)
         } else {
