@@ -14,7 +14,7 @@ import {addCategory ,getCategories} from './StudyRepository'
 import { Category } from './Category';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase';
-import { StudyMaterialContext } from './StudyMaterialContext';
+import { StudyMaterialContext } from '../study-material/StudyMaterialContext';
 import { StudyMaterial } from './StudyMaterial';
 import { StorageServiceContext } from '../storage-service/StorageServiceContext';
 let categories: SelectedItem[] = [];

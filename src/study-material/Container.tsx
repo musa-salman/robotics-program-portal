@@ -1,24 +1,23 @@
 import Card from 'react-bootstrap/Card';
 import StudyMaterials from './StudyMaterials'
-// import { SearchBar } from './SearchBar'
-import { db } from '../firebase';
-import  { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import  { useState, useEffect, useContext } from 'react';
 import "./Container.css"
+import { StudyMaterialContext } from './StudyMaterialContext';
+import { StudyMaterial } from '../upload-file/StudyMaterial';
 
 function Container() {  
 
-    const [documentIds, setDocumentIds] = useState<string[]>([]);
+    const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[]>([]);
+    const studyMaterialRepository = useContext(StudyMaterialContext);
 
     useEffect(() => {
-        const fetchIds = async () => {
-             const querySnapshot = await getDocs(collection(db, "files"));
-                const ids = querySnapshot.docs.map(doc => doc.id);
-                setDocumentIds(ids);
+        const getStudyMaterials = async () => {
+            setStudyMaterials( await studyMaterialRepository.find());
+
         };
 
-        fetchIds();
-    }, []); 
+       if (studyMaterials === null)getStudyMaterials()
+    }, [studyMaterials]); 
 
     return (
 <>
@@ -28,7 +27,7 @@ function Container() {
         <Card.Body className='body'>
             <br></br>
             <div className="study-materials-container">    
-            {documentIds.map(docId => (
+            {studyMaterials.map(docId => (
                         <StudyMaterials key={docId} docId={docId} />
                     ))}
             </div>    
