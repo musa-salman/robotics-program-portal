@@ -58,7 +58,7 @@ function StudyMaterials({ docId }: { docId: string }) {
         <div style = {styles}>תאריך: {currentDate}</div>
         <br></br>
         <Button className={"button"} onClick={handleClick} >הורד את הקובץ</Button>
-        {isDownloaded && <p> fhjk</p>}
+        {isDownloaded && <p> </p>}
       </Card.Body>
     </Card>
 
