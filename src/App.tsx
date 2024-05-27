@@ -6,11 +6,15 @@ import RoleBasedAccessControl from './authentication/RoleBasedAccessControl';
 import ForgetPassword from './forget-password/ForgetPassword';
 import UploadFileComponent from './upload-file/UploadFile';
 import EventContainerShow from './events/EventContainer';
+import Container from './study-material/Container';
+//import { Container } from 'react-bootstrap';
+
 
 function App() {
   return (
     <>
       {/* <EventContainerShow eventsProps={[]} /> */}
+      <Container/>
       <Routes>
         <Route path="/" element={<div>Home</div>} />
 
@@ -32,6 +36,8 @@ function App() {
         <Route path="/forget-password" element={<ForgetPassword/>} />
       </Routes>
     </>
+
+
   )
 }
 
