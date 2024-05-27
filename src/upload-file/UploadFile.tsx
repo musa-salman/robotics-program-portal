@@ -31,6 +31,7 @@ const UploadFileComponent: React.FC<{}> = () => {
   const categoryRepository=useContext(CategoryContext);
   const studyMaterialRepository=useContext(StudyMaterialContext);
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial >({
+    id:"",
     filename: "",
     category: "",
     title: "",
@@ -73,7 +74,7 @@ const UploadFileComponent: React.FC<{}> = () => {
 
   const addCategories = async ()=>{
 
-    categoryRepository.create({category:studyMaterial.category});
+    // categoryRepository.create({category:studyMaterial.category});
     categories?.push(studyMaterial.category);
     setCategories(categories);
   };
