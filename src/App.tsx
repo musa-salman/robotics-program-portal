@@ -1,35 +1,49 @@
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.rtl.min.css';
-import Login from './login/Login';
-import { Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import RoleBasedAccessControl from './authentication/RoleBasedAccessControl';
-import ForgetPassword from './forget-password/ForgetPassword';
-import UploadFileComponent from './upload-file/UploadFile';
-import EventContainerShow from './events/EventContainer';
+import { useAuthRoutes } from './authentication/AuthRoutes';
+import { useStudyMaterialRoutes } from './study-material/StudyMaterialRoutes';
 
 function App() {
+  const AuthRoutes = useAuthRoutes();
+  const StudyMaterialRoutes = useStudyMaterialRoutes();
+
   return (
     <>
-      {/* <EventContainerShow eventsProps={[]} /> */}
+      <><div>
+        <h1>Home Page</h1>
+      </div><div>
+          <Link to="/"> Home </Link>
+          <Link to="/login">
+            <button>Login</button>
+          </Link>
+          <Link to="/forget-password">
+            <button>Forget Password</button>
+          </Link>
+          <Link to="/study-material">
+            <button>Study Material</button>
+          </Link>
+          <Link to="/dashboard">
+            <button>Dashboard</button>
+          </Link>
+          <Link to="/study-material-upload">
+            <button>Upload Study Material</button>
+          </Link>
+        </div></>
       <Routes>
         <Route path="/" element={<div>Home</div>} />
 
-        <Route path="/about" element={
-          <><RoleBasedAccessControl allowedRoles={['admin']} unauthorizedAuthenticatedComponent={<></>} unauthorizedUnauthenticatedComponent={<></>}>
-            <div>only admin see this</div>
-          </RoleBasedAccessControl><>
-            </>Everyone see this</>
-        } />
-        <Route path="/login" element={<Login />} />
-
-        <Route path="/study-material" element={<UploadFileComponent  />} />
+        {AuthRoutes}
+        {StudyMaterialRoutes}
 
         <Route path="/dashboard" element={
           <RoleBasedAccessControl allowedRoles={['admin']}>
             <div>Dashboard</div>
           </RoleBasedAccessControl>
         } />
-        <Route path="/forget-password" element={<ForgetPassword/>} />
+
+        <Route path="*" element={<div>Not Found</div>} />
       </Routes>
     </>
   )

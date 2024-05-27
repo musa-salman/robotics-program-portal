@@ -28,10 +28,10 @@ export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
     }
 
     async update(id: string, item: T): Promise<void> {
-        updateDoc(doc(this._collection, id), {...item} as { [x: string]: any; } & AddPrefixToKeys<string, any>);
+        return updateDoc(doc(this._collection, id), {...item} as { [x: string]: any; } & AddPrefixToKeys<string, any>);
     }
 
     async delete(id: string): Promise<void> {
-        deleteDoc(doc(this._collection, id));
+        return deleteDoc(doc(this._collection, id));
     }
 }

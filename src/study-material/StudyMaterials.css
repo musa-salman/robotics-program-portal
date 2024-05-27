@@ -1,5 +1,5 @@
 body {
-    background-image: url('public/robor.webp');
+    background-image: url('/robor.webp');
     height: 100%;
     background-size: cover;
     background-attachment: fixed;

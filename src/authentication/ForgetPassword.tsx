@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Form, Button, Card, Alert, FloatingLabel, Modal } from "react-bootstrap"
-import { useAuth } from "../authentication/AuthContext";
+import { useAuth } from "./AuthContext";
 
 export default function ForgetPassword() {
     const emailRef = React.useRef<HTMLInputElement>(null);

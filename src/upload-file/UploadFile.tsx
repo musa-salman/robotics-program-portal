@@ -8,8 +8,10 @@ import { Container, Nav, NavDropdown, Navbar, Row } from 'react-bootstrap';
 import "./UploadFile.css"
 import { CategoryContext } from './CategoryContext';
 import { Category } from './Category';
-import { StudyMaterialContext } from './StudyMaterialContext';
-import { StudyMaterial } from './StudyMaterial';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../firebase';
+import { StudyMaterialContext } from '../study-material/StudyMaterialContext';
+import { StudyMaterial } from '../study-material/StudyMaterial';
 import { StorageServiceContext } from '../storage-service/StorageServiceContext';
 
 type SelectedItem = string;

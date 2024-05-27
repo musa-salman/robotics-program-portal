@@ -4,10 +4,8 @@ import { StudyMaterial } from "./StudyMaterial";
 
 
 export class StudyMaterialRepository extends BaseRepository<StudyMaterial> {
-  
     constructor() {
         super(db, "studyMaterials");
-    }
-
+    }    
 
 }

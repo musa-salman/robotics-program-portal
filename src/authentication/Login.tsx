@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Form, Button, Card, Alert, FloatingLabel } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
-import { useAuth } from "../authentication/AuthContext";
+import { useAuth } from "./AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
