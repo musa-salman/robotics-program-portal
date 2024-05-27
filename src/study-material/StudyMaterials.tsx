@@ -1,12 +1,11 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import moment from 'moment';
 import './StudyMaterials.css';
-import { db } from '../firebase';
-import { doc, getDoc ,DocumentData} from 'firebase/firestore';
-import  { useState, useEffect  } from 'react';
+import  { useContext, useState } from 'react';
+import { StudyMaterial } from './StudyMaterial'
+import { StorageServiceContext } from '../storage-service/StorageServiceContext';
 
-const currentDate = moment().format('YYYY/DD/MM');
+//const currentDate = moment().format('YYYY/DD/MM');
 
 const styles = {
     fontSize: '20px',
@@ -15,49 +14,28 @@ const styles = {
   };
 
 
-function StudyMaterials({ docId }: { docId: string }) {
-  const [fileData, setFileData] = useState<DocumentData | null>(null);
+function StudyMaterials({ studyMaterial }: { studyMaterial: StudyMaterial }) {
   const [isDownloaded, setIsDownloaded] = useState(true);
-  
-  
-  const handleClick = async () => {  
-    console.log('Downloading...');
+  const storageService = useContext (StorageServiceContext);
+
+  const handleDownload = async () => { 
+    storageService.download("/study-material/"+studyMaterial.id+"-"+studyMaterial.filename);
     setIsDownloaded(true); 
   };
-
-  useEffect(() => {
-    const fetchDocument = async () => {
-      const docRef = doc(db, "files", docId);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        setFileData(docSnap.data());
-      } else {
-        console.log("No such document!");
-        setFileData(null);  
-      }
-    };
-
-    fetchDocument();
-  }, [docId]);  // Dependency array includes docId to refetch if it changes
-
-  if (!fileData) {
-    return <div>Loading...</div>;  // Or any other placeholder content
-  }
 
   return (
     <Card  className={"Card"}>
       <Card.Body>
       
-      <Card.Title style = {styles}>{fileData.title || 'שם הקובץ'}</Card.Title>
+      <Card.Title style = {styles}>{studyMaterial.title }</Card.Title>
         <hr className="custom-hr"/>
         <Card.Text style = {styles}>
 
-        {fileData.description || 'תאור קצר על הקובץ'}
+        {studyMaterial.description || 'תאור קצר על הקובץ'}
         </Card.Text>
-        <div style = {styles}>תאריך: {currentDate}</div>
+        {/* <div style = {styles}>{studyMaterial.date.toDateString()} </div> */}
         <br></br>
-        <Button className={"button"} onClick={handleClick} >הורד את הקובץ</Button>
+        <Button className={"button"} onClick={handleDownload} >הורד את הקובץ</Button>
         {isDownloaded && <p> </p>}
       </Card.Body>
     </Card>

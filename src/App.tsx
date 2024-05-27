@@ -5,8 +5,8 @@ import { Route, Routes } from 'react-router-dom';
 import RoleBasedAccessControl from './authentication/RoleBasedAccessControl';
 import ForgetPassword from './forget-password/ForgetPassword';
 import UploadFileComponent from './upload-file/UploadFile';
-import EventContainerShow from './events/EventContainer';
-import Container from './study-material/Container';
+//mport EventContainerShow from './events/EventContainer';
+import StudyMaterialContainer from './study-material/StudyMaterialContainer';
 //import { Container } from 'react-bootstrap';
 
 
@@ -14,10 +14,12 @@ function App() {
   return (
     <>
       {/* <EventContainerShow eventsProps={[]} /> */}
-      <Container/>
+      
+      <StudyMaterialContainer/>
+      <br/>
+
       <Routes>
         <Route path="/" element={<div>Home</div>} />
-
         <Route path="/about" element={
           <><RoleBasedAccessControl allowedRoles={['admin']} unauthorizedAuthenticatedComponent={<></>} unauthorizedUnauthenticatedComponent={<></>}>
             <div>only admin see this</div>

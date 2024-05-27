@@ -1,11 +1,11 @@
 import Card from 'react-bootstrap/Card';
 import StudyMaterials from './StudyMaterials'
 import  { useState, useEffect, useContext } from 'react';
-import "./Container.css"
+import "./StudyMaterialContainer.css"
 import { StudyMaterialContext } from './StudyMaterialContext';
-import { StudyMaterial } from '../upload-file/StudyMaterial';
+import { StudyMaterial } from './StudyMaterial';
 
-function Container() {  
+function StudyMaterialContainer() {  
 
     const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
     const studyMaterialRepository = useContext(StudyMaterialContext);
@@ -13,12 +13,11 @@ function Container() {
     useEffect(() => {
         const getStudyMaterials = async () => {
             setStudyMaterials( await studyMaterialRepository.find());
-            console.log(studyMaterials);
+            
         };
 
        if (studyMaterials === null)getStudyMaterials()
     }, [studyMaterials]); 
-
 
     return (
 <>
@@ -28,9 +27,9 @@ function Container() {
         <Card.Body className='body'>
             <br></br>
             <div className="study-materials-container">    
-            {/* {studyMaterials.map(docId => (
-                        <StudyMaterials key={docId} docId={docId} />
-                    ))} */}
+            {(studyMaterials || [] ).map(studyMaterial=> (
+                        <StudyMaterials key={studyMaterial.id}  studyMaterial={studyMaterial} />
+                    ))}
             </div>    
         </Card.Body>
       </Card>
@@ -39,4 +38,4 @@ function Container() {
 }
 
 
-export default Container;
+export default  StudyMaterialContainer;
