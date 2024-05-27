@@ -80,7 +80,7 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
       <div className="adminOptions">
         <Dropdown>
           <Dropdown.Toggle variant="success" id="dropdown-basic">
-            
+
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item onClick={handleEdit}>לַעֲרוֹך</Dropdown.Item>
@@ -160,16 +160,23 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
   }
 
   function registerWindow() {
+    const handleSubmitRegister = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      handleSaveRegister();
+    };
+
     return (
       <>
         <Modal show={showModalRegister} onHide={handleCloseRegister} style={{ display: 'center' }}>
-          <Modal.Header closeButton>
-            <Modal.Title>האם אתה בטוח שאתה רוצה להירשם לאירוע</Modal.Title>
-          </Modal.Header>
-          <Modal.Body style={{ display: 'flex', gap: '10px' }}>
-            <Form onSubmit={handleSaveRegister}>
-              <Form.Check required aria-label="option 1" feedback="You must agree before submitting." />
-              אני מאשר שאני רוצה להירשם לאירוע
+          <Form onSubmit={handleSubmitRegister}>
+            <Modal.Header closeButton>
+              <Modal.Title>האם אתה בטוח שאתה רוצה להירשם לאירוע</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <Form.Check required aria-label="option 1" feedback="You must agree before submitting." />
+                אני מאשר שאני רוצה להירשם לאירוע
+              </div>
               <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseRegister}>
                   סגור
@@ -178,8 +185,8 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
                   מאשר
                 </Button>
               </Modal.Footer>
-            </Form>
-          </Modal.Body>
+            </Modal.Body>
+          </Form>
         </Modal>
       </>
     );
@@ -196,7 +203,7 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
         </Card.Text>
         {registerd ? (
           <Button variant="secondary" disabled>רשום</Button>
-        ) : (
+          ) : (
           <Button variant="primary" onClick={handleRegister}>הירשם</Button>
         )}
         {adminOptions()}

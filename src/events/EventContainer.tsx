@@ -14,6 +14,10 @@ const EventContainer: React.FC<EventContainer> = ({ eventsProps }) => {
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
+  const MAX_CHARS = 100; // Set the maximum number of characters allowed
+  const [charCount, setCharCount] = useState(0); // Track the current character count
+
+
   function onEventDelete(id: number) {
     setEvents(events.filter((e) => e.id !== id));
   }
@@ -67,8 +71,11 @@ const EventContainer: React.FC<EventContainer> = ({ eventsProps }) => {
   };
 
   const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData(prevState => ({ ...prevState, details: e.target.value }));
-  };
+    const value = e.target.value;
+    if (value.length <= MAX_CHARS) {
+      setFormData(prevState => ({ ...prevState, details: value }));
+      setCharCount(value.length);
+    }  };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prevState => ({ ...prevState, date: e.target.value }));
@@ -102,72 +109,86 @@ const EventContainer: React.FC<EventContainer> = ({ eventsProps }) => {
   }
 
   function addForm() {
+    const MAX_CHARS_Details = 104; // Set the maximum number of characters allowed
+    const [charCountDetails, setCharCountDetails] = useState(0); // Track the current character count
+
+    const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const value = e.target.value;
+      if (value.length <= MAX_CHARS_Details) {
+        setFormData(prevState => ({ ...prevState, details: value }));
+        setCharCountDetails(value.length);
+      }
+    };
+
+    const MAX_CHARS_Title = 17; // Set the maximum number of characters allowed
+    const [charCountTitle, setCharCountTitle] = useState(0); // Track the current character count
+
+    const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const value = e.target.value;
+      if (value.length <= MAX_CHARS_Title) {
+        setFormData(prevState => ({ ...prevState, title: value }));
+        setCharCountTitle(value.length);
+      }
+    };
+
     return (
       <Form onSubmit={handleSaveAdd}>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label>כותרת</Form.Label>
-          <Form.Control required type="text" placeholder="שם אירוע" onChange={handleTitleChange} />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label>תאריך</Form.Label>
-          <Form.Control required type="date" placeholder="יום /חודש /שנה" onChange={handleDateChange} />
-        </Form.Group>
-        <Form.Group controlId="formFile" className="mb-3">
-          <Form.Label>העלאת תמונה</Form.Label>
-          <Form.Control type="file" onChange={handleImageChange} />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Label>פרטים</Form.Label>
-          <Form.Control as="textarea" rows={3} placeholder="פרטי האירוע" onChange={handleDetailsChange} />
-        </Form.Group>
+      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+        <Form.Label>כותרת</Form.Label>
+        <Form.Control
+          required type="text"
+          placeholder="שם אירוע"
+          onChange={handleTitleChange}
+          maxLength={MAX_CHARS_Title} // Set the maximum length of the textarea
+        />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+        <Form.Label>תאריך</Form.Label>
+        <Form.Control required type="date" placeholder="יום /חודש /שנה" onChange={handleDateChange} />
+      </Form.Group>
+      <Form.Group controlId="formFile" className="mb-3">
+        <Form.Label>העלאת תמונה</Form.Label>
+        <Form.Control type="file" onChange={handleImageChange} />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+        <Form.Label>פרטים</Form.Label>
+        <Form.Control
+          required as="textarea"
+          rows={3}
+          placeholder="פרטי האירוע"
+          onChange={handleDetailsChange}
+          maxLength={MAX_CHARS_Details} // Set the maximum length of the textarea
+        />
+        <small>{formData.details.length}/{MAX_CHARS_Details} characters</small> {/* Display the character count */}
+      </Form.Group>
+      <div style={{ display: 'flex', gap: '10px' }}>
         <Button variant="secondary" onClick={handleClose}>
-          סגור
+          סגור    
         </Button>
         <Button variant="primary" type="submit">
           הוסף
         </Button>
+      </div>
       </Form>
-    );
-  }
-
-  function UncontrolledExample() {
-    return (
-      <Carousel>
-        {events.map((event) => (
-          <Carousel.Item key={event.id}>
-            <Carousel.Caption>
-              <Event
-                id={event.id}
-                date={event.date}
-                title={event.title}
-                details={event.details}
-                image={event.image}
-                onEventDelete={onEventDelete}
-                onEventEdit={onEventEdit}
-              />
-            </Carousel.Caption>
-          </Carousel.Item>
-        ))}
-      </Carousel>
     );
   }
 
   return (
     <div className='events'>
       <div className="eventsContainer">
-      <Button variant="primary" onClick={handleShiftEventsRight}>Shift Right</Button>
-        {events.slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
-          <Event
-            id={event.id}
-            date={event.date}
-            title={event.title}
-            details={event.details}
-            image={event.image}
-            onEventDelete={onEventDelete}
-            onEventEdit={onEventEdit}
-          />
-        ))}
-        <Button variant="primary" onClick={handleShiftEventsLeft}>Shift Left</Button>
+        <Button variant="primary" onClick={handleShiftEventsRight}>&lt;</Button>
+          {events.slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
+            <Event
+              id={event.id}
+              date={event.date}
+              title={event.title}
+              details={event.details}
+              image={event.image}
+              onEventDelete={onEventDelete}
+              onEventEdit={onEventEdit}
+            />
+          ))}
+          <Button variant="primary" onClick={handleShiftEventsLeft}>&gt;</Button>
       </div>
         <Button variant="success" onClick={handleAddEvent}>הוסף אירוע</Button>
       {addWindow()}
