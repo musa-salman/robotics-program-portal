@@ -1,4 +1,4 @@
-import { AddPrefixToKeys, CollectionReference, DocumentData, DocumentReference, Firestore, WithFieldValue, addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { AddPrefixToKeys, CollectionReference, DocumentData, DocumentReference, Firestore, PartialWithFieldValue, WithFieldValue, addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { IRead } from "./interfaces/IRead";
 import { IWrite } from "./interfaces/IWrite";
 import { createConverter } from "../utils/db/firestoreDataConverter";
@@ -23,15 +23,15 @@ export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
         );
     }
 
-    async create(item: WithFieldValue<T>): Promise<DocumentReference<T, DocumentData>> {
-        return addDoc(this._collection, item);
+    async create(item: PartialWithFieldValue<T>): Promise<DocumentReference<T, DocumentData>> {
+        return addDoc(this._collection, item as WithFieldValue<T> & AddPrefixToKeys<string, any>);
     }
 
-    async update(id: string, item: T): Promise<void> {
-        updateDoc(doc(this._collection, id), {...item} as { [x: string]: any; } & AddPrefixToKeys<string, any>);
+    async update(id: string, item: PartialWithFieldValue<T>): Promise<void> {
+        return updateDoc(doc(this._collection, id), item as WithFieldValue<T> & AddPrefixToKeys<string, any>);
     }
 
     async delete(id: string): Promise<void> {
-        deleteDoc(doc(this._collection, id));
+        return deleteDoc(doc(this._collection, id));
     }
 }

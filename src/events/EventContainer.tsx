@@ -1,14 +1,14 @@
 import Event, { EventProps } from './Event';
-import { Button, Modal, Form, Carousel } from 'react-bootstrap';
-import React, { useState, useEffect } from 'react';
+import { Button, Modal, Form } from 'react-bootstrap';
+import React, { useState } from 'react';
 
 type EventContainer = {
   eventsProps: EventProps[];
 }
 
-const EventContainer: React.FC<EventContainer> = ({ eventsProps }) => {
+const EventContainer = () => {
   const [firstVisibleEventIndex, setFirstVisibleEventIndex] = useState(0);
-  const [events, setEvents] = useState<EventProps[]>(eventsProps || []);
+  const [events, setEvents] = useState<EventProps[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [render, setRender] = useState(0);
   const handleClose = () => setShowModal(false);

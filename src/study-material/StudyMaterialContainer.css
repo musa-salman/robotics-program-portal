@@ -2,13 +2,13 @@
     border: 2px solid;
     border-radius: 5px;
     width: 100%;
+    background-color: transparent;
 }
 
 
 .body {
     display: flex;
     flex-direction: column;
-
 }
 
 
@@ -16,6 +16,6 @@
     display: flex;
     flex-wrap: wrap;
     align-content: space-between;
-    justify-content: left;
+    justify-content: center;
     gap: 10px;
 }
