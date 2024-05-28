@@ -19,6 +19,8 @@ const UploadFileComponent: React.FC<{}> = () => {
   const [file, setFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [selectedItem, setSelectedItems] = useState<SelectedItem>('מיקןם הפיל');
+  const [allCategories,setAllCategories] =useState<Category[] >();
+  const [allStudyMaterial,setAllStudyMaterial] =useState<StudyMaterial[]>();
   const [categories, setCategories] = useState<string[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [show, setShow] = useState(false);
@@ -45,26 +47,29 @@ const UploadFileComponent: React.FC<{}> = () => {
     try {
 
       const data: Category[] = await categoryRepository.find();
-      if (data !== undefined) {
-        const dataString: string[] = data.map(category => (category.category));
-        console.log("data " + dataString[0]);
-        setCategories(dataString);
-      }
+      setAllCategories(data);
+      const dataString: string[] = data.map(category => (category.category));
+      console.log("data " + dataString[0]);
+      setCategories(dataString);
+      
 
     } catch (error) {
       console.error('Error fetching items:', error);
     }
 
   }
-
+  const getStudyMaterial =async()=>{
+    setAllStudyMaterial(await studyMaterialRepository.find());
+  }
 
   useEffect(() => {
 
     if (loading && categories === null) {
       getCategory();
+      getStudyMaterial();
       console.log("categories " + categories);
       setLoading(false)
-
+ 
     }
   }, [categories]);
 
@@ -78,7 +83,7 @@ const UploadFileComponent: React.FC<{}> = () => {
 
   const addCategories = async () => {
 
-    categoryRepository?.create({ category: studyMaterial.category });
+    categoryRepository.create({ category: studyMaterial.category });
     categories?.push(studyMaterial.category);
     setCategories(categories);
   };
@@ -88,7 +93,7 @@ const UploadFileComponent: React.FC<{}> = () => {
   };
 
   const handleEditInput = (event: any) => {
-
+    
 
 
   };
@@ -129,6 +134,7 @@ const UploadFileComponent: React.FC<{}> = () => {
     const docRef = await studyMaterialRepository.create(studyMaterial);
 
     if (file) {
+     
       storageService.upload(file, "/study-material/" + docRef.id + "-" + studyMaterial.filename, setUploadProgress);
     }
     console.log(studyMaterial)
@@ -188,14 +194,19 @@ const UploadFileComponent: React.FC<{}> = () => {
                     title="בחר מיקום"
                     menuVariant="dark"
                     onSelect={handleSelect}
-                  >     
-                    {(categories || []).map((item, index) => (
-                      <NavDropdown.Item eventKey={item} onClick={() => handleSelect(item)} key={index}>
-                        {item}
-                      </NavDropdown.Item>
-                    ))}
+                    
+                  >   
+                    <div className='modal-footer-scroll2'>
+                        {(categories || []).map((item, index) => (
+                          
+                          <NavDropdown.Item eventKey={item} onClick={() => handleSelect(item)} key={index}>
+                            {item}
+                          </NavDropdown.Item>
+                        ))}
 
-                    <Button variant="link" onClick={handleShowAddEdit}>הוספה/שינוי</Button>
+                        <Button variant="link" onClick={handleShowAddEdit}>הוספה/שינוי</Button>
+                    
+                    </div>  
 
                   </NavDropdown>
                 </Nav>
@@ -255,9 +266,9 @@ const UploadFileComponent: React.FC<{}> = () => {
             </Form.Group>
 
           </Row>
-          <Modal.Footer>
+          <Modal.Footer className="modal-footer-scroll">
             {(categories || []).map((item) => (
-              <Row className="mx-3">
+              <Row className="px-3" key={item}>
                 <Form.Group
                   as={Col}
                   controlId="validationCustom01"
@@ -272,8 +283,11 @@ const UploadFileComponent: React.FC<{}> = () => {
                   />
                 </Form.Group>
 
-                <Form.Group as={Col} md="3" className=' mt-2 px-3' controlId="validationCustom02">
+                <Form.Group as={Col} md="2" className=' mt-2' controlId="validationCustom02">
                   <Button onClick={editItem}>שינוי</Button>
+                </Form.Group>
+                <Form.Group as={Col} md="2" className=' mt-2' controlId="validationCustom02">
+                  <Button variant='danger' onClick={editItem}>מחיקה</Button>
                 </Form.Group>
               </Row>
             ))}

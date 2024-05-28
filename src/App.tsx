@@ -4,6 +4,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import RoleBasedAccessControl from './authentication/RoleBasedAccessControl';
 import { useAuthRoutes } from './authentication/AuthRoutes';
 import { useStudyMaterialRoutes } from './study-material/StudyMaterialRoutes';
+import UploadFileComponent from './upload-file/UploadFile';
 
 function App() {
   const AuthRoutes = useAuthRoutes();
@@ -36,7 +37,7 @@ function App() {
 
         {AuthRoutes}
         {StudyMaterialRoutes}
-
+        <Route path="/study-material-upload" element={<UploadFileComponent/>} />
         <Route path="/dashboard" element={
           <RoleBasedAccessControl allowedRoles={['admin']}>
             <div>Dashboard</div>
