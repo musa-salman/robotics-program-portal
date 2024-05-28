@@ -18,6 +18,9 @@ function StudyMaterialContainer() {
 
        if (studyMaterials === null)getStudyMaterials()
     }, [studyMaterials]); 
+
+    
+    console.log(studyMaterials);
  
     const categories = studyMaterials?.map((s) =>s.category).filter((item, index , arr)=> arr.indexOf(item) === index);
     return (
