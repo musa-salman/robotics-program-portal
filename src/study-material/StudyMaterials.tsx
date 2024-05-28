@@ -1,13 +1,10 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import './StudyMaterials.css';
-import  { useContext, useState } from 'react';
+import  { useContext } from 'react';
 import { StudyMaterial } from './StudyMaterial'
 import { StorageServiceContext } from '../storage-service/StorageServiceContext';
-import { format } from 'date-fns';
-import { FaCheckCircle } from 'react-icons/fa'; 
-
-
+import moment from 'moment';
 
 const styles = {
     fontSize: '20px',
@@ -17,12 +14,11 @@ const styles = {
 
 
 function StudyMaterials({ studyMaterial }: { studyMaterial: StudyMaterial }) {
-  const [isDownloaded, setIsDownloaded] = useState(true);
   const storageService = useContext (StorageServiceContext);
 
   const handleDownload = async () => { 
     storageService.download("/study-material/"+studyMaterial.id+"-"+studyMaterial.filename);
-    setIsDownloaded(true); 
+    
   };
 
   const handleDelete = async () => { 
@@ -35,13 +31,20 @@ function StudyMaterials({ studyMaterial }: { studyMaterial: StudyMaterial }) {
 
   console.log(studyMaterial.date);
 
+  const momentDate = moment(studyMaterial.date.toDate());
+  console.log(studyMaterial.date);
+
+// Format the moment object
+const formattedDate = moment(momentDate).format('MMMM DD, YYYY');
+console.log(formattedDate);
+
   return (
     <Card  className={"Card"}>
       <Card.Body>
       
       <div>
       <Card.Title style = {styles}>{studyMaterial.title }</Card.Title>
-      {isDownloaded && <FaCheckCircle size="1.5em" color="black"  />}
+      
       </div>
         <hr className="custom-hr"/>
         <Card.Text style = {styles}>
@@ -49,7 +52,7 @@ function StudyMaterials({ studyMaterial }: { studyMaterial: StudyMaterial }) {
         {studyMaterial.description || 'תאור קצר על הקובץ'}
         </Card.Text>
 
-        {/* <p>Date: {formattedDate}</p> */}
+        <p>Date: {formattedDate}</p> 
         <br></br>
         <Button className="button"onClick={handleDownload} >הורד את הקובץ</Button>
         <br></br>
