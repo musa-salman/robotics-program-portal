@@ -55,8 +55,8 @@ const EventContainer= () => {
   };
 
   const [formData, setFormData] = useState<EventProps>({
-    date: 'date', // Provide initial value for date
-    title: 'title', // Provide initial value for title
+    date: '', // Provide initial value for date
+    title: '', // Provide initial value for title
     details: '', // Provide initial value for details
     image: 'Robtics.png', // Provide initial value for image
     onEventDelete: (_id: string) => { }, // Change the parameter type from '_id: string' to 'id: number'
@@ -80,6 +80,7 @@ const EventContainer= () => {
     formData.id = docRef.id;
     events.push(formData);
     setEvents(events);
+    setRender(render === 1 ? 0 : 1);
   }
 
   function addWindow() {
@@ -141,6 +142,7 @@ const EventContainer= () => {
           onChange={handleTitleChange}
           maxLength={MAX_CHARS_Title} // Set the maximum length of the textarea
         />
+      <small>{formData.title.length}/{MAX_CHARS_Title} אותיות</small> {/* Display the character count */}
       </Form.Group>
       <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
         <Form.Label>תאריך</Form.Label>
@@ -159,7 +161,7 @@ const EventContainer= () => {
           onChange={handleDetailsChange}
           maxLength={MAX_CHARS_Details} // Set the maximum length of the textarea
         />
-        <small>{formData.details.length}/{MAX_CHARS_Details} characters</small> {/* Display the character count */}
+        <small>{formData.details.length}/{MAX_CHARS_Details} אותיות</small> {/* Display the character count */}
       </Form.Group>
       <div style={{ display: 'flex', gap: '10px' }}>
         <Button variant="secondary" onClick={handleClose}>
