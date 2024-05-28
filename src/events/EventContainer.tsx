@@ -80,6 +80,7 @@ const EventContainer= () => {
     formData.id = docRef.id;
     events.push(formData);
     setEvents(events);
+    setRender(render === 1 ? 0 : 1);
   }
 
   function addWindow() {
