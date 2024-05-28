@@ -9,6 +9,7 @@ import UserProvider from './users/UserContext.tsx'
 import CategoryProvider from './upload-file/CategoryContext.tsx'
 import StudyMaterialProvider from './study-material/StudyMaterialContext.tsx'
 import StorageServiceProvider from './storage-service/StorageServiceContext.tsx'
+import EventProvider from './events/EventContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -17,11 +18,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <UserProvider>
           <CategoryProvider>
             <StudyMaterialProvider>
-              <StorageServiceProvider>
-                <AuthProvider>
-                  <App />
-                </AuthProvider>
-              </StorageServiceProvider>
+              <EventProvider>
+                <StorageServiceProvider>
+                  <AuthProvider>
+                    <App />
+                  </AuthProvider>
+                </StorageServiceProvider>
+              </EventProvider>
             </StudyMaterialProvider>
           </CategoryProvider>
         </UserProvider>
