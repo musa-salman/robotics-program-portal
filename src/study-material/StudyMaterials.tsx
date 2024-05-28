@@ -23,20 +23,17 @@ function StudyMaterials({ studyMaterial }: { studyMaterial: StudyMaterial }) {
 
   const handleDelete = async () => { 
     storageService.delete("/study-material/"+studyMaterial.id+"-"+studyMaterial.filename);
+    
   }
 
 
   const handleEdite = async () => { 
   }
 
-  console.log(studyMaterial.date);
 
   const momentDate = moment(studyMaterial.date.toDate());
-  console.log(studyMaterial.date);
+  const formattedDate = moment(momentDate).format('MMMM DD, YYYY');
 
-// Format the moment object
-const formattedDate = moment(momentDate).format('MMMM DD, YYYY');
-console.log(formattedDate);
 
   return (
     <Card  className={"Card"}>

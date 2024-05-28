@@ -4,12 +4,19 @@ import  { useState, useEffect, useContext } from 'react';
 import "./StudyMaterialContainer.css"
 import { StudyMaterialContext } from './StudyMaterialContext';
 import { StudyMaterial } from './StudyMaterial';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
 
 
 function StudyMaterialContainer() {  
 
     const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
     const studyMaterialRepository = useContext(StudyMaterialContext);
+
+    const handleAdd = async () => { 
+
+    }
 
     useEffect(() => {
         const getStudyMaterials = async () => {
@@ -30,12 +37,14 @@ function StudyMaterialContainer() {
 
 <Card className="primary" >
 
-        <Card.Header className="Card-Header"> 
+    <Card.Header className="Card-Header"> 
         <div key={category}>
           <h2>{category}</h2>
         </div>
-        <button className="add-button"></button>
-        </Card.Header>
+        <button className="add-button" onClick={handleAdd}>
+        <FontAwesomeIcon icon={faPlus} className="plus-icon" />
+        </button>
+     </Card.Header>
         <br></br>
         <Card.Body className='body'>
             <br></br>
