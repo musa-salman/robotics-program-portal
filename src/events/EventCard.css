@@ -56,6 +56,7 @@
 
 .events {
   background-color: rgb(255, 195, 195);
+  background-image: url('EventContainer.jpg');
   padding: 10px;
   border-radius: 10px;
   align-items: center;
@@ -93,40 +94,29 @@
   background-color: #218838;
 }
 
-/* Styling for the shift buttons */
-.shift-button {
-  background-color: #007bff;
+/* Styling for the shift buttons*/
+.eventsContainer .btn-primary  {
   border: none;
   color: white;
-  padding: 10px 20px;
-  font-size: 14px;
+  background-color: #606365;
   cursor: pointer;
-  border-radius: 4px;
   transition: background-color 0.3s ease;
 }
 
-.shift-button:hover {
-  background-color: #0056b3;
+.eventsContainer .btn-primary:hover {
+  background-color: #00b336;
 }
 
-.shift-left {
-  position: absolute;
-  left: 10px;
-}
-
-.shift-right {
-  position: absolute;
-  right: 10px;
-}
-
-/* Ensuring Event components have some spacing */
+/* Ensuring Event components have some spacing*/
 .event-component {
   margin: 0 5px;
-}
+} 
 
 /* Base styling for the card */
 .event-card {
+  height: 500px;
   width: 18rem;
+  /* background-image: url('EventCard.jpg'); */
   background-color: bisque;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border-radius: 10px; /* optional: adds some rounding to the corners */
@@ -141,8 +131,9 @@
 
 /* Optional: Ensure images within the card are properly styled */
 .event-card img {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  width: 100%;
+  height: 150px; /* Set height to fill the top half */
+  object-fit: cover; /* Ensures the image covers the space without distortion */
 }
 
 /* Styling for the card title */
@@ -175,4 +166,3 @@
 .event-card .btn-secondary:disabled {
   background-color: #adb5bd;
 }
-

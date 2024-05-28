@@ -14,6 +14,3 @@ function StudyMaterialProvider({ children } : { children: React.ReactNode }) {
 }
 
 export default StudyMaterialProvider;
-
-
-

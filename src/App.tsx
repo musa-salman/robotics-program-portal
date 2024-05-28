@@ -5,6 +5,7 @@ import RoleBasedAccessControl from './authentication/RoleBasedAccessControl';
 import { useAuthRoutes } from './authentication/AuthRoutes';
 import { useStudyMaterialRoutes } from './study-material/StudyMaterialRoutes';
 import UploadFileComponent from './upload-file/UploadFile';
+import EventContainer from './events/EventContainer';
 
 function App() {
   const AuthRoutes = useAuthRoutes();
@@ -31,21 +32,29 @@ function App() {
           <Link to="/study-material-upload">
             <button>Upload Study Material</button>
           </Link>
+          <Link to="/events">
+            <button>Events</button>
+          </Link>
         </div></>
+
       <Routes>
         <Route path="/" element={<div>Home</div>} />
 
         {AuthRoutes}
         {StudyMaterialRoutes}
+<<<<<<< HEAD
         <Route path="/study-material-upload" element={<UploadFileComponent/>} />
+=======
+        <Route path="/events" element={<EventContainer />} />
+>>>>>>> eb9c2c869d755bbc86d045d2248b67158c2a52e9
         <Route path="/dashboard" element={
           <RoleBasedAccessControl allowedRoles={['admin']}>
             <div>Dashboard</div>
           </RoleBasedAccessControl>
         } />
-
         <Route path="*" element={<div>Not Found</div>} />
       </Routes>
+      
     </>
   )
 }
