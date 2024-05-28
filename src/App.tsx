@@ -38,11 +38,6 @@ function App() {
           </Link>
         </div></>
       {/* <EventContainerShow eventsProps={[]} /> */}
-      
-      <SearchBar/>
-      <br/>
-      <StudyMaterialContainer/>
-      <br/>
 
       <Routes>
         <Route path="/" element={<div>Home</div>} />
@@ -58,6 +53,11 @@ function App() {
 
         <Route path="*" element={<div>Not Found</div>} />
       </Routes>
+      
+      <SearchBar/>
+      <br/>
+      <StudyMaterialContainer/>
+      <br/>
     </>
   )
 }
