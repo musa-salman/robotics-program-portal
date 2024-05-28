@@ -114,9 +114,9 @@
 
 /* Base styling for the card */
 .event-card {
-  height: 450px;
+  height: 500px;
   width: 18rem;
-  background-image: url('EventCard.jpg');
+  /* background-image: url('EventCard.jpg'); */
   background-color: bisque;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border-radius: 10px; /* optional: adds some rounding to the corners */
@@ -132,7 +132,7 @@
 /* Optional: Ensure images within the card are properly styled */
 .event-card img {
   width: 100%;
-  height: 50%; /* Set height to fill the top half */
+  height: 150px; /* Set height to fill the top half */
   object-fit: cover; /* Ensures the image covers the space without distortion */
 }
 

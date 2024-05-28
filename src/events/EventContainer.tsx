@@ -1,12 +1,14 @@
-import Event, { EventProps } from './Event';
-import { Button, Modal, Form } from 'react-bootstrap';
-import React, { useState } from 'react';
+import EventCard, { EventProps } from './EventCard';
+import { Button, Modal, Form, Carousel } from 'react-bootstrap';
+import React, { useState, useEffect, useContext } from 'react';
+import { EventContext } from './EventContext';
+import { IEvent } from './Event';
 
 type EventContainer = {
   eventsProps: EventProps[];
 }
 
-const EventContainer = () => {
+const EventContainer= () => {
   const [firstVisibleEventIndex, setFirstVisibleEventIndex] = useState(0);
   const [events, setEvents] = useState<EventProps[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -14,11 +16,7 @@ const EventContainer = () => {
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
-  const MAX_CHARS = 100; // Set the maximum number of characters allowed
-  const [charCount, setCharCount] = useState(0); // Track the current character count
-
-
-  function onEventDelete(id: number) {
+  function onEventDelete(id: string) {
     setEvents(events.filter((e) => e.id !== id));
   }
 
@@ -61,32 +59,25 @@ const EventContainer = () => {
     title: 'title', // Provide initial value for title
     details: '', // Provide initial value for details
     image: 'Robtics.png', // Provide initial value for image
-    onEventDelete: (_id: number) => { },
+    onEventDelete: (_id: string) => { }, // Change the parameter type from '_id: string' to 'id: number'
     onEventEdit: (_event: EventProps) => { },
-    id: 0 // Provide initial value for id
+    id: '' // Provide initial value for id
   });
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prevState => ({ ...prevState, title: e.target.value }));
+  const eventRepository = useContext(EventContext);
+
+  const event: IEvent = {
+    date: formData.date,
+    title: formData.title,
+    details: formData.details,
+    imageURL: formData.image,
+    id: ''
   };
 
-  const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    if (value.length <= MAX_CHARS) {
-      setFormData(prevState => ({ ...prevState, details: value }));
-      setCharCount(value.length);
-    }  };
-
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prevState => ({ ...prevState, date: e.target.value }));
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData(prevState => ({ ...prevState, image: e.target.value }));
-  };
-
-  function handleAdd() {
+  async function handleAdd() {
     handleShow();
+    const docRef = await eventRepository.create(event);
+    formData.id = docRef.id;
     events.push(formData);
     setEvents(events);
   }
@@ -109,8 +100,8 @@ const EventContainer = () => {
   }
 
   function addForm() {
-    const MAX_CHARS_Details = 104; // Set the maximum number of characters allowed
-    const [charCountDetails, setCharCountDetails] = useState(0); // Track the current character count
+    const MAX_CHARS_Details = 100; // Set the maximum number of characters allowed
+    const [_charCountDetails, setCharCountDetails] = useState(0); // Track the current character count
 
     const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const value = e.target.value;
@@ -121,7 +112,7 @@ const EventContainer = () => {
     };
 
     const MAX_CHARS_Title = 17; // Set the maximum number of characters allowed
-    const [charCountTitle, setCharCountTitle] = useState(0); // Track the current character count
+    const [_charCountTitle, setCharCountTitle] = useState(0); // Track the current character count
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const value = e.target.value;
@@ -130,6 +121,15 @@ const EventContainer = () => {
         setCharCountTitle(value.length);
       }
     };
+
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData(prevState => ({ ...prevState, date: e.target.value }));
+    };
+  
+    const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setFormData(prevState => ({ ...prevState, image: e.target.value }));
+    };
+  
 
     return (
       <Form onSubmit={handleSaveAdd}>
@@ -178,7 +178,7 @@ const EventContainer = () => {
       <div className="eventsContainer">
         <Button variant="primary" onClick={handleShiftEventsRight}>&lt;</Button>
           {events.slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
-            <Event
+            <EventCard
               id={event.id}
               date={event.date}
               title={event.title}

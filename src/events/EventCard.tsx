@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { Button, Card, Dropdown, Modal, Form } from 'react-bootstrap';
 
-import './Event.css';
+import './EventCard.css';
 
 export interface EventProps {
   date: string;
   title: string;
   details: string;
   image: string;
-  onEventDelete: (id: number) => void;
+  onEventDelete: (id: string) => void;
   onEventEdit: (event: EventProps) => void;
-  id: number;
+  id: string;
 }
 
-const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelete, onEventEdit, id }) => {
+const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventDelete, onEventEdit, id }) => {
   const [formData, setFormData] = useState<EventProps>({ date, title, details, image, onEventDelete, onEventEdit, id });
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -214,4 +214,4 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
     </Card>
   );
 };
-export default Event;
+export default EventCard;

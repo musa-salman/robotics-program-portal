@@ -7,5 +7,4 @@ export class StudyMaterialRepository extends BaseRepository<StudyMaterial> {
     constructor() {
         super(db, "studyMaterials");
     }    
-
 }
