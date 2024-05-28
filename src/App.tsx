@@ -5,8 +5,6 @@ import RoleBasedAccessControl from './authentication/RoleBasedAccessControl';
 import { useAuthRoutes } from './authentication/AuthRoutes';
 import { useStudyMaterialRoutes } from './study-material/StudyMaterialRoutes';
 import EventContainer from './events/EventContainer';
-import StudyMaterialContainer from './study-material/StudyMaterialContainer';
-import { SearchBar } from './study-material/SearchBar';
 
 function App() {
   const AuthRoutes = useAuthRoutes();
@@ -37,7 +35,6 @@ function App() {
             <button>Events</button>
           </Link>
         </div></>
-      {/* <EventContainerShow eventsProps={[]} /> */}
 
       <Routes>
         <Route path="/" element={<div>Home</div>} />
@@ -50,14 +47,9 @@ function App() {
             <div>Dashboard</div>
           </RoleBasedAccessControl>
         } />
-
         <Route path="*" element={<div>Not Found</div>} />
       </Routes>
       
-      <SearchBar/>
-      <br/>
-      <StudyMaterialContainer/>
-      <br/>
     </>
   )
 }
