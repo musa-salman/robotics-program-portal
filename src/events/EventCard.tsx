@@ -16,12 +16,26 @@ export interface EventProps {
 const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventDelete, onEventEdit, id }) => {
   const [formData, setFormData] = useState<EventProps>({ date, title, details, image, onEventDelete, onEventEdit, id });
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prevState => ({ ...prevState, title: e.target.value }));
-  };
+  const MAX_CHARS_Details = 100; // Set the maximum number of characters allowed
+  const [_charCountDetails, setCharCountDetails] = useState(0); // Track the current character count
 
   const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData(prevState => ({ ...prevState, details: e.target.value }));
+    const value = e.target.value;
+    if (value.length <= MAX_CHARS_Details) {
+      setFormData(prevState => ({ ...prevState, details: value }));
+      setCharCountDetails(value.length);
+    }
+  };
+
+  const MAX_CHARS_Title = 17; // Set the maximum number of characters allowed
+  const [_charCountTitle, setCharCountTitle] = useState(0); // Track the current character count
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    if (value.length <= MAX_CHARS_Title) {
+      setFormData(prevState => ({ ...prevState, title: value }));
+      setCharCountTitle(value.length);
+    }
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,7 +134,13 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
       <Form>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>כותרת</Form.Label>
-          <Form.Control type="text" defaultValue={title} onChange={handleTitleChange} />
+          <Form.Control
+            type="text" 
+            defaultValue={title} 
+            onChange={handleTitleChange} 
+            maxLength={MAX_CHARS_Title} // Set the maximum length of the textarea
+          />
+        <small>{formData.title.length}/{MAX_CHARS_Title} אותיות</small> {/* Display the character count */}
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>תאריך</Form.Label>
@@ -132,7 +152,14 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label>פרטים</Form.Label>
-          <Form.Control as="textarea" rows={3} defaultValue={details} onChange={handleDetailsChange} />
+          <Form.Control 
+            as="textarea" 
+            rows={3} 
+            defaultValue={details} 
+            onChange={handleDetailsChange}
+            maxLength={MAX_CHARS_Details} // Set the maximum length of the textarea
+          />
+          <small>{formData.details.length}/{MAX_CHARS_Details} אותיות</small> {/* Display the character count */}
         </Form.Group>
       </Form>
     );
