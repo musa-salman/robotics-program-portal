@@ -41,8 +41,7 @@ const addEditCategories = (categories: string[]) => {
             <Form.Group
               as={Col}
               controlId="validationCustom01"
-              className="position-relative "
-            >
+              className="position-relative ">
               <FloatingLabel controlId="floatingInput" label="כותרת">
                 <Form.Control
                   type="text"
@@ -58,8 +57,7 @@ const addEditCategories = (categories: string[]) => {
               as={Col}
               md="3"
               className=" mt-2 px-3"
-              controlId="validationCustom02"
-            >
+              controlId="validationCustom02">
               <Button onClick={addCategories}>הוספה</Button>
             </Form.Group>
           </Row>
@@ -69,8 +67,7 @@ const addEditCategories = (categories: string[]) => {
                 <Form.Group
                   as={Col}
                   controlId="validationCustom01"
-                  className="position-relative "
-                >
+                  className="position-relative ">
                   <Form.Control
                     type="text"
                     name="title"
@@ -84,8 +81,7 @@ const addEditCategories = (categories: string[]) => {
                   as={Col}
                   md="3"
                   className=" mt-2 px-3"
-                  controlId="validationCustom02"
-                >
+                  controlId="validationCustom02">
                   <Button onClick={editItem}>שינוי</Button>
                 </Form.Group>
               </Row>
@@ -96,8 +92,7 @@ const addEditCategories = (categories: string[]) => {
           <Button
             variant="secondary"
             className=" px-5"
-            onClick={handleCloseAddEdit}
-          >
+            onClick={handleCloseAddEdit}>
             סגירה
           </Button>
         </Modal.Footer>

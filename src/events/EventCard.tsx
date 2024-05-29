@@ -111,8 +111,7 @@ const EventCard: React.FC<EventProps> = ({
         <Dropdown>
           <Dropdown.Toggle
             variant="success"
-            id="dropdown-basic"
-          ></Dropdown.Toggle>
+            id="dropdown-basic"></Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item onClick={handleEdit}>לַעֲרוֹך</Dropdown.Item>
             <p></p>
@@ -132,8 +131,7 @@ const EventCard: React.FC<EventProps> = ({
           show={showModalEdit}
           onHide={handleCloseEdit}
           animation={false}
-          style={{ display: 'center' }}
-        >
+          style={{ display: 'center' }}>
           <Modal.Header closeButton>
             <Modal.Title>שינוי אירוע</Modal.Title>
           </Modal.Header>
@@ -203,8 +201,7 @@ const EventCard: React.FC<EventProps> = ({
         <Modal
           show={showModalDelete}
           onHide={handleCloseDelete}
-          style={{ display: 'center' }}
-        >
+          style={{ display: 'center' }}>
           <Modal.Header closeButton>
             <Modal.Title>האם אתה בטוח שברצונך למחוק את האירוע הזה</Modal.Title>
           </Modal.Header>
@@ -233,8 +230,7 @@ const EventCard: React.FC<EventProps> = ({
         <Modal
           show={showModalRegister}
           onHide={handleCloseRegister}
-          style={{ display: 'center' }}
-        >
+          style={{ display: 'center' }}>
           <Form onSubmit={handleSubmitRegister}>
             <Modal.Header closeButton>
               <Modal.Title>האם אתה בטוח שאתה רוצה להירשם לאירוע</Modal.Title>

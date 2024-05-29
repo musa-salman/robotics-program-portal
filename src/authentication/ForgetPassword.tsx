@@ -64,8 +64,7 @@ export default function ForgetPassword() {
               <FloatingLabel
                 controlId="floatingInput"
                 label='דוא"ל'
-                className="mb-3"
-              >
+                className="mb-3">
                 <Form.Control
                   type="email"
                   placeholder='דוא"ל'

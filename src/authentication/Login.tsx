@@ -51,8 +51,7 @@ export default function Login() {
               <FloatingLabel
                 controlId="floatingInput"
                 label='דוא"ל'
-                className="mb-3"
-              >
+                className="mb-3">
                 <Form.Control
                   type="email"
                   placeholder='דוא"ל'
@@ -94,8 +93,7 @@ export default function Login() {
                   (reason: string) => setError(reason)
                 )
               }
-              className="w-100 mt-3 mr-4"
-            >
+              className="w-100 mt-3 mr-4">
               <FontAwesomeIcon icon={faGoogle} className="ms-2" />
               <div className="px-3">התחבר/י באמצעות גוגל</div>
             </Button>

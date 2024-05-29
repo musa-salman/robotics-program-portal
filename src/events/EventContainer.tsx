@@ -90,8 +90,7 @@ const EventContainer = () => {
           show={showModal}
           onHide={handleClose}
           animation={false}
-          style={{ display: 'center' }}
-        >
+          style={{ display: 'center' }}>
           <Modal.Header closeButton>
             <Modal.Title>הוסף אירוע</Modal.Title>
           </Modal.Header>
