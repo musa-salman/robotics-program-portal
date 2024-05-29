@@ -3,7 +3,7 @@ import { UserRepository } from './UserRepository';
 
 export const UserContext = createContext<UserRepository>(new UserRepository());
 
-function UserProvider({ children } : { children: React.ReactNode }) {
+function UserProvider({ children }: { children: React.ReactNode }) {
   const userRepository = useContext(UserContext);
 
   return (

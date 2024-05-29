@@ -1,25 +1,41 @@
 import {
-  signInWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence, UserCredential, signInWithPopup, GoogleAuthProvider, 
+  signInWithEmailAndPassword,
+  signOut,
+  setPersistence,
+  browserLocalPersistence,
+  UserCredential,
+  signInWithPopup,
+  GoogleAuthProvider,
   sendPasswordResetEmail
 } from 'firebase/auth';
-import { auth } from "../firebase";
+import { auth } from '../firebase';
 import LoginFormValues from './ILoginFormValues';
 
 setPersistence(auth, browserLocalPersistence);
 
-const loginWithEmailAndPassword = async ({ email, password }: LoginFormValues) => {
-  const result: UserCredential = await signInWithEmailAndPassword(auth, email, password);
+const loginWithEmailAndPassword = async ({
+  email,
+  password
+}: LoginFormValues) => {
+  const result: UserCredential = await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
   return result;
 };
 
 const generatePasswordResetLink = async (email: string) => {
   sendPasswordResetEmail(auth, email);
-}
+};
 
 const loginWithGoogle = async () => {
-  const result: UserCredential = await signInWithPopup(auth, new GoogleAuthProvider());
+  const result: UserCredential = await signInWithPopup(
+    auth,
+    new GoogleAuthProvider()
+  );
   return result;
-}
+};
 
 const logout = async () => {
   await signOut(auth);

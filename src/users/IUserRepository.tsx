@@ -1,4 +1,3 @@
-
 export interface IUserRepository {
-    getUserRole(uid: string): Promise<string>;
+  getUserRole(uid: string): Promise<string>;
 }

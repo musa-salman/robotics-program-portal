@@ -1,8 +1,8 @@
-import { Navigate } from "react-router-dom";
-import { useAuth } from "./AuthContext";
-import { useContext, useEffect, useState } from "react";
-import React from "react";
-import { UserContext } from "../users/UserContext";
+import { Navigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
+import { useContext, useEffect, useState } from 'react';
+import React from 'react';
+import { UserContext } from '../users/UserContext';
 
 enum AuthorizationStatus {
   UnauthorizedAuthenticatedUser = 1,
@@ -19,27 +19,30 @@ type RoleBasedAccessControlProps = {
 };
 
 const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
-  children, allowedRoles,
-  unauthorizedAuthenticatedComponent, unauthorizedUnauthenticatedComponent,
+  children,
+  allowedRoles,
+  unauthorizedAuthenticatedComponent,
+  unauthorizedUnauthenticatedComponent,
   loadingComponent
 }) => {
   const { user, loading } = useAuth();
   const userRepository = useContext(UserContext);
-  const [authorization, setAuthorization] = useState<AuthorizationStatus | null>(null);
+  const [authorization, setAuthorization] =
+    useState<AuthorizationStatus | null>(null);
 
   useEffect(() => {
     const checkUserAuthorization = async () => {
       if (user) {
         const userRole = await userRepository.getUserRole(user.uid);
         if (allowedRoles.includes(userRole)) {
-          setAuthorization(AuthorizationStatus.AuthorizedUser)
+          setAuthorization(AuthorizationStatus.AuthorizedUser);
         } else {
           setAuthorization(AuthorizationStatus.UnauthorizedAuthenticatedUser);
         }
       } else {
         setAuthorization(AuthorizationStatus.UnauthorizeUnauthenticatedUser);
       }
-    }
+    };
 
     if (!loading && authorization === null) {
       checkUserAuthorization();
@@ -47,18 +50,34 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   }, [user, loading, allowedRoles]);
 
   if (loading) {
-    return loadingComponent ? loadingComponent : <span className="loading loading-dots loading-lg"></span>;
+    return loadingComponent ? (
+      loadingComponent
+    ) : (
+      <span className="loading loading-dots loading-lg"></span>
+    );
   }
 
   if (authorization === AuthorizationStatus.AuthorizedUser) {
     return children;
-  } else if (authorization === AuthorizationStatus.UnauthorizeUnauthenticatedUser) {
-    return unauthorizedAuthenticatedComponent ? unauthorizedAuthenticatedComponent : <Navigate to="/login" />;
-  } else if (authorization === AuthorizationStatus.UnauthorizedAuthenticatedUser) {
-    return unauthorizedUnauthenticatedComponent ? unauthorizedUnauthenticatedComponent : <Navigate to="/" />;
+  } else if (
+    authorization === AuthorizationStatus.UnauthorizeUnauthenticatedUser
+  ) {
+    return unauthorizedAuthenticatedComponent ? (
+      unauthorizedAuthenticatedComponent
+    ) : (
+      <Navigate to="/login" />
+    );
+  } else if (
+    authorization === AuthorizationStatus.UnauthorizedAuthenticatedUser
+  ) {
+    return unauthorizedUnauthenticatedComponent ? (
+      unauthorizedUnauthenticatedComponent
+    ) : (
+      <Navigate to="/" />
+    );
   }
 
   return <></>;
-}
+};
 
 export default RoleBasedAccessControl;
