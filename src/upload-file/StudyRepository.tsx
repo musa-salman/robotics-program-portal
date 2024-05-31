@@ -8,7 +8,6 @@ const getCategories = async (): Promise<string[]> => {
   try {
     const querySnapshot = await getDocs(collection(db, 'categories'));
 
-<<<<<<< HEAD
 const getCategories = async() : Promise<string[]>=>{
    
     let items: SelectedItem[] = [];
@@ -30,22 +29,6 @@ const getCategories = async() : Promise<string[]>=>{
     }
     return items;
 
-=======
-    querySnapshot.forEach((doc) => {
-      const data = doc.data() as DocumentData;
-      console.log('data ' + data['category']);
-      const type: any = data['category'];
-      if (!items.includes(type)) {
-        items.push(type);
-      }
-    });
-
-    console.log('iteams ' + items);
-  } catch (error) {
-    console.error('Error fetching documents: ', error);
-  }
-  return items;
->>>>>>> a9d7d60e807ebe1beb324348c932fc69a8b8c73d
 };
 
 const addCategory = async (category: string) => {

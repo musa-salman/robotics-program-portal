@@ -28,18 +28,10 @@ function StudyMaterials({ studyMaterial }: { studyMaterial: StudyMaterial }) {
     );
   };
 
-<<<<<<< HEAD
   const handleDelete = async () => { 
     storageService.delete("/study-material/"+studyMaterial.id+"-"+studyMaterial.filename);
     
   }
-=======
-  const handleDelete = async () => {
-    storageService.delete(
-      '/study-material/' + studyMaterial.id + '-' + studyMaterial.filename
-    );
-  };
->>>>>>> a9d7d60e807ebe1beb324348c932fc69a8b8c73d
 
   const handleEdite = async () => {};
 
@@ -47,17 +39,10 @@ function StudyMaterials({ studyMaterial }: { studyMaterial: StudyMaterial }) {
   const momentDate = moment(studyMaterial.date.toDate());
   const formattedDate = moment(momentDate).format('DD / MM / YYYY');
 
-<<<<<<< HEAD
-=======
-  // Format the moment object
-  const formattedDate = moment(momentDate).format('MMMM DD, YYYY');
-  console.log(formattedDate);
->>>>>>> a9d7d60e807ebe1beb324348c932fc69a8b8c73d
 
   return (
     <Card className={'Card'}>
       <Card.Body>
-<<<<<<< HEAD
       
       <div>
       <Card.Title style = {styles}>{studyMaterial.title }</Card.Title>
@@ -80,33 +65,6 @@ function StudyMaterials({ studyMaterial }: { studyMaterial: StudyMaterial }) {
         </div>
       </Card.Body>
     </Card> 
-=======
-        <div>
-          <Card.Title style={styles}>{studyMaterial.title}</Card.Title>
-        </div>
-        <hr className="custom-hr" />
-        <Card.Text style={styles}>
-          {studyMaterial.description || 'תאור קצר על הקובץ'}
-        </Card.Text>
-
-        <p>Date: {formattedDate}</p>
-        <br></br>
-        <Button className="button" onClick={handleDownload}>
-          הורד את הקובץ
-        </Button>
-        <br></br>
-        <br></br>
-        <Button className="button" onClick={handleDelete}>
-          למחוק את הקובץ
-        </Button>
-        <br></br>
-        <br></br>
-        <Button className="button" onClick={handleEdite}>
-          Edit את הקובץ
-        </Button>
-      </Card.Body>
-    </Card>
->>>>>>> a9d7d60e807ebe1beb324348c932fc69a8b8c73d
   );
 }
 export default StudyMaterials;
