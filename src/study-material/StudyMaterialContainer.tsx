@@ -6,6 +6,8 @@ import { StudyMaterialContext } from './StudyMaterialContext';
 import { StudyMaterial } from './StudyMaterial';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import UploadFileComponent from '../upload-file/UploadFile'
+import { Modal } from 'react-bootstrap';
 
 
 
@@ -13,9 +15,12 @@ function StudyMaterialContainer() {
 
     const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
     const studyMaterialRepository = useContext(StudyMaterialContext);
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const handleAdd = async () => { 
-
+        UploadFileComponent
     }
 
     useEffect(() => {
@@ -45,7 +50,7 @@ function StudyMaterialContainer() {
         <div key={category}>
           <h2>{category}</h2>
         </div>
-        <button className="add-button" onClick={handleAdd}>
+        <button className="add-button" onClick={handleShow}>
         <FontAwesomeIcon icon={faPlus}  />
         </button>
      </Card.Header>
@@ -59,8 +64,11 @@ function StudyMaterialContainer() {
                     ))}
             </div>    
         </Card.Body>
-      </Card>
+      </Card>     
 ))}
+   <Modal show={show} onHide={handleClose} >
+     <UploadFileComponent></UploadFileComponent>
+ </Modal>
 </>
  );
 }

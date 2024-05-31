@@ -4,11 +4,6 @@ import { db } from "../firebase";
 type SelectedItem = string;
 
 
-
-
-
-
-
 const getCategories = async() : Promise<string[]>=>{
    
     let items: SelectedItem[] = [];

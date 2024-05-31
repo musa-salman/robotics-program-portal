@@ -65,9 +65,7 @@ function StudyMaterials({ studyMaterial }: { studyMaterial: StudyMaterial }) {
         <FontAwesomeIcon icon={faPenToSquare} /></Button>
         </div>
       </Card.Body>
-    </Card>
-
-    
+    </Card> 
   );
 }
 export default StudyMaterials;
