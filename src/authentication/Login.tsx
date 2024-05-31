@@ -43,26 +43,13 @@ export default function Login() {
           <h2 className="mb-4">כניסה למערכת</h2>
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
-              <FloatingLabel
-                controlId="floatingInput"
-                label='דוא"ל'
-                className="mb-3">
-                <Form.Control
-                  type="email"
-                  placeholder='דוא"ל'
-                  ref={emailRef}
-                  required
-                />
+              <FloatingLabel controlId="floatingInput" label='דוא"ל' className="mb-3">
+                <Form.Control type="email" placeholder='דוא"ל' ref={emailRef} required />
               </FloatingLabel>
             </Form.Group>
             <Form.Group id="password">
               <FloatingLabel controlId="floatingPassword" label="סיסמה">
-                <Form.Control
-                  type="password"
-                  placeholder="סיסמה"
-                  ref={passwordRef}
-                  required
-                />
+                <Form.Control type="password" placeholder="סיסמה" ref={passwordRef} required />
               </FloatingLabel>
             </Form.Group>
             <Button disabled={loading} className="w-100 mt-3" type="submit">

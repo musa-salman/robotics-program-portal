@@ -11,9 +11,7 @@ import LoginFormValues from './ILoginFormValues';
 import { IAuthService } from './IAuthService';
 
 export class AuthService implements IAuthService {
-  async loginWithEmailAndPassword(
-    creds: LoginFormValues
-  ): Promise<UserCredential> {
+  async loginWithEmailAndPassword(creds: LoginFormValues): Promise<UserCredential> {
     return signInWithEmailAndPassword(auth, creds.email, creds.password);
   }
 

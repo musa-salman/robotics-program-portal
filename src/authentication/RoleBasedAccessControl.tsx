@@ -27,8 +27,7 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   loadingComponent
 }) => {
   const userRepository = useContext(UserContext);
-  const [authorization, setAuthorization] =
-    useState<AuthorizationStatus | null>(null);
+  const [authorization, setAuthorization] = useState<AuthorizationStatus | null>(null);
 
   const { loading } = useAuth();
 
@@ -55,31 +54,15 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   }, [auth.currentUser, loading, allowedRoles]);
 
   if (loading) {
-    return loadingComponent ? (
-      loadingComponent
-    ) : (
-      <span className="loading loading-dots loading-lg"></span>
-    );
+    return loadingComponent ? loadingComponent : <span className="loading loading-dots loading-lg"></span>;
   }
 
   if (authorization === AuthorizationStatus.AuthorizedUser) {
     return children;
-  } else if (
-    authorization === AuthorizationStatus.UnauthorizeUnauthenticatedUser
-  ) {
-    return unauthorizedAuthenticatedComponent ? (
-      unauthorizedAuthenticatedComponent
-    ) : (
-      <Navigate to="/login" />
-    );
-  } else if (
-    authorization === AuthorizationStatus.UnauthorizedAuthenticatedUser
-  ) {
-    return unauthorizedUnauthenticatedComponent ? (
-      unauthorizedUnauthenticatedComponent
-    ) : (
-      <Navigate to="/" />
-    );
+  } else if (authorization === AuthorizationStatus.UnauthorizeUnauthenticatedUser) {
+    return unauthorizedAuthenticatedComponent ? unauthorizedAuthenticatedComponent : <Navigate to="/login" />;
+  } else if (authorization === AuthorizationStatus.UnauthorizedAuthenticatedUser) {
+    return unauthorizedUnauthenticatedComponent ? unauthorizedUnauthenticatedComponent : <Navigate to="/" />;
   }
 
   return <></>;

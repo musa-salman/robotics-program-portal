@@ -1,10 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { IAuthService } from './IAuthService';
-import {
-  browserLocalPersistence,
-  onAuthStateChanged,
-  setPersistence
-} from 'firebase/auth';
+import { browserLocalPersistence, onAuthStateChanged, setPersistence } from 'firebase/auth';
 import { auth } from '../firebase';
 import { AuthService } from './AuthService';
 
@@ -44,11 +40,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     return unsubscribe;
   }, [loading]);
 
-  return (
-    <AuthContext.Provider value={authContextValue}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;
 }
 
 export default AuthProvider;

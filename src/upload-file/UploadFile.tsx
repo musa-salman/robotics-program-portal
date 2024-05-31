@@ -46,9 +46,7 @@ const UploadFileComponent: React.FC<{}> = () => {
     try {
       const data: Category[] = await categoryRepository.find();
       if (data !== undefined) {
-        const dataString: string[] = data.map((category) =>
-          JSON.stringify(category.category)
-        );
+        const dataString: string[] = data.map((category) => JSON.stringify(category.category));
         console.log('data ' + dataString[0]);
         setCategories(dataString); //FIXME:
       }
@@ -121,11 +119,7 @@ const UploadFileComponent: React.FC<{}> = () => {
     const docRef = await studyMaterialRepository.create(studyMaterial);
 
     if (file) {
-      storageService.upload(
-        file,
-        '/study-material/' + docRef.id + '-' + studyMaterial.filename,
-        setUploadProgress
-      );
+      storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename, setUploadProgress);
       // uploadFile(file,setUploadProgress,"/study-material/"+docRef.id+"-"+studyMaterial.filename)
       // download()
     }
@@ -150,23 +144,15 @@ const UploadFileComponent: React.FC<{}> = () => {
             </h1>
           </Modal.Header> */}
 
-        <Form
-          className=" bg-light border border-primary rounded shadow-lg py-4 px-5 "
-          style={{ width: '45rem' }}>
+        <Form className=" bg-light border border-primary rounded shadow-lg py-4 px-5 " style={{ width: '45rem' }}>
           {/* <h1>
               <Badge className='px-5 mb-3' bg="secondary">העלת קובץ</Badge>
             </h1> */}
-          <Modal.Header
-            closeButton
-            className="bg mb-3 px-3"
-            style={{ backgroundColor: 'gray' }}>
+          <Modal.Header closeButton className="bg mb-3 px-3" style={{ backgroundColor: 'gray' }}>
             <h1>העלת קובץ</h1>
           </Modal.Header>
 
-          <Form.Group
-            as={Col}
-            controlId="validationCustom01"
-            className="position-relative ">
+          <Form.Group as={Col} controlId="validationCustom01" className="position-relative ">
             <FloatingLabel controlId="floatingInput" label="כותרת">
               <Form.Control
                 type="text"
@@ -180,9 +166,7 @@ const UploadFileComponent: React.FC<{}> = () => {
             <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group
-            className="position-relative my-3 "
-            controlId="validationCustom02">
+          <Form.Group className="position-relative my-3 " controlId="validationCustom02">
             <Form.Control
               type="file"
               required
@@ -206,10 +190,7 @@ const UploadFileComponent: React.FC<{}> = () => {
                       <NavDropdown.Divider /> */}
 
                     {(categories || []).map((item, index) => (
-                      <NavDropdown.Item
-                        eventKey={item}
-                        onClick={() => handleSelect(item)}
-                        key={index}>
+                      <NavDropdown.Item eventKey={item} onClick={() => handleSelect(item)} key={index}>
                         {item}
                       </NavDropdown.Item>
                     ))}
@@ -223,10 +204,7 @@ const UploadFileComponent: React.FC<{}> = () => {
               </Navbar.Collapse>
             </Container>
           </Navbar>
-          <FloatingLabel
-            className="my-3"
-            controlId="floatingTextarea1"
-            label="תיאור">
+          <FloatingLabel className="my-3" controlId="floatingTextarea1" label="תיאור">
             <Form.Control
               as="textarea"
               name="description"
@@ -239,16 +217,10 @@ const UploadFileComponent: React.FC<{}> = () => {
           {/* <Button className='justify-content-center align-items-center px-5 my-3' onClick={handleSubmit}  >העלה</Button> */}
 
           <Modal.Footer className="justify-content-center">
-            <Button
-              variant="primary"
-              className="mx-3 px-5"
-              onClick={handleSubmit}>
+            <Button variant="primary" className="mx-3 px-5" onClick={handleSubmit}>
               העלה
             </Button>
-            <Button
-              variant="secondary"
-              className="mx-5 px-5"
-              onClick={handleClose}>
+            <Button variant="secondary" className="mx-5 px-5" onClick={handleClose}>
               סגירה
             </Button>
           </Modal.Footer>
@@ -261,10 +233,7 @@ const UploadFileComponent: React.FC<{}> = () => {
         </Modal.Header>
         <Modal.Body>
           <Row className="mb-3">
-            <Form.Group
-              as={Col}
-              controlId="validationCustom01"
-              className="position-relative ">
+            <Form.Group as={Col} controlId="validationCustom01" className="position-relative ">
               <FloatingLabel controlId="floatingInput" label="כותרת">
                 <Form.Control
                   type="text"
@@ -276,21 +245,14 @@ const UploadFileComponent: React.FC<{}> = () => {
               </FloatingLabel>
             </Form.Group>
 
-            <Form.Group
-              as={Col}
-              md="3"
-              className=" mt-2 px-3"
-              controlId="validationCustom02">
+            <Form.Group as={Col} md="3" className=" mt-2 px-3" controlId="validationCustom02">
               <Button onClick={addCategories}>הוספה</Button>
             </Form.Group>
           </Row>
           <Modal.Footer>
             {(categories || []).map((item) => (
               <Row className="mx-3">
-                <Form.Group
-                  as={Col}
-                  controlId="validationCustom01"
-                  className="position-relative ">
+                <Form.Group as={Col} controlId="validationCustom01" className="position-relative ">
                   <Form.Control
                     type="text"
                     name="title"
@@ -300,11 +262,7 @@ const UploadFileComponent: React.FC<{}> = () => {
                   />
                 </Form.Group>
 
-                <Form.Group
-                  as={Col}
-                  md="3"
-                  className=" mt-2 px-3"
-                  controlId="validationCustom02">
+                <Form.Group as={Col} md="3" className=" mt-2 px-3" controlId="validationCustom02">
                   <Button onClick={editItem}>שינוי</Button>
                 </Form.Group>
               </Row>
@@ -312,10 +270,7 @@ const UploadFileComponent: React.FC<{}> = () => {
           </Modal.Footer>
         </Modal.Body>
         <Modal.Footer className="justify-content-center">
-          <Button
-            variant="secondary"
-            className=" px-5"
-            onClick={handleCloseAddEdit}>
+          <Button variant="secondary" className=" px-5" onClick={handleCloseAddEdit}>
             סגירה
           </Button>
         </Modal.Footer>

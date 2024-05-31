@@ -6,9 +6,7 @@ import { StudyMaterialContext } from './StudyMaterialContext';
 import { StudyMaterial } from './StudyMaterial';
 
 function StudyMaterialContainer() {
-  const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(
-    null
-  );
+  const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
   const studyMaterialRepository = useContext(StudyMaterialContext);
 
   useEffect(() => {
@@ -21,9 +19,7 @@ function StudyMaterialContainer() {
 
   console.log(studyMaterials);
 
-  const categories = studyMaterials
-    ?.map((s) => s.category)
-    .filter((item, index, arr) => arr.indexOf(item) === index);
+  const categories = studyMaterials?.map((s) => s.category).filter((item, index, arr) => arr.indexOf(item) === index);
   return (
     <>
       {(categories || []).map((category) => (
@@ -41,10 +37,7 @@ function StudyMaterialContainer() {
               {(studyMaterials || [])
                 .filter((s) => s.category === category)
                 .map((studyMaterial) => (
-                  <StudyMaterials
-                    key={studyMaterial.id}
-                    studyMaterial={studyMaterial}
-                  />
+                  <StudyMaterials key={studyMaterial.id} studyMaterial={studyMaterial} />
                 ))}
             </div>
           </Card.Body>

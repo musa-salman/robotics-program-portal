@@ -16,15 +16,11 @@ function StudyMaterials({ studyMaterial }: { studyMaterial: StudyMaterial }) {
   const storageService = useContext(StorageServiceContext);
 
   const handleDownload = async () => {
-    storageService.download(
-      '/study-material/' + studyMaterial.id + '-' + studyMaterial.filename
-    );
+    storageService.download('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename);
   };
 
   const handleDelete = async () => {
-    storageService.delete(
-      '/study-material/' + studyMaterial.id + '-' + studyMaterial.filename
-    );
+    storageService.delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename);
   };
 
   const handleEdite = async () => {};
@@ -45,9 +41,7 @@ function StudyMaterials({ studyMaterial }: { studyMaterial: StudyMaterial }) {
           <Card.Title style={styles}>{studyMaterial.title}</Card.Title>
         </div>
         <hr className="custom-hr" />
-        <Card.Text style={styles}>
-          {studyMaterial.description || 'תאור קצר על הקובץ'}
-        </Card.Text>
+        <Card.Text style={styles}>{studyMaterial.description || 'תאור קצר על הקובץ'}</Card.Text>
 
         <p>Date: {formattedDate}</p>
         <br></br>

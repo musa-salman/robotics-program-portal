@@ -3,10 +3,7 @@ import { BaseRepository } from '../repositories/BaseRepository';
 import { IUserRepository } from './IUserRepository';
 import { User } from './User';
 
-export class UserRepository
-  extends BaseRepository<User>
-  implements IUserRepository
-{
+export class UserRepository extends BaseRepository<User> implements IUserRepository {
   constructor() {
     super(db, 'users');
   }

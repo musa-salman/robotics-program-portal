@@ -86,11 +86,7 @@ const EventContainer = () => {
   function addWindow() {
     return (
       <>
-        <Modal
-          show={showModal}
-          onHide={handleClose}
-          animation={false}
-          style={{ display: 'center' }}>
+        <Modal show={showModal} onHide={handleClose} animation={false} style={{ display: 'center' }}>
           <Modal.Header closeButton>
             <Modal.Title>הוסף אירוע</Modal.Title>
           </Modal.Header>
@@ -150,12 +146,7 @@ const EventContainer = () => {
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>תאריך</Form.Label>
-          <Form.Control
-            required
-            type="date"
-            placeholder="יום /חודש /שנה"
-            onChange={handleDateChange}
-          />
+          <Form.Control required type="date" placeholder="יום /חודש /שנה" onChange={handleDateChange} />
         </Form.Group>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>העלאת תמונה</Form.Label>
@@ -194,19 +185,17 @@ const EventContainer = () => {
         <Button variant="primary" onClick={handleShiftEventsRight}>
           &lt;
         </Button>
-        {events
-          .slice(firstVisibleEventIndex, firstVisibleEventIndex + 3)
-          .map((event) => (
-            <EventCard
-              id={event.id}
-              date={event.date}
-              title={event.title}
-              details={event.details}
-              image={event.image}
-              onEventDelete={onEventDelete}
-              onEventEdit={onEventEdit}
-            />
-          ))}
+        {events.slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
+          <EventCard
+            id={event.id}
+            date={event.date}
+            title={event.title}
+            details={event.details}
+            image={event.image}
+            onEventDelete={onEventDelete}
+            onEventEdit={onEventEdit}
+          />
+        ))}
         <Button variant="primary" onClick={handleShiftEventsLeft}>
           &gt;
         </Button>

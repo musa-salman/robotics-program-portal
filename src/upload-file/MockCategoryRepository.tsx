@@ -2,10 +2,7 @@ import { MockRepository } from '../repositories/MockRepository';
 import { Category } from './Category';
 import { ICategoryRepository } from './CategoryRepository';
 
-export class MockCategoryRepository
-  extends MockRepository<Category>
-  implements ICategoryRepository
-{
+export class MockCategoryRepository extends MockRepository<Category> implements ICategoryRepository {
   constructor() {
     super();
     super.create({ category: 'הרצאות' });

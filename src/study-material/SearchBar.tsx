@@ -19,12 +19,7 @@ export const SearchBar: React.FC = () => {
   return (
     <div className="Container">
       <FaSearch id="search-icon" />
-      <input
-        placeholder="  חיפוש"
-        onChange={handleChange}
-        value={input}
-        aria-label="Search"
-      />
+      <input placeholder="  חיפוש" onChange={handleChange} value={input} aria-label="Search" />
       <ul className="search-results">
         {results.map((result, index) => (
           <li key={index}>{result}</li>

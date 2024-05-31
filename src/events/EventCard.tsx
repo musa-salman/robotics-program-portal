@@ -13,15 +13,7 @@ export interface EventProps {
   id: string;
 }
 
-const EventCard: React.FC<EventProps> = ({
-  date,
-  title,
-  details,
-  image,
-  onEventDelete,
-  onEventEdit,
-  id
-}) => {
+const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventDelete, onEventEdit, id }) => {
   const [formData, setFormData] = useState<EventProps>({
     date,
     title,
@@ -109,9 +101,7 @@ const EventCard: React.FC<EventProps> = ({
     return (
       <div className="adminOptions">
         <Dropdown>
-          <Dropdown.Toggle
-            variant="success"
-            id="dropdown-basic"></Dropdown.Toggle>
+          <Dropdown.Toggle variant="success" id="dropdown-basic"></Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item onClick={handleEdit}>לַעֲרוֹך</Dropdown.Item>
             <p></p>
@@ -127,11 +117,7 @@ const EventCard: React.FC<EventProps> = ({
   function editWindow() {
     return (
       <>
-        <Modal
-          show={showModalEdit}
-          onHide={handleCloseEdit}
-          animation={false}
-          style={{ display: 'center' }}>
+        <Modal show={showModalEdit} onHide={handleCloseEdit} animation={false} style={{ display: 'center' }}>
           <Modal.Header closeButton>
             <Modal.Title>שינוי אירוע</Modal.Title>
           </Modal.Header>
@@ -167,11 +153,7 @@ const EventCard: React.FC<EventProps> = ({
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>תאריך</Form.Label>
-          <Form.Control
-            type="date"
-            defaultValue={date}
-            onChange={handleDateChange}
-          />
+          <Form.Control type="date" defaultValue={date} onChange={handleDateChange} />
         </Form.Group>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>העלאת תמונה</Form.Label>
@@ -198,10 +180,7 @@ const EventCard: React.FC<EventProps> = ({
   function deleteWindow() {
     return (
       <>
-        <Modal
-          show={showModalDelete}
-          onHide={handleCloseDelete}
-          style={{ display: 'center' }}>
+        <Modal show={showModalDelete} onHide={handleCloseDelete} style={{ display: 'center' }}>
           <Modal.Header closeButton>
             <Modal.Title>האם אתה בטוח שברצונך למחוק את האירוע הזה</Modal.Title>
           </Modal.Header>
@@ -227,21 +206,14 @@ const EventCard: React.FC<EventProps> = ({
 
     return (
       <>
-        <Modal
-          show={showModalRegister}
-          onHide={handleCloseRegister}
-          style={{ display: 'center' }}>
+        <Modal show={showModalRegister} onHide={handleCloseRegister} style={{ display: 'center' }}>
           <Form onSubmit={handleSubmitRegister}>
             <Modal.Header closeButton>
               <Modal.Title>האם אתה בטוח שאתה רוצה להירשם לאירוע</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <div style={{ display: 'flex', gap: '10px' }}>
-                <Form.Check
-                  required
-                  aria-label="option 1"
-                  feedback="You must agree before submitting."
-                />
+                <Form.Check required aria-label="option 1" feedback="You must agree before submitting." />
                 אני מאשר שאני רוצה להירשם לאירוע
               </div>
               <Modal.Footer>
