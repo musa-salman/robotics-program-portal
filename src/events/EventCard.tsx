@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { EventContext } from './EventContext';
 import { Button, Card, Dropdown, Modal, Form } from 'react-bootstrap';
 
 import './EventCard.css';
+import { IEvent } from './Event';
 
 export interface EventProps {
   date: string;
@@ -59,6 +61,9 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   const handleCloseDelete = () => setShowModalDelete(false);
   const handleShowDelete = () => setShowModalDelete(true);
 
+  const eventRepository = useContext(EventContext);
+
+
   function handleDelete() {
     handleShowDelete();
   }
@@ -71,15 +76,24 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     handleShowRegister();
   }
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
+    const event: IEvent = {
+      date: formData.date,
+      title: formData.title,
+      details: formData.details,
+      imageURL: formData.image,
+      id: formData.id
+    };
     onEventEdit(formData);
     setShowModalEdit(false);
+    await eventRepository.update(id, event);
     //db
   };
 
-  const handleSaveDelete = () => {
+  const handleSaveDelete = async () => {
     onEventDelete(id);
     setShowModalDelete(false);
+    await eventRepository.delete(id);
     //db
   };
 
