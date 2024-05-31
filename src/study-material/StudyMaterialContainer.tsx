@@ -4,11 +4,8 @@ import { useState, useEffect, useContext } from 'react';
 import './StudyMaterialContainer.css';
 import { StudyMaterialContext } from './StudyMaterialContext';
 import { StudyMaterial } from './StudyMaterial';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import UploadFileComponent from '../upload-file/UploadFile'
 import { Modal } from 'react-bootstrap';
-
+import UploadFileComponent from '../upload-file/UploadFile'
 
 function StudyMaterialContainer() {
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(
@@ -51,31 +48,29 @@ function StudyMaterialContainer() {
 
 <Card className="primary" >
 
-    <Card.Header className="Card-Header"> 
-        <div key={category}>
-          <h2>{category}</h2>
-        </div>
-        <button className="add-button" onClick={handleShow}>
-        <FontAwesomeIcon icon={faPlus}  />
-        </button>
-     </Card.Header>
-        <br></br>
-        <Card.Body className='body'>
-            <br></br>
-            <div className="study-materials-container"> 
+                    <Card.Header className="Card-Header">
+                        <div key={category}>
+                            <h2>{category}</h2>
+                        </div>
+                        <button onClick={handleShow} className="add-button"></button>
+                    </Card.Header>
+                    <br></br>
+                    <Card.Body className='body'>
+                        <br></br>
+                        <div className="study-materials-container">
 
-            {(studyMaterials || [] ).filter((s) => s.category === category).map(studyMaterial=> (
-                        <StudyMaterials key={studyMaterial.id}  studyMaterial={studyMaterial} />
-                    ))}
-            </div>    
-        </Card.Body>
-      </Card>     
-))}
-   <Modal show={show} onHide={handleClose} >
-     <UploadFileComponent></UploadFileComponent>
- </Modal>
-</>
- );
+                            {(studyMaterials || []).filter((s) => s.category === category).map(studyMaterial => (
+                                <StudyMaterials key={studyMaterial.id} studyMaterial={studyMaterial} />
+                            ))}
+                        </div>
+                    </Card.Body>
+                </Card>
+            ))}
+            <Modal show={show} onHide={handleClose} >
+                <UploadFileComponent handleClose={handleClose} handleShow={handleShow}></UploadFileComponent>
+            </Modal>
+        </>
+    );
 }
 
 export default StudyMaterialContainer;
