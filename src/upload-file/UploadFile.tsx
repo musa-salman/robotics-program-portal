@@ -13,7 +13,7 @@ import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase';
 import { StudyMaterialContext } from '../study-material/StudyMaterialContext';
 import { StudyMaterial } from '../study-material/StudyMaterial';
-import { StorageServiceContext } from '../storage-service/StorageServiceContext';
+import { StorageServiceContext } from '../storage-service/StorageContext';
 
 type SelectedItem = string;
 

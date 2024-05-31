@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import './StudyMaterials.css';
 import { useContext } from 'react';
 import { StudyMaterial } from './StudyMaterial';
-import { StorageServiceContext } from '../storage-service/StorageServiceContext';
+import { StorageServiceContext } from '../storage-service/StorageContext';
 import moment from 'moment';
 
 const styles = {
