@@ -4,12 +4,18 @@ import './StudyMaterials.css';
 import  { useContext } from 'react';
 import { StudyMaterial } from './StudyMaterial'
 import { StorageServiceContext } from '../storage-service/StorageServiceContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faFileArrowDown}  from '@fortawesome/free-solid-svg-icons';
+import {faTrash} from '@fortawesome/free-solid-svg-icons';
+import {faPenToSquare} from '@fortawesome/free-solid-svg-icons';
+        
 import moment from 'moment';
 
 const styles = {
     fontSize: '20px',
     color: 'black',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    padding: '5px'
   };
 
 
@@ -32,7 +38,7 @@ function StudyMaterials({ studyMaterial }: { studyMaterial: StudyMaterial }) {
 
 
   const momentDate = moment(studyMaterial.date.toDate());
-  const formattedDate = moment(momentDate).format('MMMM DD, YYYY');
+  const formattedDate = moment(momentDate).format('DD / MM / YYYY');
 
 
   return (
@@ -45,20 +51,19 @@ function StudyMaterials({ studyMaterial }: { studyMaterial: StudyMaterial }) {
       </div>
         <hr className="custom-hr"/>
         <Card.Text style = {styles}>
-        
         {studyMaterial.description || 'תאור קצר על הקובץ'}
         </Card.Text>
-
-        <p>Date: {formattedDate}</p> 
-        <br></br>
-        <Button className="button"onClick={handleDownload} >הורד את הקובץ</Button>
-        <br></br>
-        <br></br>
-        <Button className="button" onClick={handleDelete} >למחוק את הקובץ</Button>
-        <br></br>
-        <br></br>
-        <Button className="button" onClick={handleEdite} >Edit את הקובץ</Button>
-       
+        <p style = {styles} > תאריך : {formattedDate} </p> 
+        <br/>
+        <div className = "btns">
+        <Button className="button"onClick={handleDownload} >
+        <FontAwesomeIcon icon={faFileArrowDown} className="plus-icon" /></Button>
+        <Button className="button" onClick={handleDelete} >
+        <FontAwesomeIcon icon={faTrash} />
+        </Button>
+        <Button className="button" onClick={handleEdite} >
+        <FontAwesomeIcon icon={faPenToSquare} /></Button>
+        </div>
       </Card.Body>
     </Card>
 

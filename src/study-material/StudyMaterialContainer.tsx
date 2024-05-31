@@ -26,8 +26,12 @@ function StudyMaterialContainer() {
        if (studyMaterials === null)getStudyMaterials()
     }, [studyMaterials]); 
 
-    
-    console.log(studyMaterials);
+    const searchStudyMaterials = async (keyword: string) => {
+        return (studyMaterials || []).filter(material =>
+            material.title.toLowerCase().includes(keyword.toLowerCase()) ||
+            material.description.toLowerCase().includes(keyword.toLowerCase())
+        );
+    };
  
     const categories = studyMaterials?.map((s) =>s.category).filter((item, index , arr)=> arr.indexOf(item) === index);
     return (
@@ -42,7 +46,7 @@ function StudyMaterialContainer() {
           <h2>{category}</h2>
         </div>
         <button className="add-button" onClick={handleAdd}>
-        <FontAwesomeIcon icon={faPlus} className="plus-icon" />
+        <FontAwesomeIcon icon={faPlus}  />
         </button>
      </Card.Header>
         <br></br>

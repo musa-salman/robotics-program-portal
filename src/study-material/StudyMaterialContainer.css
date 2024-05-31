@@ -41,6 +41,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 40px;
 
 }
 
@@ -57,10 +58,4 @@
     font-size: 20px;
     color: black;
     font-weight: bold;
-}
-
-
-.plus-icon {
-    font-size: 30px;
-    place-items: left;
 }

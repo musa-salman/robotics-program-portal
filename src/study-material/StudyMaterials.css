@@ -10,8 +10,8 @@ body {
 }
 
 .Card {
-    width: 18rem;
-    min-width: 15rem;
+    width: 20rem;
+    min-width: 16rem;
     border: 2px solid rgb(252, 251, 252);
     background-color: #d1c8bf;
     box-shadow: -3px 8px 13px 12px rgba(33, 32, 33, 0.69);
@@ -19,7 +19,17 @@ body {
     box-shadow: 0px 4px 20px 3px rgba(33, 32, 33, 0.69);
 }
 
+.btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15rem;
+}
+
 .button {
-    width: 10em;
-    background-color: rgb(32, 124, 205);
+    /* width: 20vw;
+    height: 12vh; */
+    background-color: transparent;
+    margin: 5px;
+    font-size: 30px;
 }
