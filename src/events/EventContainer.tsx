@@ -25,7 +25,7 @@ const EventContainer= () => {
     console.log(events);
    if (events === null)getEvents();
 }, [events]);
-console.log(events);
+
 function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
   return events.map(event => {
     return {
@@ -42,6 +42,7 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
 
   function onEventDelete(id: string) {
     setEvents((events || []).filter((e) => e.id !== id));
+    setRender(render === 1 ? 0 : 1);
   }
 
   function onEventEdit(event: EventProps) {
@@ -101,7 +102,9 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     handleShow();
     const docRef = await eventRepository.create(event);
     formData.id = docRef.id;
+    events?.push(formData);
     setEvents(events);
+    setRender(render === 1 ? 0 : 1);    
   }
 
   function addWindow() {
