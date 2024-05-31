@@ -1,25 +1,27 @@
-import Event, { EventProps } from './Event';
+import EventCard, { EventProps } from './EventCard';
 import { Button, Modal, Form, Carousel } from 'react-bootstrap';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { EventContext } from './EventContext';
+import { IEvent } from './Event';
 
 type EventContainer = {
   eventsProps: EventProps[];
-}
+};
 
-const EventContainer: React.FC<EventContainer> = ({ eventsProps }) => {
+const EventContainer = () => {
   const [firstVisibleEventIndex, setFirstVisibleEventIndex] = useState(0);
-  const [events, setEvents] = useState<EventProps[]>(eventsProps || []);
+  const [events, setEvents] = useState<EventProps[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [render, setRender] = useState(0);
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
-  function onEventDelete(id: number) {
+  function onEventDelete(id: string) {
     setEvents(events.filter((e) => e.id !== id));
   }
 
   function onEventEdit(event: EventProps) {
-    const index = events.findIndex(e => e.id === event.id);
+    const index = events.findIndex((e) => e.id === event.id);
     if (index !== -1) {
       events[index] = event;
       setRender(render === 1 ? 0 : 1);
@@ -35,7 +37,7 @@ const EventContainer: React.FC<EventContainer> = ({ eventsProps }) => {
   };
 
   const handleShiftEventsRight = () => {
-    setFirstVisibleEventIndex(prevIndex => {
+    setFirstVisibleEventIndex((prevIndex) => {
       if (events.length - prevIndex < 4) {
         return prevIndex; // Keep the index at 0 if it's already at 0
       }
@@ -44,7 +46,7 @@ const EventContainer: React.FC<EventContainer> = ({ eventsProps }) => {
   };
 
   const handleShiftEventsLeft = () => {
-    setFirstVisibleEventIndex(prevIndex => {
+    setFirstVisibleEventIndex((prevIndex) => {
       if (prevIndex === 0) {
         return 0; // Keep the index at 0 if it's already at 0
       }
@@ -53,64 +55,107 @@ const EventContainer: React.FC<EventContainer> = ({ eventsProps }) => {
   };
 
   const [formData, setFormData] = useState<EventProps>({
-    date: 'date', // Provide initial value for date
-    title: 'title', // Provide initial value for title
+    date: '', // Provide initial value for date
+    title: '', // Provide initial value for title
     details: '', // Provide initial value for details
     image: 'Robtics.png', // Provide initial value for image
-    onEventDelete: (_id: number) => { },
-    onEventEdit: (_event: EventProps) => { },
-    id: 0 // Provide initial value for id
+    onEventDelete: (_id: string) => {}, // Change the parameter type from '_id: string' to 'id: number'
+    onEventEdit: (_event: EventProps) => {},
+    id: '' // Provide initial value for id
   });
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prevState => ({ ...prevState, title: e.target.value }));
+  const eventRepository = useContext(EventContext);
+
+  const event: IEvent = {
+    date: formData.date,
+    title: formData.title,
+    details: formData.details,
+    imageURL: formData.image,
+    id: ''
   };
 
-  const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData(prevState => ({ ...prevState, details: e.target.value }));
-  };
-
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prevState => ({ ...prevState, date: e.target.value }));
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData(prevState => ({ ...prevState, image: e.target.value }));
-  };
-
-  function handleAdd() {
+  async function handleAdd() {
     handleShow();
+    const docRef = await eventRepository.create(event);
+    formData.id = docRef.id;
     events.push(formData);
     setEvents(events);
+    setRender(render === 1 ? 0 : 1);
   }
 
   function addWindow() {
     return (
       <>
-        <Modal show={showModal} onHide={handleClose} animation={false} style={{ display: 'center' }}>
+        <Modal
+          show={showModal}
+          onHide={handleClose}
+          animation={false}
+          style={{ display: 'center' }}>
           <Modal.Header closeButton>
             <Modal.Title>הוסף אירוע</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            {addForm()}
-          </Modal.Body>
-          <Modal.Footer>
-          </Modal.Footer>
+          <Modal.Body>{addForm()}</Modal.Body>
+          <Modal.Footer></Modal.Footer>
         </Modal>
       </>
     );
   }
 
   function addForm() {
+    const MAX_CHARS_Details = 100; // Set the maximum number of characters allowed
+    const [_charCountDetails, setCharCountDetails] = useState(0); // Track the current character count
+
+    const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const value = e.target.value;
+      if (value.length <= MAX_CHARS_Details) {
+        setFormData((prevState) => ({ ...prevState, details: value }));
+        setCharCountDetails(value.length);
+      }
+    };
+
+    const MAX_CHARS_Title = 17; // Set the maximum number of characters allowed
+    const [_charCountTitle, setCharCountTitle] = useState(0); // Track the current character count
+
+    const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const value = e.target.value;
+      if (value.length <= MAX_CHARS_Title) {
+        setFormData((prevState) => ({ ...prevState, title: value }));
+        setCharCountTitle(value.length);
+      }
+    };
+
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData((prevState) => ({ ...prevState, date: e.target.value }));
+    };
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setFormData((prevState) => ({ ...prevState, image: e.target.value }));
+    };
+
     return (
       <Form onSubmit={handleSaveAdd}>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>כותרת</Form.Label>
-          <Form.Control required type="text" placeholder="שם אירוע" onChange={handleTitleChange} />
+          <Form.Control
+            required
+            type="text"
+            placeholder="שם אירוע"
+            onChange={handleTitleChange}
+            maxLength={MAX_CHARS_Title} // Set the maximum length of the textarea
+          />
+          <small>
+            {formData.title.length}/{MAX_CHARS_Title} אותיות
+          </small>{' '}
+          {/* Display the character count */}
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>תאריך</Form.Label>
-          <Form.Control required type="date" placeholder="יום /חודש /שנה" onChange={handleDateChange} />
+          <Form.Control
+            required
+            type="date"
+            placeholder="יום /חודש /שנה"
+            onChange={handleDateChange}
+          />
         </Form.Group>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>העלאת תמונה</Form.Label>
@@ -118,58 +163,57 @@ const EventContainer: React.FC<EventContainer> = ({ eventsProps }) => {
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label>פרטים</Form.Label>
-          <Form.Control as="textarea" rows={3} placeholder="פרטי האירוע" onChange={handleDetailsChange} />
+          <Form.Control
+            required
+            as="textarea"
+            rows={3}
+            placeholder="פרטי האירוע"
+            onChange={handleDetailsChange}
+            maxLength={MAX_CHARS_Details} // Set the maximum length of the textarea
+          />
+          <small>
+            {formData.details.length}/{MAX_CHARS_Details} אותיות
+          </small>{' '}
+          {/* Display the character count */}
         </Form.Group>
-        <Button variant="secondary" onClick={handleClose}>
-          סגור
-        </Button>
-        <Button variant="primary" type="submit">
-          הוסף
-        </Button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <Button variant="secondary" onClick={handleClose}>
+            סגור
+          </Button>
+          <Button variant="primary" type="submit">
+            הוסף
+          </Button>
+        </div>
       </Form>
     );
   }
 
-  function UncontrolledExample() {
-    return (
-      <Carousel>
-        {events.map((event) => (
-          <Carousel.Item key={event.id}>
-            <Carousel.Caption>
-              <Event
-                id={event.id}
-                date={event.date}
-                title={event.title}
-                details={event.details}
-                image={event.image}
-                onEventDelete={onEventDelete}
-                onEventEdit={onEventEdit}
-              />
-            </Carousel.Caption>
-          </Carousel.Item>
-        ))}
-      </Carousel>
-    );
-  }
-
   return (
-    <div className='events'>
+    <div className="events">
       <div className="eventsContainer">
-      <Button variant="primary" onClick={handleShiftEventsRight}>Shift Right</Button>
-        {events.slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
-          <Event
-            id={event.id}
-            date={event.date}
-            title={event.title}
-            details={event.details}
-            image={event.image}
-            onEventDelete={onEventDelete}
-            onEventEdit={onEventEdit}
-          />
-        ))}
-        <Button variant="primary" onClick={handleShiftEventsLeft}>Shift Left</Button>
+        <Button variant="primary" onClick={handleShiftEventsRight}>
+          &lt;
+        </Button>
+        {events
+          .slice(firstVisibleEventIndex, firstVisibleEventIndex + 3)
+          .map((event) => (
+            <EventCard
+              id={event.id}
+              date={event.date}
+              title={event.title}
+              details={event.details}
+              image={event.image}
+              onEventDelete={onEventDelete}
+              onEventEdit={onEventEdit}
+            />
+          ))}
+        <Button variant="primary" onClick={handleShiftEventsLeft}>
+          &gt;
+        </Button>
       </div>
-        <Button variant="success" onClick={handleAddEvent}>הוסף אירוע</Button>
+      <Button variant="success" onClick={handleAddEvent}>
+        הוסף אירוע
+      </Button>
       {addWindow()}
     </div>
   );

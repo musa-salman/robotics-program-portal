@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
-import StudyMaterials from './StudyMaterials'
-import  { useState, useEffect, useContext } from 'react';
-import "./StudyMaterialContainer.css"
+import StudyMaterials from './StudyMaterials';
+import { useState, useEffect, useContext } from 'react';
+import './StudyMaterialContainer.css';
 import { StudyMaterialContext } from './StudyMaterialContext';
 import { StudyMaterial } from './StudyMaterial';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,8 +10,16 @@ import UploadFileComponent from '../upload-file/UploadFile'
 import { Modal } from 'react-bootstrap';
 
 
+function StudyMaterialContainer() {
+  const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(
+    null
+  );
+  const studyMaterialRepository = useContext(StudyMaterialContext);
 
-function StudyMaterialContainer() {  
+  useEffect(() => {
+    const getStudyMaterials = async () => {
+      setStudyMaterials(await studyMaterialRepository.find());
+    };
 
     const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
     const studyMaterialRepository = useContext(StudyMaterialContext);
@@ -23,10 +31,7 @@ function StudyMaterialContainer() {
         UploadFileComponent
     }
 
-    useEffect(() => {
-        const getStudyMaterials = async () => {
-            setStudyMaterials( await studyMaterialRepository.find());    
-        };
+  console.log(studyMaterials);
 
        if (studyMaterials === null)getStudyMaterials()
     }, [studyMaterials]); 
@@ -73,5 +78,4 @@ function StudyMaterialContainer() {
  );
 }
 
-
-export default  StudyMaterialContainer;
+export default StudyMaterialContainer;

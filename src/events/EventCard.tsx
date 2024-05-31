@@ -1,35 +1,65 @@
 import React, { useState } from 'react';
 import { Button, Card, Dropdown, Modal, Form } from 'react-bootstrap';
 
-import './Event.css';
+import './EventCard.css';
 
 export interface EventProps {
   date: string;
   title: string;
   details: string;
   image: string;
-  onEventDelete: (id: number) => void;
+  onEventDelete: (id: string) => void;
   onEventEdit: (event: EventProps) => void;
-  id: number;
+  id: string;
 }
 
-const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelete, onEventEdit, id }) => {
-  const [formData, setFormData] = useState<EventProps>({ date, title, details, image, onEventDelete, onEventEdit, id });
+const EventCard: React.FC<EventProps> = ({
+  date,
+  title,
+  details,
+  image,
+  onEventDelete,
+  onEventEdit,
+  id
+}) => {
+  const [formData, setFormData] = useState<EventProps>({
+    date,
+    title,
+    details,
+    image,
+    onEventDelete,
+    onEventEdit,
+    id
+  });
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prevState => ({ ...prevState, title: e.target.value }));
-  };
+  const MAX_CHARS_Details = 100; // Set the maximum number of characters allowed
+  const [_charCountDetails, setCharCountDetails] = useState(0); // Track the current character count
 
   const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData(prevState => ({ ...prevState, details: e.target.value }));
+    const value = e.target.value;
+    if (value.length <= MAX_CHARS_Details) {
+      setFormData((prevState) => ({ ...prevState, details: value }));
+      setCharCountDetails(value.length);
+    }
+  };
+
+  const MAX_CHARS_Title = 17; // Set the maximum number of characters allowed
+  const [_charCountTitle, setCharCountTitle] = useState(0); // Track the current character count
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    if (value.length <= MAX_CHARS_Title) {
+      setFormData((prevState) => ({ ...prevState, title: value }));
+      setCharCountTitle(value.length);
+    }
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prevState => ({ ...prevState, date: e.target.value }));
+    setFormData((prevState) => ({ ...prevState, date: e.target.value }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData(prevState => ({ ...prevState, image: e.target.value }));
+    setFormData((prevState) => ({ ...prevState, image: e.target.value }));
   };
 
   const [registerd, setRegister] = useState(false);
@@ -79,13 +109,15 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
     return (
       <div className="adminOptions">
         <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic">
-            
-          </Dropdown.Toggle>
+          <Dropdown.Toggle
+            variant="success"
+            id="dropdown-basic"></Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item onClick={handleEdit}>לַעֲרוֹך</Dropdown.Item>
             <p></p>
-            <Dropdown.Item onClick={handleDelete} style={{ color: 'red' }}>לִמְחוֹק</Dropdown.Item>
+            <Dropdown.Item onClick={handleDelete} style={{ color: 'red' }}>
+              לִמְחוֹק
+            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </div>
@@ -95,13 +127,15 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
   function editWindow() {
     return (
       <>
-        <Modal show={showModalEdit} onHide={handleCloseEdit} animation={false} style={{ display: 'center' }}>
+        <Modal
+          show={showModalEdit}
+          onHide={handleCloseEdit}
+          animation={false}
+          style={{ display: 'center' }}>
           <Modal.Header closeButton>
             <Modal.Title>שינוי אירוע</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            {editForm()}
-          </Modal.Body>
+          <Modal.Body>{editForm()}</Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleCloseEdit}>
               סגור
@@ -120,11 +154,24 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
       <Form>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>כותרת</Form.Label>
-          <Form.Control type="text" defaultValue={title} onChange={handleTitleChange} />
+          <Form.Control
+            type="text"
+            defaultValue={title}
+            onChange={handleTitleChange}
+            maxLength={MAX_CHARS_Title} // Set the maximum length of the textarea
+          />
+          <small>
+            {formData.title.length}/{MAX_CHARS_Title} אותיות
+          </small>{' '}
+          {/* Display the character count */}
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>תאריך</Form.Label>
-          <Form.Control type="date" defaultValue={date} onChange={handleDateChange} />
+          <Form.Control
+            type="date"
+            defaultValue={date}
+            onChange={handleDateChange}
+          />
         </Form.Group>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>העלאת תמונה</Form.Label>
@@ -132,7 +179,17 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label>פרטים</Form.Label>
-          <Form.Control as="textarea" rows={3} defaultValue={details} onChange={handleDetailsChange} />
+          <Form.Control
+            as="textarea"
+            rows={3}
+            defaultValue={details}
+            onChange={handleDetailsChange}
+            maxLength={MAX_CHARS_Details} // Set the maximum length of the textarea
+          />
+          <small>
+            {formData.details.length}/{MAX_CHARS_Details} אותיות
+          </small>{' '}
+          {/* Display the character count */}
         </Form.Group>
       </Form>
     );
@@ -141,7 +198,10 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
   function deleteWindow() {
     return (
       <>
-        <Modal show={showModalDelete} onHide={handleCloseDelete} style={{ display: 'center' }}>
+        <Modal
+          show={showModalDelete}
+          onHide={handleCloseDelete}
+          style={{ display: 'center' }}>
           <Modal.Header closeButton>
             <Modal.Title>האם אתה בטוח שברצונך למחוק את האירוע הזה</Modal.Title>
           </Modal.Header>
@@ -160,26 +220,40 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
   }
 
   function registerWindow() {
+    const handleSubmitRegister = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      handleSaveRegister();
+    };
+
     return (
       <>
-        <Modal show={showModalRegister} onHide={handleCloseRegister} style={{ display: 'center' }}>
-          <Modal.Header closeButton>
-            <Modal.Title>האם אתה בטוח שאתה רוצה להירשם לאירוע</Modal.Title>
-          </Modal.Header>
-          <Modal.Body style={{ display: 'flex', gap: '10px' }}>
-            <Form onSubmit={handleSaveRegister}>
-              <Form.Check required aria-label="option 1" feedback="You must agree before submitting." />
-              אני מאשר שאני רוצה להירשם לאירוע
+        <Modal
+          show={showModalRegister}
+          onHide={handleCloseRegister}
+          style={{ display: 'center' }}>
+          <Form onSubmit={handleSubmitRegister}>
+            <Modal.Header closeButton>
+              <Modal.Title>האם אתה בטוח שאתה רוצה להירשם לאירוע</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <Form.Check
+                  required
+                  aria-label="option 1"
+                  feedback="You must agree before submitting."
+                />
+                אני מאשר שאני רוצה להירשם לאירוע
+              </div>
               <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseRegister}>
                   סגור
                 </Button>
-                <Button variant="primary" type='submit'>
+                <Button variant="primary" type="submit">
                   מאשר
                 </Button>
               </Modal.Footer>
-            </Form>
-          </Modal.Body>
+            </Modal.Body>
+          </Form>
         </Modal>
       </>
     );
@@ -191,13 +265,21 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
       <Card.Body>
         <Card.Title>{title}</Card.Title>
         <Card.Text>
-          <p><strong>תאריך:</strong> {date}</p>
-          <p><strong>פרטים:</strong> {details}</p>
+          <p>
+            <strong>תאריך:</strong> {date}
+          </p>
+          <p>
+            <strong>פרטים:</strong> {details}
+          </p>
         </Card.Text>
         {registerd ? (
-          <Button variant="secondary" disabled>רשום</Button>
+          <Button variant="secondary" disabled>
+            רשום
+          </Button>
         ) : (
-          <Button variant="primary" onClick={handleRegister}>הירשם</Button>
+          <Button variant="primary" onClick={handleRegister}>
+            הירשם
+          </Button>
         )}
         {adminOptions()}
       </Card.Body>
@@ -207,4 +289,4 @@ const Event: React.FC<EventProps> = ({ date, title, details, image, onEventDelet
     </Card>
   );
 };
-export default Event;
+export default EventCard;
