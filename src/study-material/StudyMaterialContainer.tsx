@@ -4,12 +4,16 @@ import { useState, useEffect, useContext } from 'react';
 import "./StudyMaterialContainer.css"
 import { StudyMaterialContext } from './StudyMaterialContext';
 import { StudyMaterial } from './StudyMaterial';
-
+import { Modal } from 'react-bootstrap';
+import UploadFileComponent from '../upload-file/UploadFile'
 
 function StudyMaterialContainer() {
 
     const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
     const studyMaterialRepository = useContext(StudyMaterialContext);
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     useEffect(() => {
         const getStudyMaterials = async () => {
@@ -34,7 +38,7 @@ function StudyMaterialContainer() {
                         <div key={category}>
                             <h2>{category}</h2>
                         </div>
-                        <button className="add-button"></button>
+                        <button onClick={handleShow} className="add-button"></button>
                     </Card.Header>
                     <br></br>
                     <Card.Body className='body'>
@@ -48,6 +52,9 @@ function StudyMaterialContainer() {
                     </Card.Body>
                 </Card>
             ))}
+            <Modal show={show} onHide={handleClose} >
+                <UploadFileComponent handleClose={handleClose} handleShow={handleShow}></UploadFileComponent>
+            </Modal>
         </>
     );
 }
