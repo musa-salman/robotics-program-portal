@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Form, Button, Card, Alert, FloatingLabel } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from './AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { AuthContext } from './AuthContext';
 
 export default function Login() {
+  const authService = useContext(AuthContext);
+
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
-  const {
-    loginWithEmailAndPassword: loginWithEmailAndPassword,
-    loginWithGoogle: LoginWithGoogle
-  } = useAuth();
+
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -26,19 +25,15 @@ export default function Login() {
       password: passwordRef.current?.value || ''
     };
 
-    try {
-      await loginWithEmailAndPassword(
-        creds,
-        () => navigate('/dashboard'),
-        (reason: string): void => {
-          setError(reason);
-        }
-      );
-    } catch {
-      setError('.כניסה נכשלה, נסה שוב');
-    }
-
-    setLoading(false);
+    authService.authService
+      .loginWithEmailAndPassword(creds)
+      .then(() => {
+        navigate('/dashboard');
+        setLoading(false);
+      })
+      .catch(() => {
+        setError('.כניסה נכשלה, נסה שוב');
+      });
   }
 
   return (
@@ -88,10 +83,10 @@ export default function Login() {
                 justifyContent: 'center'
               }}
               onClick={() =>
-                LoginWithGoogle(
-                  () => navigate('/dashboard'),
-                  (reason: string) => setError(reason)
-                )
+                authService.authService
+                  .loginWithGoogle()
+                  .then(() => navigate('/dashboard'))
+                  .catch(() => setError('כניסה נכשלה, נסה שוב'))
               }
               className="w-100 mt-3 mr-4">
               <FontAwesomeIcon icon={faGoogle} className="ms-2" />

@@ -1,8 +1,9 @@
 import { Navigate } from 'react-router-dom';
-import { useAuth } from './AuthContext';
 import { useContext, useEffect, useState } from 'react';
 import React from 'react';
 import { UserContext } from '../users/UserContext';
+import { useAuth } from './AuthContext';
+import { auth } from '../firebase';
 
 enum AuthorizationStatus {
   UnauthorizedAuthenticatedUser = 1,
@@ -25,15 +26,18 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   unauthorizedUnauthenticatedComponent,
   loadingComponent
 }) => {
-  const { user, loading } = useAuth();
   const userRepository = useContext(UserContext);
   const [authorization, setAuthorization] =
     useState<AuthorizationStatus | null>(null);
 
+  const { loading } = useAuth();
+
   useEffect(() => {
     const checkUserAuthorization = async () => {
-      if (user) {
-        const userRole = await userRepository.getUserRole(user.uid);
+      console.log('not checked', auth.currentUser);
+      if (auth.currentUser !== null) {
+        console.log('user', auth.currentUser.uid);
+        const userRole = await userRepository.getUserRole(auth.currentUser.uid);
         if (allowedRoles.includes(userRole)) {
           setAuthorization(AuthorizationStatus.AuthorizedUser);
         } else {
@@ -45,9 +49,10 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
     };
 
     if (!loading && authorization === null) {
+      console.log('loading', loading);
       checkUserAuthorization();
     }
-  }, [user, loading, allowedRoles]);
+  }, [auth.currentUser, loading, allowedRoles]);
 
   if (loading) {
     return loadingComponent ? (
