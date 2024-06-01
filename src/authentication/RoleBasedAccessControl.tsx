@@ -48,7 +48,8 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
     if (!loading && authorization === null) {
       checkUserAuthorization();
     }
-  }, [auth.currentUser, loading, allowedRoles]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, allowedRoles]);
 
   if (loading) {
     return loadingComponent ? loadingComponent : <span className="loading loading-dots loading-lg"></span>;

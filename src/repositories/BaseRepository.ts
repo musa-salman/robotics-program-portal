@@ -35,10 +35,12 @@ export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
   }
 
   async create(item: PartialWithFieldValue<T>): Promise<DocumentReference<T, DocumentData>> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return addDoc(this._collection, item as WithFieldValue<T> & AddPrefixToKeys<string, any>);
   }
 
   async update(id: string, item: PartialWithFieldValue<T>): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return updateDoc(doc(this._collection, id), item as WithFieldValue<T> & AddPrefixToKeys<string, any>);
   }
 
