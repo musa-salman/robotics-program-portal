@@ -1,0 +1,168 @@
+  /* Main container styling */
+.adminOptions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-family: Arial, sans-serif;
+}
+
+/* Dropdown toggle button styling */
+.adminOptions .dropdown-toggle {
+  background-color: #28a745;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.adminOptions .dropdown-toggle:hover {
+  background-color: #218838;
+}
+
+/* Dropdown menu styling */
+.adminOptions .dropdown-menu {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+}
+
+/* Dropdown items styling */
+.adminOptions .dropdown-item {
+  padding: 10px 20px;
+  color: #333;
+  text-align: right; /* Align text to the right for Hebrew text */
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.adminOptions .dropdown-item:hover {
+  background-color: #93c4f6;
+}
+
+/* Special styling for delete item */
+.adminOptions .dropdown-item[style] {
+  color: red;
+}
+
+.adminOptions .dropdown-item[style]:hover {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+
+.events {
+  background-color: rgb(255, 195, 195);
+  background-image: url('EventContainer.jpg');
+  padding: 10px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.eventsContainer {
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  margin: 10px;
+  gap: 10px; /* Add this line to create spacing between components */
+}
+
+
+/* Positioning the Add Event button at the top left */
+.add-event-button {
+  position: absolute;
+  z-index: 10;
+  background-color: #28a745;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.add-event-button:hover {
+  background-color: #218838;
+}
+
+/* Styling for the shift buttons*/
+.eventsContainer .btn-primary  {
+  border: none;
+  color: white;
+  background-color: #606365;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.eventsContainer .btn-primary:hover {
+  background-color: #00b336;
+}
+
+/* Ensuring Event components have some spacing*/
+.event-component {
+  margin: 0 5px;
+} 
+
+/* Base styling for the card */
+.event-card {
+  height: 500px;
+  width: 18rem;
+  /* background-image: url('EventCard.jpg'); */
+  background-color: bisque;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 10px; /* optional: adds some rounding to the corners */
+  overflow: hidden; /* ensures content does not overflow the card borders */
+}
+
+/* Hover effect to make the card grow and add shadow */
+.event-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Optional: Ensure images within the card are properly styled */
+.event-card img {
+  width: 100%;
+  height: 150px; /* Set height to fill the top half */
+  object-fit: cover; /* Ensures the image covers the space without distortion */
+}
+
+/* Styling for the card title */
+.event-card .card-title {
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+/* Styling for card text */
+.event-card .card-text p {
+  margin: 0.5rem 0;
+}
+
+/* Optional: Button styling */
+.event-card .btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.event-card .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.event-card .btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+
+.event-card .btn-secondary:disabled {
+  background-color: #adb5bd;
+}
