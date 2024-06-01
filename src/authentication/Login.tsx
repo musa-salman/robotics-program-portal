@@ -32,7 +32,8 @@ export default function Login() {
         setLoading(false);
       })
       .catch(() => {
-        setError('.כניסה נכשלה, נסה שוב');
+        setError('כניסה נכשלה, נסה שוב.');
+        setLoading(false);
       });
   }
 
