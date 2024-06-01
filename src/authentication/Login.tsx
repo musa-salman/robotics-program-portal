@@ -1,15 +1,15 @@
-import React, { useContext, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Form, Button, Card, Alert, FloatingLabel } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { AuthContext } from './AuthContext';
+import { useAuth } from './useAuth';
 
 export default function Login() {
-  const authService = useContext(AuthContext);
+  const { authService } = useAuth();
 
-  const emailRef = React.useRef<HTMLInputElement>(null);
-  const passwordRef = React.useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ export default function Login() {
       password: passwordRef.current?.value || ''
     };
 
-    authService.authService
+    authService
       .loginWithEmailAndPassword(creds)
       .then(() => {
         navigate('/dashboard');
@@ -71,10 +71,16 @@ export default function Login() {
                 justifyContent: 'center'
               }}
               onClick={() =>
-                authService.authService
+                authService
                   .loginWithGoogle()
-                  .then(() => navigate('/dashboard'))
-                  .catch(() => setError('כניסה נכשלה, נסה שוב'))
+                  .then(() => {
+                    navigate('/dashboard');
+                    setLoading(false);
+                  })
+                  .catch(() => {
+                    setError('כניסה נכשלה, נסה שוב.');
+                    setLoading(false);
+                  })
               }
               className="w-100 mt-3 mr-4">
               <FontAwesomeIcon icon={faGoogle} className="ms-2" />
