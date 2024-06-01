@@ -1,10 +1,11 @@
-import './App.css'
+import './App.css';
 import 'bootstrap/dist/css/bootstrap.rtl.min.css';
 import { Link, Route, Routes } from 'react-router-dom';
 import RoleBasedAccessControl from './authentication/RoleBasedAccessControl';
 import { useAuthRoutes } from './authentication/AuthRoutes';
 import { useStudyMaterialRoutes } from './study-material/StudyMaterialRoutes';
 import EventContainer from './events/EventContainer';
+import LogoutButton from './authentication/Logout';
 
 function App() {
   const AuthRoutes = useAuthRoutes();
@@ -12,9 +13,11 @@ function App() {
 
   return (
     <>
-      <><div>
-        <h1>Home Page</h1>
-      </div><div>
+      <>
+        <div>
+          <h1>Home Page</h1>
+        </div>
+        <div>
           <Link to="/"> Home </Link>
           <Link to="/login">
             <button>Login</button>
@@ -34,7 +37,8 @@ function App() {
           <Link to="/events">
             <button>Events</button>
           </Link>
-        </div></>
+        </div>
+      </>
 
       <Routes>
         <Route path="/" element={<div>Home</div>} />
@@ -42,16 +46,23 @@ function App() {
         {AuthRoutes}
         {StudyMaterialRoutes}
         <Route path="/events" element={<EventContainer />} />
-        <Route path="/dashboard" element={
-          <RoleBasedAccessControl allowedRoles={['admin']}>
-            <div>Dashboard</div>
-          </RoleBasedAccessControl>
-        } />
+        <Route
+          path="/dashboard"
+          element={
+            <>
+              <RoleBasedAccessControl allowedRoles={['admin', 'manager', 'student']}>
+                <LogoutButton />
+              </RoleBasedAccessControl>
+              <RoleBasedAccessControl allowedRoles={['admin']}>
+                <div>Dashboard</div>
+              </RoleBasedAccessControl>
+            </>
+          }
+        />
         <Route path="*" element={<div>Not Found</div>} />
       </Routes>
-      
     </>
-  )
+  );
 }
 
-export default App
+export default App;
