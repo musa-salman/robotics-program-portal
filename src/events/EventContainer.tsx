@@ -3,7 +3,7 @@ import { Button, Modal, Form, Carousel } from 'react-bootstrap';
 import React, { useState, useEffect, useContext } from 'react';
 import { EventContext } from './EventContext';
 import { IEvent } from './Event';
-import { StorageServiceContext } from '../storage-service/StorageServiceContext';
+// import { StorageServiceContext } from '../storage-service/StorageServiceContext';
 // import { eventContext } from '../event-img/eventContext';
 
 
@@ -22,21 +22,20 @@ const EventContainer= () => {
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const eventRepository = useContext(EventContext);
-  const storageService = useContext(StorageServiceContext);
+  // const storageService = useContext(StorageServiceContext);
 
 
   useEffect(() => {
     const getEvents = async () => {
       setEvents( convertIEventsToEventProps (await eventRepository.find()));
     };
-    console.log(events);
    if (events === null)getEvents();
 }, [events]);
 
 function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
   return events.map(event => {
     return {
-      date: event.date,
+      date: event.date.toDate(),
       title: event.title,
       details: event.details,
       image: event.imageURL,
@@ -46,6 +45,9 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     };
   });
 }
+
+console.log(events);
+
 
   function onEventDelete(id: string) {
     setEvents((events || []).filter((e) => e.id !== id));
@@ -87,10 +89,10 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
   };
 
   const [formData, setFormData] = useState<EventProps>({
-    date: '', // Provide initial value for date
+    date: new Date, // Provide initial value for date
     title: '', // Provide initial value for title
     details: '', // Provide initial value for details
-    image: 'https://.googleapis.com/v0/b/pico-7a9d2.appspot.com/o/event-img%2FRobtics.png?alt=media&token=ebd02a49-3e7a-4165-8580-825a2d5a0a5d', // Provide initial value for image
+    image: 'https://firebasestorage.googleapis.com/v0/b/pico-7a9d2.appspot.com/o/event-img%2FRobtics.png?alt=media&token=ebd02a49-3e7a-4165-8580-825a2d5a0a5d', // Provide initial value for image
     onEventDelete: (_id: string) => { }, // Change the parameter type from '_id: string' to 'id: number'
     onEventEdit: (_event: EventProps) => { },
     id: '' // Provide initial value for id
@@ -98,7 +100,7 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
 
 
   const event: IEvent = {
-    date: formData.date,
+    date: new Date(formData.date),
     title: formData.title,
     details: formData.details,
     imageURL: formData.image,
@@ -109,8 +111,8 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     handleShow();
     const docRef = await eventRepository.create(event);
     formData.id = docRef.id;
-    const file = new File([formData.image], "filename"); // Convert the string to a File object
-    storageService.upload(file, "/event-img/" + docRef.id + "-" + formData.image,setUploadProgress); // Pass the File object to the upload function
+    // const file = new File([formData.image], "filename"); // Convert the string to a File object
+    // storageService.upload(file, "/event-img/" + docRef.id + "-" + formData.image,setUploadProgress); // Pass the File object to the upload function
     events?.push(formData);
     setEvents(events);
     setRender(render === 1 ? 0 : 1);    
@@ -157,7 +159,7 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     };
 
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData(prevState => ({ ...prevState, date: e.target.value }));
+      setFormData(prevState => ({ ...prevState, date: e.target.valueAsDate! }));
     };
   
     const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
