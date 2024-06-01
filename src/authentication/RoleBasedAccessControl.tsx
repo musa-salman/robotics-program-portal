@@ -33,9 +33,7 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
 
   useEffect(() => {
     const checkUserAuthorization = async () => {
-      console.log('not checked', auth.currentUser);
       if (auth.currentUser !== null) {
-        console.log('user', auth.currentUser.uid);
         const userRole = await userRepository.getUserRole(auth.currentUser.uid);
         if (allowedRoles.includes(userRole)) {
           setAuthorization(AuthorizationStatus.AuthorizedUser);
@@ -48,7 +46,6 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
     };
 
     if (!loading && authorization === null) {
-      console.log('loading', loading);
       checkUserAuthorization();
     }
   }, [auth.currentUser, loading, allowedRoles]);
