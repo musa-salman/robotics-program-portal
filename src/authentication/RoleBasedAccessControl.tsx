@@ -1,6 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
-import React from 'react';
+import { ReactNode, useContext, useEffect, useState } from 'react';
 import { UserContext } from '../users/UserContext';
 import { auth } from '../firebase';
 import { useAuth } from './useAuth';
@@ -18,10 +17,10 @@ enum AuthorizationStatus {
  * Props for the RoleBasedAccessControl component.
  */
 type RoleBasedAccessControlProps = {
-  children: React.ReactNode;
-  unauthorizedUnauthenticatedComponent?: React.ReactNode;
-  unauthorizedAuthenticatedComponent?: React.ReactNode;
-  loadingComponent?: React.ReactNode;
+  children: ReactNode;
+  unauthorizedUnauthenticatedComponent?: ReactNode;
+  unauthorizedAuthenticatedComponent?: ReactNode;
+  loadingComponent?: ReactNode;
   allowedRoles: string[];
 };
 
