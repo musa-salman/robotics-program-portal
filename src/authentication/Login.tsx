@@ -11,6 +11,7 @@ export default function Login() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
+  const [warning, setWarning] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -48,17 +49,31 @@ export default function Login() {
                 <Form.Control type="email" placeholder='דוא"ל' ref={emailRef} required />
               </FloatingLabel>
             </Form.Group>
-            <Form.Group id="password">
-              <FloatingLabel controlId="floatingPassword" label="סיסמה">
-                <Form.Control type="password" placeholder="סיסמה" ref={passwordRef} required />
-              </FloatingLabel>
-            </Form.Group>
+
+            <Form.Control
+              type="password"
+              placeholder="סיסמה"
+              onKeyDown={(event) => {
+                if (event.getModifierState('CapsLock')) {
+                  setWarning('כפתור הנעילה על אותיות גדולות מופעל');
+                } else {
+                  setWarning('');
+                }
+              }}
+              ref={passwordRef}
+              required
+            />
             <Button disabled={loading} className="w-100 mt-3" type="submit">
               התחבר/י
             </Button>
             {error && (
               <Alert variant="danger" className="mt-3">
                 {error}
+              </Alert>
+            )}
+            {warning && (
+              <Alert variant="warning" className="mt-3">
+                {warning}
               </Alert>
             )}
             <hr />
