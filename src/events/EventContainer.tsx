@@ -3,6 +3,10 @@ import { Button, Modal, Form, Carousel } from 'react-bootstrap';
 import React, { useState, useEffect, useContext } from 'react';
 import { EventContext } from './EventContext';
 import { IEvent } from './Event';
+import { StorageServiceContext } from '../storage-service/StorageServiceContext';
+// import { eventContext } from '../event-img/eventContext';
+
+
 
 type EventContainer = {
   eventsProps: EventProps[];
@@ -15,8 +19,11 @@ const EventContainer= () => {
   const [render, setRender] = useState(0);
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const eventRepository = useContext(EventContext);
+  const storageService = useContext(StorageServiceContext);
+
 
   useEffect(() => {
     const getEvents = async () => {
@@ -83,7 +90,7 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     date: '', // Provide initial value for date
     title: '', // Provide initial value for title
     details: '', // Provide initial value for details
-    image: 'Robtics.png', // Provide initial value for image
+    image: 'https://.googleapis.com/v0/b/pico-7a9d2.appspot.com/o/event-img%2FRobtics.png?alt=media&token=ebd02a49-3e7a-4165-8580-825a2d5a0a5d', // Provide initial value for image
     onEventDelete: (_id: string) => { }, // Change the parameter type from '_id: string' to 'id: number'
     onEventEdit: (_event: EventProps) => { },
     id: '' // Provide initial value for id
@@ -102,6 +109,8 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     handleShow();
     const docRef = await eventRepository.create(event);
     formData.id = docRef.id;
+    const file = new File([formData.image], "filename"); // Convert the string to a File object
+    storageService.upload(file, "/event-img/" + docRef.id + "-" + formData.image,setUploadProgress); // Pass the File object to the upload function
     events?.push(formData);
     setEvents(events);
     setRender(render === 1 ? 0 : 1);    
