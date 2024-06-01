@@ -9,7 +9,7 @@ import CategoryProvider from './upload-file/CategoryContext.tsx';
 import StudyMaterialProvider from './study-material/StudyMaterialContext.tsx';
 import StorageServiceProvider from './storage-service/StorageContext.tsx';
 import EventProvider from './events/EventContext.tsx';
-import AuthProvider from './authentication/AuthContext.tsx';
+import { AuthProvider } from './authentication/AuthContext.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

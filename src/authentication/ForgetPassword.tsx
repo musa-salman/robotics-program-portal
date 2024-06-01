@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Form, Button, Card, Alert, FloatingLabel, Modal } from 'react-bootstrap';
-import { useAuth } from './AuthContext';
+import { useAuth } from './useAuth';
 
 export default function ForgetPassword() {
-  const emailRef = React.useRef<HTMLInputElement>(null);
-  const { generatePasswordResetLink: generatePasswordResetLink } = useAuth();
+  const emailRef = useRef<HTMLInputElement>(null);
+  const { authService } = useAuth();
   const [error, setError] = useState('');
 
   const [isSuccess, setIsSuccess] = useState(false);
@@ -18,19 +18,12 @@ export default function ForgetPassword() {
     setError('');
     setLoading(true);
 
-    try {
-      await generatePasswordResetLink(
-        emailRef.current!.value,
-        () => {
-          setIsSuccess(true);
-        },
-        (reason: string) => {
-          setError(reason);
-        }
-      );
-    } catch {
-      setError('.כניסה נכשלה, נסה שוב');
-    }
+    authService
+      .generatePasswordResetLink(emailRef.current!.value)
+      .then(() => setIsSuccess(true))
+      .catch(() => {
+        setError('.כניסה נכשלה, נסה שוב');
+      });
 
     setLoading(false);
   }
