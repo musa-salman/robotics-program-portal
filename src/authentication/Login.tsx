@@ -5,6 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { useAuth } from './useAuth';
 
+/**
+ * Renders the login component.
+ * Allows users to log in to the system using email and password, or Google.
+ */
 export default function Login() {
   const { authService } = useAuth();
 

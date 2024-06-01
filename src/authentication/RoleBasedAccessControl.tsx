@@ -5,12 +5,18 @@ import { UserContext } from '../users/UserContext';
 import { auth } from '../firebase';
 import { useAuth } from './useAuth';
 
+/**
+ * Represents the authorization status for a user.
+ */
 enum AuthorizationStatus {
   UnauthorizedAuthenticatedUser = 1,
   UnauthorizeUnauthenticatedUser,
   AuthorizedUser
 }
 
+/**
+ * Props for the RoleBasedAccessControl component.
+ */
 type RoleBasedAccessControlProps = {
   children: React.ReactNode;
   unauthorizedUnauthenticatedComponent?: React.ReactNode;
@@ -19,6 +25,22 @@ type RoleBasedAccessControlProps = {
   allowedRoles: string[];
 };
 
+/**
+ * RoleBasedAccessControl component provides role-based access control functionality.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <RoleBasedAccessControl
+ *   allowedRoles={['admin', 'manager']}
+ *   unauthorizedAuthenticatedComponent={<UnauthorizedAuthenticatedComponent />}
+ *   unauthorizedUnauthenticatedComponent={<UnauthorizedUnauthenticatedComponent />}
+ *   loadingComponent={<LoadingComponent />}
+ * >
+ *   <AuthorizedComponent />
+ * </RoleBasedAccessControl>
+ * ```
+ */
 const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   children,
   allowedRoles,

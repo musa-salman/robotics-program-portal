@@ -11,11 +11,20 @@ export interface AuthContextType {
   authService: IAuthService;
 }
 
+/**
+ * Context object for authentication.
+ */
 const AuthContext = createContext<AuthContextType>({
   loading: true,
   authService: new AuthService()
 });
 
+/**
+ * Provides authentication context to its children components.
+ *
+ * @param {React.ReactNode} children - The child components to be wrapped by the AuthProvider.
+ * @returns {JSX.Element} The AuthProvider component.
+ */
 function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 

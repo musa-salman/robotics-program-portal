@@ -10,6 +10,9 @@ import { auth } from '../firebase';
 import LoginFormValues from './ILoginFormValues';
 import { IAuthService } from './IAuthService';
 
+/**
+ * Service responsible for handling authentication operations.
+ */
 export class AuthService implements IAuthService {
   async loginWithEmailAndPassword(creds: LoginFormValues): Promise<UserCredential> {
     return signInWithEmailAndPassword(auth, creds.email, creds.password);

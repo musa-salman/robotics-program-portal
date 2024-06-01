@@ -2,6 +2,11 @@ import { useRef, useState } from 'react';
 import { Form, Button, Card, Alert, FloatingLabel, Modal } from 'react-bootstrap';
 import { useAuth } from './useAuth';
 
+/**
+ * Renders a component for password recovery.
+ *
+ * @returns JSX.Element
+ */
 export default function ForgetPassword() {
   const emailRef = useRef<HTMLInputElement>(null);
   const { authService } = useAuth();
