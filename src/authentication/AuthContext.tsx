@@ -11,14 +11,10 @@ export interface AuthContextType {
   authService: IAuthService;
 }
 
-export const AuthContext = createContext<AuthContextType>({
+const AuthContext = createContext<AuthContextType>({
   loading: true,
   authService: new AuthService()
 });
-
-export const useAuth = () => useContext(AuthContext);
-
-export let isLoading: boolean;
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
@@ -43,4 +39,4 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;
 }
 
-export default AuthProvider;
+export { AuthProvider, AuthContext };
