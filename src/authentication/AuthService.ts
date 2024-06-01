@@ -24,6 +24,11 @@ export class AuthService implements IAuthService {
   }
 
   async generatePasswordResetLink(email: string): Promise<void> {
-    return sendPasswordResetEmail(auth, email);
+    const actionCodeSettings = {
+      url: import.meta.env.VITE_REACT_APP_PASSWORD_RESET_REDIRECT,
+      handleCodeInApp: true
+    };
+
+    return sendPasswordResetEmail(auth, email, actionCodeSettings);
   }
 }
