@@ -21,8 +21,9 @@ export default function ForgetPassword() {
     authService
       .generatePasswordResetLink(emailRef.current!.value)
       .then(() => setIsSuccess(true))
-      .catch(() => {
-        setError('.כניסה נכשלה, נסה שוב');
+      .catch((reason) => {
+        setError('שליחת הקישור נכשלה, נסה שוב.');
+        console.error(reason);
       });
 
     setLoading(false);
