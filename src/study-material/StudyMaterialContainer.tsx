@@ -7,7 +7,8 @@ import { StudyMaterial } from './StudyMaterial';
 import { SearchBar } from './SearchBar';
 import UploadFileComponent from '../upload-file/UploadFile';
 import { Modal } from 'react-bootstrap';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faPlus} from '@fortawesome/free-solid-svg-icons';
 
 function StudyMaterialContainer() {
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
@@ -55,7 +56,7 @@ function StudyMaterialContainer() {
               <h2>{category}</h2>
             </div>
             <button onClick={handleShow} className="add-button">
-
+            <FontAwesomeIcon icon={faPlus} />
             </button>
           </Card.Header>
           <br></br>

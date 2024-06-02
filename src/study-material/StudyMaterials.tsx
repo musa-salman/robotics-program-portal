@@ -3,7 +3,6 @@ import Card from 'react-bootstrap/Card';
 import './StudyMaterials.css';
 import { useContext, useState } from 'react';
 import { StudyMaterial } from './StudyMaterial';
-import { StorageServiceContext } from '../storage-service/StorageServiceContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFileArrowDown,
@@ -12,6 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import moment from 'moment';
+import { StorageServiceContext } from '../storage-service/StorageContext';
 
 const styles = {
   fontSize: '20px',
@@ -75,7 +75,8 @@ function StudyMaterials({
         <hr className="custom-hr" />
         <div>
           {isEditing ? (
-            <textarea
+            <input
+            type="text"
               value={editedDescription}
               onChange={(e) => setEditedDescription(e.target.value)}
             />
