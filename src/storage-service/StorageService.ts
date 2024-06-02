@@ -17,26 +17,14 @@ export class StorageService implements IStorageService {
       (error: any) => {
         console.error('Error uploading file:', error);
       }
-      //   () => {
-      //     // Upload completed successfully, now get the download URL
-      //     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-      //       console.log('File available at', downloadURL);
-      //     });
-      //   }
     );
   }
 
   async download(path: string): Promise<void> {
     getDownloadURL(ref(storage, path))
       .then((url) => {
-        // `url` is the download URL for 'images/stars.jpg'
-
-        // This can be downloaded directly:
         const xhr = new XMLHttpRequest();
         xhr.responseType = 'blob';
-        xhr.onload = (event) => {
-          const blob = xhr.response;
-        };
         xhr.open('GET', url);
         xhr.send();
       })
@@ -46,12 +34,6 @@ export class StorageService implements IStorageService {
   }
 
   async delete(path: string): Promise<void> {
-    const desertRef = ref(storage, path);
-
-    deleteObject(desertRef)
-      .then(() => {})
-      .catch((error) => {
-        console.error('Error uploading file:', error);
-      });
+    return deleteObject(ref(storage, path));
   }
 }

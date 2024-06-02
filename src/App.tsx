@@ -4,7 +4,6 @@ import { Route, Routes } from 'react-router-dom';
 import RoleBasedAccessControl from './authentication/RoleBasedAccessControl';
 import { useAuthRoutes } from './authentication/AuthRoutes';
 import { useStudyMaterialRoutes } from './study-material/StudyMaterialRoutes';
-import UploadFileComponent from './upload-file/UploadFile';
 import EventContainer from './events/EventContainer';
 import LogoutButton from './authentication/Logout';
 import Layout from './components/layout/Layout';
