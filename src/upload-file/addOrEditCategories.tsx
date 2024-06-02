@@ -1,29 +1,33 @@
-import { useContext, useState } from "react";
+import { MouseEventHandler, useContext, useState } from "react";
 import { Button, Col, FloatingLabel, Form, Modal, Row } from "react-bootstrap";
 import {addCategory} from './StudyRepository'
 import { CategoryContext } from './CategoryContext';
 
 import { Category } from './Category';
+import { StudyMaterial } from "../study-material/StudyMaterial";
+import {StudyMaterialContext} from "../study-material/StudyMaterialContext";
 
-const AddEditCategories =(categories:Category[] | null )=>{
-    const [showAddEdit, setShowAddEdit] = useState(true);
-    const handleCloseAddEdit = () => setShowAddEdit(false);
-    const handleShowAddEdit = () => setShowAddEdit(true);
+interface YourComponentProps {
+    categories: Category[] | null;
+    studyMaterial: StudyMaterial[] | null;
+    handleCloseAddEdit: () => void;
+    handleShowAddEdit: () => void;
+  }
+
+const AddEditCategories: React.FC<YourComponentProps>=({categories,studyMaterial,handleCloseAddEdit,handleShowAddEdit})=>{
+
     const [category, setCategory] = useState({category:''});
     const [editingItem, setEditingItem] = useState(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    // const categoryRepository=useContext(CategoryContext);
-    // const categoryRepository = useContext(CategoryContext)
+    const studyMaterialRepository = useContext(StudyMaterialContext);
+    const categoryRepository=useContext(CategoryContext);
+
     
   
     
     
       
     
-      if (loading) {
-        return <div>Loading...</div>;
-      }
-
+     
 
     const handleInputCategories = (event: any) => {
         setCategory(prevData => ({ ...prevData, category: event.target.value }));
@@ -37,7 +41,7 @@ const AddEditCategories =(categories:Category[] | null )=>{
     };
 
     const handleEditItem = (item:any) => {
-        console.log('New value for ${item}:');
+        console.log("New value for ${item}:",item);
         setEditingItem(item);
       };
 
@@ -51,39 +55,64 @@ const AddEditCategories =(categories:Category[] | null )=>{
 
     };
 
-  
+   
+
+    const handleDeleteCategory = (item:Category) => {
+        categories?.forEach((index)=>{
+            if(index.category === item.category){
+                categoryRepository.delete(item.id);
+            }
+        });
+        // let study:<StudyMaterial>
+        
+    
+        studyMaterial?.forEach((index)=>{
+            if(index.category === item.category){
+                const study :StudyMaterial={
+                    category:"",
+                    date:index.date,        
+                    description:index.description,
+                    filename:index.filename,
+                    id:index.id,
+                    title:index.title
+                    
+                };
+                studyMaterialRepository.update(index.id,study);
+            }
+        });
+
+    };
+
     return(
         <>
-           <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
-                <Modal.Header closeButton>
-                    <Modal.Title>הוספה/שינוי</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Row className="mb-3">
-                        <Form.Group
+            <Modal.Header closeButton>
+                <Modal.Title>הוספה/שינוי</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Row className="mb-3">
+                    <Form.Group
                         as={Col}
                         controlId="validationCustom01"
                         className="position-relative "
-                        >
-                        <FloatingLabel
-                            controlId="floatingInput"
-                            label="כותרת"
-                        >
-                            <Form.Control
-                            type="text"
-                            name='title'
-                            required
-                            placeholder="כותרת"
-                            onChange={event => handleInputCategories(event)}
-                            />
-                        </FloatingLabel>
+                    >
+                    <FloatingLabel
+                        controlId="floatingInput"
+                        label="כותרת"
+                    >
+                    <Form.Control
+                        type="text"
+                        name='title'
+                        required
+                        placeholder="כותרת"
+                        onChange={event => handleInputCategories(event)}
+                    />
+                    </FloatingLabel>
+                        </Form.Group>
+                            <Form.Group as={Col} md="3" className=' mt-2 px-3' controlId="validationCustom02">
+                            <Button onClick={addCategories}>הוספה</Button>
                         </Form.Group>
 
-                        <Form.Group as={Col} md="3" className=' mt-2 px-3' controlId="validationCustom02">
-                        <Button onClick={addCategories}>הוספה</Button>
-                        </Form.Group>
-
-                    </Row>
+                </Row>
                     <Modal.Footer className="modal-footer-scroll">
                         {(categories || []).map((item) => (
                         <Row className="px-3" key={item.category}>
@@ -103,22 +132,21 @@ const AddEditCategories =(categories:Category[] | null )=>{
                             </Form.Group>
 
                             <Form.Group as={Col} md="2" className=' mt-2' controlId="validationCustom02">
-                            <Button onClick={() => handleEditItem(item)}>שינוי</Button>
+                            <Button onClick={() => handleEditItem(item.category)}>שינוי</Button>
                             </Form.Group>
                             <Form.Group as={Col} md="2" className=' mt-2' controlId="validationCustom02">
-                            <Button variant='danger' onClick={handleEditItem}>מחיקה</Button>
+                            <Button variant='danger' onClick={() => handleDeleteCategory(item)}>מחיקה</Button>
                             </Form.Group>
                         </Row>
                         ))}
 
                     </Modal.Footer>
-                </Modal.Body>
-                <Modal.Footer className='justify-content-center'>
+            </Modal.Body>
+            <Modal.Footer className='justify-content-center'>
                 <Button variant="secondary" className=' px-5' onClick={handleCloseAddEdit}>
                     סגירה
                 </Button>
-                </Modal.Footer>
-            </Modal>
+            </Modal.Footer>
         </>
 
     );

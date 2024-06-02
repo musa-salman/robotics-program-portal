@@ -24,19 +24,15 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose,ha
   const [file, setFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [selectedItem, setSelectedItems] = useState<SelectedItem>('מיקןם הפיל');
-  const [allStudyMaterial,setAllStudyMaterial] =useState<StudyMaterial[]>();
+  const [allStudyMaterial,setAllStudyMaterial] =useState<StudyMaterial[]| null>(null);
   const [categories, setCategories] = useState<Category[] |null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  // const [show, setShow] = useState(false);
-  // const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
   const [showAddEdit, setShowAddEdit] = useState(false);
   const handleCloseAddEdit = () => setShowAddEdit(false);
   const handleShowAddEdit = () => setShowAddEdit(true);
   const categoryRepository = useContext(CategoryContext);
   const studyMaterialRepository = useContext(StudyMaterialContext);
-  const [editingItem, setEditingItem] = useState(null);
-  
+
 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
     filename: "",
@@ -47,8 +43,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose,ha
     date: new Date(),
   });
   const storageService = useContext(StorageServiceContext);
-
-
 
   const getCategory = async () => {
     try {
@@ -82,42 +76,9 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose,ha
   }, [categories]);
 
   
-
   if (loading) {
     return <div>Loading...</div>;
   }
-
-  const handleInputCategories = (event: any) => {
-    setStudyMaterial(prevData => ({ ...prevData, category: event.target.value }));
-  };
-
-  const addCategory = async () => {
-
-    categoryRepository.create({ category: studyMaterial.category });
-    // categories?.push(studyMaterial.category);
-    setCategories(categories);
-  };
-
-  const gotoChilde =()=>{
-   
-    AddEditCategories(categories);
-  }
-
-
-  const handleEditItem = (item:any) => {
-    console.log('New value for ${item}:');
-    setEditingItem(item);
-  };
-
-  // const handleEditInput = (event: any,item:any) => {
-  //   allCategories?.forEach((index)=>{
-  //     console.log(index.category);
-  //   });
-  //   console.log(allCategories);
-  //   console.log(allStudyMaterial);
-
-
-  // };
 
   const handleSelect = (eventKey: string | null) => {
     if (eventKey) {
@@ -160,7 +121,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose,ha
     }
     console.log(studyMaterial)
     handleClose();
-    // handleDate();
+    handleDate();
 
   };
 
@@ -221,7 +182,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose,ha
                         </NavDropdown.Item>
                       ))}
 
-                      <Button variant="link" onClick={() =>AddEditCategories(categories)}>הוספה/שינוי</Button>
+                      <Button variant="link" onClick={handleShowAddEdit}>הוספה/שינוי</Button>
                   
                   </div>  
 
@@ -254,76 +215,11 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose,ha
       
 
       <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
-          {/* <AddEditCategories categories={categories}></AddEditCategories> */}
+          <AddEditCategories categories={categories} studyMaterial={allStudyMaterial} handleCloseAddEdit={handleCloseAddEdit} handleShowAddEdit={handleShowAddEdit} ></AddEditCategories>
 
       </Modal>
 
-      {/* <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
-        <Modal.Header closeButton>
-          <Modal.Title>הוספה/שינוי</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Row className="mb-3">
-            <Form.Group
-              as={Col}
-              controlId="validationCustom01"
-              className="position-relative "
-            >
-              <FloatingLabel
-                controlId="floatingInput"
-                label="כותרת"
-              >
-                <Form.Control
-                  type="text"
-                  name='title'
-                  required
-                  placeholder="כותרת"
-                  onChange={event => handleInputCategories(event)}
-                />
-              </FloatingLabel>
-            </Form.Group>
-
-            <Form.Group as={Col} md="3" className=' mt-2 px-3' controlId="validationCustom02">
-              <Button onClick={addCategories}>הוספה</Button>
-            </Form.Group>
-
-          </Row>
-          <Modal.Footer className="modal-footer-scroll">
-            {(categories || []).map((item) => (
-              <Row className="px-3" key={item}>
-                <Form.Group
-                  as={Col}
-                  controlId="validationCustom01"
-                  className="position-relative "
-                >
-                  <Form.Control
-                    type="text"
-                    name='title'
-                    defaultValue={item}
-                    required
-                    disabled={editingItem !== item}
-                    onChange={event => handleEditInput(event,item)}
-                  />
-                </Form.Group>
-
-                <Form.Group as={Col} md="2" className=' mt-2' controlId="validationCustom02">
-                  <Button onClick={() => handleEditItem(item)}>שינוי</Button>
-                </Form.Group>
-                <Form.Group as={Col} md="2" className=' mt-2' controlId="validationCustom02">
-                  <Button variant='danger' onClick={handleEditItem}>מחיקה</Button>
-                </Form.Group>
-              </Row>
-            ))}
-
-          </Modal.Footer>
-        </Modal.Body>
-        <Modal.Footer className='justify-content-center'>
-          <Button variant="secondary" className=' px-5' onClick={handleCloseAddEdit}>
-            סגירה
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
-
+      
     </>
   );
 
