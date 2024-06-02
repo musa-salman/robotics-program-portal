@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Form, Button, Card, Alert, FloatingLabel } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from './AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { useAuth } from './useAuth';
 
+/**
+ * Renders the login component.
+ * Allows users to log in to the system using email and password, or Google.
+ */
 export default function Login() {
-  const emailRef = React.useRef<HTMLInputElement>(null);
-  const passwordRef = React.useRef<HTMLInputElement>(null);
-  const {
-    loginWithEmailAndPassword: loginWithEmailAndPassword,
-    loginWithGoogle: LoginWithGoogle
-  } = useAuth();
+  const { authService } = useAuth();
+
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  const [warning, setWarning] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -26,19 +30,16 @@ export default function Login() {
       password: passwordRef.current?.value || ''
     };
 
-    try {
-      await loginWithEmailAndPassword(
-        creds,
-        () => navigate('/dashboard'),
-        (reason: string): void => {
-          setError(reason);
-        }
-      );
-    } catch {
-      setError('.כניסה נכשלה, נסה שוב');
-    }
-
-    setLoading(false);
+    authService
+      .loginWithEmailAndPassword(creds)
+      .then(() => {
+        navigate('/dashboard');
+        setLoading(false);
+      })
+      .catch(() => {
+        setError('כניסה נכשלה, נסה שוב.');
+        setLoading(false);
+      });
   }
 
   return (
@@ -48,34 +49,35 @@ export default function Login() {
           <h2 className="mb-4">כניסה למערכת</h2>
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
-              <FloatingLabel
-                controlId="floatingInput"
-                label='דוא"ל'
-                className="mb-3">
-                <Form.Control
-                  type="email"
-                  placeholder='דוא"ל'
-                  ref={emailRef}
-                  required
-                />
+              <FloatingLabel controlId="floatingInput" label='דוא"ל' className="mb-3">
+                <Form.Control type="email" placeholder='דוא"ל' ref={emailRef} required />
               </FloatingLabel>
             </Form.Group>
-            <Form.Group id="password">
-              <FloatingLabel controlId="floatingPassword" label="סיסמה">
-                <Form.Control
-                  type="password"
-                  placeholder="סיסמה"
-                  ref={passwordRef}
-                  required
-                />
-              </FloatingLabel>
-            </Form.Group>
+
+            <Form.Control
+              type="password"
+              placeholder="סיסמה"
+              onKeyDown={(event) => {
+                if (event.getModifierState('CapsLock')) {
+                  setWarning('כפתור הנעילה על אותיות גדולות מופעל');
+                } else {
+                  setWarning('');
+                }
+              }}
+              ref={passwordRef}
+              required
+            />
             <Button disabled={loading} className="w-100 mt-3" type="submit">
               התחבר/י
             </Button>
             {error && (
               <Alert variant="danger" className="mt-3">
                 {error}
+              </Alert>
+            )}
+            {warning && (
+              <Alert variant="warning" className="mt-3">
+                {warning}
               </Alert>
             )}
             <hr />
@@ -88,10 +90,16 @@ export default function Login() {
                 justifyContent: 'center'
               }}
               onClick={() =>
-                LoginWithGoogle(
-                  () => navigate('/dashboard'),
-                  (reason: string) => setError(reason)
-                )
+                authService
+                  .loginWithGoogle()
+                  .then(() => {
+                    navigate('/dashboard');
+                    setLoading(false);
+                  })
+                  .catch(() => {
+                    setError('כניסה נכשלה, נסה שוב.');
+                    setLoading(false);
+                  })
               }
               className="w-100 mt-3 mr-4">
               <FontAwesomeIcon icon={faGoogle} className="ms-2" />

@@ -18,13 +18,16 @@ import { IRead } from './interfaces/IRead';
 import { IWrite } from './interfaces/IWrite';
 import { createConverter } from '../utils/db/firestoreDataConverter';
 
+/**
+ * Represents a base repository class that provides common CRUD operations for a specific collection in Firestore.
+ *
+ * @template T - The type of the data stored in the collection.
+ */
 export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
   public readonly _collection: CollectionReference<T, DocumentData>;
 
   constructor(db: Firestore, collectionPath: string) {
-    this._collection = collection(db, collectionPath).withConverter(
-      createConverter<T>()
-    );
+    this._collection = collection(db, collectionPath).withConverter(createConverter<T>());
   }
 
   async find(): Promise<T[]> {
@@ -33,25 +36,17 @@ export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
   }
 
   async findOne(id: string): Promise<T | null> {
-    return getDoc(doc(this._collection, id)).then((docSnap) =>
-      docSnap.exists() ? (docSnap.data() as T) : null
-    );
+    return getDoc(doc(this._collection, id)).then((docSnap) => (docSnap.exists() ? (docSnap.data() as T) : null));
   }
 
-  async create(
-    item: PartialWithFieldValue<T>
-  ): Promise<DocumentReference<T, DocumentData>> {
-    return addDoc(
-      this._collection,
-      item as WithFieldValue<T> & AddPrefixToKeys<string, any>
-    );
+  async create(item: PartialWithFieldValue<T>): Promise<DocumentReference<T, DocumentData>> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return addDoc(this._collection, item as WithFieldValue<T> & AddPrefixToKeys<string, any>);
   }
 
   async update(id: string, item: PartialWithFieldValue<T>): Promise<void> {
-    return updateDoc(
-      doc(this._collection, id),
-      item as WithFieldValue<T> & AddPrefixToKeys<string, any>
-    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return updateDoc(doc(this._collection, id), item as WithFieldValue<T> & AddPrefixToKeys<string, any>);
   }
 
   async delete(id: string): Promise<void> {

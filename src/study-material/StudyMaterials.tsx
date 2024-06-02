@@ -35,15 +35,11 @@ function StudyMaterials({
   );
 
   const handleDownload = async () => {
-    storageService.download(
-      '/study-material/' + studyMaterial.id + '-' + studyMaterial.filename
-    );
+    storageService.download('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename);
   };
 
   const handleDelete = async () => {
-    storageService.delete(
-      '/study-material/' + studyMaterial.id + '-' + studyMaterial.filename
-    );
+    storageService.delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename);
   };
 
   const handleEditToggle = () => {

@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
-import {
-  Form,
-  Button,
-  Card,
-  Alert,
-  FloatingLabel,
-  Modal
-} from 'react-bootstrap';
-import { useAuth } from './AuthContext';
+import { useRef, useState } from 'react';
+import { Form, Button, Card, Alert, FloatingLabel, Modal } from 'react-bootstrap';
+import { useAuth } from './useAuth';
 
+/**
+ * Renders a component for password recovery.
+ *
+ * @returns JSX.Element
+ */
 export default function ForgetPassword() {
-  const emailRef = React.useRef<HTMLInputElement>(null);
-  const { generatePasswordResetLink: generatePasswordResetLink } = useAuth();
+  const emailRef = useRef<HTMLInputElement>(null);
+  const { authService } = useAuth();
   const [error, setError] = useState('');
 
   const [isSuccess, setIsSuccess] = useState(false);
@@ -25,19 +23,13 @@ export default function ForgetPassword() {
     setError('');
     setLoading(true);
 
-    try {
-      await generatePasswordResetLink(
-        emailRef.current!.value,
-        () => {
-          setIsSuccess(true);
-        },
-        (reason: string) => {
-          setError(reason);
-        }
-      );
-    } catch {
-      setError('.כניסה נכשלה, נסה שוב');
-    }
+    authService
+      .generatePasswordResetLink(emailRef.current!.value)
+      .then(() => setIsSuccess(true))
+      .catch((reason) => {
+        setError('שליחת הקישור נכשלה, נסה שוב.');
+        console.error(reason);
+      });
 
     setLoading(false);
   }
@@ -61,16 +53,8 @@ export default function ForgetPassword() {
           <p>הזן את הדוא"ל שלך ונשלח לך קישור לאיפוס סיסמה</p>
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
-              <FloatingLabel
-                controlId="floatingInput"
-                label='דוא"ל'
-                className="mb-3">
-                <Form.Control
-                  type="email"
-                  placeholder='דוא"ל'
-                  ref={emailRef}
-                  required
-                />
+              <FloatingLabel controlId="floatingInput" label='דוא"ל' className="mb-3">
+                <Form.Control type="email" placeholder='דוא"ל' ref={emailRef} required />
               </FloatingLabel>
             </Form.Group>
             <Button disabled={loading} className="w-100 mt-3" type="submit">
