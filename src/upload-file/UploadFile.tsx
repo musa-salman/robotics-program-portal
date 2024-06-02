@@ -10,8 +10,8 @@ import { CategoryContext } from './CategoryContext';
 import { Category } from './Category';
 import { StudyMaterialContext } from '../study-material/StudyMaterialContext';
 import { StudyMaterial } from '../study-material/StudyMaterial';
-import { StorageServiceContext } from '../storage-service/StorageServiceContext';
 import { AddEditCategories } from './addOrEditCategories';
+import { StorageServiceContext } from '../storage-service/StorageContext';
 
 type SelectedItem = string;
 interface UploadFileComponentProps {
@@ -34,18 +34,17 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
 
 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
-    filename: "",
-    id: "",
-    category: "",
-    title: "",
-    description: "",
-    date: new Date(),
+    filename: '',
+    id: '',
+    category: '',
+    title: '',
+    description: '',
+    date: new Date()
   });
   const storageService = useContext(StorageServiceContext);
 
   const getCategory = async () => {
     try {
-
       const data: Category[] = await categoryRepository.find();
       setCategories(data); 
 
@@ -59,7 +58,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
   }
 
   useEffect(() => {
-
     if (loading && categories === null) {
       getCategory();
       getStudyMaterial();
@@ -77,36 +75,35 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
   const handleSelect = (eventKey: string | null) => {
     if (eventKey) {
       setSelectedItems(eventKey);
-      setStudyMaterial(prevData => ({ ...prevData, category: eventKey }));
+      setStudyMaterial((prevData) => ({ ...prevData, category: eventKey }));
     }
   };
 
   const handleInput = (event: any) => {
     const { name, value } = event.target;
-    setStudyMaterial(prevData => ({ ...prevData, [name]: value }));
+    setStudyMaterial((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleDate = () => {
     const currentTime = new Date();
-    setStudyMaterial(prevData => ({ ...prevData, date: currentTime }));
+    setStudyMaterial((prevData) => ({ ...prevData, date: currentTime }));
   };
-
 
   const handleFileChange = (event: any) => {
     try {
       if (event.target.files && event.target.files[0]) {
-        setStudyMaterial(prevData => ({ ...prevData, filename: event.target.files[0].name }));
+        setStudyMaterial((prevData) => ({
+          ...prevData,
+          filename: event.target.files[0].name
+        }));
         setFile(event.target.files[0]);
-
       }
     } catch (error: any) {
       console.error('error handling file change', error);
     }
   };
 
-
   const handleSubmit = async () => {
-
     const docRef = await studyMaterialRepository.create(studyMaterial);
 
     if (file) {
@@ -116,7 +113,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
     console.log(studyMaterial)
     handleClose();
     handleDate();
-
   };
 
   return (

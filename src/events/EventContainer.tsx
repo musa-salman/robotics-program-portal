@@ -6,9 +6,9 @@ import { IEvent } from './Event';
 
 type EventContainer = {
   eventsProps: EventProps[];
-}
+};
 
-const EventContainer= () => {
+const EventContainer = () => {
   const [firstVisibleEventIndex, setFirstVisibleEventIndex] = useState(0);
   const [events, setEvents] = useState<EventProps[] | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -70,7 +70,7 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
   };
 
   const handleShiftEventsLeft = () => {
-    setFirstVisibleEventIndex(prevIndex => {
+    setFirstVisibleEventIndex((prevIndex) => {
       if (prevIndex === 0) {
         return 0; // Keep the index at 0 if it's already at 0
       }
@@ -83,8 +83,8 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     title: '', // Provide initial value for title
     details: '', // Provide initial value for details
     image: 'Robtics.png', // Provide initial value for image
-    onEventDelete: (_id: string) => { }, // Change the parameter type from '_id: string' to 'id: number'
-    onEventEdit: (_event: EventProps) => { },
+    onEventDelete: (_id: string) => {}, // Change the parameter type from '_id: string' to 'id: number'
+    onEventEdit: (_event: EventProps) => {},
     id: '' // Provide initial value for id
   });
 
@@ -111,11 +111,8 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
           <Modal.Header closeButton>
             <Modal.Title>הוסף אירוע</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            {addForm()}
-          </Modal.Body>
-          <Modal.Footer>
-          </Modal.Footer>
+          <Modal.Body>{addForm()}</Modal.Body>
+          <Modal.Footer></Modal.Footer>
         </Modal>
       </>
     );
@@ -128,7 +125,7 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const value = e.target.value;
       if (value.length <= MAX_CHARS_Details) {
-        setFormData(prevState => ({ ...prevState, details: value }));
+        setFormData((prevState) => ({ ...prevState, details: value }));
         setCharCountDetails(value.length);
       }
     };
@@ -139,65 +136,72 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const value = e.target.value;
       if (value.length <= MAX_CHARS_Title) {
-        setFormData(prevState => ({ ...prevState, title: value }));
+        setFormData((prevState) => ({ ...prevState, title: value }));
         setCharCountTitle(value.length);
       }
     };
 
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData(prevState => ({ ...prevState, date: e.target.value }));
+      setFormData((prevState) => ({ ...prevState, date: e.target.value }));
     };
-  
+
     const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setFormData(prevState => ({ ...prevState, image: e.target.value }));
+      setFormData((prevState) => ({ ...prevState, image: e.target.value }));
     };
-  
 
     return (
       <Form onSubmit={handleSaveAdd}>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label>כותרת</Form.Label>
-        <Form.Control
-          required type="text"
-          placeholder="שם אירוע"
-          onChange={handleTitleChange}
-          maxLength={MAX_CHARS_Title} // Set the maximum length of the textarea
-        />
-      <small>{formData.title.length}/{MAX_CHARS_Title} אותיות</small> {/* Display the character count */}
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label>תאריך</Form.Label>
-        <Form.Control required type="date" placeholder="יום /חודש /שנה" onChange={handleDateChange} />
-      </Form.Group>
-      <Form.Group controlId="formFile" className="mb-3">
-        <Form.Label>העלאת תמונה</Form.Label>
-        <Form.Control type="file" onChange={handleImageChange} />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-        <Form.Label>פרטים</Form.Label>
-        <Form.Control
-          required as="textarea"
-          rows={3}
-          placeholder="פרטי האירוע"
-          onChange={handleDetailsChange}
-          maxLength={MAX_CHARS_Details} // Set the maximum length of the textarea
-        />
-        <small>{formData.details.length}/{MAX_CHARS_Details} אותיות</small> {/* Display the character count */}
-      </Form.Group>
-      <div style={{ display: 'flex', gap: '10px' }}>
-        <Button variant="secondary" onClick={handleClose}>
-          סגור    
-        </Button>
-        <Button variant="primary" type="submit">
-          הוסף
-        </Button>
-      </div>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+          <Form.Label>כותרת</Form.Label>
+          <Form.Control
+            required
+            type="text"
+            placeholder="שם אירוע"
+            onChange={handleTitleChange}
+            maxLength={MAX_CHARS_Title} // Set the maximum length of the textarea
+          />
+          <small>
+            {formData.title.length}/{MAX_CHARS_Title} אותיות
+          </small>{' '}
+          {/* Display the character count */}
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+          <Form.Label>תאריך</Form.Label>
+          <Form.Control required type="date" placeholder="יום /חודש /שנה" onChange={handleDateChange} />
+        </Form.Group>
+        <Form.Group controlId="formFile" className="mb-3">
+          <Form.Label>העלאת תמונה</Form.Label>
+          <Form.Control type="file" onChange={handleImageChange} />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+          <Form.Label>פרטים</Form.Label>
+          <Form.Control
+            required
+            as="textarea"
+            rows={3}
+            placeholder="פרטי האירוע"
+            onChange={handleDetailsChange}
+            maxLength={MAX_CHARS_Details} // Set the maximum length of the textarea
+          />
+          <small>
+            {formData.details.length}/{MAX_CHARS_Details} אותיות
+          </small>{' '}
+          {/* Display the character count */}
+        </Form.Group>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <Button variant="secondary" onClick={handleClose}>
+            סגור
+          </Button>
+          <Button variant="primary" type="submit">
+            הוסף
+          </Button>
+        </div>
       </Form>
     );
   }
 
   return (
-    <div className='events'>
+    <div className="events">
       <div className="eventsContainer">
         <Button variant="primary" onClick={handleShiftEventsRight}>&lt;</Button>
           {(events || []).slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
@@ -213,7 +217,9 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
           ))}
           <Button variant="primary" onClick={handleShiftEventsLeft}>&gt;</Button>
       </div>
-        <Button variant="success" onClick={handleAddEvent}>הוסף אירוע</Button>
+      <Button variant="success" onClick={handleAddEvent}>
+        הוסף אירוע
+      </Button>
       {addWindow()}
     </div>
   );
