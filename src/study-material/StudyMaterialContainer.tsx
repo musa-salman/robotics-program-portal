@@ -53,7 +53,7 @@ function StudyMaterialContainer() {
                 </Card>
             ))}
             <Modal show={show} onHide={handleClose} >
-                <UploadFileComponent handleClose={handleClose} handleShow={handleShow}></UploadFileComponent>
+                <UploadFileComponent handleClose={handleClose} ></UploadFileComponent>
             </Modal>
         </>
     );

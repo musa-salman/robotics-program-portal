@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Modal from 'react-bootstrap/Modal';
 import { useContext, useEffect, useState } from 'react';
-import { Container, Nav, NavDropdown, Navbar, Row } from 'react-bootstrap';
+import { Container, Nav, NavDropdown, Navbar} from 'react-bootstrap';
 import "./UploadFile.css"
 import { CategoryContext } from './CategoryContext';
 import { Category } from './Category';
@@ -14,15 +14,14 @@ import { StorageServiceContext } from '../storage-service/StorageServiceContext'
 import { AddEditCategories } from './addOrEditCategories';
 
 type SelectedItem = string;
-var categoryContanir:Category []| null;
 interface UploadFileComponentProps {
   handleClose: () => void;
-  handleShow: () => void;
+
 }
 
-const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose,handleShow}) => {
+const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) => {
   const [file, setFile] = useState<File | null>(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [, setUploadProgress] = useState(0);
   const [selectedItem, setSelectedItems] = useState<SelectedItem>('מיקןם הפיל');
   const [allStudyMaterial,setAllStudyMaterial] =useState<StudyMaterial[]| null>(null);
   const [categories, setCategories] = useState<Category[] |null>(null);
@@ -48,12 +47,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose,ha
     try {
 
       const data: Category[] = await categoryRepository.find();
-      setCategories(data);
-      // const dataString: string[] = data.map(category => (category.category));
-      // console.log("data " + dataString[0]);
-      // setCategories(dataString);
-      
-      
+      setCategories(data); 
 
     } catch (error) {
       console.error('Error fetching items:', error);
@@ -215,7 +209,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose,ha
       
 
       <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
-          <AddEditCategories categories={categories} studyMaterial={allStudyMaterial} handleCloseAddEdit={handleCloseAddEdit} handleShowAddEdit={handleShowAddEdit} ></AddEditCategories>
+          <AddEditCategories categories={categories} studyMaterial={allStudyMaterial} handleCloseAddEdit={handleCloseAddEdit} ></AddEditCategories>
 
       </Modal>
 

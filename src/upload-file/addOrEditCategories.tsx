@@ -1,8 +1,6 @@
-import { MouseEventHandler, useContext, useState } from "react";
+import {  useContext, useState } from "react";
 import { Button, Col, FloatingLabel, Form, Modal, Row } from "react-bootstrap";
-import {addCategory} from './StudyRepository'
 import { CategoryContext } from './CategoryContext';
-
 import { Category } from './Category';
 import { StudyMaterial } from "../study-material/StudyMaterial";
 import {StudyMaterialContext} from "../study-material/StudyMaterialContext";
@@ -11,23 +9,16 @@ interface YourComponentProps {
     categories: Category[] | null;
     studyMaterial: StudyMaterial[] | null;
     handleCloseAddEdit: () => void;
-    handleShowAddEdit: () => void;
+    
   }
 
-const AddEditCategories: React.FC<YourComponentProps>=({categories,studyMaterial,handleCloseAddEdit,handleShowAddEdit})=>{
+const AddEditCategories: React.FC<YourComponentProps>=({categories,studyMaterial,handleCloseAddEdit})=>{
 
     const [category, setCategory] = useState({category:''});
     const [editingItem, setEditingItem] = useState(null);
     const studyMaterialRepository = useContext(StudyMaterialContext);
     const categoryRepository=useContext(CategoryContext);
 
-    
-  
-    
-    
-      
-    
-     
 
     const handleInputCategories = (event: any) => {
         setCategory(prevData => ({ ...prevData, category: event.target.value }));
@@ -46,13 +37,10 @@ const AddEditCategories: React.FC<YourComponentProps>=({categories,studyMaterial
       };
 
     const handleEditInput = (event: any,item:any) => {
-    categories?.forEach((index)=>{
-        console.log(index.category);
-    });
-    console.log(categories);
- 
-
-
+        categories?.forEach((index)=>{
+            console.log(index.category);
+        });
+        console.log(categories);
     };
 
    
@@ -63,9 +51,7 @@ const AddEditCategories: React.FC<YourComponentProps>=({categories,studyMaterial
                 categoryRepository.delete(item.id);
             }
         });
-        // let study:<StudyMaterial>
-        
-    
+
         studyMaterial?.forEach((index)=>{
             if(index.category === item.category){
                 const study :StudyMaterial={
