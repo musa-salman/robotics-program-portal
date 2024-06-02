@@ -18,6 +18,13 @@
   box-shadow: 0px 4px 20px 3px rgba(33, 32, 33, 0.69);
 }
 
+.btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15rem;
+}
+
 .button {
   width: 10em;
   background-color: rgb(32, 124, 205);

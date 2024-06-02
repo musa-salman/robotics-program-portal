@@ -71,7 +71,6 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
 
   const eventRepository = useContext(EventContext);
 
-
   function handleDelete() {
     handleShowDelete();
   }

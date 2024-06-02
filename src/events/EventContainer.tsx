@@ -20,25 +20,25 @@ const EventContainer = () => {
 
   useEffect(() => {
     const getEvents = async () => {
-      setEvents( convertIEventsToEventProps (await eventRepository.find()));
+      setEvents(convertIEventsToEventProps(await eventRepository.find()));
     };
     console.log(events);
-   if (events === null)getEvents();
-}, [events]);
-console.log(events);
-function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
-  return events.map(event => {
-    return {
-      date: event.date,
-      title: event.title,
-      details: event.details,
-      image: event.imageURL,
-      id: event.id,
-      onEventDelete: onEventDelete,
-      onEventEdit: onEventEdit
-    };
-  });
-}
+    if (events === null) getEvents();
+  }, [events]);
+  console.log(events);
+  function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
+    return events.map((event) => {
+      return {
+        date: event.date,
+        title: event.title,
+        details: event.details,
+        image: event.imageURL,
+        id: event.id,
+        onEventDelete: onEventDelete,
+        onEventEdit: onEventEdit
+      };
+    });
+  }
 
   function onEventDelete(id: string) {
     setEvents((events || []).filter((e) => e.id !== id));
@@ -87,7 +87,6 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     onEventEdit: (_event: EventProps) => {},
     id: '' // Provide initial value for id
   });
-
 
   const event: IEvent = {
     date: formData.date,

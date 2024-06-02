@@ -32,7 +32,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
   const categoryRepository = useContext(CategoryContext);
   const studyMaterialRepository = useContext(StudyMaterialContext);
 
-
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
     filename: '',
     id: '',
@@ -134,7 +133,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
           >
             <Form.Control
               type="text"
-              name='title'
+              name="title"
               required
               placeholder="כותרת"
               onChange={event => handleInput(event)}
@@ -143,13 +142,13 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
           <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group className="position-relative my-3 " controlId='validationCustom02'>
+        <Form.Group className="choosFileMain" controlId="validationCustom02">
           <Form.Control
             type="file"
             required
             name="filename"
-            className="position-relative my-4 "
-            onChange={event => handleFileChange(event)}
+            className="lable-chooseFile"
+            onChange={(event) => handleFileChange(event)}
           />
         </Form.Group>
 
@@ -176,28 +175,44 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
                   
                   </div>  
 
+                    <Button
+                      className="BtnInList"
+                      variant="link"
+                      onClick={() => AddEditCategories(categories)}>
+                      הוספה/שינוי
+                    </Button>
+                  </div>
                 </NavDropdown>
               </Nav>
-              <span className='px-4'  >{selectedItem}</span>
+              <span className="chooseFile">{selectedItem}</span>
             </Navbar.Collapse>
           </Container>
         </Navbar>
 
-        <FloatingLabel className='my-3' controlId="floatingTextarea1" label="תיאור">
+        <FloatingLabel
+          className="description-lable"
+          controlId="floatingTextarea1"
+          label="תיאור">
           <Form.Control
             as="textarea"
             name="description"
             placeholder="Leave a comment here"
-            onChange={event => handleInput(event)}
-            style={{ height: '100px' }}
+            onChange={(event) => handleInput(event)}
+            // style={{ height: '100px' }}
           />
         </FloatingLabel>
 
-        <Modal.Footer className='justify-content-center'>
-          <Button variant="primary" className='mx-3 px-5' onClick={handleSubmit}>
+        <Modal.Footer className="btn">
+          <Button
+            variant="primary"
+            className="uploadBtn"
+            onClick={handleSubmit}>
             העלה
           </Button>
-          <Button variant="secondary" className='mx-5 px-5' onClick={handleClose}>
+          <Button
+            variant="secondary"
+            className="closeBtn"
+            onClick={handleClose}>
             סגירה
           </Button>
         </Modal.Footer>

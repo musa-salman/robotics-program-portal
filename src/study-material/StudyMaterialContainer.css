@@ -4,7 +4,7 @@
     width: 100%;
     background-color: transparent;
     display: flex;
-    min-width: 50rem;
+    min-width: 70vw;
     margin-bottom: 50px;
 }
 
@@ -12,6 +12,7 @@
 .body {
     display: flex;
     flex-direction: column;
+
 }
 
 
@@ -31,12 +32,16 @@
 }
 
 .add-button {
-    background: url('/plus.png') no-repeat center center;
-    background-size: contain;
+    /* background: url('/plus.png') no-repeat center center; */
     width: 30px;
     height: 30px;
     border: none;
     cursor: pointer;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
 
 }
 
