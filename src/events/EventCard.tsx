@@ -1,12 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { EventContext } from './EventContext';
 import { Button, Card, Dropdown, Modal, Form } from 'react-bootstrap';
-
-import './EventCard.css';
 import { IEvent } from './Event';
+import './EventCard.css';
+import moment from 'moment';
+
 
 export interface EventProps {
-  date: string;
+  date: Date;
   title: string;
   details: string;
   image: string;
@@ -49,7 +50,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevState) => ({ ...prevState, date: e.target.value }));
+    setFormData(prevState => ({ ...prevState, date: e.target.valueAsDate! }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -166,7 +167,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>תאריך</Form.Label>
-          <Form.Control type="date" defaultValue={date} onChange={handleDateChange} />
+          <Form.Control type="date" defaultValue={moment(date).format('YYYY-MM-DD')} onChange={handleDateChange} />
         </Form.Group>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>העלאת תמונה</Form.Label>
@@ -250,12 +251,8 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
       <Card.Body>
         <Card.Title>{title}</Card.Title>
         <Card.Text>
-          <p>
-            <strong>תאריך:</strong> {date}
-          </p>
-          <p>
-            <strong>פרטים:</strong> {details}
-          </p>
+          <p><strong>תאריך:</strong> {moment(date).format('YYYY-MM-DD')}</p>
+          <p><strong>פרטים:</strong> {details}</p>
         </Card.Text>
         {registerd ? (
           <Button variant="secondary" disabled>
