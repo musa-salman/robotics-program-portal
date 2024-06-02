@@ -8,10 +8,7 @@ interface SearchBarProps {
   onSearchResults: (results: StudyMaterial[]) => void;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({
-  studyMaterials,
-  onSearchResults
-}) => {
+export const SearchBar: React.FC<SearchBarProps> = ({ studyMaterials, onSearchResults }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const searchText = e.target.value;
     search(searchText);
@@ -29,11 +26,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <div className="Container">
       <FaSearch id="search-icon" />
-      <input
-        placeholder="  חיפוש"
-        onChange={handleChange}
-        aria-label="Search"
-      />
+      <input placeholder="  חיפוש" onChange={handleChange} aria-label="Search" />
     </div>
   );
 };

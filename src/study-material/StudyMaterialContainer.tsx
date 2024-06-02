@@ -38,17 +38,15 @@ function StudyMaterialContainer() {
     setStudyMaterials(updatedMaterials);
   };
 
-  const categories = (studyMaterials || []).map((s) => s.category)
+  const categories = (studyMaterials || [])
+    .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
   console.log(studyMaterials);
 
   return (
     <>
-      <SearchBar
-        studyMaterials={studyMaterials || []}
-        onSearchResults={handleSearchResults}
-      />
+      <SearchBar studyMaterials={studyMaterials || []} onSearchResults={handleSearchResults} />
       {(categories || []).map((category) => (
         <Card className="primary">
           <Card.Header className="Card-Header">
@@ -66,20 +64,14 @@ function StudyMaterialContainer() {
               {(searchResults.length > 0 ? searchResults : studyMaterials || [])
                 .filter((s) => s.category === category)
                 .map((studyMaterial) => (
-                  <StudyMaterials
-                    key={studyMaterial.id}
-                    studyMaterial={studyMaterial}
-                    onUpdate={handleUpdate}
-                  />
+                  <StudyMaterials key={studyMaterial.id} studyMaterial={studyMaterial} onUpdate={handleUpdate} />
                 ))}
             </div>
           </Card.Body>
         </Card>
       ))}
       <Modal show={show} onHide={handleClose}>
-        <UploadFileComponent
-          handleClose={handleClose}
-          handleShow={handleShow}></UploadFileComponent>
+        <UploadFileComponent handleClose={handleClose}></UploadFileComponent>
       </Modal>
     </>
   );

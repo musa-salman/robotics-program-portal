@@ -4,11 +4,7 @@ import './StudyMaterials.css';
 import { useContext, useState } from 'react';
 import { StudyMaterial } from './StudyMaterial';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faFileArrowDown,
-  faTrash,
-  faPenToSquare
-} from '@fortawesome/free-solid-svg-icons';
+import { faFileArrowDown, faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 import moment from 'moment';
 import { StorageServiceContext } from '../storage-service/StorageContext';
@@ -20,19 +16,11 @@ const styles = {
   padding: '5px'
 };
 
-function StudyMaterials({
-  studyMaterial,
-  onUpdate
-}: {
-  studyMaterial: StudyMaterial;
-  onUpdate: Function;
-}) {
+function StudyMaterials({ studyMaterial, onUpdate }: { studyMaterial: StudyMaterial; onUpdate: Function }) {
   const storageService = useContext(StorageServiceContext);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(studyMaterial.title);
-  const [editedDescription, setEditedDescription] = useState(
-    studyMaterial.description
-  );
+  const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
 
   const handleDownload = async () => {
     storageService.download('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename);
@@ -56,18 +44,13 @@ function StudyMaterials({
   };
 
   const momentDate = moment(studyMaterial.date.toDate()).format('DD / MM / YYYY');
-  
 
   return (
     <Card className={'Card'}>
       <Card.Body>
         <div>
           {isEditing ? (
-            <input
-              type="text"
-              value={editedTitle}
-              onChange={(e) => setEditedTitle(e.target.value)}
-            />
+            <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
           ) : (
             <Card.Title style={styles}>{studyMaterial.title}</Card.Title>
           )}
@@ -81,9 +64,7 @@ function StudyMaterials({
               onChange={(e) => setEditedDescription(e.target.value)}
             />
           ) : (
-            <Card.Text style={styles}>
-              {studyMaterial.description || 'תאור קצר על הקובץ'}
-            </Card.Text>
+            <Card.Text style={styles}>{studyMaterial.description || 'תאור קצר על הקובץ'}</Card.Text>
           )}
         </div>
         <p style={styles}> תאריך : {momentDate} </p>
