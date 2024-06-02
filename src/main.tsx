@@ -1,15 +1,15 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
-import ThemeProvider from 'react-bootstrap/esm/ThemeProvider'
-import AuthProvider from './authentication/AuthContext.tsx'
-import { BrowserRouter } from 'react-router-dom'
-import UserProvider from './users/UserContext.tsx'
-import CategoryProvider from './upload-file/CategoryContext.tsx'
-import StudyMaterialProvider from './study-material/StudyMaterialContext.tsx'
-import StorageServiceProvider from './storage-service/StorageServiceContext.tsx'
-import EventProvider from './events/EventContext.tsx'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.tsx';
+import './index.css';
+import ThemeProvider from 'react-bootstrap/esm/ThemeProvider';
+import { BrowserRouter } from 'react-router-dom';
+import UserProvider from './users/UserContext.tsx';
+import CategoryProvider from './upload-file/CategoryContext.tsx';
+import StudyMaterialProvider from './study-material/StudyMaterialContext.tsx';
+import StorageServiceProvider from './storage-service/StorageContext.tsx';
+import EventProvider from './events/EventContext.tsx';
+import { AuthProvider } from './authentication/AuthContext.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -30,5 +30,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </UserProvider>
       </BrowserRouter>
     </ThemeProvider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);

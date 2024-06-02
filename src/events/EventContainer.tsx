@@ -6,13 +6,11 @@ import { IEvent } from './Event';
 // import { StorageServiceContext } from '../storage-service/StorageServiceContext';
 // import { eventContext } from '../event-img/eventContext';
 
-
-
 type EventContainer = {
   eventsProps: EventProps[];
-}
+};
 
-const EventContainer= () => {
+const EventContainer = () => {
   const [firstVisibleEventIndex, setFirstVisibleEventIndex] = useState(0);
   const [events, setEvents] = useState<EventProps[] | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -24,30 +22,28 @@ const EventContainer= () => {
   const eventRepository = useContext(EventContext);
   // const storageService = useContext(StorageServiceContext);
 
-
   useEffect(() => {
     const getEvents = async () => {
-      setEvents( convertIEventsToEventProps (await eventRepository.find()));
+      setEvents(convertIEventsToEventProps(await eventRepository.find()));
     };
-   if (events === null)getEvents();
-}, [events]);
+    if (events === null) getEvents();
+  }, [events]);
 
-function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
-  return events.map(event => {
-    return {
-      date: event.date.toDate(),
-      title: event.title,
-      details: event.details,
-      image: event.imageURL,
-      id: event.id,
-      onEventDelete: onEventDelete,
-      onEventEdit: onEventEdit
-    };
-  });
-}
+  function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
+    return events.map((event) => {
+      return {
+        date: event.date.toDate(),
+        title: event.title,
+        details: event.details,
+        image: event.imageURL,
+        id: event.id,
+        onEventDelete: onEventDelete,
+        onEventEdit: onEventEdit
+      };
+    });
+  }
 
-console.log(events);
-
+  console.log(events);
 
   function onEventDelete(id: string) {
     setEvents((events || []).filter((e) => e.id !== id));
@@ -55,7 +51,7 @@ console.log(events);
   }
 
   function onEventEdit(event: EventProps) {
-    const index = (events || []).findIndex(e => e.id === event.id);
+    const index = (events || []).findIndex((e) => e.id === event.id);
     if (index !== -1) {
       (events || [])[index] = event;
       setRender(render === 1 ? 0 : 1);
@@ -71,8 +67,8 @@ console.log(events);
   };
 
   const handleShiftEventsRight = () => {
-    setFirstVisibleEventIndex(prevIndex => {
-      if (prevIndex  > (events || []).length - 4) {
+    setFirstVisibleEventIndex((prevIndex) => {
+      if (prevIndex > (events || []).length - 4) {
         return prevIndex; // Keep the index at 0 if it's already at 0
       }
       return prevIndex + 1; // Shift the index by 1 to the right
@@ -80,7 +76,7 @@ console.log(events);
   };
 
   const handleShiftEventsLeft = () => {
-    setFirstVisibleEventIndex(prevIndex => {
+    setFirstVisibleEventIndex((prevIndex) => {
       if (prevIndex === 0) {
         return 0; // Keep the index at 0 if it's already at 0
       }
@@ -89,15 +85,15 @@ console.log(events);
   };
 
   const [formData, setFormData] = useState<EventProps>({
-    date: new Date, // Provide initial value for date
+    date: new Date(), // Provide initial value for date
     title: '', // Provide initial value for title
     details: '', // Provide initial value for details
-    image: 'https://firebasestorage.googleapis.com/v0/b/pico-7a9d2.appspot.com/o/event-img%2FRobtics.png?alt=media&token=ebd02a49-3e7a-4165-8580-825a2d5a0a5d', // Provide initial value for image
-    onEventDelete: (_id: string) => { }, // Change the parameter type from '_id: string' to 'id: number'
-    onEventEdit: (_event: EventProps) => { },
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/pico-7a9d2.appspot.com/o/event-img%2FRobtics.png?alt=media&token=ebd02a49-3e7a-4165-8580-825a2d5a0a5d', // Provide initial value for image
+    onEventDelete: (_id: string) => {}, // Change the parameter type from '_id: string' to 'id: number'
+    onEventEdit: (_event: EventProps) => {},
     id: '' // Provide initial value for id
   });
-
 
   const event: IEvent = {
     date: new Date(formData.date),
@@ -115,7 +111,7 @@ console.log(events);
     // storageService.upload(file, "/event-img/" + docRef.id + "-" + formData.image,setUploadProgress); // Pass the File object to the upload function
     events?.push(formData);
     setEvents(events);
-    setRender(render === 1 ? 0 : 1);    
+    setRender(render === 1 ? 0 : 1);
   }
 
   function addWindow() {
@@ -125,11 +121,8 @@ console.log(events);
           <Modal.Header closeButton>
             <Modal.Title>הוסף אירוע</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            {addForm()}
-          </Modal.Body>
-          <Modal.Footer>
-          </Modal.Footer>
+          <Modal.Body>{addForm()}</Modal.Body>
+          <Modal.Footer></Modal.Footer>
         </Modal>
       </>
     );
@@ -142,7 +135,7 @@ console.log(events);
     const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const value = e.target.value;
       if (value.length <= MAX_CHARS_Details) {
-        setFormData(prevState => ({ ...prevState, details: value }));
+        setFormData((prevState) => ({ ...prevState, details: value }));
         setCharCountDetails(value.length);
       }
     };
@@ -153,81 +146,94 @@ console.log(events);
     const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const value = e.target.value;
       if (value.length <= MAX_CHARS_Title) {
-        setFormData(prevState => ({ ...prevState, title: value }));
+        setFormData((prevState) => ({ ...prevState, title: value }));
         setCharCountTitle(value.length);
       }
     };
 
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData(prevState => ({ ...prevState, date: e.target.valueAsDate! }));
+      setFormData((prevState) => ({ ...prevState, date: e.target.valueAsDate! }));
     };
-  
+
     const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setFormData(prevState => ({ ...prevState, image: e.target.value }));
+      setFormData((prevState) => ({ ...prevState, image: e.target.value }));
     };
-  
 
     return (
       <Form onSubmit={handleSaveAdd}>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label>כותרת</Form.Label>
-        <Form.Control
-          required type="text"
-          placeholder="שם אירוע"
-          onChange={handleTitleChange}
-          maxLength={MAX_CHARS_Title} // Set the maximum length of the textarea
-        />
-      <small>{formData.title.length}/{MAX_CHARS_Title} אותיות</small> {/* Display the character count */}
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label>תאריך</Form.Label>
-        <Form.Control required type="date" placeholder="יום /חודש /שנה" onChange={handleDateChange} />
-      </Form.Group>
-      <Form.Group controlId="formFile" className="mb-3">
-        <Form.Label>העלאת תמונה</Form.Label>
-        <Form.Control type="file" onChange={handleImageChange} />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-        <Form.Label>פרטים</Form.Label>
-        <Form.Control
-          required as="textarea"
-          rows={3}
-          placeholder="פרטי האירוע"
-          onChange={handleDetailsChange}
-          maxLength={MAX_CHARS_Details} // Set the maximum length of the textarea
-        />
-        <small>{formData.details.length}/{MAX_CHARS_Details} אותיות</small> {/* Display the character count */}
-      </Form.Group>
-      <div style={{ display: 'flex', gap: '10px' }}>
-        <Button variant="secondary" onClick={handleClose}>
-          סגור    
-        </Button>
-        <Button variant="primary" type="submit">
-          הוסף
-        </Button>
-      </div>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+          <Form.Label>כותרת</Form.Label>
+          <Form.Control
+            required
+            type="text"
+            placeholder="שם אירוע"
+            onChange={handleTitleChange}
+            maxLength={MAX_CHARS_Title} // Set the maximum length of the textarea
+          />
+          <small>
+            {formData.title.length}/{MAX_CHARS_Title} אותיות
+          </small>{' '}
+          {/* Display the character count */}
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+          <Form.Label>תאריך</Form.Label>
+          <Form.Control required type="date" placeholder="יום /חודש /שנה" onChange={handleDateChange} />
+        </Form.Group>
+        <Form.Group controlId="formFile" className="mb-3">
+          <Form.Label>העלאת תמונה</Form.Label>
+          <Form.Control type="file" onChange={handleImageChange} />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+          <Form.Label>פרטים</Form.Label>
+          <Form.Control
+            required
+            as="textarea"
+            rows={3}
+            placeholder="פרטי האירוע"
+            onChange={handleDetailsChange}
+            maxLength={MAX_CHARS_Details} // Set the maximum length of the textarea
+          />
+          <small>
+            {formData.details.length}/{MAX_CHARS_Details} אותיות
+          </small>{' '}
+          {/* Display the character count */}
+        </Form.Group>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <Button variant="secondary" onClick={handleClose}>
+            סגור
+          </Button>
+          <Button variant="primary" type="submit">
+            הוסף
+          </Button>
+        </div>
       </Form>
     );
   }
 
   return (
-    <div className='events'>
+    <div className="events">
       <div className="eventsContainer">
-        <Button variant="primary" onClick={handleShiftEventsRight}>&lt;</Button>
-          {(events || []).slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
-            <EventCard
-              id={event.id}
-              date={event.date}
-              title={event.title}
-              details={event.details}
-              image={event.image}
-              onEventDelete={onEventDelete}
-              onEventEdit={onEventEdit}
-            />
-          ))}
-          <Button variant="primary" onClick={handleShiftEventsLeft}>&gt;</Button>
+        <Button variant="primary" onClick={handleShiftEventsRight}>
+          &lt;
+        </Button>
+        {(events || []).slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
+          <EventCard
+            id={event.id}
+            date={event.date}
+            title={event.title}
+            details={event.details}
+            image={event.image}
+            onEventDelete={onEventDelete}
+            onEventEdit={onEventEdit}
+          />
+        ))}
+        <Button variant="primary" onClick={handleShiftEventsLeft}>
+          &gt;
+        </Button>
       </div>
-        <Button variant="success" onClick={handleAddEvent}>הוסף אירוע</Button>
+      <Button variant="success" onClick={handleAddEvent}>
+        הוסף אירוע
+      </Button>
       {addWindow()}
     </div>
   );

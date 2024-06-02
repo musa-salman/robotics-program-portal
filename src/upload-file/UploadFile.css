@@ -1,8 +1,87 @@
-.bg {
-    /* width: 15rem; */
-    border: 2px solid rgb(6, 6, 6);
-    /* background-color: #d1c2bf77; */
-    /* box-shadow: -3px 8px 13px 12px rgb(32, 33, 33); */
-    border-radius: 20px;
-    /* box-shadow: 0px 4px 20px 3px #c307ed6b; */
+.form-body {
+    width: 100%;
+    height: 100%;
+    border: 2px solid;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+    box-sizing: border-box;
+    background-color: rgb(181, 187, 187);
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.uploadBtn {
+    width: 15rem;
+    flex-wrap: wrap;
+    gap: 5px;
+    background-color: transparent;
+    color: black;
+}
+
+
+.closeBtn {
+    width: 15rem;
+    margin: 10px;
+    background-color: transparent;
+    color: black;
+}
+
+
+.my-3 {
+    margin: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+.bg-light {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+
+.title {
+    padding: 20px;
+    color: rgb(115, 188, 164);
+    font-size: small;
+    margin-bottom: 10px;
+}
+
+
+.choosFileMain {
+    margin-top: 30px;
+    height: 4rem;
+    width: 100%;
+}
+
+.lable-chooseFile {
+    font-size: 13px;
+}
+
+
+
+.chooseCategories {
+    height: auto;
+}
+
+
+
+.BtnInList {
+    text-decoration: none;
+    color: crimson;
+    /* margin: auto; */
+}
+
+.description-lable {
+    width: 100%;
+    margin-bottom: 20px;
 }

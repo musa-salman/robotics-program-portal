@@ -1,10 +1,16 @@
-import { Route } from "react-router-dom"
-import StudyMaterialContainer from "./StudyMaterialContainer"
+import { Route } from 'react-router-dom';
+import StudyMaterialContainer from './StudyMaterialContainer';
+import { SearchBar } from './SearchBar';
 
 export const useStudyMaterialRoutes = () => {
-    return (
+  return (
+    <Route
+      path="/study-material"
+      element={
         <>
-            <Route path="/study-material" element={<StudyMaterialContainer />} />
+          <StudyMaterialContainer />
         </>
-    )
-}
+      }
+    />
+  );
+};
