@@ -135,22 +135,7 @@ const AddEditCategories: React.FC<YourComponentProps>=({categories,studyMaterial
             </Modal.Footer>
         </>
 
-    );
-
-                <Form.Group as={Col} md="3" className=" mt-2 px-3" controlId="validationCustom02">
-                  <Button onClick={editItem}>שינוי</Button>
-                </Form.Group>
-              </Row>
-            ))}
-          </Modal.Footer>
-        </Modal.Body>
-        <Modal.Footer className="justify-content-center">
-          <Button variant="secondary" className=" px-5" onClick={handleCloseAddEdit}>
-            סגירה
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+    
   );
 };
 
