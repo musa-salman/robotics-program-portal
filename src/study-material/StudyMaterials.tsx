@@ -58,7 +58,11 @@ function StudyMaterials({ studyMaterial, onUpdate }: { studyMaterial: StudyMater
         <hr className="custom-hr" />
         <div>
           {isEditing ? (
-            <textarea value={editedDescription} onChange={(e) => setEditedDescription(e.target.value)} />
+            <input
+            type="text"
+              value={editedDescription}
+              onChange={(e) => setEditedDescription(e.target.value)}
+            />
           ) : (
             <Card.Text style={styles}>{studyMaterial.description || 'תאור קצר על הקובץ'}</Card.Text>
           )}
