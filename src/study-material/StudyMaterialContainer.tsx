@@ -21,7 +21,7 @@ function StudyMaterialContainer() {
 
   const categories = studyMaterials?.map((s) => s.category).filter((item, index, arr) => arr.indexOf(item) === index);
   return (
-    <>
+    <div className="study-material-container">
       {(categories || []).map((category) => (
         <Card className="primary">
           <Card.Header className="Card-Header">
@@ -43,7 +43,7 @@ function StudyMaterialContainer() {
           </Card.Body>
         </Card>
       ))}
-    </>
+    </div>
   );
 }
 
