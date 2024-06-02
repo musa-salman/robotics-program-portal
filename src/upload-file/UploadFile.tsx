@@ -16,7 +16,7 @@ import { StorageServiceContext } from '../storage-service/StorageContext';
 type SelectedItem = string;
 interface UploadFileComponentProps {
   handleClose: () => void;
-
+ 
 }
 
 const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) => {
@@ -32,20 +32,27 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
   const categoryRepository = useContext(CategoryContext);
   const studyMaterialRepository = useContext(StudyMaterialContext);
 
+
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
-    filename: '',
-    id: '',
-    category: '',
-    title: '',
-    description: '',
-    date: new Date()
+    filename: "",
+    id: "",
+    category: "",
+    title: "",
+    description: "",
+    date: new Date(),
   });
   const storageService = useContext(StorageServiceContext);
 
   const getCategory = async () => {
     try {
+
       const data: Category[] = await categoryRepository.find();
-      setCategories(data); 
+      setCategories(data);
+      // const dataString: string[] = data.map(category => (category.category));
+      // console.log("data " + dataString[0]);
+      // setCategories(dataString);
+      
+      
 
     } catch (error) {
       console.error('Error fetching items:', error);
@@ -57,6 +64,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
   }
 
   useEffect(() => {
+
     if (loading && categories === null) {
       getCategory();
       getStudyMaterial();
@@ -74,35 +82,36 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
   const handleSelect = (eventKey: string | null) => {
     if (eventKey) {
       setSelectedItems(eventKey);
-      setStudyMaterial((prevData) => ({ ...prevData, category: eventKey }));
+      setStudyMaterial(prevData => ({ ...prevData, category: eventKey }));
     }
   };
 
   const handleInput = (event: any) => {
     const { name, value } = event.target;
-    setStudyMaterial((prevData) => ({ ...prevData, [name]: value }));
+    setStudyMaterial(prevData => ({ ...prevData, [name]: value }));
   };
 
   const handleDate = () => {
     const currentTime = new Date();
-    setStudyMaterial((prevData) => ({ ...prevData, date: currentTime }));
+    setStudyMaterial(prevData => ({ ...prevData, date: currentTime }));
   };
+
 
   const handleFileChange = (event: any) => {
     try {
       if (event.target.files && event.target.files[0]) {
-        setStudyMaterial((prevData) => ({
-          ...prevData,
-          filename: event.target.files[0].name
-        }));
+        setStudyMaterial(prevData => ({ ...prevData, filename: event.target.files[0].name }));
         setFile(event.target.files[0]);
+
       }
     } catch (error: any) {
       console.error('error handling file change', error);
     }
   };
 
+
   const handleSubmit = async () => {
+
     const docRef = await studyMaterialRepository.create(studyMaterial);
 
     if (file) {
@@ -112,6 +121,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
     console.log(studyMaterial)
     handleClose();
     handleDate();
+
   };
 
   return (
@@ -133,7 +143,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
           >
             <Form.Control
               type="text"
-              name="title"
+              name='title'
               required
               placeholder="כותרת"
               onChange={event => handleInput(event)}
@@ -142,13 +152,13 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
           <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group className="choosFileMain" controlId="validationCustom02">
+        <Form.Group className="position-relative my-3 " controlId='validationCustom02'>
           <Form.Control
             type="file"
             required
             name="filename"
-            className="lable-chooseFile"
-            onChange={(event) => handleFileChange(event)}
+            className="position-relative my-4 "
+            onChange={event => handleFileChange(event)}
           />
         </Form.Group>
 
@@ -175,44 +185,28 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
                   
                   </div>  
 
-                    <Button
-                      className="BtnInList"
-                      variant="link"
-                      onClick={() => AddEditCategories(categories)}>
-                      הוספה/שינוי
-                    </Button>
-                  </div>
                 </NavDropdown>
               </Nav>
-              <span className="chooseFile">{selectedItem}</span>
+              <span className='px-4'  >{selectedItem}</span>
             </Navbar.Collapse>
           </Container>
         </Navbar>
 
-        <FloatingLabel
-          className="description-lable"
-          controlId="floatingTextarea1"
-          label="תיאור">
+        <FloatingLabel className='my-3' controlId="floatingTextarea1" label="תיאור">
           <Form.Control
             as="textarea"
             name="description"
             placeholder="Leave a comment here"
-            onChange={(event) => handleInput(event)}
-            // style={{ height: '100px' }}
+            onChange={event => handleInput(event)}
+            style={{ height: '100px' }}
           />
         </FloatingLabel>
 
-        <Modal.Footer className="btn">
-          <Button
-            variant="primary"
-            className="uploadBtn"
-            onClick={handleSubmit}>
+        <Modal.Footer className='justify-content-center'>
+          <Button variant="primary" className='mx-3 px-5' onClick={handleSubmit}>
             העלה
           </Button>
-          <Button
-            variant="secondary"
-            className="closeBtn"
-            onClick={handleClose}>
+          <Button variant="secondary" className='mx-5 px-5' onClick={handleClose}>
             סגירה
           </Button>
         </Modal.Footer>
@@ -220,7 +214,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({handleClose}) 
       
 
       <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
-          <AddEditCategories categories={categories} studyMaterial={allStudyMaterial} handleCloseAddEdit={handleCloseAddEdit} ></AddEditCategories>
+          <AddEditCategories categories={categories} studyMaterial={allStudyMaterial} handleCloseAddEdit={handleCloseAddEdit}  ></AddEditCategories>
 
       </Modal>
 
