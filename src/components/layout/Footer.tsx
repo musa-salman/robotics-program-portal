@@ -42,7 +42,7 @@ const Footer: React.FC<FooterProps> = ({ links, socialMedia, copyright }) => {
           <Col md={6} className="text-md-right">
             <div>
               {socialMedia.map((social) => (
-                <a key={social.platform} href={social.url} className="text-white ml-2">
+                <a key={social.platform} href={social.url} className="text-white ml-2 p-2">
                   {renderSocialIcon(social.platform)}
                 </a>
               ))}
