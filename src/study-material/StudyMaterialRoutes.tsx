@@ -8,7 +8,6 @@ export const useStudyMaterialRoutes = () => {
       path="/study-material"
       element={
         <>
-          <SearchBar />
           <StudyMaterialContainer />
         </>
       }

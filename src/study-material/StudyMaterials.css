@@ -1,6 +1,6 @@
 body {
     background-image: url('/robor.webp');
-    height: 100%;
+    height: auto;
     background-size: cover;
     background-attachment: fixed;
     background-blend-mode: overlay;

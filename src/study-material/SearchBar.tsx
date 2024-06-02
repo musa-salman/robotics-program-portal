@@ -1,47 +1,39 @@
-import React, { useState, ChangeEvent } from 'react';
-import { FaSearch } from "react-icons/fa"; 
-import "./SearchBar.css";
+import React, { ChangeEvent } from 'react';
+import { FaSearch } from 'react-icons/fa';
+import './SearchBar.css';
 import { StudyMaterial } from './StudyMaterial';
 
+interface SearchBarProps {
+  studyMaterials: StudyMaterial[];
+  onSearchResults: (results: StudyMaterial[]) => void;
+}
 
-export const SearchBar: React.FC = () => {
-    const [input, setInput] = useState<string>("");
-    const [results, setResults] = useState<string[]>([]); 
-   // const { studyMaterials } = useStudyMaterialContext();
-   
-    
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const searchText = e.target.value;
-        setInput(searchText);
-        search(searchText);
-    };
+export const SearchBar: React.FC<SearchBarProps> = ({
+  studyMaterials,
+  onSearchResults
+}) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const searchText = e.target.value;
+    search(searchText);
+  };
 
-    // const search = (text: string) => {
-    //     if (text.length > 0) {
-    //         const filteredResults = studyMaterials.filter((s:StudyMaterial) => 
-    //             s.title.toLowerCase().includes(text.toLowerCase()) ||
-    //             s.description.toLowerCase().includes(text.toLowerCase())
-    //         ).map((s:StudyMaterial) => s.title);
-    //         setResults(filteredResults);
-    //     } else {
-    //         setResults([]);
-    //     }
-    // };
-
-    return (
-        <div className="Container">
-            <FaSearch id="search-icon" />
-            <input 
-                placeholder='  חיפוש'                      
-                onChange={handleChange}
-                value={input}
-                aria-label="Search"
-            />
-            <ul className="search-results">
-                {results.map((result, index) => (
-                    <li key={index}>{result}</li> 
-                ))}
-            </ul>
-        </div>
+  const search = (text: string) => {
+    const filteredResults = studyMaterials.filter(
+      (material) =>
+        material.title.toLowerCase().includes(text.toLowerCase()) ||
+        material.description.toLowerCase().includes(text.toLowerCase())
     );
+    onSearchResults(filteredResults);
+  };
+
+  return (
+    <div className="Container">
+      <FaSearch id="search-icon" />
+      <input
+        placeholder="  חיפוש"
+        onChange={handleChange}
+        aria-label="Search"
+      />
+    </div>
+  );
 };

@@ -42,11 +42,7 @@ function App() {
 
         {AuthRoutes}
         {StudyMaterialRoutes}
-<<<<<<< HEAD
         <Route path="/study-material-upload" element={<UploadFileComponent/>} />
-=======
-        <Route path="/events" element={<EventContainer />} />
->>>>>>> eb9c2c869d755bbc86d045d2248b67158c2a52e9
         <Route path="/dashboard" element={
           <RoleBasedAccessControl allowedRoles={['admin']}>
             <div>Dashboard</div>

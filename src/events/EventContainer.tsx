@@ -20,32 +20,32 @@ const EventContainer = () => {
 
   useEffect(() => {
     const getEvents = async () => {
-      setEvents( convertIEventsToEventProps (await eventRepository.find()));
+      setEvents(convertIEventsToEventProps(await eventRepository.find()));
     };
     console.log(events);
-   if (events === null)getEvents();
-}, [events]);
-console.log(events);
-function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
-  return events.map(event => {
-    return {
-      date: event.date,
-      title: event.title,
-      details: event.details,
-      image: event.imageURL,
-      id: event.id,
-      onEventDelete: onEventDelete,
-      onEventEdit: onEventEdit
-    };
-  });
-}
+    if (events === null) getEvents();
+  }, [events]);
+  console.log(events);
+  function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
+    return events.map((event) => {
+      return {
+        date: event.date,
+        title: event.title,
+        details: event.details,
+        image: event.imageURL,
+        id: event.id,
+        onEventDelete: onEventDelete,
+        onEventEdit: onEventEdit
+      };
+    });
+  }
 
   function onEventDelete(id: string) {
     setEvents((events || []).filter((e) => e.id !== id));
   }
 
   function onEventEdit(event: EventProps) {
-    const index = (events || []).findIndex(e => e.id === event.id);
+    const index = (events || []).findIndex((e) => e.id === event.id);
     if (index !== -1) {
       (events || [])[index] = event;
       setRender(render === 1 ? 0 : 1);
@@ -61,8 +61,8 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
   };
 
   const handleShiftEventsRight = () => {
-    setFirstVisibleEventIndex(prevIndex => {
-      if (prevIndex  > (events || []).length - 4) {
+    setFirstVisibleEventIndex((prevIndex) => {
+      if (prevIndex > (events || []).length - 4) {
         return prevIndex; // Keep the index at 0 if it's already at 0
       }
       return prevIndex + 1; // Shift the index by 1 to the right
@@ -87,7 +87,6 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     onEventEdit: (_event: EventProps) => {},
     id: '' // Provide initial value for id
   });
-
 
   const event: IEvent = {
     date: formData.date,
@@ -212,8 +211,12 @@ function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
   return (
     <div className="events">
       <div className="eventsContainer">
-        <Button variant="primary" onClick={handleShiftEventsRight}>&lt;</Button>
-          {(events || []).slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
+        <Button variant="primary" onClick={handleShiftEventsRight}>
+          &lt;
+        </Button>
+        {(events || [])
+          .slice(firstVisibleEventIndex, firstVisibleEventIndex + 3)
+          .map((event) => (
             <EventCard
               id={event.id}
               date={event.date}
