@@ -5,7 +5,6 @@ import { IEvent } from './Event';
 import './EventCard.css';
 import moment from 'moment';
 
-
 export interface EventProps {
   date: Date;
   title: string;
@@ -50,7 +49,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prevState => ({ ...prevState, date: e.target.valueAsDate! }));
+    setFormData((prevState) => ({ ...prevState, date: e.target.valueAsDate! }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -251,8 +250,12 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
       <Card.Body>
         <Card.Title>{title}</Card.Title>
         <Card.Text>
-          <p><strong>תאריך:</strong> {moment(date).format('YYYY-MM-DD')}</p>
-          <p><strong>פרטים:</strong> {details}</p>
+          <p>
+            <strong>תאריך:</strong> {moment(date).format('YYYY-MM-DD')}
+          </p>
+          <p>
+            <strong>פרטים:</strong> {details}
+          </p>
         </Card.Text>
         {registerd ? (
           <Button variant="secondary" disabled>

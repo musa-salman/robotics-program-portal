@@ -8,7 +8,6 @@ import { SearchBar } from './SearchBar';
 import UploadFileComponent from '../upload-file/UploadFile';
 import { Modal } from 'react-bootstrap';
 
-
 function StudyMaterialContainer() {
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
   const studyMaterialRepository = useContext(StudyMaterialContext);
@@ -37,26 +36,22 @@ function StudyMaterialContainer() {
     setStudyMaterials(updatedMaterials);
   };
 
-  const categories = (studyMaterials || []).map((s) => s.category)
+  const categories = (studyMaterials || [])
+    .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
   console.log(studyMaterials);
 
   return (
     <>
-      <SearchBar
-        studyMaterials={studyMaterials || []}
-        onSearchResults={handleSearchResults}
-      />
+      <SearchBar studyMaterials={studyMaterials || []} onSearchResults={handleSearchResults} />
       {(categories || []).map((category) => (
         <Card className="primary">
           <Card.Header className="Card-Header">
             <div key={category}>
               <h2>{category}</h2>
             </div>
-            <button onClick={handleShow} className="add-button">
-
-            </button>
+            <button onClick={handleShow} className="add-button"></button>
           </Card.Header>
           <br></br>
           <Card.Body className="body">
@@ -65,11 +60,7 @@ function StudyMaterialContainer() {
               {(searchResults.length > 0 ? searchResults : studyMaterials || [])
                 .filter((s) => s.category === category)
                 .map((studyMaterial) => (
-                  <StudyMaterials
-                    key={studyMaterial.id}
-                    studyMaterial={studyMaterial}
-                    onUpdate={handleUpdate}
-                  />
+                  <StudyMaterials key={studyMaterial.id} studyMaterial={studyMaterial} onUpdate={handleUpdate} />
                 ))}
             </div>
           </Card.Body>
