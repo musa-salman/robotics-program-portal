@@ -4,6 +4,8 @@ import { Button, Card, Dropdown, Modal, Form } from 'react-bootstrap';
 import { IEvent } from './Event';
 import './EventCard.css';
 import moment from 'moment';
+import { getStorage, ref, deleteObject, getDownloadURL } from 'firebase/storage';
+import { StorageServiceContext } from '../storage-service/StorageContext';
 
 export interface EventProps {
   date: Date;
@@ -54,6 +56,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
 
   const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFormData((prevState) => ({ ...prevState, image: e.target.value }));
+    setFile(e.target.files?.[0] || null); // Provide a default value of null for the file state variable
   };
 
   const [registerd, setRegister] = useState(false);
@@ -69,7 +72,11 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   const handleCloseDelete = () => setShowModalDelete(false);
   const handleShowDelete = () => setShowModalDelete(true);
 
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+
   const eventRepository = useContext(EventContext);
+  const storageService = useContext(StorageServiceContext);
 
   function handleDelete() {
     handleShowDelete();
@@ -93,14 +100,34 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     };
     onEventEdit(formData);
     setShowModalEdit(false);
-    await eventRepository.update(id, event);
+    let url = '';
+    if (file) {
+      await storageService.upload(file, '/event-img/' + id, setUploadProgress);
+      const storage = getStorage();
+      const filePath = '/event-img/' + id;
+      console.log(filePath);
+      // Get the download URL
+      await sleep(2000);
+      url = await getDownloadURL(ref(storage, filePath));
+      event.imageURL = url;
+      await eventRepository.update(id, event);
+    }
     //db
   };
 
+  function sleep(ms: number | undefined) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   const handleSaveDelete = async () => {
+    const storage = getStorage();
     onEventDelete(id);
     setShowModalDelete(false);
     await eventRepository.delete(id);
+    // Create a reference to the file to delete
+    const filePath = '/event-img/' + id;
+    // Delete the file
+    await deleteObject(ref(storage, filePath));
     //db
   };
 

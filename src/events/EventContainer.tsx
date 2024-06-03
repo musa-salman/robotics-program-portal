@@ -1,9 +1,12 @@
 import EventCard, { EventProps } from './EventCard';
-import { Button, Modal, Form, Carousel } from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
 import React, { useState, useEffect, useContext } from 'react';
 import { EventContext } from './EventContext';
 import { IEvent } from './Event';
-// import { StorageServiceContext } from '../storage-service/StorageServiceContext';
+import { StorageServiceContext } from '../storage-service/StorageContext';
+// import { firestore } from '../firebase';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+
 // import { eventContext } from '../event-img/eventContext';
 
 type EventContainer = {
@@ -18,9 +21,10 @@ const EventContainer = () => {
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [file, setFile] = useState<File | null>(null);
 
   const eventRepository = useContext(EventContext);
-  // const storageService = useContext(StorageServiceContext);
+  const storageService = useContext(StorageServiceContext);
 
   useEffect(() => {
     const getEvents = async () => {
@@ -42,8 +46,6 @@ const EventContainer = () => {
       };
     });
   }
-
-  console.log(events);
 
   function onEventDelete(id: string) {
     setEvents((events || []).filter((e) => e.id !== id));
@@ -88,8 +90,7 @@ const EventContainer = () => {
     date: new Date(), // Provide initial value for date
     title: '', // Provide initial value for title
     details: '', // Provide initial value for details
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/pico-7a9d2.appspot.com/o/event-img%2FRobtics.png?alt=media&token=ebd02a49-3e7a-4165-8580-825a2d5a0a5d', // Provide initial value for image
+    image: '', // Provide initial value for image
     onEventDelete: (_id: string) => {}, // Change the parameter type from '_id: string' to 'id: number'
     onEventEdit: (_event: EventProps) => {},
     id: '' // Provide initial value for id
@@ -106,12 +107,25 @@ const EventContainer = () => {
   async function handleAdd() {
     handleShow();
     const docRef = await eventRepository.create(event);
-    formData.id = docRef.id;
-    // const file = new File([formData.image], "filename"); // Convert the string to a File object
-    // storageService.upload(file, "/event-img/" + docRef.id + "-" + formData.image,setUploadProgress); // Pass the File object to the upload function
+    event.id = docRef.id;
+    let url = '';
+    if (file) {
+      // Upload the file and wait for the upload to complete
+      await storageService.upload(file, '/event-img/' + docRef.id, setUploadProgress);
+      const storage = getStorage();
+      const filePath = '/event-img/' + docRef.id;
+      // Get the download URL
+      await sleep(2000);
+      url = await getDownloadURL(ref(storage, filePath));
+      event.imageURL = url;
+    }
+    eventRepository.update(docRef.id, event);
     events?.push(formData);
-    setEvents(events);
     setRender(render === 1 ? 0 : 1);
+  }
+
+  function sleep(ms: number | undefined) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   function addWindow() {
@@ -156,7 +170,8 @@ const EventContainer = () => {
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setFormData((prevState) => ({ ...prevState, image: e.target.value }));
+      setFormData((prevState) => ({ ...prevState, image: formData.image }));
+      setFile(e.target.files?.[0] || null); // Provide a default value of null for the file state variable
     };
 
     return (
@@ -218,6 +233,7 @@ const EventContainer = () => {
         </Button>
         {(events || []).slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
           <EventCard
+            key={event.id}
             id={event.id}
             date={event.date}
             title={event.title}
