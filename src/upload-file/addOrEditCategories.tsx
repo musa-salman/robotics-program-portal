@@ -109,17 +109,18 @@ const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMate
 
   return (
     <>
-      <Modal.Header closeButton>
-        <Modal.Title>הוספה/שינוי</Modal.Title>
+      <Modal.Header closeButton style={{ backgroundColor: '#d1c8bf'}}>
+        <Modal.Title  style={{ backgroundColor: '#d1c8bf',fontSize: '40px' ,color: 'black', border: 'none' }}>הוספה/שינוי</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Row className="mb-3">
+      <Modal.Body style={{ backgroundColor: '#d1c8bf'}}>
+        <Row className="mb-3" style={{ backgroundColor: '#d1c8bf'}}>
           <Form.Group as={Col} controlId="validationCustom01" className="position-relative ">
             <FloatingLabel controlId="floatingInput" label="כתיכורי">
               <Form.Control
                 type="text"
                 name="title"
                 required
+                style={{ backgroundColor: '#f5f4f3' ,color: 'black', border: 'none' }}
                 placeholder="כתיכורי"
                 onChange={(event) => handleInputCategories(event)}
               />
@@ -166,7 +167,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMate
           ))}
         </Modal.Footer>
       </Modal.Body>
-      <Modal.Footer className="justify-content-center">
+      <Modal.Footer className="justify-content-center" style={{ backgroundColor: '#d1c8bf'}}>
         <Button variant="secondary" className=" px-5" onClick={handleCloseAddEdit}>
           סגירה
         </Button>

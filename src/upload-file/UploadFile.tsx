@@ -1,5 +1,4 @@
 import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Modal from 'react-bootstrap/Modal';
@@ -107,90 +106,94 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose }
 
   return (
     <>
-      <Form className=" bg-light border border-primary rounded shadow-lg py-4 px-5 " style={{ width: '45rem' }}>
-        <Modal.Header closeButton className="bg mb-3 px-3" style={{ backgroundColor: 'gray' }}>
-          <h1>העלת קובץ</h1>
+        <Modal.Header closeButton className="bg mb-3 px-3" style={{ backgroundColor: '#d1c8bf',width: '45rem'}}>
+          <h1 style={{ fontSize: '40px' ,color: 'black', border: 'none' }}>העלת קובץ</h1>
         </Modal.Header>
+        <Modal.Body style={{ backgroundColor: '#d1c8bf',width: '45rem'}}>
+          <Form className='px-3 mx-3'>
 
-        <Form.Group as={Col} controlId="validationCustom01" className="position-relative ">
-          <FloatingLabel controlId="floatingInput" label="כותרת">
-            <Form.Control
-              type="text"
-              name="title"
-              required
-              placeholder="כותרת"
-              onChange={(event) => handleInput(event)}
-            />
-          </FloatingLabel>
-          <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
-        </Form.Group>
+            <Form.Group className='px-1'>
+              <FloatingLabel controlId="floatingInput" label="כותרת">
+                <Form.Control
+                  type="text"
+                  name="title"
+                  required
+                  style={{ backgroundColor: '#f5f4f3' ,color: 'black', border: 'none' }}
+                  placeholder="כותרת"
+                  onChange={(event) => handleInput(event)}
+                />
+              </FloatingLabel>
+              <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
+            </Form.Group>
 
-        <Form.Group className="position-relative my-3 " controlId="validationCustom02">
-          <Form.Control
-            type="file"
-            required
-            name="filename"
-            className="position-relative my-4 "
-            onChange={(event) => handleFileChange(event)}
-          />
-        </Form.Group>
+            <Form.Group className="position-relative my-3 px-2" controlId="validationCustom02" >
+              <Form.Control
+                type="file"
+                required
+                name="filename"
+                className="position-relative my-4 "
+                onChange={(event) => handleFileChange(event)}
+              />
+            </Form.Group>
 
-        <Navbar expand="lg">
-          <Container fluid>
-            <Navbar.Collapse id="navbar-dark-example">
-              <Nav>
-                <NavDropdown
-                  id="nav-dropdown-dark-example"
-                  title="בחר מיקום"
-                  menuVariant="dark"
-                  onSelect={handleSelect}>
-                  <div className="modal-footer-scroll2">
-                    {(categories || []).map((item, index) => (
-                      <NavDropdown.Item
-                        eventKey={item.category}
-                        onClick={() => handleSelect(item.category)}
-                        key={index}>
-                        {item.category}
-                      </NavDropdown.Item>
-                    ))}
+            <Navbar expand="lg">
+              <Container fluid>
+                <Navbar.Collapse id="navbar-dark-example">
+                  <Nav >
+                    <NavDropdown
+                      id="nav-dropdown-dark-example"
+                      title="בחר מיקום"
+                      menuVariant="dark"
+                      onSelect={handleSelect}>
+                      <div className="modal-footer-scroll2">
+                        {(categories || []).map((item, index) => (
+                          <NavDropdown.Item
+                            eventKey={item.category}
+                            onClick={() => handleSelect(item.category)}
+                            key={index}>
+                            {item.category}
+                          </NavDropdown.Item>
+                        ))}
 
-                    <Button variant="link" onClick={handleShowAddEdit}>
-                      הוספה/שינוי
-                    </Button>
-                  </div>
-                </NavDropdown>
-              </Nav>
-              <span className="px-4">{selectedItem}</span>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
+                        <Button variant="link" onClick={handleShowAddEdit}>
+                          הוספה/שינוי
+                        </Button>
+                      </div>
+                    </NavDropdown>
+                  </Nav>
+                  <span className="px-4">{selectedItem}</span>
+                </Navbar.Collapse>
+              </Container>
+            </Navbar>
 
-        <FloatingLabel className="my-3" controlId="floatingTextarea1" label="תיאור">
-          <Form.Control
-            as="textarea"
-            name="description"
-            placeholder="Leave a comment here"
-            onChange={(event) => handleInput(event)}
-            style={{ height: '100px' }}
-          />
-        </FloatingLabel>
+            <FloatingLabel className="my-3" controlId="floatingTextarea1" label="תיאור">
+              <Form.Control
+                as="textarea"
+                name="description"
+                placeholder="Leave a comment here"
+                onChange={(event) => handleInput(event)}
+                style={{ height: '100px', backgroundColor: '#f5f4f3' ,color: 'black', border: 'none' }}
+              />
+            </FloatingLabel>
 
-        <Modal.Footer className="justify-content-center">
-          <Button variant="primary" className="mx-3 px-5" onClick={handleSubmit}>
-            העלה
-          </Button>
-          <Button variant="secondary" className="mx-5 px-5" onClick={handleClose}>
-            סגירה
-          </Button>
-        </Modal.Footer>
-      </Form>
+            <Modal.Footer className="justify-content-center">
+              <Button variant="primary" className="mx-3 px-5" onClick={handleSubmit}>
+                העלה
+              </Button>
+              <Button variant="secondary" className="mx-5 px-5" onClick={handleClose}>
+                סגירה
+              </Button>
+            </Modal.Footer>
+          </Form>
 
-      <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
+        </Modal.Body>
+
+      <Modal show={showAddEdit} onHide={handleCloseAddEdit} >
         <AddEditCategories
           categories={categories}
           studyMaterial={allStudyMaterial}
           handleCloseAddEdit={handleCloseAddEdit}
-          setCategories={setCategories}></AddEditCategories>
+          setCategories={setCategories} ></AddEditCategories>
       </Modal>
     </>
   );
