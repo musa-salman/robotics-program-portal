@@ -17,64 +17,92 @@ interface YourComponentProps {
 const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMaterial, handleCloseAddEdit ,setCategories}) => {
   const [category, setCategory] = useState("");
   const [editcategory, setEditCategory] = useState("");  
-  const [editingItem, setEditingItem] = useState("");
+  const [editingItem, setEditingItem] = useState<Category | null>(null);
   const studyMaterialRepository = useContext(StudyMaterialContext);
   const categoryRepository = useContext(CategoryContext);
   const [showFirstButton, setShowFirstButton] = useState(true);
 
-  const handleEditItem = (item: string) => {
-    setShowFirstButton(!showFirstButton);
-    setEditingItem(item);
+  const handleEditItem = (item: Category) => {
+    if(showFirstButton){
+      setShowFirstButton(!showFirstButton);
+      setShowFirstButton(false);
+      setEditingItem(item);
+    }
   };
 
   const handleInputCategories = (event: any) => {
     setCategory(event.target.value );
   };
 
-  const addCategories = async () => {
-    const docRef=await categoryRepository.create({ category}); //FIXME:id dose not exist
-    const add:Category={
-      category:category,
-      id:docRef.id
-    };
-    setCategories(prevCategories => {
-      if (prevCategories === null) {
-        return [add];
+  const checkRepeat =():boolean =>{
+    console.log(categories?.length);
+    let x:  number=0;
+    categories?.forEach((index)=>{
+      if(index.category !== category){
+        x+=1;
       }
-      return [...prevCategories, add];
     });
+    return x === categories?.length;
+  }
+
+  const addCategories = async () => {
+    if(checkRepeat()){
+      const docRef=await categoryRepository.create({ category}); 
+      const add:Category={
+        category:category,
+        id:docRef.id
+      };
+      setCategories(prevCategories => {
+        if (prevCategories === null) {
+          return [add];
+        }
+        return [...prevCategories, add];
+      });
+    }
+    else{
+      console.log("the action dose not exist");
+    }
   };
 
-  const handleSaveItem = (item: Category) => {
-    const edit: Category = {
-      category: editcategory,
-      id: item.id
-    };
-    categoryRepository.update(item.id,edit);
-
-    studyMaterial?.forEach((index) => {
-      if (index.category === item.category) {
-        const study: StudyMaterial = {
-          category: editcategory,
-          date: index.date,
-          description: index.description,
-          filename: index.filename,
-          id: index.id,
-          title: index.title
-        };
-        studyMaterialRepository.update(index.id, study);
-      }
-    });
-    setCategories(prevCategories => {
-      if (prevCategories === null) {
-        return null;
-      }
-      return prevCategories.map(category =>
-        category.id === item.id ?  edit: category
-      );
-    });
-    setShowFirstButton(!showFirstButton);
-    setEditingItem("");
+  const handleSaveItem = (item:Category) => {
+    if(item.category === editingItem?.category  && editcategory !==""){
+      const edit: Category = {
+        category: editcategory,
+        id: editingItem.id
+      };
+      categoryRepository.update(editingItem.id,edit);
+  
+      studyMaterial?.forEach((index) => {
+        if (index.category === editingItem.category) {
+          const study: StudyMaterial = {
+            category: editcategory,
+            date: index.date,
+            description: index.description,
+            filename: index.filename,
+            id: index.id,
+            title: index.title
+          };
+          studyMaterialRepository.update(index.id, study);
+        }
+      });
+      setCategories(prevCategories => {
+        if (prevCategories === null) {
+          return null;
+        }
+        return prevCategories.map(category =>
+          category.id === editingItem.id ?  edit: category
+        );
+      });
+      setShowFirstButton(true);
+      setEditingItem(null);
+      setEditCategory("");
+    }
+    else{
+      console.log("this action dose not exist");
+      setShowFirstButton(true);
+      setEditingItem(null);
+      setEditCategory("");
+    }
   };
 
   const handleEditInput = (event: any) => {
@@ -115,13 +143,13 @@ const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMate
       <Modal.Body style={{ backgroundColor: '#d1c8bf'}}>
         <Row className="mb-3" style={{ backgroundColor: '#d1c8bf'}}>
           <Form.Group as={Col} controlId="validationCustom01" className="position-relative ">
-            <FloatingLabel controlId="floatingInput" label="כתיכורי">
+            <FloatingLabel controlId="floatingInput" label="קטגוריה">
               <Form.Control
                 type="text"
                 name="title"
                 required
                 style={{ backgroundColor: '#f5f4f3' ,color: 'black', border: 'none' }}
-                placeholder="כתיכורי"
+                placeholder="קטגוריה"
                 onChange={(event) => handleInputCategories(event)}
               />
             </FloatingLabel>
@@ -141,18 +169,18 @@ const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMate
                   name="title"
                   defaultValue={item.category}
                   required
-                  disabled={editingItem !== item.category}
+                  disabled={editingItem?.category !== item.category}
                   onChange={(event) => handleEditInput(event)}
                 />
               </Form.Group>
 
               <Form.Group as={Col} md="2" className=" mt-2" controlId="validationCustom02">
-                {showFirstButton ? (
-                  <Button onClick={() => handleEditItem(item.category)}>
+                { item.category !== editingItem?.category ? (
+                  <Button onClick={() => handleEditItem(item)}>
                     <FontAwesomeIcon icon={faPenToSquare} />
                   </Button>
                 ) : (
-                  <Button onClick={() => handleSaveItem(item)}>
+                  <Button onClick={() =>handleSaveItem(item)}>
                     <FontAwesomeIcon icon={faFloppyDisk} />
                   </Button>
                 )}
