@@ -98,19 +98,26 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
       imageURL: formData.image,
       id: formData.id
     };
-    onEventEdit(formData);
+
     setShowModalEdit(false);
-    let url = '';
     if (file) {
-      await storageService.upload(file, '/event-img/' + id, setUploadProgress);
-      const storage = getStorage();
-      const filePath = '/event-img/' + id;
-      console.log(filePath);
-      // Get the download URL
-      await sleep(2000);
-      url = await getDownloadURL(ref(storage, filePath));
-      event.imageURL = url;
-      await eventRepository.update(id, event);
+      await storageService.upload(
+        file,
+        '/event-img/' + id,
+        setUploadProgress,
+        (_error) => {},
+        () => {
+          const storage = getStorage();
+          const filePath = '/event-img/' + id;
+          // Get the download URL
+          getDownloadURL(ref(storage, filePath)).then((url) => {
+            event.imageURL = url;
+            formData.image = url;
+            onEventEdit(formData);
+            eventRepository.update(id, event);
+          });
+        }
+      );
     }
     //db
   };
