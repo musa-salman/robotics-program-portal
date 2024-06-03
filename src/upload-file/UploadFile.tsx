@@ -94,9 +94,8 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose }
   };
 
   const handleSubmit = async () => {
-    const docRef = await studyMaterialRepository.create(studyMaterial);
-
     if (file) {
+      const docRef = await studyMaterialRepository.create(studyMaterial);
       storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename, setUploadProgress);
     }
     console.log(studyMaterial);
