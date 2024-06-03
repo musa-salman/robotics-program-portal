@@ -1,7 +1,7 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.rtl.min.css';
 import { Route, Routes } from 'react-router-dom';
-import RoleBasedAccessControl from './authentication/components/RoleBasedAccessControl';
+import RoleBasedAccessControl, { ALLOW_ALL_ROLES, Role } from './authentication/components/RoleBasedAccessControl';
 import { useAuthRoutes } from './authentication/AuthRoutes';
 import { useStudyMaterialRoutes } from './study-material/StudyMaterialRoutes';
 import EventContainer from './events/EventContainer';
@@ -25,10 +25,10 @@ function App() {
               path="/dashboard"
               element={
                 <>
-                  <RoleBasedAccessControl allowedRoles={['admin', 'manager', 'student']}>
+                  <RoleBasedAccessControl allowedRoles={ALLOW_ALL_ROLES}>
                     <LogoutButton />
                   </RoleBasedAccessControl>
-                  <RoleBasedAccessControl allowedRoles={['admin']}>
+                  <RoleBasedAccessControl allowedRoles={[Role.Admin]}>
                     <div>Dashboard</div>
                   </RoleBasedAccessControl>
                 </>
