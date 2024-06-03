@@ -5,9 +5,9 @@ import { useContext, useState } from 'react';
 import { StudyMaterial } from './StudyMaterial';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileArrowDown, faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-
 import moment from 'moment';
 import { StorageServiceContext } from '../storage-service/StorageContext';
+import {StudyMaterialContext} from './StudyMaterialContext';
 
 const styles = {
   fontSize: '20px',
@@ -16,11 +16,16 @@ const styles = {
   padding: '5px'
 };
 
-function StudyMaterials({ studyMaterial, onUpdate }: { studyMaterial: StudyMaterial; onUpdate: Function }) {
+type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
+type DeleteHandler = (deletedItemId: string) => void;
+
+
+function StudyMaterials({ studyMaterial, onUpdate ,onDelete }: { studyMaterial: StudyMaterial; onUpdate: UpdateHandler  ; onDelete: DeleteHandler}) {
   const storageService = useContext(StorageServiceContext);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(studyMaterial.title);
   const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
+  const studyMaterialRepository = useContext(StudyMaterialContext);
 
   const handleDownload = async () => {
     storageService.download('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename);
@@ -28,20 +33,29 @@ function StudyMaterials({ studyMaterial, onUpdate }: { studyMaterial: StudyMater
 
   const handleDelete = async () => {
     storageService.delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename);
+    studyMaterialRepository.delete(studyMaterial.id);
+    onDelete(studyMaterial.id);
   };
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
   };
 
-  const handleSave = () => {
-    onUpdate({
+  const handleSave = async () => {
+    // Construct the updated study material object with the new title and description
+    const updatedStudyMaterial = {
       ...studyMaterial,
       title: editedTitle,
       description: editedDescription
-    });
-    setIsEditing(false);
-  };
+    };
+  
+      studyMaterialRepository.update(studyMaterial.id ,updatedStudyMaterial ).then(() => {
+        onUpdate(updatedStudyMaterial);
+        setIsEditing(false);
+      }).catch( (error) => {
+      console.error('Error updating study material:', error);
+    }
+  )};
 
   const momentDate = moment(studyMaterial.date.toDate()).format('DD / MM / YYYY');
 

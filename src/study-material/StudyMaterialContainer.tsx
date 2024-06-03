@@ -38,11 +38,14 @@ function StudyMaterialContainer() {
     setStudyMaterials(updatedMaterials);
   };
 
+  const handleDelete = (deletedItemId : string) => {
+    const updatedMaterials = (studyMaterials || []).filter(material => material.id !== deletedItemId);
+    setStudyMaterials(updatedMaterials);
+  };
+
   const categories = (studyMaterials || [])
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
-
-  console.log(studyMaterials);
 
   return (
     <>
@@ -64,7 +67,7 @@ function StudyMaterialContainer() {
               {(searchResults.length > 0 ? searchResults : studyMaterials || [])
                 .filter((s) => s.category === category)
                 .map((studyMaterial) => (
-                  <StudyMaterials key={studyMaterial.id} studyMaterial={studyMaterial} onUpdate={handleUpdate} />
+                  <StudyMaterials key={studyMaterial.id} studyMaterial={studyMaterial} onUpdate={handleUpdate} onDelete={handleDelete} />
                 ))}
             </div>
           </Card.Body>
