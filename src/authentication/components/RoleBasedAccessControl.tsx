@@ -74,9 +74,6 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading, allowedRoles]);
 
-  console.log(authorization);
-  console.log(user);
-  console.log(loading);
   if (loading) {
     return loadingComponent ? loadingComponent : <span className="loading loading-dots loading-lg"></span>;
   }
@@ -84,9 +81,9 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   if (authorization === AuthorizationStatus.AuthorizedUser) {
     return children;
   } else if (authorization === AuthorizationStatus.UnauthorizeUnauthenticatedUser) {
-    return unauthorizedAuthenticatedComponent ? unauthorizedAuthenticatedComponent : <Navigate to="/login" />;
-  } else if (authorization === AuthorizationStatus.UnauthorizedAuthenticatedUser) {
     return unauthorizedUnauthenticatedComponent ? unauthorizedUnauthenticatedComponent : <Navigate to="/" />;
+  } else if (authorization === AuthorizationStatus.UnauthorizedAuthenticatedUser) {
+    return unauthorizedAuthenticatedComponent ? unauthorizedAuthenticatedComponent : <Navigate to="/login" />;
   }
 
   return <></>;
