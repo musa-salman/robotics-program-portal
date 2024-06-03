@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom';
 import { ReactNode, useContext, useEffect, useState } from 'react';
-import { UserContext } from '../users/UserContext';
-import { auth } from '../firebase';
-import { useAuth } from './useAuth';
+import { UserContext } from '../../users/UserContext';
+import { auth } from '../../firebase';
+import { useAuth } from '../services/useAuth';
 
 /**
  * Represents the authorization status for a user.

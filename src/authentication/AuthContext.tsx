@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { IAuthService } from './IAuthService';
+import { IAuthService } from './services/IAuthService';
 import { browserLocalPersistence, onAuthStateChanged, setPersistence } from 'firebase/auth';
 import { auth } from '../firebase';
-import { AuthService } from './AuthService';
+import { AuthService } from './services/AuthService';
 
 setPersistence(auth, browserLocalPersistence);
 

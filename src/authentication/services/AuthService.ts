@@ -6,8 +6,8 @@ import {
   signInWithPopup,
   signOut
 } from 'firebase/auth';
-import { auth } from '../firebase';
-import LoginFormValues from './ILoginFormValues';
+import { auth } from '../../firebase';
+import LoginFormValues from '../components/Login/ILoginFormValues';
 import { IAuthService } from './IAuthService';
 
 /**
