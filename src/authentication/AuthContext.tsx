@@ -1,8 +1,10 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { IAuthService } from './services/IAuthService';
-import { User, browserLocalPersistence, onAuthStateChanged, setPersistence } from 'firebase/auth';
+import { browserLocalPersistence, onAuthStateChanged, setPersistence } from 'firebase/auth';
 import { auth } from '../firebase';
 import { AuthService } from './services/AuthService';
+import { User } from '../users/User';
+import { UserContext } from '../users/UserContext';
 
 setPersistence(auth, browserLocalPersistence);
 
@@ -27,11 +29,12 @@ const AuthContext = createContext<AuthContextType>({
  * @param {React.ReactNode} children - The child components to be wrapped by the AuthProvider.
  * @returns {JSX.Element} The AuthProvider component.
  */
-function AuthProvider({ children }: { children: React.ReactNode }) {
+function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(auth.currentUser);
+  const [user, setUser] = useState<User | null>(null);
 
   const authService = useContext(AuthContext);
+  const userRepository = useContext(UserContext);
 
   const authContextValue: AuthContextType = useMemo(
     () => ({
@@ -39,13 +42,24 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       loading: loading,
       authService: authService.authService
     }),
-    [loading, authService]
+    [user, loading, authService]
   );
 
   useEffect(() => {
+    async function getUser() {
+      if (auth.currentUser === null) {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+      userRepository.findOne(auth.currentUser.uid).then((user) => {
+        setUser(user);
+        setLoading(false);
+      });
+    }
+
     const unsubscribe = onAuthStateChanged(auth, () => {
-      setUser(auth.currentUser);
-      setLoading(false);
+      getUser();
     });
     return unsubscribe;
   }, [loading]);
