@@ -1,8 +1,7 @@
 import { Navigate } from 'react-router-dom';
-import { ReactNode, useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../users/UserContext';
-import { auth } from '../../firebase';
+import { ReactNode, useEffect, useState } from 'react';
 import { useAuth } from '../services/useAuth';
+import { ALLOW_AUTHED_ROLES } from './Roles';
 
 /**
  * Represents the authorization status for a user.
@@ -12,20 +11,6 @@ enum AuthorizationStatus {
   UnauthorizeUnauthenticatedUser,
   AuthorizedUser
 }
-
-/**
- * Represents the different roles available for access control.
- */
-export enum Role {
-  Owner = 'owner',
-  Admin = 'admin',
-  Student = 'student'
-}
-
-/**
- * An array containing all the roles that are allowed access.
- */
-export const ALLOW_ALL_ROLES = [Role.Owner, Role.Admin, Role.Student];
 
 /**
  * Props for the RoleBasedAccessControl component.
@@ -61,20 +46,19 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   unauthorizedUnauthenticatedComponent,
   loadingComponent
 }) => {
-  const userRepository = useContext(UserContext);
   const [authorization, setAuthorization] = useState<AuthorizationStatus | null>(null);
 
-  const { loading } = useAuth();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     const checkUserAuthorization = async () => {
-      if (auth.currentUser !== null) {
-        if (allowedRoles === ALLOW_ALL_ROLES) {
+      if (user !== null) {
+        if (allowedRoles === ALLOW_AUTHED_ROLES) {
           setAuthorization(AuthorizationStatus.AuthorizedUser);
           return;
         }
-        const userRole = await userRepository.getUserRole(auth.currentUser.uid);
-        if (allowedRoles.includes(userRole)) {
+
+        if (allowedRoles.includes(user?.role || '')) {
           setAuthorization(AuthorizationStatus.AuthorizedUser);
         } else {
           setAuthorization(AuthorizationStatus.UnauthorizedAuthenticatedUser);
@@ -88,8 +72,11 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
       checkUserAuthorization();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading, allowedRoles]);
+  }, [user, loading, allowedRoles]);
 
+  console.log(authorization);
+  console.log(user);
+  console.log(loading);
   if (loading) {
     return loadingComponent ? loadingComponent : <span className="loading loading-dots loading-lg"></span>;
   }

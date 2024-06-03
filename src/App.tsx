@@ -1,13 +1,13 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.rtl.min.css';
 import { Route, Routes } from 'react-router-dom';
-import RoleBasedAccessControl, { ALLOW_ALL_ROLES, Role } from './authentication/components/RoleBasedAccessControl';
+import RoleBasedAccessControl from './authentication/components/RoleBasedAccessControl';
 import { useAuthRoutes } from './authentication/AuthRoutes';
 import { useStudyMaterialRoutes } from './study-material/StudyMaterialRoutes';
 import EventContainer from './events/EventContainer';
-import LogoutButton from './authentication/components/Logout';
 import Layout from './components/layout/Layout';
 import TestingLayout from './components/layout/TestingLayout';
+import Role from './authentication/components/Roles';
 
 function App() {
   const AuthRoutes = useAuthRoutes();
@@ -17,17 +17,14 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<TestingLayout />}>
+          {AuthRoutes}
           <Route path="/" element={<Layout />}>
-            {AuthRoutes}
             {StudyMaterialRoutes}
             <Route path="/events" element={<EventContainer />} />
             <Route
               path="/dashboard"
               element={
                 <>
-                  <RoleBasedAccessControl allowedRoles={ALLOW_ALL_ROLES}>
-                    <LogoutButton />
-                  </RoleBasedAccessControl>
                   <RoleBasedAccessControl allowedRoles={[Role.Admin]}>
                     <div>Dashboard</div>
                   </RoleBasedAccessControl>
