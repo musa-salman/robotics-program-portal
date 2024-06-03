@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Form, Button, Card, Alert, FloatingLabel } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { useAuth } from '../../services/useAuth';
@@ -10,7 +10,7 @@ import { useAuth } from '../../services/useAuth';
  * Allows users to log in to the system using email and password, or Google.
  */
 export default function Login() {
-  const { authService } = useAuth();
+  const { user, authService } = useAuth();
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -18,7 +18,6 @@ export default function Login() {
   const [warning, setWarning] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   async function handleSubmit(e: { preventDefault: () => void }) {
     e.preventDefault();
@@ -30,10 +29,9 @@ export default function Login() {
       password: passwordRef.current?.value || ''
     };
 
-    authService
+    await authService
       .loginWithEmailAndPassword(creds)
       .then(() => {
-        navigate('/dashboard');
         setLoading(false);
       })
       .catch(() => {
@@ -44,6 +42,7 @@ export default function Login() {
 
   return (
     <>
+      {user && <Navigate to="/" />}
       <Card>
         <Card.Body>
           <h2 className="mb-4">כניסה למערכת</h2>
@@ -93,7 +92,6 @@ export default function Login() {
                 authService
                   .loginWithGoogle()
                   .then(() => {
-                    navigate('/dashboard');
                     setLoading(false);
                   })
                   .catch(() => {

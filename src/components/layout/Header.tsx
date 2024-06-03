@@ -1,6 +1,9 @@
 import React from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import RoleBasedAccessControl from '../../authentication/components/RoleBasedAccessControl';
+import LogoutButton from '../../authentication/components/Logout';
+import { ALLOW_AUTHED_ROLES } from '../../authentication/components/Roles';
 
 type HeaderProps = {
   logo: string;
@@ -27,9 +30,16 @@ const Header: React.FC<HeaderProps> = ({ logo, links }) => {
               ))}
             </Nav>
           </Navbar.Collapse>
-          <Link to="/login" className="btn btn-primary text-white px-4" style={{ borderRadius: '20px' }}>
-            התחברות
-          </Link>
+          <RoleBasedAccessControl
+            allowedRoles={ALLOW_AUTHED_ROLES}
+            unauthorizedUnauthenticatedComponent={
+              <Link to="/login" className="btn btn-primary text-white px-4" style={{ borderRadius: '20px' }}>
+                התחברות
+              </Link>
+            }
+            unauthorizedAuthenticatedComponent={<> </>}
+            children={<LogoutButton />}
+          />
         </Container>
       </Navbar>
     </>
