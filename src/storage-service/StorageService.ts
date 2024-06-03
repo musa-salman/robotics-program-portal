@@ -1,10 +1,16 @@
-import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { StorageError, deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../firebase';
 import { IStorageService } from './IStorageService';
 import { Dispatch, SetStateAction } from 'react';
 
 export class StorageService implements IStorageService {
-  async upload(file: File, path: string, setUploadProgress: Dispatch<SetStateAction<number>>): Promise<void> {
+  async upload(
+    file: File,
+    path: string,
+    setUploadProgress: Dispatch<SetStateAction<number>>,
+    onError: (error: StorageError) => void,
+    onComplete: () => void
+  ): Promise<void> {
     const storageRef = ref(storage, path);
     const uploadTask = uploadBytesResumable(storageRef, file);
     uploadTask.on(
@@ -14,9 +20,8 @@ export class StorageService implements IStorageService {
         console.log('Upload is ' + progress + '% done');
         setUploadProgress(progress);
       },
-      (error: any) => {
-        console.error('Error uploading file:', error);
-      }
+      onError,
+      onComplete
     );
   }
 
