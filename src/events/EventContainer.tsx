@@ -90,7 +90,8 @@ const EventContainer = () => {
     date: new Date(), // Provide initial value for date
     title: '', // Provide initial value for title
     details: '', // Provide initial value for details
-    image: '', // Provide initial value for image
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/pico-7a9d2.appspot.com/o/event-img%2FRobtics.png?alt=media&token=ebd02a49-3e7a-4165-8580-825a2d5a0a5d', // Provide initial value for image
     onEventDelete: (_id: string) => {}, // Change the parameter type from '_id: string' to 'id: number'
     onEventEdit: (_event: EventProps) => {},
     id: '' // Provide initial value for id
@@ -108,24 +109,26 @@ const EventContainer = () => {
     handleShow();
     const docRef = await eventRepository.create(event);
     event.id = docRef.id;
-    let url = '';
     if (file) {
-      // Upload the file and wait for the upload to complete
-      await storageService.upload(file, '/event-img/' + docRef.id, setUploadProgress);
-      const storage = getStorage();
-      const filePath = '/event-img/' + docRef.id;
-      // Get the download URL
-      await sleep(2000);
-      url = await getDownloadURL(ref(storage, filePath));
-      event.imageURL = url;
+      await storageService.upload(
+        file,
+        '/event-img/' + docRef.id,
+        setUploadProgress,
+        (_error) => {},
+        () => {
+          const storage = getStorage();
+          const filePath = '/event-img/' + docRef.id;
+          // Get the download URL
+          getDownloadURL(ref(storage, filePath)).then((url) => {
+            event.imageURL = url;
+            formData.image = url;
+            eventRepository.update(docRef.id, event);
+            events?.push(formData);
+            setRender(render === 1 ? 0 : 1);
+          });
+        }
+      );
     }
-    eventRepository.update(docRef.id, event);
-    events?.push(formData);
-    setRender(render === 1 ? 0 : 1);
-  }
-
-  function sleep(ms: number | undefined) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   function addWindow() {
