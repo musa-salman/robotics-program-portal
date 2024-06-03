@@ -45,9 +45,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose }
     try {
       const data: Category[] = await categoryRepository.find();
       setCategories(data);
-      // const dataString: string[] = data.map(category => (category.category));
-      // console.log("data " + dataString[0]);
-      // setCategories(dataString);
     } catch (error) {
       console.error('Error fetching items:', error);
     }
@@ -192,7 +189,8 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose }
         <AddEditCategories
           categories={categories}
           studyMaterial={allStudyMaterial}
-          handleCloseAddEdit={handleCloseAddEdit}></AddEditCategories>
+          handleCloseAddEdit={handleCloseAddEdit}
+          setCategories={setCategories}></AddEditCategories>
       </Modal>
     </>
   );
