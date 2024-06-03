@@ -3,7 +3,7 @@ import { Form, Button, Card, Alert, FloatingLabel } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { useAuth } from './useAuth';
+import { useAuth } from '../../services/useAuth';
 
 /**
  * Renders the login component.

@@ -1,6 +1,6 @@
 import { Route } from 'react-router-dom';
-import LoginContainer from './LoginContainer';
-import ForgetPasswordContainer from './ForgetPasswordContainer';
+import LoginContainer from './components/Login/LoginContainer';
+import ForgetPasswordContainer from './components/ForgetPassword/ForgetPasswordContainer';
 
 /**
  * Custom hook that returns the authentication routes.
