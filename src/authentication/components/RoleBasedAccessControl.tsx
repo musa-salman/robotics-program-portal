@@ -14,6 +14,20 @@ enum AuthorizationStatus {
 }
 
 /**
+ * Represents the different roles available for access control.
+ */
+export enum Role {
+  Owner = 'owner',
+  Admin = 'admin',
+  Student = 'student'
+}
+
+/**
+ * An array containing all the roles that are allowed access.
+ */
+export const ALLOW_ALL_ROLES = [Role.Owner, Role.Admin, Role.Student];
+
+/**
  * Props for the RoleBasedAccessControl component.
  */
 type RoleBasedAccessControlProps = {
@@ -55,6 +69,10 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   useEffect(() => {
     const checkUserAuthorization = async () => {
       if (auth.currentUser !== null) {
+        if (allowedRoles === ALLOW_ALL_ROLES) {
+          setAuthorization(AuthorizationStatus.AuthorizedUser);
+          return;
+        }
         const userRole = await userRepository.getUserRole(auth.currentUser.uid);
         if (allowedRoles.includes(userRole)) {
           setAuthorization(AuthorizationStatus.AuthorizedUser);

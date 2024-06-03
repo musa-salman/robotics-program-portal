@@ -1,5 +1,5 @@
 import { Container, Row, Col } from 'react-bootstrap';
-import './LoginContainer.css';
+import '../Login/LoginContainer.css';
 import ForgetPassword from './ForgetPassword';
 
 export default function LoginContainer() {
