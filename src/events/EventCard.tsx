@@ -122,10 +122,6 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     //db
   };
 
-  function sleep(ms: number | undefined) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
   const handleSaveDelete = async () => {
     const storage = getStorage();
     onEventDelete(id);
