@@ -118,6 +118,9 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
           });
         }
       );
+    } else {
+      onEventEdit(formData);
+      eventRepository.update(id, event);
     }
     //db
   };
@@ -277,7 +280,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   return (
     <Card className="event-card">
       <Card.Img variant="top" src={image} />
-      <Card.Body>
+      <Card.Body style={{ marginTop: '150px' }}>
         <Card.Title>{title}</Card.Title>
         <Card.Text>
           <p>
