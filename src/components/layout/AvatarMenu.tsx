@@ -23,7 +23,6 @@ const AvatarMenu = () => {
     setAnchorEl(null);
   };
 
-  console.log(auth.currentUser);
   return (
     <>
       <div onClick={handleAvatarClick} className="avatar-menu-container">
