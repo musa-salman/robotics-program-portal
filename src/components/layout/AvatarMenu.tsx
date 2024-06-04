@@ -23,11 +23,16 @@ const AvatarMenu = () => {
     setAnchorEl(null);
   };
 
+  console.log(auth.currentUser);
   return (
     <>
       <div onClick={handleAvatarClick} className="avatar-menu-container">
         <Avatar sx={{ bgcolor: deepOrange[500] }}>
-          {auth.currentUser?.photoURL ? <img src={auth.currentUser?.photoURL} alt="avatar" /> : <Person />}
+          {auth.currentUser?.photoURL ? (
+            <img src={auth.currentUser?.photoURL} referrerPolicy="no-referrer" alt="avatar" />
+          ) : (
+            <Person />
+          )}
         </Avatar>
         {auth.currentUser?.displayName && <span className="avatar-name">{auth.currentUser?.displayName}</span>}
       </div>
@@ -36,7 +41,7 @@ const AvatarMenu = () => {
         open={open}
         onClose={handleMenuClose}
         anchorOrigin={{
-          vertical: 'bottom', // Place the menu below the avatar
+          vertical: 'bottom',
           horizontal: 'right'
         }}
         transformOrigin={{
