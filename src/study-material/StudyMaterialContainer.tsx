@@ -43,12 +43,20 @@ function StudyMaterialContainer() {
     setStudyMaterials(updatedMaterials);
   };
 
+  const handleAdd = (studyMaterial: StudyMaterial) => {
+   studyMaterials?.push(studyMaterial);
+    setStudyMaterials(studyMaterials);
+  };
+
   const categories = (studyMaterials || [])
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
-
+  
   return (
     <>
+    <button onClick={handleShow} className="add-button">
+            <FontAwesomeIcon icon={faPlus} />
+            </button>
       <SearchBar studyMaterials={studyMaterials || []} onSearchResults={handleSearchResults} />
       {(categories || []).map((category) => (
         <Card className="primary">
@@ -74,7 +82,7 @@ function StudyMaterialContainer() {
         </Card>
       ))}
       <Modal show={show} onHide={handleClose}>
-        <UploadFileComponent handleClose={handleClose}></UploadFileComponent>
+        <UploadFileComponent handleClose={handleClose} handleAdd ={handleAdd}></UploadFileComponent>
       </Modal>
     </>
   );

@@ -7,20 +7,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileArrowDown, faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 import { StorageServiceContext } from '../storage-service/StorageContext';
-import {StudyMaterialContext} from './StudyMaterialContext';
+import { StudyMaterialContext } from './StudyMaterialContext';
 
 const styles = {
   fontSize: '20px',
   color: 'black',
-  fontWeight: 'bold',
   padding: '5px'
 };
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (deletedItemId: string) => void;
 
-
-function StudyMaterials({ studyMaterial, onUpdate ,onDelete }: { studyMaterial: StudyMaterial; onUpdate: UpdateHandler  ; onDelete: DeleteHandler}) {
+function StudyMaterials({
+  studyMaterial,
+  onUpdate,
+  onDelete
+}: {
+  studyMaterial: StudyMaterial;
+  onUpdate: UpdateHandler;
+  onDelete: DeleteHandler;
+}) {
   const storageService = useContext(StorageServiceContext);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(studyMaterial.title);
@@ -48,14 +54,17 @@ function StudyMaterials({ studyMaterial, onUpdate ,onDelete }: { studyMaterial: 
       title: editedTitle,
       description: editedDescription
     };
-  
-      studyMaterialRepository.update(studyMaterial.id ,updatedStudyMaterial ).then(() => {
+
+    studyMaterialRepository
+      .update(studyMaterial.id, updatedStudyMaterial)
+      .then(() => {
         onUpdate(updatedStudyMaterial);
         setIsEditing(false);
-      }).catch( (error) => {
-      console.error('Error updating study material:', error);
-    }
-  )};
+      })
+      .catch((error) => {
+        console.error('Error updating study material:', error);
+      });
+  };
 
   const momentDate = moment(studyMaterial.date.toDate()).format('DD / MM / YYYY');
 
@@ -72,11 +81,7 @@ function StudyMaterials({ studyMaterial, onUpdate ,onDelete }: { studyMaterial: 
         <hr className="custom-hr" />
         <div>
           {isEditing ? (
-            <input
-            type="text"
-              value={editedDescription}
-              onChange={(e) => setEditedDescription(e.target.value)}
-            />
+            <input type="text" value={editedDescription} onChange={(e) => setEditedDescription(e.target.value)} />
           ) : (
             <Card.Text style={styles}>{studyMaterial.description || 'תאור קצר על הקובץ'}</Card.Text>
           )}
