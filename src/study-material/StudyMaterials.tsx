@@ -34,7 +34,10 @@ function StudyMaterials({
   const studyMaterialRepository = useContext(StudyMaterialContext);
 
   const handleDownload = async () => {
-    storageService.download('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename);
+    storageService.download(
+      '/study-material/' + studyMaterial.id + '-' + studyMaterial.filename,
+      studyMaterial.filename
+    );
   };
 
   const handleDelete = async () => {
