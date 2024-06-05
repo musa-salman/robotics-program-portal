@@ -5,7 +5,7 @@ import { StudyMaterial } from './StudyMaterial';
 
 interface SearchBarProps {
   studyMaterials: StudyMaterial[];
-  onSearchResults: (results: StudyMaterial[]) => void;
+  onSearchResults: (results: StudyMaterial[] | null) => void;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({ studyMaterials, onSearchResults }) => {
@@ -15,6 +15,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({ studyMaterials, onSearchRe
   };
 
   const search = (text: string) => {
+    if (text.length === 0) {
+      onSearchResults(null);
+      return;
+    }
     const filteredResults = studyMaterials.filter(
       (material) =>
         material.title.toLowerCase().includes(text.toLowerCase()) ||

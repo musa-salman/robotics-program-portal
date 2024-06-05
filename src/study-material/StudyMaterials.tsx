@@ -3,16 +3,15 @@ import Card from 'react-bootstrap/Card';
 import './StudyMaterials.css';
 import { useContext, useState } from 'react';
 import { StudyMaterial } from './StudyMaterial';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileArrowDown, faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { StudyMaterialContext } from './StudyMaterialContext';
-
+import DownloadIcon from '@mui/icons-material/Download';
 const styles = {
   fontSize: '20px',
   color: 'black',
-  padding: '5px'
+  padding: '5px',
+  marginBottom: '20px'
 };
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
@@ -72,13 +71,13 @@ function StudyMaterials({
   const momentDate = moment(studyMaterial.date).format('DD / MM / YYYY');
 
   return (
-    <Card className={'Card'}>
-      <Card.Body>
+    <Card className="Card">
+      <Card.Body className="bodycard">
         <div>
           {isEditing ? (
             <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
           ) : (
-            <Card.Title style={styles}>{studyMaterial.title}</Card.Title>
+            <Card.Title className="title-card">{studyMaterial.title}</Card.Title>
           )}
         </div>
         <hr className="custom-hr" />
@@ -86,19 +85,20 @@ function StudyMaterials({
           {isEditing ? (
             <input type="text" value={editedDescription} onChange={(e) => setEditedDescription(e.target.value)} />
           ) : (
-            <Card.Text style={styles}>{studyMaterial.description || 'תאור קצר על הקובץ'}</Card.Text>
+            <Card.Text className="description">{studyMaterial.description}</Card.Text>
           )}
         </div>
-        <p style={styles}> תאריך : {momentDate} </p>
-        <br />
-        <div className="btns">
-          <Button className="button" onClick={handleDownload}>
-            <FontAwesomeIcon icon={faFileArrowDown} />
-          </Button>
-          <Button className="button" onClick={handleDelete}>
+        <p className="date"> תאריך : {momentDate} </p>
+        {/* <div className="btns"> */}
+        <Button className="dow-button" onClick={handleDownload}>
+          {' '}
+          הורדה
+          <DownloadIcon className="dow-icon" />
+        </Button>
+        {/* <Button className="button" onClick={handleDelete}>
             <FontAwesomeIcon icon={faTrash} />
-          </Button>
-          {isEditing ? (
+          </Button> */}
+        {/* {isEditing ? (
             <Button className="button" onClick={handleSave}>
               Save
             </Button>
@@ -106,8 +106,8 @@ function StudyMaterials({
             <Button className="button" onClick={handleEditToggle}>
               <FontAwesomeIcon icon={faPenToSquare} />
             </Button>
-          )}
-        </div>
+          )} */}
+        {/* </div> */}
       </Card.Body>
     </Card>
   );
