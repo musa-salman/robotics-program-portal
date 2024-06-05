@@ -3,13 +3,12 @@ import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { deepOrange } from '@mui/material/colors';
 import LogoutButton from '../../authentication/components/Logout';
-import './AvatarMenu.css'; // Import CSS file here
+import './AvatarMenu.css';
 import RoleBasedAccessControl from '../../authentication/components/RoleBasedAccessControl';
 import { ALLOW_AUTHED_ROLES } from '../../authentication/components/Roles';
 import { auth } from '../../firebase';
-import { Person } from '@mui/icons-material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const AvatarMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -26,11 +25,11 @@ const AvatarMenu = () => {
   return (
     <>
       <div onClick={handleAvatarClick} className="avatar-menu-container">
-        <Avatar sx={{ bgcolor: deepOrange[500] }}>
+        <Avatar>
           {auth.currentUser?.photoURL ? (
             <img src={auth.currentUser?.photoURL} referrerPolicy="no-referrer" alt="avatar" />
           ) : (
-            <Person />
+            <AccountCircleIcon style={{ fontSize: 60, color: '#3f51b5' }} />
           )}
         </Avatar>
         {auth.currentUser?.displayName && <span className="avatar-name">{auth.currentUser?.displayName}</span>}
