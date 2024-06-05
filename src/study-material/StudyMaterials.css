@@ -11,44 +11,64 @@
 
 .Card {
   width: 20rem;
-  border: 2px solid rgb(252, 251, 252);
-  background-color: #d1c8bf;
+  border: 3px solid rgb(252, 251, 252);
+  background-color: #d6ccc2;
   box-shadow: 3px 3px 3px 4px rgba(53, 50, 53, 0.69);
   border-radius: 10px;
+  margin: 0px;
+  padding: 6px;
+}
+
+.bu-more {
+  width: fit-content;
+  background-color: transparent;
+  border: none;
+  border-radius: 20px;
+  padding: 4px;
+  margin: 0px;
+}
+
+.bu-more:hover {
+  background-color: #9b9a9a;
+  /* background-color: transparent; */
 }
 
 .title-card {
-  max-height: 50px;
-  min-height: 30px;
-  font-size: 25px;
+  max-height: 50vh;
+  min-height: 6vh;
+  font-size: 20px;
 }
 
 .description {
-  max-height: 70px;
-  min-height: 30px;
+  max-height: 50vh;
+  min-height: 5vh;
   font-size: 15px;
+  /* text-align: right; */
 }
 
 .date {
-  max-height: 70px;
-  min-height: 30px;
-  font-size: 15px;
+  max-height: 80vh;
+  min-height: 5vh;
+  font-size: 16px;
+  /* text-align: right; */
 }
 
 .dow-button {
-  width: 100%;
+  display: flex;
+  margin: auto;
   padding: 10px 20px;
   color: #060606;
-  background-color: crimson;
+  background-color: #acc4ac;
   border: none;
   border-radius: 20px;
   cursor: pointer;
 }
 
 .dow-button:hover {
-  background-color: rgb(238, 86, 116);
+  background-color: #9ed09e;
 }
 
 .dow-icon {
+  margin-right: 50px;
   color: whitesmoke;
 }

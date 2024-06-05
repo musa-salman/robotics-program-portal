@@ -7,12 +7,7 @@ import moment from 'moment';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { StudyMaterialContext } from './StudyMaterialContext';
 import DownloadIcon from '@mui/icons-material/Download';
-const styles = {
-  fontSize: '20px',
-  color: 'black',
-  padding: '5px',
-  marginBottom: '20px'
-};
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (deletedItemId: string) => void;
@@ -50,7 +45,6 @@ function StudyMaterials({
   };
 
   const handleSave = async () => {
-    // Construct the updated study material object with the new title and description
     const updatedStudyMaterial = {
       ...studyMaterial,
       title: editedTitle,
@@ -72,14 +66,15 @@ function StudyMaterials({
 
   return (
     <Card className="Card">
+      <Button className="bu-more">
+        <MoreVertIcon />
+      </Button>
       <Card.Body className="bodycard">
-        <div>
-          {isEditing ? (
-            <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
-          ) : (
-            <Card.Title className="title-card">{studyMaterial.title}</Card.Title>
-          )}
-        </div>
+        {isEditing ? (
+          <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
+        ) : (
+          <Card.Title className="title-card">{studyMaterial.title}</Card.Title>
+        )}
         <hr className="custom-hr" />
         <div>
           {isEditing ? (
@@ -91,7 +86,6 @@ function StudyMaterials({
         <p className="date"> תאריך : {momentDate} </p>
         {/* <div className="btns"> */}
         <Button className="dow-button" onClick={handleDownload}>
-          {' '}
           הורדה
           <DownloadIcon className="dow-icon" />
         </Button>

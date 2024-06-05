@@ -17,9 +17,9 @@ function EmptyStudyMaterials() {
           {' '}
           זה ריק כאן אין קבצים
         </Typography>
-        <button className="button" onClick={handleAdd}>
+        <button className="add-btn" onClick={handleAdd}>
           הוספה
-          <AddIcon style={{ color: 'red', fontSize: '25px' }} />{' '}
+          <AddIcon />{' '}
         </button>
       </Container>
     </>

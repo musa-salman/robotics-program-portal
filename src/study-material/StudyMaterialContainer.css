@@ -14,28 +14,34 @@
   gap: 20px;
 }
 
+.btn-search {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.btn-search .adde-btn {
+  background-color: rgb(16, 16, 144);
+  color: whitesmoke;
+}
+
+.btn-search .adde-btn:hover {
+  background-color: rgb(53, 53, 212);
+}
+
+.Card-Header .edit-button {
+  background-color: rgb(16, 16, 144);
+  color: whitesmoke;
+}
+
+.Card-Header .edit-button:hover {
+  background-color: rgb(53, 53, 212);
+}
+
 .Card-Header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.buttons {
-  display: flex;
-}
-
-.add-button {
-  border: none;
-  cursor: pointer;
-  background-color: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
-.add-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .header-text {

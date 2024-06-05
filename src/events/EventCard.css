@@ -8,8 +8,8 @@
 
 /* Dropdown toggle button styling */
 .adminOptions .dropdown-toggle {
-  background-color: #28a745;
-  border: none;
+  background-color: transparent;
+  border: solid;
   color: white;
   font-size: 14px;
   cursor: pointer;
@@ -19,7 +19,7 @@
 }
 
 .adminOptions .dropdown-toggle:hover {
-  background-color: #218838;
+  background-color: #abd8b5;
 }
 
 /* Dropdown menu styling */
@@ -35,7 +35,8 @@
 .adminOptions .dropdown-item {
   padding: 10px 20px;
   color: #333;
-  text-align: right; /* Align text to the right for Hebrew text */
+  text-align: right;
+  /* Align text to the right for Hebrew text */
   font-size: 16px;
   transition: background-color 0.2s ease;
 }
@@ -55,8 +56,8 @@
 }
 
 .events {
-  background-color: rgb(255, 195, 195);
-  background-image: url('EventContainer.jpg');
+  /* background-color: rgb(236, 213, 213); */
+
   padding: 10px;
   border-radius: 10px;
   align-items: center;
@@ -72,14 +73,15 @@
   justify-content: space-between;
   overflow: hidden;
   margin: 10px;
-  gap: 10px; /* Add this line to create spacing between components */
+  gap: 10px;
+  /* Add this line to create spacing between components */
 }
 
 /* Positioning the Add Event button at the top left */
 .add-event-button {
   position: center;
   z-index: 10;
-  background-color: #28a745;
+  background-color: #49b161;
   border: none;
   color: white;
   padding: 10px 20px;
@@ -113,14 +115,14 @@
 
 /* Base styling for the card */
 .event-card {
-  height: 500px;
-  width: 18rem;
-  background-color: bisque;
+  width: min-content;
+
+  background-color: #edecf3;
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
-  border-radius: 10px; /* optional: adds some rounding to the corners */
-  overflow: hidden; /* ensures content does not overflow the card borders */
+  border-radius: 10px;
+  overflow: hidden;
   align-items: center;
 }
 
@@ -133,8 +135,10 @@
 /* Optional: Ensure images within the card are properly styled */
 .event-card img {
   width: 18rem;
-  height: 170px; /* Set height to fill the top half */
-  object-fit: cover; /* Ensures the image covers the space without distortion */
+  height: 170px;
+  /* Set height to fill the top half */
+  object-fit: cover;
+  /* Ensures the image covers the space without distortion */
   position: absolute;
   top: 0px;
   right: 0px;

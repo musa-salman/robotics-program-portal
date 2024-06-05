@@ -53,24 +53,24 @@ function StudyMaterialContainer() {
   return (
     <>
       <EmptyStudyMaterials />
-      <button onClick={handleShow} className="add-button">
-        <AddIcon />
-      </button>
-      <SearchBar studyMaterials={studyMaterials || []} onSearchResults={setSearchResults} />
+      <div className="btn-search">
+        <SearchBar studyMaterials={studyMaterials || []} onSearchResults={setSearchResults} />
+        {/* <button onClick={handleShow} className="add-button">
+                <AddIcon />
+              </button> */}
+        <Fab className="adde-btn" aria-label="add">
+          <AddIcon />
+        </Fab>
+      </div>
       {(categories || []).map((category) => (
         <Card className="primary">
           <Card.Header className="Card-Header">
             <div key={category}>
               <h2>{category}</h2>
             </div>
-            <div className="buttons">
-              <button onClick={handleShow} className="add-button">
-                <AddIcon />
-              </button>
-              <Fab color="secondary" aria-label="edit">
-                <EditIcon />
-              </Fab>
-            </div>
+            <Fab className="edit-button" aria-label="edit">
+              <EditIcon />
+            </Fab>
           </Card.Header>
           <br></br>
           <Card.Body className="body">
