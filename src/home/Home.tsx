@@ -1,4 +1,4 @@
-import { Container, Box } from '@mui/material';
+import { Container, Box, Divider } from '@mui/material';
 import HeroSection from './HeroSection';
 import Sponsors from './Sponsors';
 import AboutUs from './AboutUs';
@@ -15,12 +15,18 @@ function Home() {
       <HeroSection />
       <Box my={4}>
         <AboutUs />
+        <Divider />
         <OurMission />
+        <Divider />
         <Achievements />
+        <Divider />
         <Team />
+        <Divider />
         <GetInvolved />
+        <Divider />
         <EventContainer />
         <Sponsors />
+        <Divider />
         <Contact />
       </Box>
     </Container>
