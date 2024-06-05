@@ -1,48 +1,33 @@
 import React from 'react';
-import { Navbar, Container, Nav } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import RoleBasedAccessControl from '../../authentication/components/RoleBasedAccessControl';
-import LogoutButton from '../../authentication/components/Logout';
-import { ALLOW_AUTHED_ROLES } from '../../authentication/components/Roles';
+import { AppBar, Toolbar, Container, Box, Link } from '@mui/material';
+import AvatarMenu from './AvatarMenu';
+import './Header.css';
 
-type HeaderProps = {
+interface HeaderProps {
   logo: string;
   links: { name: string; path: string }[];
-};
+}
 
 const Header: React.FC<HeaderProps> = ({ logo, links }) => {
   return (
-    <>
-      <Navbar bg="dark" variant="dark" expand="lg">
+    <header>
+      <AppBar position="static" color="primary">
         <Container>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Brand as={Link} to="/">
-            <img src={logo} height="40" className="d-inline-block align-top" alt="Logo" />
-          </Navbar.Brand>
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
+          <Toolbar>
+            <img src={logo} height="40" alt="Logo" className="logo" />
+            <nav className="nav-links">
               {links.map((link) => (
-                <Nav.Item key={link.name}>
-                  <Nav.Link as={Link} to={link.path}>
-                    {link.name}
-                  </Nav.Link>
-                </Nav.Item>
+                <Link key={link.name} href={link.path}>
+                  {link.name}
+                </Link>
               ))}
-            </Nav>
-          </Navbar.Collapse>
-          <RoleBasedAccessControl
-            allowedRoles={ALLOW_AUTHED_ROLES}
-            unauthorizedUnauthenticatedComponent={
-              <Link to="/login" className="btn btn-primary text-white px-4" style={{ borderRadius: '20px' }}>
-                התחברות
-              </Link>
-            }
-            unauthorizedAuthenticatedComponent={<> </>}
-            children={<LogoutButton />}
-          />
+            </nav>
+            <Box flexGrow={1} />
+            <AvatarMenu />
+          </Toolbar>
         </Container>
-      </Navbar>
-    </>
+      </AppBar>
+    </header>
   );
 };
 

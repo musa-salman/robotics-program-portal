@@ -118,13 +118,12 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
           });
         }
       );
+    } else {
+      onEventEdit(formData);
+      eventRepository.update(id, event);
     }
     //db
   };
-
-  function sleep(ms: number | undefined) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
   const handleSaveDelete = async () => {
     const storage = getStorage();
@@ -281,7 +280,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   return (
     <Card className="event-card">
       <Card.Img variant="top" src={image} />
-      <Card.Body>
+      <Card.Body style={{ marginTop: '150px' }}>
         <Card.Title>{title}</Card.Title>
         <Card.Text>
           <p>

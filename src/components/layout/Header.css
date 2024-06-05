@@ -1,0 +1,13 @@
+.logo {
+  margin-left: 20px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+.nav-links a:hover {
+  color: black;
+}

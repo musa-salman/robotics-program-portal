@@ -15,9 +15,10 @@ import { StorageServiceContext } from '../storage-service/StorageContext';
 type SelectedItem = string;
 interface UploadFileComponentProps {
   handleClose: () => void;
+  handleAdd: (studyMaterial: StudyMaterial) => void;
 }
 
-const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose }) => {
+const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, handleAdd }) => {
   const [file, setFile] = useState<File | null>(null);
   const [, setUploadProgress] = useState(0);
   const [selectedItem, setSelectedItems] = useState<SelectedItem>('מיקןם הפיל');
@@ -97,6 +98,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose }
     if (file) {
       const docRef = await studyMaterialRepository.create(studyMaterial);
       storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename, setUploadProgress,(e)=>{},()=>{});
+      handleAdd(studyMaterial);
     }
     console.log(studyMaterial);
     handleClose();
@@ -105,94 +107,92 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose }
 
   return (
     <>
-        <Modal.Header closeButton className="bg mb-3 px-3" style={{ backgroundColor: '#d1c8bf',width: '45rem'}}>
-          <h1 style={{ fontSize: '40px' ,color: 'black', border: 'none' }}>העלת קובץ</h1>
-        </Modal.Header>
-        <Modal.Body style={{ backgroundColor: '#d1c8bf',width: '45rem'}}>
-          <Form className='px-3 mx-3'>
-
-            <Form.Group className='px-1'>
-              <FloatingLabel controlId="floatingInput" label="כותרת">
-                <Form.Control
-                  type="text"
-                  name="title"
-                  required
-                  style={{ backgroundColor: '#f5f4f3' ,color: 'black', border: 'none' }}
-                  placeholder="כותרת"
-                  onChange={(event) => handleInput(event)}
-                />
-              </FloatingLabel>
-              <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group className="position-relative my-3 px-2" controlId="validationCustom02" >
+      <Modal.Header closeButton className="bg mb-3 px-3" style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
+        <h1 style={{ fontSize: '40px', color: 'black', border: 'none' }}>העלת קובץ</h1>
+      </Modal.Header>
+      <Modal.Body style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
+        <Form className="px-3 mx-3">
+          <Form.Group className="px-1">
+            <FloatingLabel controlId="floatingInput" label="כותרת">
               <Form.Control
-                type="file"
+                type="text"
+                name="title"
                 required
-                name="filename"
-                className="position-relative my-4 "
-                onChange={(event) => handleFileChange(event)}
-              />
-            </Form.Group>
-
-            <Navbar expand="lg">
-              <Container fluid>
-                <Navbar.Collapse id="navbar-dark-example">
-                  <Nav >
-                    <NavDropdown
-                      id="nav-dropdown-dark-example"
-                      title="בחר מיקום"
-                      menuVariant="dark"
-                      onSelect={handleSelect}>
-                      <div className="modal-footer-scroll2">
-                        {(categories || []).map((item, index) => (
-                          <NavDropdown.Item
-                            eventKey={item.category}
-                            onClick={() => handleSelect(item.category)}
-                            key={index}>
-                            {item.category}
-                          </NavDropdown.Item>
-                        ))}
-
-                        <Button variant="link" onClick={handleShowAddEdit}>
-                          הוספה/שינוי
-                        </Button>
-                      </div>
-                    </NavDropdown>
-                  </Nav>
-                  <span className="px-4">{selectedItem}</span>
-                </Navbar.Collapse>
-              </Container>
-            </Navbar>
-
-            <FloatingLabel className="my-3" controlId="floatingTextarea1" label="תיאור">
-              <Form.Control
-                as="textarea"
-                name="description"
-                placeholder="Leave a comment here"
+                style={{ backgroundColor: '#f5f4f3', color: 'black', border: 'none' }}
+                placeholder="כותרת"
                 onChange={(event) => handleInput(event)}
-                style={{ height: '100px', backgroundColor: '#f5f4f3' ,color: 'black', border: 'none' }}
               />
             </FloatingLabel>
+            <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
+          </Form.Group>
 
-            <Modal.Footer className="justify-content-center">
-              <Button variant="primary" className="mx-3 px-5" onClick={handleSubmit}>
-                העלה
-              </Button>
-              <Button variant="secondary" className="mx-5 px-5" onClick={handleClose}>
-                סגירה
-              </Button>
-            </Modal.Footer>
-          </Form>
+          <Form.Group className="position-relative my-3 px-2" controlId="validationCustom02">
+            <Form.Control
+              type="file"
+              required
+              name="filename"
+              className="position-relative my-4 "
+              onChange={(event) => handleFileChange(event)}
+            />
+          </Form.Group>
 
-        </Modal.Body>
+          <Navbar expand="lg">
+            <Container fluid>
+              <Navbar.Collapse id="navbar-dark-example">
+                <Nav>
+                  <NavDropdown
+                    id="nav-dropdown-dark-example"
+                    title="בחר מיקום"
+                    menuVariant="dark"
+                    onSelect={handleSelect}>
+                    <div className="modal-footer-scroll2">
+                      {(categories || []).map((item, index) => (
+                        <NavDropdown.Item
+                          eventKey={item.category}
+                          onClick={() => handleSelect(item.category)}
+                          key={index}>
+                          {item.category}
+                        </NavDropdown.Item>
+                      ))}
 
-      <Modal show={showAddEdit} onHide={handleCloseAddEdit} >
+                      <Button variant="link" onClick={handleShowAddEdit}>
+                        הוספה/שינוי
+                      </Button>
+                    </div>
+                  </NavDropdown>
+                </Nav>
+                <span className="px-4">{selectedItem}</span>
+              </Navbar.Collapse>
+            </Container>
+          </Navbar>
+
+          <FloatingLabel className="my-3" controlId="floatingTextarea1" label="תיאור">
+            <Form.Control
+              as="textarea"
+              name="description"
+              placeholder="Leave a comment here"
+              onChange={(event) => handleInput(event)}
+              style={{ height: '100px', backgroundColor: '#f5f4f3', color: 'black', border: 'none' }}
+            />
+          </FloatingLabel>
+
+          <Modal.Footer className="justify-content-center">
+            <Button variant="primary" className="mx-3 px-5" onClick={handleSubmit}>
+              העלה
+            </Button>
+            <Button variant="secondary" className="mx-5 px-5" onClick={handleClose}>
+              סגירה
+            </Button>
+          </Modal.Footer>
+        </Form>
+      </Modal.Body>
+
+      <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
         <AddEditCategories
           categories={categories}
           studyMaterial={allStudyMaterial}
           handleCloseAddEdit={handleCloseAddEdit}
-          setCategories={setCategories} ></AddEditCategories>
+          setCategories={setCategories}></AddEditCategories>
       </Modal>
     </>
   );

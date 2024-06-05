@@ -4,8 +4,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { EventContext } from './EventContext';
 import { IEvent } from './Event';
 import { StorageServiceContext } from '../storage-service/StorageContext';
-// import { firestore } from '../firebase';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+// import { firestore } from '../firebase';
 
 // import { eventContext } from '../event-img/eventContext';
 
@@ -14,7 +14,6 @@ type EventContainer = {
 };
 
 const EventContainer = () => {
-  const [firstVisibleEventIndex, setFirstVisibleEventIndex] = useState(0);
   const [events, setEvents] = useState<EventProps[] | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [render, setRender] = useState(0);
@@ -22,9 +21,18 @@ const EventContainer = () => {
   const handleShow = () => setShowModal(true);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [file, setFile] = useState<File | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const eventRepository = useContext(EventContext);
   const storageService = useContext(StorageServiceContext);
+
+  const handleShiftEventsRight = () => {
+    if (events !== null) setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+  };
+
+  const handleShiftEventsLeft = () => {
+    if (events !== null) setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, events.length - 3));
+  };
 
   useEffect(() => {
     const getEvents = async () => {
@@ -36,7 +44,7 @@ const EventContainer = () => {
   function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     return events.map((event) => {
       return {
-        date: event.date.toDate(),
+        date: event.date,
         title: event.title,
         details: event.details,
         image: event.imageURL,
@@ -68,29 +76,12 @@ const EventContainer = () => {
     setShowModal(false);
   };
 
-  const handleShiftEventsRight = () => {
-    setFirstVisibleEventIndex((prevIndex) => {
-      if (prevIndex > (events || []).length - 4) {
-        return prevIndex; // Keep the index at 0 if it's already at 0
-      }
-      return prevIndex + 1; // Shift the index by 1 to the right
-    });
-  };
-
-  const handleShiftEventsLeft = () => {
-    setFirstVisibleEventIndex((prevIndex) => {
-      if (prevIndex === 0) {
-        return 0; // Keep the index at 0 if it's already at 0
-      }
-      return prevIndex - 1; // Shift the index by 1 to the right
-    });
-  };
-
   const [formData, setFormData] = useState<EventProps>({
     date: new Date(), // Provide initial value for date
     title: '', // Provide initial value for title
     details: '', // Provide initial value for details
-    image: '', // Provide initial value for image
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/pico-7a9d2.appspot.com/o/event-img%2FRobtics.png?alt=media&token=ebd02a49-3e7a-4165-8580-825a2d5a0a5d', // Provide initial value for image
     onEventDelete: (_id: string) => {}, // Change the parameter type from '_id: string' to 'id: number'
     onEventEdit: (_event: EventProps) => {},
     id: '' // Provide initial value for id
@@ -108,24 +99,29 @@ const EventContainer = () => {
     handleShow();
     const docRef = await eventRepository.create(event);
     event.id = docRef.id;
-    let url = '';
     if (file) {
-      // Upload the file and wait for the upload to complete
-      await storageService.upload(file, '/event-img/' + docRef.id, setUploadProgress);
-      const storage = getStorage();
-      const filePath = '/event-img/' + docRef.id;
-      // Get the download URL
-      await sleep(2000);
-      url = await getDownloadURL(ref(storage, filePath));
-      event.imageURL = url;
+      await storageService.upload(
+        file,
+        '/event-img/' + docRef.id,
+        setUploadProgress,
+        (_error) => {},
+        () => {
+          const storage = getStorage();
+          const filePath = '/event-img/' + docRef.id;
+          // Get the download URL
+          getDownloadURL(ref(storage, filePath)).then((url) => {
+            event.imageURL = url;
+            formData.image = url;
+            eventRepository.update(docRef.id, event);
+            events?.push(formData);
+            setRender(render === 1 ? 0 : 1);
+          });
+        }
+      );
+    } else {
+      events?.push(formData);
+      setRender(render === 1 ? 0 : 1);
     }
-    eventRepository.update(docRef.id, event);
-    events?.push(formData);
-    setRender(render === 1 ? 0 : 1);
-  }
-
-  function sleep(ms: number | undefined) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   function addWindow() {
@@ -231,18 +227,21 @@ const EventContainer = () => {
         <Button variant="primary" onClick={handleShiftEventsRight}>
           &lt;
         </Button>
-        {(events || []).slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
-          <EventCard
-            key={event.id}
-            id={event.id}
-            date={event.date}
-            title={event.title}
-            details={event.details}
-            image={event.image}
-            onEventDelete={onEventDelete}
-            onEventEdit={onEventEdit}
-          />
-        ))}
+        {(events || [])
+          .sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
+          .slice(currentIndex, currentIndex + 3)
+          .map((event) => (
+            <EventCard
+              key={event.id}
+              id={event.id}
+              date={event.date}
+              title={event.title}
+              details={event.details}
+              image={event.image}
+              onEventDelete={onEventDelete}
+              onEventEdit={onEventEdit}
+            />
+          ))}
         <Button variant="primary" onClick={handleShiftEventsLeft}>
           &gt;
         </Button>

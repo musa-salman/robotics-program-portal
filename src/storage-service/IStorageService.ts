@@ -7,7 +7,7 @@ export interface IStorageService {
     onComplete: () => void
   ): Promise<void>;
 
-  download(path: string): Promise<void>;
+  download(path: string, filename?: string): Promise<void>;
 
   delete(path: string): Promise<void>;
 }

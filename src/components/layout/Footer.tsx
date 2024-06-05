@@ -1,55 +1,56 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { Container, Grid, Link, Typography } from '@mui/material';
+import { Facebook, Twitter, Instagram, YouTube } from '@mui/icons-material';
+import './Footer.css';
 
-type FooterProps = {
-  links: { name: string; path: string }[];
-  socialMedia: { platform: string; url: string }[];
+interface Link {
+  name: string;
+  path: string;
+}
+
+interface SocialMedia {
+  platform: string;
+  url: string;
+}
+
+interface FooterProps {
+  links: Link[];
+  socialMedia: SocialMedia[];
   copyright: string;
-};
+}
 
 const Footer: React.FC<FooterProps> = ({ links, socialMedia, copyright }) => {
-  const renderSocialIcon = (platform: string) => {
-    switch (platform) {
-      case 'facebook':
-        return <FaFacebook />;
-      case 'twitter':
-        return <FaTwitter />;
-      case 'instagram':
-        return <FaInstagram />;
-      case 'linkedin':
-        return <FaLinkedin />;
-      default:
-        return null;
-    }
-  };
-
   return (
-    <footer className="bg-dark text-white py-4 mt-auto">
+    <footer className="footer">
       <Container>
-        <Row>
-          <Col md={6}>
-            <ul className="list-unstyled">
+        <Grid container spacing={2}>
+          <Grid item md={6}>
+            <ul>
               {links.map((link) => (
                 <li key={link.name}>
-                  <a href={link.path} className="text-white">
+                  <Link href={link.path} style={{ color: 'white', textDecoration: 'none' }}>
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
-          </Col>
-          <Col md={6} className="text-md-right">
-            <div>
+          </Grid>
+          <Grid item md={6} sx={{ textAlign: 'right' }}>
+            <div className="social-links">
               {socialMedia.map((social) => (
-                <a key={social.platform} href={social.url} className="text-white ml-2 p-2">
-                  {renderSocialIcon(social.platform)}
-                </a>
+                <Link key={social.platform} href={social.url}>
+                  {social.platform === 'facebook' && <Facebook />}
+                  {social.platform === 'twitter' && <Twitter />}
+                  {social.platform === 'instagram' && <Instagram />}
+                  {social.platform === 'youtube' && <YouTube />}
+                </Link>
               ))}
             </div>
-            <small className="d-block mt-3">{copyright}</small>
-          </Col>
-        </Row>
+            <Typography variant="body2" style={{ marginTop: '10px' }}>
+              {copyright}
+            </Typography>
+          </Grid>
+        </Grid>
       </Container>
     </footer>
   );

@@ -12,6 +12,9 @@ export function createConverter<T>(): FirestoreDataConverter<T, DocumentData> {
 
     fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): T {
       const data = snapshot.data(options)!;
+      if (data['date']) {
+        data['date'] = data['date'].toDate();
+      }
       return { id: snapshot.id, ...data } as T;
     }
   };
