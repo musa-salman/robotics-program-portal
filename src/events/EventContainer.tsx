@@ -4,8 +4,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { EventContext } from './EventContext';
 import { IEvent } from './Event';
 import { StorageServiceContext } from '../storage-service/StorageContext';
-// import { firestore } from '../firebase';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+// import { firestore } from '../firebase';
 
 // import { eventContext } from '../event-img/eventContext';
 
@@ -14,7 +14,6 @@ type EventContainer = {
 };
 
 const EventContainer = () => {
-  const [firstVisibleEventIndex, setFirstVisibleEventIndex] = useState(0);
   const [events, setEvents] = useState<EventProps[] | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [render, setRender] = useState(0);
@@ -22,9 +21,18 @@ const EventContainer = () => {
   const handleShow = () => setShowModal(true);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [file, setFile] = useState<File | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const eventRepository = useContext(EventContext);
   const storageService = useContext(StorageServiceContext);
+
+  const handleShiftEventsRight = () => {
+    if (events !== null) setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+  };
+
+  const handleShiftEventsLeft = () => {
+    if (events !== null) setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, events.length - 3));
+  };
 
   useEffect(() => {
     const getEvents = async () => {
@@ -66,24 +74,6 @@ const EventContainer = () => {
   const handleSaveAdd = () => {
     handleAdd();
     setShowModal(false);
-  };
-
-  const handleShiftEventsRight = () => {
-    setFirstVisibleEventIndex((prevIndex) => {
-      if (prevIndex > (events || []).length - 4) {
-        return prevIndex; // Keep the index at 0 if it's already at 0
-      }
-      return prevIndex + 1; // Shift the index by 1 to the right
-    });
-  };
-
-  const handleShiftEventsLeft = () => {
-    setFirstVisibleEventIndex((prevIndex) => {
-      if (prevIndex === 0) {
-        return 0; // Keep the index at 0 if it's already at 0
-      }
-      return prevIndex - 1; // Shift the index by 1 to the right
-    });
   };
 
   const [formData, setFormData] = useState<EventProps>({
@@ -128,6 +118,9 @@ const EventContainer = () => {
           });
         }
       );
+    } else {
+      events?.push(formData);
+      setRender(render === 1 ? 0 : 1);
     }
   }
 
@@ -234,18 +227,21 @@ const EventContainer = () => {
         <Button variant="primary" onClick={handleShiftEventsRight}>
           &lt;
         </Button>
-        {(events || []).slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
-          <EventCard
-            key={event.id}
-            id={event.id}
-            date={event.date}
-            title={event.title}
-            details={event.details}
-            image={event.image}
-            onEventDelete={onEventDelete}
-            onEventEdit={onEventEdit}
-          />
-        ))}
+        {(events || [])
+          .sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
+          .slice(currentIndex, currentIndex + 3)
+          .map((event) => (
+            <EventCard
+              key={event.id}
+              id={event.id}
+              date={event.date}
+              title={event.title}
+              details={event.details}
+              image={event.image}
+              onEventDelete={onEventDelete}
+              onEventEdit={onEventEdit}
+            />
+          ))}
         <Button variant="primary" onClick={handleShiftEventsLeft}>
           &gt;
         </Button>
