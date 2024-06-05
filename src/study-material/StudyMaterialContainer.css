@@ -11,7 +11,7 @@
   flex-wrap: wrap;
   align-content: space-between;
   justify-content: right;
-  gap: 10px;
+  gap: 20px;
 }
 
 .Card-Header {
@@ -20,17 +20,18 @@
   justify-content: space-between;
 }
 
+.buttons {
+  display: flex;
+}
+
 .add-button {
-  /* background: url('/plus.png') no-repeat center center; */
-  width: 30px;
-  height: 30px;
   border: none;
   cursor: pointer;
   background-color: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 40px;
+  font-size: 20px;
 }
 
 .add-button:hover {
@@ -39,7 +40,6 @@
 
 .header-text {
   text-align: right;
-  /* flex-grow: 1; */
   font-size: 20px;
   color: black;
   font-weight: bold;

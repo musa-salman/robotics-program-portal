@@ -7,14 +7,16 @@ import { StudyMaterial } from './StudyMaterial';
 import { SearchBar } from './SearchBar';
 import UploadFileComponent from '../upload-file/UploadFile';
 import { Modal } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import EmptyStudyMaterials from './EmptyStudyMaterials';
+import { Fab } from '@mui/material';
 
 function StudyMaterialContainer() {
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
   const studyMaterialRepository = useContext(StudyMaterialContext);
 
-  const [searchResults, setSearchResults] = useState<StudyMaterial[]>([]);
+  const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -26,10 +28,6 @@ function StudyMaterialContainer() {
 
     if (studyMaterials === null) getStudyMaterials();
   }, [studyMaterials]);
-
-  const handleSearchResults = (results: StudyMaterial[]) => {
-    setSearchResults(results);
-  };
 
   const handleUpdate = (updatedMaterial: StudyMaterial) => {
     const updatedMaterials = (studyMaterials || []).map((material) =>
@@ -48,31 +46,37 @@ function StudyMaterialContainer() {
     setStudyMaterials(studyMaterials);
   };
 
-  const categories = (studyMaterials || [])
+  const categories = (searchResults || studyMaterials || [])
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
   return (
     <>
+      <EmptyStudyMaterials />
       <button onClick={handleShow} className="add-button">
-        <FontAwesomeIcon icon={faPlus} />
+        <AddIcon />
       </button>
-      <SearchBar studyMaterials={studyMaterials || []} onSearchResults={handleSearchResults} />
+      <SearchBar studyMaterials={studyMaterials || []} onSearchResults={setSearchResults} />
       {(categories || []).map((category) => (
         <Card className="primary">
           <Card.Header className="Card-Header">
             <div key={category}>
               <h2>{category}</h2>
             </div>
-            <button onClick={handleShow} className="add-button">
-              <FontAwesomeIcon icon={faPlus} />
-            </button>
+            <div className="buttons">
+              <button onClick={handleShow} className="add-button">
+                <AddIcon />
+              </button>
+              <Fab color="secondary" aria-label="edit">
+                <EditIcon />
+              </Fab>
+            </div>
           </Card.Header>
           <br></br>
           <Card.Body className="body">
             <br></br>
             <div className="study-materials-container">
-              {(searchResults.length > 0 ? searchResults : studyMaterials || [])
+              {(searchResults || studyMaterials || [])
                 .filter((s) => s.category === category)
                 .map((studyMaterial) => (
                   <StudyMaterials
