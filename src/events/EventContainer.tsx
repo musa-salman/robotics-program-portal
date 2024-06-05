@@ -36,7 +36,7 @@ const EventContainer = () => {
   function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     return events.map((event) => {
       return {
-        date: event.date.toDate(),
+        date: event.date,
         title: event.title,
         details: event.details,
         image: event.imageURL,

@@ -69,7 +69,7 @@ function StudyMaterials({
       });
   };
 
-  const momentDate = moment(studyMaterial.date.toDate()).format('DD / MM / YYYY');
+  const momentDate = moment(studyMaterial.date).format('DD / MM / YYYY');
 
   return (
     <Card className={'Card'}>
