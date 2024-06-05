@@ -11,10 +11,11 @@ interface YourComponentProps {
   categories: Category[] | null;
   studyMaterial: StudyMaterial[] | null;
   handleCloseAddEdit: () => void; 
+  handleSelect : (eventKey: string | null)=>void;
   setCategories:React.Dispatch<React.SetStateAction<Category[] | null>>;
 }
 
-const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMaterial, handleCloseAddEdit ,setCategories}) => {
+const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMaterial, handleCloseAddEdit ,setCategories,handleSelect}) => {
   const [category, setCategory] = useState("");
   const [editcategory, setEditCategory] = useState("");  
   const [editingItem, setEditingItem] = useState<Category | null>(null);
@@ -34,11 +35,10 @@ const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMate
     setCategory(event.target.value );
   };
 
-  const checkRepeat =():boolean =>{
-    console.log(categories?.length);
+  const checkRepeat =(input:string):boolean =>{
     let x:  number=0;
     categories?.forEach((index)=>{
-      if(index.category !== category){
+      if(index.category !== input){
         x+=1;
       }
     });
@@ -46,12 +46,13 @@ const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMate
   }
 
   const addCategories = async () => {
-    if(checkRepeat()){
+    if(checkRepeat(category)){
       const docRef=await categoryRepository.create({ category}); 
       const add:Category={
         category:category,
         id:docRef.id
       };
+      handleSelect(add.category);
       setCategories(prevCategories => {
         if (prevCategories === null) {
           return [add];
@@ -65,7 +66,11 @@ const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMate
   };
 
   const handleSaveItem = (item:Category) => {
-    if(item.category === editingItem?.category  && editcategory !==""){
+    if(!checkRepeat(editcategory) && editcategory !== item.category){
+      console.log("this action dose not exist");
+      
+    }
+    else if(item.category === editingItem?.category  && editcategory !=="" ){
       const edit: Category = {
         category: editcategory,
         id: editingItem.id
@@ -85,6 +90,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMate
           studyMaterialRepository.update(index.id, study);
         }
       });
+
       setCategories(prevCategories => {
         if (prevCategories === null) {
           return null;
@@ -107,7 +113,6 @@ const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMate
 
   const handleEditInput = (event: any) => {
     setEditCategory(event.target.value);
-    console.log(editcategory);
   };
 
   const handleDeleteCategory = (item: Category) => {
@@ -133,6 +138,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMate
         studyMaterialRepository.update(index.id, study);
       }
     });
+    handleSelect("מיקןם הפיל");
   };
 
   return (

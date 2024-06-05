@@ -57,7 +57,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
     if (loading && categories === null) {
       getCategory();
       getStudyMaterial();
-      console.log('categories ' + categories);
       setLoading(false);
     }
   }, [categories]);
@@ -192,7 +191,8 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
           categories={categories}
           studyMaterial={allStudyMaterial}
           handleCloseAddEdit={handleCloseAddEdit}
-          setCategories={setCategories}></AddEditCategories>
+          setCategories={setCategories}
+          handleSelect={handleSelect}></AddEditCategories>
       </Modal>
     </>
   );
