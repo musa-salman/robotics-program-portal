@@ -1,0 +1,25 @@
+.avatar-name {
+  margin-right: 10px;
+  color: white;
+  font-weight: bold;
+}
+
+.avatar-menu {
+  margin-top: 8px;
+}
+
+.avatar-menu .login-button {
+  text-decoration: none;
+  color: inherit;
+}
+
+.avatar-menu .profile-button {
+  text-decoration: none;
+  color: inherit;
+}
+
+.avatar-menu-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}

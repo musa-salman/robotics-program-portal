@@ -1,4 +1,4 @@
-  /* Main container styling */
+/* Main container styling */
 .adminOptions {
   position: absolute;
   top: 10px;
@@ -15,6 +15,7 @@
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s ease;
+  height: 30px;
 }
 
 .adminOptions .dropdown-toggle:hover {
@@ -53,7 +54,6 @@
   color: #721c24;
 }
 
-
 .events {
   background-color: rgb(255, 195, 195);
   background-image: url('EventContainer.jpg');
@@ -75,10 +75,9 @@
   gap: 10px; /* Add this line to create spacing between components */
 }
 
-
 /* Positioning the Add Event button at the top left */
 .add-event-button {
-  position: absolute;
+  position: center;
   z-index: 10;
   background-color: #28a745;
   border: none;
@@ -95,7 +94,7 @@
 }
 
 /* Styling for the shift buttons*/
-.eventsContainer .btn-primary  {
+.eventsContainer .btn-primary {
   border: none;
   color: white;
   background-color: #606365;
@@ -110,17 +109,19 @@
 /* Ensuring Event components have some spacing*/
 .event-component {
   margin: 0 5px;
-} 
+}
 
 /* Base styling for the card */
 .event-card {
   height: 500px;
   width: 18rem;
-  /* background-image: url('EventCard.jpg'); */
   background-color: bisque;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   border-radius: 10px; /* optional: adds some rounding to the corners */
   overflow: hidden; /* ensures content does not overflow the card borders */
+  align-items: center;
 }
 
 /* Hover effect to make the card grow and add shadow */
@@ -131,9 +132,12 @@
 
 /* Optional: Ensure images within the card are properly styled */
 .event-card img {
-  width: 100%;
-  height: 150px; /* Set height to fill the top half */
+  width: 18rem;
+  height: 170px; /* Set height to fill the top half */
   object-fit: cover; /* Ensures the image covers the space without distortion */
+  position: absolute;
+  top: 0px;
+  right: 0px;
 }
 
 /* Styling for the card title */
@@ -146,6 +150,9 @@
 /* Styling for card text */
 .event-card .card-text p {
   margin: 0.5rem 0;
+  width: 16rem;
+  overflow-wrap: break-word;
+  align-items: start;
 }
 
 /* Optional: Button styling */

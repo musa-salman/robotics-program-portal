@@ -1,5 +1,5 @@
 import { Button, Alert } from 'react-bootstrap';
-import { useAuth } from './useAuth';
+import { useAuth } from '../services/useAuth';
 import { useState } from 'react';
 
 const LogoutButton = () => {

@@ -1,5 +1,5 @@
 import { UserCredential } from 'firebase/auth';
-import LoginFormValues from './ILoginFormValues';
+import LoginFormValues from '../components/Login/ILoginFormValues';
 
 /**
  * Represents an authentication service.

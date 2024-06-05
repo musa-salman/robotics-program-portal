@@ -1,8 +1,13 @@
 import EventCard, { EventProps } from './EventCard';
-import { Button, Modal, Form, Carousel } from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
 import React, { useState, useEffect, useContext } from 'react';
 import { EventContext } from './EventContext';
 import { IEvent } from './Event';
+import { StorageServiceContext } from '../storage-service/StorageContext';
+// import { firestore } from '../firebase';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+
+// import { eventContext } from '../event-img/eventContext';
 
 type EventContainer = {
   eventsProps: EventProps[];
@@ -10,20 +15,47 @@ type EventContainer = {
 
 const EventContainer = () => {
   const [firstVisibleEventIndex, setFirstVisibleEventIndex] = useState(0);
-  const [events, setEvents] = useState<EventProps[]>([]);
+  const [events, setEvents] = useState<EventProps[] | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [render, setRender] = useState(0);
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [file, setFile] = useState<File | null>(null);
+
+  const eventRepository = useContext(EventContext);
+  const storageService = useContext(StorageServiceContext);
+
+  useEffect(() => {
+    const getEvents = async () => {
+      setEvents(convertIEventsToEventProps(await eventRepository.find()));
+    };
+    if (events === null) getEvents();
+  }, [events]);
+
+  function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
+    return events.map((event) => {
+      return {
+        date: event.date.toDate(),
+        title: event.title,
+        details: event.details,
+        image: event.imageURL,
+        id: event.id,
+        onEventDelete: onEventDelete,
+        onEventEdit: onEventEdit
+      };
+    });
+  }
 
   function onEventDelete(id: string) {
-    setEvents(events.filter((e) => e.id !== id));
+    setEvents((events || []).filter((e) => e.id !== id));
+    setRender(render === 1 ? 0 : 1);
   }
 
   function onEventEdit(event: EventProps) {
-    const index = events.findIndex((e) => e.id === event.id);
+    const index = (events || []).findIndex((e) => e.id === event.id);
     if (index !== -1) {
-      events[index] = event;
+      (events || [])[index] = event;
       setRender(render === 1 ? 0 : 1);
     }
   }
@@ -38,7 +70,7 @@ const EventContainer = () => {
 
   const handleShiftEventsRight = () => {
     setFirstVisibleEventIndex((prevIndex) => {
-      if (events.length - prevIndex < 4) {
+      if (prevIndex > (events || []).length - 4) {
         return prevIndex; // Keep the index at 0 if it's already at 0
       }
       return prevIndex + 1; // Shift the index by 1 to the right
@@ -55,19 +87,18 @@ const EventContainer = () => {
   };
 
   const [formData, setFormData] = useState<EventProps>({
-    date: '', // Provide initial value for date
+    date: new Date(), // Provide initial value for date
     title: '', // Provide initial value for title
     details: '', // Provide initial value for details
-    image: 'Robtics.png', // Provide initial value for image
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/pico-7a9d2.appspot.com/o/event-img%2FRobtics.png?alt=media&token=ebd02a49-3e7a-4165-8580-825a2d5a0a5d', // Provide initial value for image
     onEventDelete: (_id: string) => {}, // Change the parameter type from '_id: string' to 'id: number'
     onEventEdit: (_event: EventProps) => {},
     id: '' // Provide initial value for id
   });
 
-  const eventRepository = useContext(EventContext);
-
   const event: IEvent = {
-    date: formData.date,
+    date: new Date(formData.date),
     title: formData.title,
     details: formData.details,
     imageURL: formData.image,
@@ -77,10 +108,27 @@ const EventContainer = () => {
   async function handleAdd() {
     handleShow();
     const docRef = await eventRepository.create(event);
-    formData.id = docRef.id;
-    events.push(formData);
-    setEvents(events);
-    setRender(render === 1 ? 0 : 1);
+    event.id = docRef.id;
+    if (file) {
+      await storageService.upload(
+        file,
+        '/event-img/' + docRef.id,
+        setUploadProgress,
+        (_error) => {},
+        () => {
+          const storage = getStorage();
+          const filePath = '/event-img/' + docRef.id;
+          // Get the download URL
+          getDownloadURL(ref(storage, filePath)).then((url) => {
+            event.imageURL = url;
+            formData.image = url;
+            eventRepository.update(docRef.id, event);
+            events?.push(formData);
+            setRender(render === 1 ? 0 : 1);
+          });
+        }
+      );
+    }
   }
 
   function addWindow() {
@@ -121,11 +169,12 @@ const EventContainer = () => {
     };
 
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData((prevState) => ({ ...prevState, date: e.target.value }));
+      setFormData((prevState) => ({ ...prevState, date: e.target.valueAsDate! }));
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setFormData((prevState) => ({ ...prevState, image: e.target.value }));
+      setFormData((prevState) => ({ ...prevState, image: formData.image }));
+      setFile(e.target.files?.[0] || null); // Provide a default value of null for the file state variable
     };
 
     return (
@@ -185,8 +234,9 @@ const EventContainer = () => {
         <Button variant="primary" onClick={handleShiftEventsRight}>
           &lt;
         </Button>
-        {events.slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
+        {(events || []).slice(firstVisibleEventIndex, firstVisibleEventIndex + 3).map((event) => (
           <EventCard
+            key={event.id}
             id={event.id}
             date={event.date}
             title={event.title}
