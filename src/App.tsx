@@ -8,6 +8,7 @@ import EventContainer from './events/EventContainer';
 import Layout from './components/layout/Layout';
 import TestingLayout from './components/layout/TestingLayout';
 import Role from './authentication/components/Roles';
+import Home from './home/Home';
 
 function App() {
   const AuthRoutes = useAuthRoutes();
@@ -20,6 +21,7 @@ function App() {
           {AuthRoutes}
           <Route path="/" element={<Layout />}>
             {StudyMaterialRoutes}
+            <Route path="/" element={<Home />} />
             <Route path="/events" element={<EventContainer />} />
             <Route
               path="/dashboard"
