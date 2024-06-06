@@ -37,7 +37,6 @@
 
 .events {
   /* background-color: rgb(236, 213, 213); */
-
   padding: 10px;
   border-radius: 10px;
   align-items: center;
@@ -54,6 +53,7 @@
   overflow: hidden;
   margin: 10px;
   gap: 10px;
+  min-height: 550px;
   /* Add this line to create spacing between components */
 }
 
@@ -96,7 +96,6 @@
 /* Base styling for the card */
 .event-card {
   width: min-content;
-
   background-color: #edecf3;
   transition:
     transform 0.3s ease,
@@ -104,12 +103,18 @@
   border-radius: 10px;
   overflow: hidden;
   align-items: center;
+  min-width: 300px;
+  min-height: 500px;
 }
 
 /* Hover effect to make the card grow and add shadow */
 .event-card:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+  text-decoration: underline;
 }
 
 /* Optional: Ensure images within the card are properly styled */
