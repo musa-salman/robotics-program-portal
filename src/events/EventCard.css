@@ -4,55 +4,35 @@
   top: 10px;
   right: 10px;
   font-family: Arial, sans-serif;
+  color: #a5a7a5;
 }
 
-/* Dropdown toggle button styling */
-.adminOptions .dropdown-toggle {
-  background-color: transparent;
-  border: solid;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-  height: 30px;
-}
-
-.adminOptions .dropdown-toggle:hover {
-  background-color: #abd8b5;
-}
-
-/* Dropdown menu styling */
-.adminOptions .dropdown-menu {
+.adminOptions :hover {
+  color: #07cf32;
   background-color: #f8f9fa;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 5px;
 }
 
-/* Dropdown items styling */
-.adminOptions .dropdown-item {
-  padding: 10px 20px;
-  color: #333;
-  text-align: right;
-  /* Align text to the right for Hebrew text */
+.edit-button,
+.delete-button {
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #f0f0f0;
+}
+.delete-button:hover {
+  color: white;
+  background-color: #ff0000;
+}
+
+.edit-button > MenuItem,
+.delete-button > MenuItem {
   font-size: 16px;
-  transition: background-color 0.2s ease;
-}
-
-.adminOptions .dropdown-item:hover {
-  background-color: #93c4f6;
-}
-
-/* Special styling for delete item */
-.adminOptions .dropdown-item[style] {
-  color: red;
-}
-
-.adminOptions .dropdown-item[style]:hover {
-  background-color: #f8d7da;
-  color: #721c24;
+  color: #333;
 }
 
 .events {
@@ -134,7 +114,7 @@
 
 /* Optional: Ensure images within the card are properly styled */
 .event-card img {
-  width: 18rem;
+  width: 100%;
   height: 170px;
   /* Set height to fill the top half */
   object-fit: cover;
