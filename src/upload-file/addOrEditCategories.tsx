@@ -6,7 +6,7 @@ import { StudyMaterial } from '../study-material/StudyMaterial';
 import { StudyMaterialContext } from '../study-material/StudyMaterialContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-
+import './addorEditCategories.css';
 interface YourComponentProps {
   categories: Category[] | null;
   studyMaterial: StudyMaterial[] | null;
@@ -161,8 +161,8 @@ const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMate
             </FloatingLabel>
           </Form.Group>
           <Form.Group as={Col} md="3" className=" mt-2 px-3" controlId="validationCustom02">
-            <Button onClick={addCategories}>
-              <FontAwesomeIcon icon={faFloppyDisk} />
+            <Button onClick={addCategories} style={{ color: 'black',fontSize: '18px',fontWeight:'bold'}}>
+              שמירה
             </Button>
           </Form.Group>
         </Row>
