@@ -30,6 +30,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const handleShowAddEdit = () => setShowAddEdit(true);
   const categoryRepository = useContext(CategoryContext);
   const studyMaterialRepository = useContext(StudyMaterialContext);
+  const [validated, setValidated] = useState(false);
 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
     filename: '',
@@ -57,7 +58,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
     if (loading && categories === null) {
       getCategory();
       getStudyMaterial();
-      console.log('categories ' + categories);
       setLoading(false);
     }
   }, [categories]);
@@ -94,24 +94,38 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
     }
   };
 
-  const handleSubmit = async () => {
-    if (file) {
-      const docRef = await studyMaterialRepository.create(studyMaterial);
-      storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename, setUploadProgress,(e)=>{},()=>{});
-      handleAdd(studyMaterial);
+  const handleSubmit = async (event: any) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
     }
-    console.log(studyMaterial);
-    handleClose();
-    handleDate();
+
+    setValidated(true);
+    console.log('before,', studyMaterial);
+
+    if (file !== null && studyMaterial.title !== '') {
+      const docRef = await studyMaterialRepository.create(studyMaterial);
+      storageService.upload(
+        file,
+        '/study-material/' + docRef.id + '-' + studyMaterial.filename,
+        setUploadProgress,
+        (e) => {},
+        () => {}
+      );
+      handleAdd(studyMaterial);
+      handleClose();
+      handleDate();
+    }
   };
 
   return (
     <>
-      <Modal.Header closeButton className="bg mb-3 px-3" style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
+      <Modal.Header closeButton style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
         <h1 style={{ fontSize: '40px', color: 'black', border: 'none' }}>העלת קובץ</h1>
       </Modal.Header>
       <Modal.Body style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
-        <Form className="px-3 mx-3">
+        <Form className="px-3 mx-3" noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group className="px-1">
             <FloatingLabel controlId="floatingInput" label="כותרת">
               <Form.Control
@@ -123,7 +137,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
                 onChange={(event) => handleInput(event)}
               />
             </FloatingLabel>
-            <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="position-relative my-3 px-2" controlId="validationCustom02">
@@ -192,7 +205,8 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
           categories={categories}
           studyMaterial={allStudyMaterial}
           handleCloseAddEdit={handleCloseAddEdit}
-          setCategories={setCategories}></AddEditCategories>
+          setCategories={setCategories}
+          handleSelect={handleSelect}></AddEditCategories>
       </Modal>
     </>
   );
