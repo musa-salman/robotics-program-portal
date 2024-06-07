@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './StudentContainer.css';
-import StudentTable, { Student } from './StudentTable';
+import StudentTable, { Student } from './StudentsTable';
 
 const StudentContainer: React.FC = () => {
   const [students, setStudents] = useState<Student[]>([
@@ -9,27 +9,21 @@ const StudentContainer: React.FC = () => {
       firstName: 'מוסא',
       lastName: 'סלמאן',
       studentEmail: 'mosa@example.com',
-      motherEmail: 'mother@example.com',
-      isApproved: false,
-      isPaymentApproved: false
+      motherEmail: 'mother@example.com'
     },
     {
       id: '2',
       firstName: 'אחמד',
       lastName: 'סלמאן',
       studentEmail: 'ahmad@gmail.com',
-      motherEmail: 'mahmad@gmail.com',
-      isApproved: false,
-      isPaymentApproved: false
+      motherEmail: 'mahmad@gmail.com'
     },
     {
       id: '3',
       firstName: 'יהודה',
       lastName: 'כהן',
       studentEmail: 'yehuda@hotmail.com',
-      motherEmail: 'yehudam@gmail.com',
-      isApproved: false,
-      isPaymentApproved: false
+      motherEmail: 'yehudam@gmail.com'
     }
 
     // Add more sample students here

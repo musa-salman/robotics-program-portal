@@ -9,7 +9,7 @@ import Layout from './components/layout/Layout';
 import TestingLayout from './components/layout/TestingLayout';
 import Role from './authentication/components/Roles';
 import Banner from './components/Banner';
-import StudentContainer from './students_management/StudentContainer';
+import StudentContainer from './students_management/StudentsContainer';
 
 function App() {
   const AuthRoutes = useAuthRoutes();

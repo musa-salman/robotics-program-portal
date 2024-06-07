@@ -8,8 +8,6 @@ export interface Student {
   lastName: string;
   studentEmail: string;
   motherEmail: string;
-  isApproved: boolean;
-  isPaymentApproved: boolean;
 }
 
 interface Props {
