@@ -120,7 +120,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   };
 
   return (
-    <>
+    <Modal>
       <Modal.Header closeButton style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
         <h1 style={{ fontSize: '40px', color: 'black', border: 'none' }}>העלת קובץ</h1>
       </Modal.Header>
@@ -208,7 +208,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
           setCategories={setCategories}
           handleSelect={handleSelect}></AddEditCategories>
       </Modal>
-    </>
+    </Modal>
   );
 };
 
