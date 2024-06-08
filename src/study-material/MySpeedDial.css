@@ -1,0 +1,23 @@
+.speedDial {
+  display: flex;
+  position: absolute;
+  right: 3px;
+  background-color: transparent;
+}
+
+.speedDial .MuiSpeedDial-fab {
+  background-color: transparent;
+  width: fit-content;
+  height: fit-content;
+  box-shadow: none;
+}
+
+.speedDial .MuiSpeedDial-fab:hover {
+  background-color: rgb(103, 167, 146);
+  padding: 5px;
+  border-radius: 30px;
+}
+
+.speedDial .delete-action:hover {
+  background-color: rgb(213, 70, 98);
+}

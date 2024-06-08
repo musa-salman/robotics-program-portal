@@ -30,12 +30,12 @@
 }
 
 .Card-Header .edit-button {
-  background-color: rgb(16, 16, 144);
+  background-color: #e0b1cb;
   color: whitesmoke;
 }
 
 .Card-Header .edit-button:hover {
-  background-color: rgb(53, 53, 212);
+  background-color: #ee9bc9;
 }
 
 .Card-Header {

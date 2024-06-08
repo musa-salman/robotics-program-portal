@@ -19,7 +19,7 @@ function EmptyStudyMaterials() {
         </Typography>
         <button className="add-btn" onClick={handleAdd}>
           הוספה
-          <AddIcon />{' '}
+          <AddIcon className="addIcon" />
         </button>
       </Container>
     </>

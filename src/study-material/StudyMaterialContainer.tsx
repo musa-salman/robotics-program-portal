@@ -11,15 +11,19 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import EmptyStudyMaterials from './EmptyStudyMaterials';
 import { Fab } from '@mui/material';
+import NoResultFound from './NoResultFound';
 
 function StudyMaterialContainer() {
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
   const studyMaterialRepository = useContext(StudyMaterialContext);
+  // const [editCategory, setEditCategory] = useState<string>('');
+  // const [isEditing, setIsEditing] = useState(false);
 
   const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     const getStudyMaterials = async () => {
@@ -46,50 +50,63 @@ function StudyMaterialContainer() {
     setStudyMaterials(studyMaterials);
   };
 
+  if (studyMaterials === null) {
+    return <>loading</>;
+  }
+
+  if (studyMaterials.length === 0) {
+    return <EmptyStudyMaterials />;
+  }
+
   const categories = (searchResults || studyMaterials || [])
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
   return (
     <>
-      <EmptyStudyMaterials />
       <div className="btn-search">
-        <SearchBar studyMaterials={studyMaterials || []} onSearchResults={setSearchResults} />
-        {/* <button onClick={handleShow} className="add-button">
-                <AddIcon />
-              </button> */}
-        <Fab className="adde-btn" aria-label="add">
+        <SearchBar
+          studyMaterials={studyMaterials || []}
+          onSearchResults={setSearchResults}
+          query={query}
+          setQuery={setQuery}
+        />
+        <Fab className="adde-btn" aria-label="add" onClick={handleShow}>
           <AddIcon />
         </Fab>
       </div>
-      {(categories || []).map((category) => (
-        <Card className="primary">
-          <Card.Header className="Card-Header">
-            <div key={category}>
-              <h2>{category}</h2>
-            </div>
-            <Fab className="edit-button" aria-label="edit">
-              <EditIcon />
-            </Fab>
-          </Card.Header>
-          <br></br>
-          <Card.Body className="body">
+      {searchResults?.length === 0 ? (
+        <NoResultFound />
+      ) : (
+        (categories || []).map((category) => (
+          <Card className="primary">
+            <Card.Header className="Card-Header">
+              <div key={category}>
+                <h2>{category}</h2>
+              </div>
+              <Fab className="edit-button" aria-label="edit">
+                <EditIcon />
+              </Fab>
+            </Card.Header>
             <br></br>
-            <div className="study-materials-container">
-              {(searchResults || studyMaterials || [])
-                .filter((s) => s.category === category)
-                .map((studyMaterial) => (
-                  <StudyMaterials
-                    key={studyMaterial.id}
-                    studyMaterial={studyMaterial}
-                    onUpdate={handleUpdate}
-                    onDelete={handleDelete}
-                  />
-                ))}
-            </div>
-          </Card.Body>
-        </Card>
-      ))}
+            <Card.Body className="body">
+              <br></br>
+              <div className="study-materials-container">
+                {(searchResults || studyMaterials || [])
+                  .filter((s) => s.category === category)
+                  .map((studyMaterial) => (
+                    <StudyMaterials
+                      key={studyMaterial.id}
+                      studyMaterial={studyMaterial}
+                      onUpdate={handleUpdate}
+                      onDelete={handleDelete}
+                    />
+                  ))}
+              </div>
+            </Card.Body>
+          </Card>
+        ))
+      )}
       <Modal show={show} onHide={handleClose}>
         <UploadFileComponent handleClose={handleClose} handleAdd={handleAdd}></UploadFileComponent>
       </Modal>
