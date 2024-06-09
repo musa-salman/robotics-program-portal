@@ -9,11 +9,11 @@
   background-color: rgb(181, 187, 187);
 }
 
-.btn {
+/* .btn {
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
 .uploadBtn {
   width: 15rem;

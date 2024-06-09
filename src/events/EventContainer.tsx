@@ -257,7 +257,7 @@ const EventContainer = () => {
           </Button>
         )}
       </div>
-      <Button onClick={handleAddEvent}>
+      <Button className="addButton" onClick={handleAddEvent}>
         <AddIcon />
       </Button>
       {addWindow()}
