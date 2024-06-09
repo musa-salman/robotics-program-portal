@@ -44,12 +44,33 @@ export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
     return addDoc(this._collection, item as WithFieldValue<T> & AddPrefixToKeys<string, any>);
   }
 
+  async createMany(items: PartialWithFieldValue<T>[]): Promise<DocumentReference<T, DocumentData>[]> {
+    // TODO: test this method, if it syncs all the items correctly, with the correct IDs.
+    return Promise.all(
+      items.map((item) => {
+        return this.create(item);
+      })
+    );
+  }
+
   async update(id: string, item: PartialWithFieldValue<T>): Promise<void> {
+    if ((item as any).id) delete (item as Record<string, unknown>).id;
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return updateDoc(doc(this._collection, id), item as WithFieldValue<T> & AddPrefixToKeys<string, any>);
   }
 
   async delete(id: string): Promise<void> {
     return deleteDoc(doc(this._collection, id));
+  }
+
+  async deleteMany(ids: string[]): Promise<void> {
+    ids.forEach((id) => this.delete(id));
+  }
+
+  async deleteAll(): Promise<void> {
+    const snapshot = await getDocs(this._collection);
+
+    snapshot.docs.forEach((doc) => this.delete(doc.ref.id));
   }
 }
