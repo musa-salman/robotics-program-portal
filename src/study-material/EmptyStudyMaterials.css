@@ -20,9 +20,8 @@
   color: #b06464;
 }
 
-.add-btn {
+.container .add-btn {
   display: flex;
-  justify-content: space-around;
   margin: 20px auto;
   padding: 10px 20px;
   color: #060606;
@@ -32,10 +31,11 @@
   cursor: pointer;
 }
 
-.button-add:hover {
+.container .button-add:hover {
   background-color: #4f7195;
 }
 
-.addIcon {
+.container .addIcon {
   color: crimson;
+  margin-right: 30px;
 }

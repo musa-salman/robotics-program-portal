@@ -7,7 +7,7 @@ import moment from 'moment';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { StudyMaterialContext } from './StudyMaterialContext';
 import DownloadIcon from '@mui/icons-material/Download';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MySpeedDial from './MySpeedDial';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (deletedItemId: string) => void;
@@ -66,9 +66,13 @@ function StudyMaterials({
 
   return (
     <Card className="Card">
-      <Button className="bu-more">
-        <MoreVertIcon />
-      </Button>
+      <MySpeedDial
+        handleEditToggle={handleEditToggle}
+        handleSave={handleSave}
+        handleDelete={handleDelete}
+        isEditing={isEditing}
+      />
+      <br />
       <Card.Body className="bodycard">
         {isEditing ? (
           <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
@@ -89,19 +93,6 @@ function StudyMaterials({
           הורדה
           <DownloadIcon className="dow-icon" />
         </Button>
-        {/* <Button className="button" onClick={handleDelete}>
-            <FontAwesomeIcon icon={faTrash} />
-          </Button> */}
-        {/* {isEditing ? (
-            <Button className="button" onClick={handleSave}>
-              Save
-            </Button>
-          ) : (
-            <Button className="button" onClick={handleEditToggle}>
-              <FontAwesomeIcon icon={faPenToSquare} />
-            </Button>
-          )} */}
-        {/* </div> */}
       </Card.Body>
     </Card>
   );

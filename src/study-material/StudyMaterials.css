@@ -10,13 +10,15 @@
 }
 
 .Card {
-  width: 20rem;
+  min-width: 20rem;
+  max-width: 20rem;
   border: 3px solid rgb(252, 251, 252);
   background-color: #d6ccc2;
   box-shadow: 3px 3px 3px 4px rgba(53, 50, 53, 0.69);
   border-radius: 10px;
   margin: 0px;
   padding: 6px;
+  display: inline-block;
 }
 
 .bu-more {
@@ -33,27 +35,26 @@
   /* background-color: transparent; */
 }
 
-.title-card {
-  max-height: 50vh;
+.Card .title-card {
+  max-height: 6vh;
   min-height: 6vh;
   font-size: 20px;
 }
 
-.description {
-  max-height: 50vh;
+.Card .description {
+  max-height: 20vh;
   min-height: 5vh;
   font-size: 15px;
   /* text-align: right; */
 }
 
-.date {
-  max-height: 80vh;
+.Card .date {
   min-height: 5vh;
   font-size: 16px;
   /* text-align: right; */
 }
 
-.dow-button {
+.Card .dow-button {
   display: flex;
   margin: auto;
   padding: 10px 20px;
@@ -64,11 +65,11 @@
   cursor: pointer;
 }
 
-.dow-button:hover {
+.Card .dow-button:hover {
   background-color: #9ed09e;
 }
 
-.dow-icon {
+.Card .dow-icon {
   margin-right: 50px;
   color: whitesmoke;
 }

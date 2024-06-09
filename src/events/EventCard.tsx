@@ -1,12 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { EventContext } from './EventContext';
-import { Button, Card, Dropdown, Modal, Form } from 'react-bootstrap';
+import { Button, Card, Modal, Form } from 'react-bootstrap';
 import { IEvent } from './Event';
 import './EventCard.css';
 import moment from 'moment';
 import { getStorage, ref, deleteObject, getDownloadURL } from 'firebase/storage';
 import { StorageServiceContext } from '../storage-service/StorageContext';
-import AdminMenu from './AdminOptioins';
 
 export interface EventProps {
   date: Date;
@@ -262,33 +261,40 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   }
 
   return (
-    <Card className="event-card">
-      <Card.Img variant="top" src={image} />
-      <Card.Body style={{ marginTop: '150px' }}>
-        <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} />
-        <Card.Title>{title}</Card.Title>
-        <Card.Text>
-          <p>
-            <strong>תאריך:</strong> {moment(date).format('YYYY-MM-DD')}
-          </p>
-          <p>
-            <strong>פרטים:</strong> {details}
-          </p>
-        </Card.Text>
-        {registerd ? (
-          <Button variant="secondary" disabled>
-            רשום
-          </Button>
-        ) : (
-          <Button variant="primary" onClick={handleRegister}>
-            הירשם
-          </Button>
-        )}
-      </Card.Body>
-      {editWindow()}
-      {deleteWindow()}
-      {registerWindow()}
-    </Card>
+    <>
+      <Card className="event-card">
+        {/* <Card.Img variant="top" src={image} /> */}
+
+        <Card.Body className="event-card-body">
+          {/* <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} /> */}
+          <div className="date-section">
+            <strong></strong> {moment(date).format(' MMM DD YYYY')}
+          </div>
+          {/* <Card.Title>{title}</Card.Title> */}
+          <div className="content-section">
+            <Card.Text>
+              <Card.Title className="eve-title">{title}</Card.Title>
+              {/* <strong>תאריך:</strong> {moment(date).format('DD-MMM-YYYY')} */}
+              <strong>פרטים:</strong> {details}
+            </Card.Text>
+          </div>
+          <div className="button-container">
+            {registerd ? (
+              <Button className="sub-btn" variant="secondary" disabled>
+                רשום
+              </Button>
+            ) : (
+              <Button className="sub-btn" variant="primary" onClick={handleRegister}>
+                הירשם
+              </Button>
+            )}
+          </div>
+        </Card.Body>
+        {editWindow()}
+        {deleteWindow()}
+        {registerWindow()}
+      </Card>
+    </>
   );
 };
 export default EventCard;
