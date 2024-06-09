@@ -162,3 +162,11 @@
 .event-card .btn-secondary:disabled {
   background-color: #adb5bd;
 }
+
+.emptyCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-right: 50%;
+}

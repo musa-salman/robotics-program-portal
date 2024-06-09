@@ -19,7 +19,7 @@ const EventContainer = () => {
   const [render, setRender] = useState(0);
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [_uploadProgress, setUploadProgress] = useState(0);
   const [file, setFile] = useState<File | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -224,27 +224,35 @@ const EventContainer = () => {
   return (
     <div className="events">
       <div className="eventsContainer">
-        <Button variant="primary" onClick={handleShiftEventsRight}>
-          &lt;
-        </Button>
-        {(events || [])
-          .sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
-          .slice(currentIndex, currentIndex + 3)
-          .map((event) => (
-            <EventCard
-              key={event.id}
-              id={event.id}
-              date={event.date}
-              title={event.title}
-              details={event.details}
-              image={event.image}
-              onEventDelete={onEventDelete}
-              onEventEdit={onEventEdit}
-            />
-          ))}
-        <Button variant="primary" onClick={handleShiftEventsLeft}>
-          &gt;
-        </Button>
+        {events && events.length > 0 && (
+          <Button variant="primary" onClick={handleShiftEventsRight}>
+            &lt;
+          </Button>
+        )}
+        {events && events.length > 0 ? (
+          events
+            .sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
+            .slice(currentIndex, currentIndex + 3)
+            .map((event) => (
+              <EventCard
+                key={event.id}
+                id={event.id}
+                date={event.date}
+                title={event.title}
+                details={event.details}
+                image={event.image}
+                onEventDelete={onEventDelete}
+                onEventEdit={onEventEdit}
+              />
+            ))
+        ) : (
+          <div className="emptyCard">אין אירועים, הוסף אירוע</div>
+        )}
+        {events && events.length > 0 && (
+          <Button variant="primary" onClick={handleShiftEventsLeft}>
+            &gt;
+          </Button>
+        )}
       </div>
       <Button variant="success" onClick={handleAddEvent}>
         הוסף אירוע
