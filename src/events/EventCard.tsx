@@ -109,7 +109,6 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
         () => {
           const storage = getStorage();
           const filePath = '/event-img/' + id;
-          // Get the download URL
           getDownloadURL(ref(storage, filePath)).then((url) => {
             event.imageURL = url;
             formData.image = url;
@@ -186,7 +185,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
         </Form.Group>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>העלאת תמונה</Form.Label>
-          <Form.Control type="file" onChange={handleImageChange} />
+          <Form.Control type="file" accept="JPEG " onChange={handleImageChange} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label>פרטים</Form.Label>
