@@ -23,7 +23,7 @@ const TestingLayout: React.FC = () => {
             <Link to="/dashboard">Dashboard</Link>
           </li>
           <li>
-            <Link to="/study-material-upload">Upload Study Material</Link>
+            <Link to="/students">Students Management</Link>
           </li>
           <li>
             <Link to="/events">Events</Link>
