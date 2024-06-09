@@ -5,6 +5,9 @@ import { EventContext } from './EventContext';
 import { IEvent } from './Event';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import AddIcon from '@mui/icons-material/Add';
+import { Fab } from '@mui/material';
+
 // import { firestore } from '../firebase';
 
 // import { eventContext } from '../event-img/eventContext';
@@ -254,8 +257,8 @@ const EventContainer = () => {
           </Button>
         )}
       </div>
-      <Button variant="success" onClick={handleAddEvent}>
-        הוסף אירוע
+      <Button onClick={handleAddEvent}>
+        <AddIcon />
       </Button>
       {addWindow()}
     </div>
