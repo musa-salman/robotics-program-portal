@@ -9,7 +9,7 @@ import Layout from './components/layout/Layout';
 import TestingLayout from './components/layout/TestingLayout';
 import Role from './authentication/components/Roles';
 import Banner from './components/Banner';
-import StudentContainer from './students_management/StudentsContainer';
+import StudentsManagement from './students-management/StudentsManagement';
 
 function App() {
   const AuthRoutes = useAuthRoutes();
@@ -24,7 +24,7 @@ function App() {
             {StudyMaterialRoutes}
             <Route path="/" element={<Banner />} />
             <Route path="/events" element={<EventContainer />} />
-            <Route path="/students" element={<StudentContainer />} />
+            <Route path="/students" element={<StudentsManagement />} />
             <Route
               path="/dashboard"
               element={

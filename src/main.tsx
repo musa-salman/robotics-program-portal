@@ -10,7 +10,7 @@ import StudyMaterialProvider from './study-material/StudyMaterialContext.tsx';
 import StorageServiceProvider from './storage-service/StorageContext.tsx';
 import EventProvider from './events/EventContext.tsx';
 import { AuthProvider } from './authentication/AuthContext.tsx';
-import StudentProvider from './students_management/StudentContext.tsx';
+import StudentProvider from './students-management/StudentContext.tsx';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -22,6 +22,13 @@ const cacheRtl = createCache({
 });
 
 const theme = createTheme({
+  components: {
+    MuiPagination: {
+      defaultProps: {
+        dir: 'ltr'
+      }
+    }
+  },
   direction: 'rtl'
 });
 
