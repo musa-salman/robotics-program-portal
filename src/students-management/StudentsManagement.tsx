@@ -38,9 +38,31 @@ const StudentsManagement = () => {
                 icon={<SaveIcon color="primary" />}
                 label="שמור"
                 onClick={(_) => {
-                  const editedRow = rows!.find((row) => row.id === id);
+                  setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+                  console.log(id);
+                  const editedRow = rows!.find((row) => row.id === id.toString());
+                  console.log(editedRow);
                   if (!editedRow) return;
-
+                  studentRepository
+                    .update(id.toString(), {
+                      firstName: editedRow.firstName,
+                      lastName: editedRow.lastName,
+                      studentEmail: editedRow.studentEmail,
+                      motherEmail: editedRow.motherEmail
+                    })
+                    .then(() => {
+                      setRows((prevRows) => {
+                        if (!prevRows) return prevRows;
+                        const index = prevRows.findIndex((row) => row.id === id.toString());
+                        const newRows = [...prevRows];
+                        newRows[index] = { ...newRows[index], isNew: false };
+                        return newRows;
+                      });
+                      setMessage(messageFormat.updateSuccess(editedRow));
+                    })
+                    .catch(() => {
+                      setMessage(messageFormat.updateError(editedRow));
+                    });
                   setRows((prevRows) => prevRows!.map((row) => (row.id === id ? { ...row, isNew: false } : row)));
                   setRowModesModel((prevRowModesModel) => ({
                     ...prevRowModesModel,
