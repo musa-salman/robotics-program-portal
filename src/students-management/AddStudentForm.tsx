@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { TextField, Button, Paper } from '@mui/material';
 import './StudentsManagement.css';
+import { Student } from './Student';
 
 interface AddStudentFormProps {
-  onAddStudent: (student: { firstName: string; lastName: string; studentEmail: string; motherEmail: string }) => void;
+  onAddItem: (student: Student) => void;
 }
 
-const AddStudentForm: React.FC<AddStudentFormProps> = ({ onAddStudent }) => {
+const AddStudentForm: React.FC<AddStudentFormProps> = ({ onAddItem: onAddStudent }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [studentEmail, setStudentEmail] = useState('');
@@ -14,7 +15,7 @@ const AddStudentForm: React.FC<AddStudentFormProps> = ({ onAddStudent }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onAddStudent({ firstName, lastName, studentEmail, motherEmail });
+    onAddStudent({ firstName, lastName, studentEmail, motherEmail } as Student);
     setFirstName('');
     setLastName('');
     setStudentEmail('');
