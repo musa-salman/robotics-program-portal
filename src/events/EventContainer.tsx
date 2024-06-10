@@ -195,7 +195,7 @@ const EventContainer = () => {
         </Form.Group>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>העלאת תמונה</Form.Label>
-          <Form.Control type="file" onChange={handleImageChange} />
+          <Form.Control type="file" accept="image/*" onChange={handleImageChange} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label>פרטים</Form.Label>
