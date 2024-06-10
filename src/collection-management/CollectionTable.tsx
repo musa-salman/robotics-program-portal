@@ -80,13 +80,18 @@ const CollectionTable = <T extends { id: string }>({
   };
 
   const editItem = async (item: T): Promise<void> => {
-    try {
-      await repository.update(item.id, item);
-      setRows((prevRows) => prevRows!.map((row) => (row.id === item.id ? { ...row, isNew: false } : row)));
-      setMessage(`Item ${item.id} updated successfully`);
-    } catch {
-      setMessage(`Error updating item: ${item.id}`);
-    }
+    console.log(item);
+    repository
+      .update(item.id, item)
+      .then(() => {
+        console.log('update success');
+        setRows((prevRows) => prevRows!.map((row) => (row.id === item.id ? { ...row, isNew: false } : row)));
+        console.log('setRows success');
+        setMessage(messageFormat.updateSuccess(item));
+      })
+      .catch(() => {
+        setMessage(messageFormat.updateError(item));
+      });
   };
 
   const handleRefresh = () => {
@@ -94,9 +99,7 @@ const CollectionTable = <T extends { id: string }>({
   };
 
   const processRowUpdate = (newRow: GridRowModel) => {
-    const updatedRow = { ...newRow, isNew: false } as T & { isNew: boolean };
-
-    editItem(updatedRow);
+    editItem(newRow as T);
     return newRow;
   };
 
@@ -123,13 +126,13 @@ const CollectionTable = <T extends { id: string }>({
         fullWidth
         maxWidth="sm"
         className="dialog-container">
-        <DialogTitle>Add Item</DialogTitle>
+        <DialogTitle>הוסף פריט</DialogTitle>
         <div>
           <FormComponent onAddItem={addItem} />
         </div>
         <DialogActions>
           <Button onClick={() => setShowAddItemForm(false)} color="secondary">
-            Cancel
+            בטל
           </Button>
         </DialogActions>
       </Dialog>
@@ -148,15 +151,16 @@ const CollectionTable = <T extends { id: string }>({
           }}
           slotProps={{
             toolbar: {
-              onAddItemClick: () => setShowAddItemForm(true),
-              onAddItemCSV: () => handleImportCSV(addItems),
-              onRefresh: handleRefresh,
+              onAddClick: () => setShowAddItemForm(true),
+              onCSVImportClick: () => handleImportCSV(addItems),
+              onRefreshClick: handleRefresh,
               showQuickFilter: true
             }
           }}
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
           processRowUpdate={processRowUpdate}
+          onProcessRowUpdateError={(error) => console.error(error)}
           localeText={heIL.components.MuiDataGrid.defaultProps.localeText}
           className="data-grid"
           sx={{
@@ -164,8 +168,18 @@ const CollectionTable = <T extends { id: string }>({
               display: 'flex',
               justifyContent: 'center'
             },
-            m: 2,
-            p: 2
+            '& .MuiDataGrid-overlayWrapper': {
+              height: 500
+            },
+            '& .MuiDataGrid-columnsContainer': {
+              backgroundColor: '#f5f5f5'
+            },
+            '& .MuiTablePagination-root': {
+              direction: 'rtl',
+              width: '100%'
+            },
+            m: 10,
+            p: 1
           }}
         />
       </Box>
