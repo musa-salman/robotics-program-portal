@@ -3,17 +3,11 @@ import Card from 'react-bootstrap/Card';
 import './StudyMaterials.css';
 import { useContext, useState } from 'react';
 import { StudyMaterial } from './StudyMaterial';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileArrowDown, faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { StudyMaterialContext } from './StudyMaterialContext';
-
-const styles = {
-  fontSize: '20px',
-  color: 'black',
-  padding: '5px'
-};
+import DownloadIcon from '@mui/icons-material/Download';
+import MySpeedDial from './MySpeedDial';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (deletedItemId: string) => void;
@@ -51,7 +45,6 @@ function StudyMaterials({
   };
 
   const handleSave = async () => {
-    // Construct the updated study material object with the new title and description
     const updatedStudyMaterial = {
       ...studyMaterial,
       title: editedTitle,
@@ -72,42 +65,34 @@ function StudyMaterials({
   const momentDate = moment(studyMaterial.date).format('DD / MM / YYYY');
 
   return (
-    <Card className={'Card'}>
-      <Card.Body>
-        <div>
-          {isEditing ? (
-            <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
-          ) : (
-            <Card.Title style={styles}>{studyMaterial.title}</Card.Title>
-          )}
-        </div>
+    <Card className="Card">
+      <MySpeedDial
+        handleEditToggle={handleEditToggle}
+        handleSave={handleSave}
+        handleDelete={handleDelete}
+        isEditing={isEditing}
+      />
+      <br />
+      <Card.Body className="bodycard">
+        {isEditing ? (
+          <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
+        ) : (
+          <Card.Title className="title-card">{studyMaterial.title}</Card.Title>
+        )}
         <hr className="custom-hr" />
         <div>
           {isEditing ? (
             <input type="text" value={editedDescription} onChange={(e) => setEditedDescription(e.target.value)} />
           ) : (
-            <Card.Text style={styles}>{studyMaterial.description || 'תאור קצר על הקובץ'}</Card.Text>
+            <Card.Text className="description">{studyMaterial.description}</Card.Text>
           )}
         </div>
-        <p style={styles}> תאריך : {momentDate} </p>
-        <br />
-        <div className="btns">
-          <Button className="button" onClick={handleDownload}>
-            <FontAwesomeIcon icon={faFileArrowDown} />
-          </Button>
-          <Button className="button" onClick={handleDelete}>
-            <FontAwesomeIcon icon={faTrash} />
-          </Button>
-          {isEditing ? (
-            <Button className="button" onClick={handleSave}>
-              Save
-            </Button>
-          ) : (
-            <Button className="button" onClick={handleEditToggle}>
-              <FontAwesomeIcon icon={faPenToSquare} />
-            </Button>
-          )}
-        </div>
+        <p className="date"> תאריך : {momentDate} </p>
+        {/* <div className="btns"> */}
+        <Button className="dow-button" onClick={handleDownload}>
+          הורדה
+          <DownloadIcon className="dow-icon" />
+        </Button>
       </Card.Body>
     </Card>
   );

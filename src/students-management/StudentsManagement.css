@@ -1,0 +1,53 @@
+.student-container {
+  margin: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.icon-button {
+  padding: 5px;
+}
+
+.add-student-form {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-student-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.add-student-form .MuiTextField-root {
+  width: 100%;
+}
+
+.add-student-form .MuiButton-root {
+  align-self: flex-start;
+}
+
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dialog-container {
+  padding: 20px;
+}
+
+.dialog-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+}

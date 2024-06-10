@@ -4,67 +4,47 @@
   top: 10px;
   right: 10px;
   font-family: Arial, sans-serif;
+  color: #a5a7a5;
 }
 
-/* Dropdown toggle button styling */
-.adminOptions .dropdown-toggle {
-  background-color: #28a745;
-  border: none;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-  height: 30px;
-}
-
-.adminOptions .dropdown-toggle:hover {
-  background-color: #218838;
-}
-
-/* Dropdown menu styling */
-.adminOptions .dropdown-menu {
+.adminOptions :hover {
+  color: #07cf32;
   background-color: #f8f9fa;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 5px;
 }
 
-/* Dropdown items styling */
-.adminOptions .dropdown-item {
-  padding: 10px 20px;
-  color: #333;
-  text-align: right; /* Align text to the right for Hebrew text */
+.edit-button,
+.delete-button {
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #f0f0f0;
+}
+.delete-button:hover {
+  color: white;
+  background-color: #ff0000;
+}
+
+.edit-button > MenuItem,
+.delete-button > MenuItem {
   font-size: 16px;
-  transition: background-color 0.2s ease;
-}
-
-.adminOptions .dropdown-item:hover {
-  background-color: #93c4f6;
-}
-
-/* Special styling for delete item */
-.adminOptions .dropdown-item[style] {
-  color: red;
-}
-
-.adminOptions .dropdown-item[style]:hover {
-  background-color: #f8d7da;
-  color: #721c24;
+  color: #333;
 }
 
 .events {
-  background-color: rgb(255, 195, 195);
-  background-image: url('EventContainer.jpg');
+  /* background-color: rgb(236, 213, 213); */
+}
+
+.eventsContainer {
   padding: 10px;
   border-radius: 10px;
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
-}
-
-.eventsContainer {
   padding: 10px;
   border-radius: 10px;
   display: flex;
@@ -72,25 +52,19 @@
   justify-content: space-between;
   overflow: hidden;
   margin: 10px;
-  gap: 10px; /* Add this line to create spacing between components */
+  gap: 10px;
+  min-height: 550px;
+  /* Add this line to create spacing between components */
 }
 
 /* Positioning the Add Event button at the top left */
-.add-event-button {
-  position: center;
-  z-index: 10;
-  background-color: #28a745;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.add-event-button:hover {
-  background-color: #218838;
+.addButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-right: 1%;
+  margin-bottom: 1%;
 }
 
 /* Styling for the shift buttons*/
@@ -113,15 +87,16 @@
 
 /* Base styling for the card */
 .event-card {
-  height: 500px;
-  width: 18rem;
-  background-color: bisque;
+  width: min-content;
+  background-color: #edecf3;
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
-  border-radius: 10px; /* optional: adds some rounding to the corners */
-  overflow: hidden; /* ensures content does not overflow the card borders */
+  border-radius: 10px;
+  overflow: hidden;
   align-items: center;
+  min-width: 300px;
+  min-height: 500px;
 }
 
 /* Hover effect to make the card grow and add shadow */
@@ -130,11 +105,17 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
+.card-title {
+  text-decoration: underline;
+}
+
 /* Optional: Ensure images within the card are properly styled */
 .event-card img {
-  width: 18rem;
-  height: 170px; /* Set height to fill the top half */
-  object-fit: cover; /* Ensures the image covers the space without distortion */
+  width: 100%;
+  height: 170px;
+  /* Set height to fill the top half */
+  object-fit: cover;
+  /* Ensures the image covers the space without distortion */
   position: absolute;
   top: 0px;
   right: 0px;
@@ -172,4 +153,12 @@
 
 .event-card .btn-secondary:disabled {
   background-color: #adb5bd;
+}
+
+.emptyCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-right: 50%;
 }

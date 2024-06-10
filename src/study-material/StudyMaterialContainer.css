@@ -11,7 +11,31 @@
   flex-wrap: wrap;
   align-content: space-between;
   justify-content: right;
-  gap: 10px;
+  gap: 20px;
+}
+
+.btn-search {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.btn-search .adde-btn {
+  background-color: rgb(16, 16, 144);
+  color: whitesmoke;
+}
+
+.btn-search .adde-btn:hover {
+  background-color: rgb(53, 53, 212);
+}
+
+.Card-Header .edit-button {
+  background-color: #e0b1cb;
+  color: whitesmoke;
+}
+
+.Card-Header .edit-button:hover {
+  background-color: #ee9bc9;
 }
 
 .Card-Header {
@@ -20,26 +44,8 @@
   justify-content: space-between;
 }
 
-.add-button {
-  /* background: url('/plus.png') no-repeat center center; */
-  width: 30px;
-  height: 30px;
-  border: none;
-  cursor: pointer;
-  background-color: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
-}
-
-.add-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
 .header-text {
   text-align: right;
-  /* flex-grow: 1; */
   font-size: 20px;
   color: black;
   font-weight: bold;

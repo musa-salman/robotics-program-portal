@@ -7,6 +7,7 @@
   padding: 0px;
   box-shadow: 0px 0px 8px #ddd;
   margin: 20px;
+  box-shadow: 0px 2px 5px 5px #c2d8c7;
 }
 
 input {
@@ -14,7 +15,7 @@ input {
   border: none;
   height: 100%;
   font-size: 1.25rem;
-  width: 100%;
+  width: 50%;
   margin-left: 10px;
 }
 

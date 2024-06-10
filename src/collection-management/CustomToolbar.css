@@ -1,0 +1,31 @@
+.custom-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.custom-toolbar__left {
+  display: flex;
+  align-items: center;
+}
+
+.custom-toolbar__right {
+  display: flex;
+  align-items: center;
+}
+
+.custom-toolbar__button {
+  margin-left: 8px;
+}
+
+.custom-toolbar__button:hover {
+  background-color: #e0e0e0;
+}
+
+.custom-toolbar__quick-filter {
+  flex-grow: 1;
+  margin-right: 16px;
+}

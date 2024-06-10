@@ -94,19 +94,25 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
     }
   };
 
-  const handleSubmit = async (event:any) => {
+  const handleSubmit = async (event: any) => {
     const form = event.currentTarget;
-    if (form.checkValidity() === false ) {
+    if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
     }
-    
-    setValidated(true);
-    console.log("before,",studyMaterial);
 
-    if (file !== null && studyMaterial.title!=="" ) {
+    setValidated(true);
+    console.log('before,', studyMaterial);
+
+    if (file !== null && studyMaterial.title !== '') {
       const docRef = await studyMaterialRepository.create(studyMaterial);
-      storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename, setUploadProgress,(e)=>{},()=>{});
+      storageService.upload(
+        file,
+        '/study-material/' + docRef.id + '-' + studyMaterial.filename,
+        setUploadProgress,
+        (e) => {},
+        () => {}
+      );
       handleAdd(studyMaterial);
       handleClose();
       handleDate();
@@ -114,8 +120,8 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   };
 
   return (
-    <>
-      <Modal.Header closeButton className='backgroundStyle'>
+    <Modal>
+      <Modal.Header closeButton style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
         <h1 style={{ fontSize: '40px', color: 'black', border: 'none' }}>העלת קובץ</h1>
       </Modal.Header>
       <Modal.Body className='backgroundStyle'>
@@ -184,7 +190,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
           </FloatingLabel>
 
           <Modal.Footer className="justify-content-center">
-            <Button variant="primary" className="mx-3 px-5"  onClick={handleSubmit}>
+            <Button variant="primary" className="mx-3 px-5" onClick={handleSubmit}>
               העלה
             </Button>
             <Button variant="secondary" className="mx-5 px-5" onClick={handleClose}>
@@ -202,7 +208,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
           setCategories={setCategories}
           handleSelect={handleSelect}></AddEditCategories>
       </Modal>
-    </>
+    </Modal>
   );
 };
 
