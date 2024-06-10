@@ -1,6 +1,7 @@
 import {
   GoogleAuthProvider,
   UserCredential,
+  sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -9,6 +10,7 @@ import {
 import { auth } from '../../firebase';
 import LoginFormValues from '../components/Login/ILoginFormValues';
 import { IAuthService } from './IAuthService';
+import firebase from 'firebase/compat/app';
 
 /**
  * Service responsible for handling authentication operations.
@@ -34,4 +36,36 @@ export class AuthService implements IAuthService {
 
     return sendPasswordResetEmail(auth, email, actionCodeSettings);
   }
+
+  isValidEmail(email:string) {
+    var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return re.test(String(email).toLowerCase());
+  }
+
+
+  async changeEmail(newEmail:string) : Promise<void> {
+
+    var user =firebase.auth().currentUser;
+    if(user !== null && this.isValidEmail(newEmail)){
+      user.updateEmail(newEmail).then(function(){
+        console.log("Email updated successfully.");
+
+        return firebase.auth().updateCurrentUser(user);
+      }).then(function(){
+        console.log("Current user updated successfully.");
+      }).catch(function(error) {
+        console.error("Error updating email or current user:", error);
+      });
+
+      user.sendEmailVerification().then(function() {
+        console.log("Verification email sent.");
+      }).catch(function(error) {
+        console.error("Error sending verification email:", error);
+      });
+    }
+    else {
+      console.error("Email or user is null.");
+    }
+  }
+
 }

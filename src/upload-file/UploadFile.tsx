@@ -115,10 +115,10 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
 
   return (
     <>
-      <Modal.Header closeButton style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
+      <Modal.Header closeButton className='backgroundStyle'>
         <h1 style={{ fontSize: '40px', color: 'black', border: 'none' }}>העלת קובץ</h1>
       </Modal.Header>
-      <Modal.Body style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
+      <Modal.Body className='backgroundStyle'>
         <Form className="px-3 mx-3" noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group className="px-1">
             <FloatingLabel controlId="floatingInput" label="כותרת">
