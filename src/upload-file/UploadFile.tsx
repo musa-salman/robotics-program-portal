@@ -21,8 +21,8 @@ interface UploadFileComponentProps {
 const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, handleAdd }) => {
   const [file, setFile] = useState<File | null>(null);
   const [, setUploadProgress] = useState(0);
-  const [selectedItem, setSelectedItems] = useState<SelectedItem>('מיקןם הפיל');
-  const [allStudyMaterial, setAllStudyMaterial] = useState<StudyMaterial[] | null>(null);
+  const [selectedItem, setSelectedItems] = useState<SelectedItem>('הכל');
+  // const [allStudyMaterial, setAllStudyMaterial] = useState<StudyMaterial[] | null>(null);
   const [categories, setCategories] = useState<Category[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [showAddEdit, setShowAddEdit] = useState(false);
@@ -45,19 +45,18 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const getCategory = async () => {
     try {
       const data: Category[] = await categoryRepository.find();
+      console.log(data);
       setCategories(data);
     } catch (error) {
       console.error('Error fetching items:', error);
     }
   };
-  const getStudyMaterial = async () => {
-    setAllStudyMaterial(await studyMaterialRepository.find());
-  };
+  
 
   useEffect(() => {
     if (loading && categories === null) {
       getCategory();
-      getStudyMaterial();
+      // getStudyMaterial();
       setLoading(false);
     }
   }, [categories]);
@@ -69,7 +68,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const handleSelect = (eventKey: string | null) => {
     if (eventKey) {
       setSelectedItems(eventKey);
-      setStudyMaterial((prevData) => ({ ...prevData, category: eventKey }));
+      // setStudyMaterial((prevData) => ({ ...prevData, category: eventKey }));
     }
   };
 
@@ -94,6 +93,10 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
     }
   };
 
+
+ 
+
+
   const handleSubmit = async (event: any) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -105,14 +108,20 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
     console.log('before,', studyMaterial);
 
     if (file !== null && studyMaterial.title !== '') {
-      const docRef = await studyMaterialRepository.create(studyMaterial);
-      storageService.upload(
-        file,
-        '/study-material/' + docRef.id + '-' + studyMaterial.filename,
-        setUploadProgress,
-        (e) => {},
-        () => {}
-      );
+      // const docRef = await studyMaterialRepository.create(studyMaterial);
+      categories?.forEach((index)=>{
+        if(index.category === selectedItem){
+          
+          const docRef = categoryRepository.addStudyMaterial(index,studyMaterial);
+          storageService.upload(
+            file,
+            '/study-material/' + docRef + '-' + studyMaterial.filename,
+            setUploadProgress,
+            (e) => {},
+            () => {}
+          );
+        }
+      });
       handleAdd(studyMaterial);
       handleClose();
       handleDate();
@@ -120,7 +129,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   };
 
   return (
-    <Modal>
+    <>
       <Modal.Header closeButton style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
         <h1 style={{ fontSize: '40px', color: 'black', border: 'none' }}>העלת קובץ</h1>
       </Modal.Header>
@@ -203,12 +212,12 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
       <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
         <AddEditCategories
           categories={categories}
-          studyMaterial={allStudyMaterial}
+          // studyMaterial={allStudyMaterial}
           handleCloseAddEdit={handleCloseAddEdit}
           setCategories={setCategories}
           handleSelect={handleSelect}></AddEditCategories>
       </Modal>
-    </Modal>
+    </>
   );
 };
 

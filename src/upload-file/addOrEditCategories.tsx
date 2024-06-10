@@ -9,7 +9,7 @@ import { faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid
 import './addorEditCategories.css';
 interface YourComponentProps {
   categories: Category[] | null;
-  studyMaterial: StudyMaterial[] | null;
+  // studyMaterial: StudyMaterial[] | null;
   handleCloseAddEdit: () => void;
   handleSelect: (eventKey: string | null) => void;
   setCategories: React.Dispatch<React.SetStateAction<Category[] | null>>;
@@ -17,7 +17,7 @@ interface YourComponentProps {
 
 const AddEditCategories: React.FC<YourComponentProps> = ({
   categories,
-  studyMaterial,
+  // studyMaterial,
   handleCloseAddEdit,
   setCategories,
   handleSelect
@@ -80,19 +80,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
       };
       categoryRepository.update(editingItem.id, edit);
 
-      studyMaterial?.forEach((index) => {
-        if (index.category === editingItem.category) {
-          const study: StudyMaterial = {
-            category: editcategory,
-            date: index.date,
-            description: index.description,
-            filename: index.filename,
-            id: index.id,
-            title: index.title
-          };
-          studyMaterialRepository.update(index.id, study);
-        }
-      });
+      
 
       setCategories((prevCategories) => {
         if (prevCategories === null) {
@@ -123,20 +111,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
       return null;
     });
 
-    categoryRepository.delete(item.id);
-    studyMaterial?.forEach((index) => {
-      if (index.category === item.category) {
-        const study: StudyMaterial = {
-          category: '',
-          date: index.date,
-          description: index.description,
-          filename: index.filename,
-          id: index.id,
-          title: index.title
-        };
-        studyMaterialRepository.update(index.id, study);
-      }
-    });
+    
     handleSelect('מיקןם הפיל');
   };
 
