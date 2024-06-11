@@ -80,8 +80,6 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
       };
       categoryRepository.update(editingItem.id, edit);
 
-      
-
       setCategories((prevCategories) => {
         if (prevCategories === null) {
           return null;
@@ -104,15 +102,20 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
   };
 
   const handleDeleteCategory = (item: Category) => {
+    categories?.forEach((index)=>{
+      if(index.category === 'הכל'){
+        categoryRepository.moveAllStudyMaterial(item,index);
+      }
+    })
+    categoryRepository.delete(item.id);
+    
     setCategories((prevCategories) => {
       if (prevCategories !== null) {
         return prevCategories.filter((category) => category.id !== item.id);
       }
       return null;
     });
-
-    
-    handleSelect('מיקןם הפיל');
+    handleSelect('הכל');
   };
 
   return (
@@ -143,7 +146,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
           </Form.Group>
         </Row>
         <Modal.Footer className="modal-footer-scroll">
-          {(categories || []).map((item) => (
+          {(categories || []).filter(item => item.category !== 'הכל').map((item) => (
             <Row className="px-3" key={item.category}>
               <Form.Group as={Col} controlId="validationCustom01" className="position-relative ">
                 <Form.Control
