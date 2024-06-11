@@ -51,7 +51,9 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
       console.error('Error fetching items:', error);
     }
   };
-  
+  // const getStudyMaterial = async () => {
+  //   setAllStudyMaterial(await studyMaterialRepository.find());
+  // };
 
   useEffect(() => {
     if (loading && categories === null) {
@@ -111,7 +113,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
       // const docRef = await studyMaterialRepository.create(studyMaterial);
       categories?.forEach((index)=>{
         if(index.category === selectedItem){
-          
           const docRef = categoryRepository.addStudyMaterial(index,studyMaterial);
           storageService.upload(
             file,
@@ -168,7 +169,8 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
                     menuVariant="dark"
                     onSelect={handleSelect}>
                     <div className="modal-footer-scroll2">
-                      {(categories || []).map((item, index) => (
+                      
+                      {((categories || []) ).filter(item => item.category !== 'הכל').map((item, index) => (
                         <NavDropdown.Item
                           eventKey={item.category}
                           onClick={() => handleSelect(item.category)}
