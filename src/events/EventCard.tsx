@@ -30,24 +30,20 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   });
 
   const MAX_CHARS_Details = 100; // Set the maximum number of characters allowed
-  const [_charCountDetails, setCharCountDetails] = useState(0); // Track the current character count
 
   const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     if (value.length <= MAX_CHARS_Details) {
       setFormData((prevState) => ({ ...prevState, details: value }));
-      setCharCountDetails(value.length);
     }
   };
 
   const MAX_CHARS_Title = 17; // Set the maximum number of characters allowed
-  const [_charCountTitle, setCharCountTitle] = useState(0); // Track the current character count
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     if (value.length <= MAX_CHARS_Title) {
       setFormData((prevState) => ({ ...prevState, title: value }));
-      setCharCountTitle(value.length);
     }
   };
 
@@ -106,7 +102,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
         file,
         '/event-img/' + id,
         setUploadProgress,
-        (_error) => {},
+        () => {},
         () => {
           const storage = getStorage();
           const filePath = '/event-img/' + id;
@@ -133,7 +129,6 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     const filePath = '/event-img/' + id;
     // Delete the file
     storageService.delete(filePath);
-    //db
   };
 
   const handleSaveRegister = () => {
