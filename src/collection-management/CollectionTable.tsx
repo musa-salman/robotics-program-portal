@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DataGrid, GridColDef, GridRowId, GridRowModel, GridRowModesModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRowId, GridRowModel, GridRowModesModel, GridValidRowModel } from '@mui/x-data-grid';
 import { Box, Button, Dialog, DialogActions, DialogTitle, Typography } from '@mui/material';
 import { heIL } from '@mui/x-data-grid/locales';
 import SimpleSnackbar from '../components/snackbar/SnackBar';
@@ -8,6 +8,8 @@ import { BaseRepository } from '../repositories/BaseRepository';
 import CustomToolbar from './CustomToolbar';
 
 interface MessageFormat<T> {
+  addManySuccess: (count: number) => string;
+  addManyError: (count: number) => string;
   addSuccess: (item: T) => string;
   addError: (item: T) => string;
   deleteSuccess: () => string;
@@ -65,11 +67,24 @@ const CollectionTable = <T extends { id: string }>({
     if (!rows) fetchItems();
   }, [rows, repository]);
 
+  const addItems = async (items: T[]) => {
+    repository
+      .createMany(items)
+      .then((createdItems) => {
+        const newItems = createdItems.map((item, index) => ({ ...items[index], id: item.id, isNew: false }));
+        setRows((prevRows) => [...(prevRows || []), ...newItems]);
+        setMessage(messageFormat.addManySuccess(newItems.length));
+      })
+      .catch(() => {
+        setMessage(messageFormat.addError(items[0]));
+      });
+  };
+
   const addItem = async (newItem: T) => {
     repository
       .create(newItem)
       .then((item) => {
-        const extendedItem = { ...newItem, id: item.id, isNew: true };
+        const extendedItem = { ...newItem, id: item.id, isNew: false };
         setRows((prevRows) => [...(prevRows || []), extendedItem]);
         setMessage(messageFormat.addSuccess(newItem));
         setShowAddItemForm(false);
@@ -79,27 +94,22 @@ const CollectionTable = <T extends { id: string }>({
       });
   };
 
-  const editItem = async (item: T): Promise<void> => {
-    console.log(item);
-    repository
-      .update(item.id, item)
-      .then(() => {
-        console.log('update success');
-        setRows((prevRows) => prevRows!.map((row) => (row.id === item.id ? { ...row, isNew: false } : row)));
-        console.log('setRows success');
-        setMessage(messageFormat.updateSuccess(item));
-      })
-      .catch(() => {
-        setMessage(messageFormat.updateError(item));
-      });
-  };
-
   const handleRefresh = () => {
     setRows(null);
   };
 
-  const processRowUpdate = (newRow: GridRowModel) => {
-    editItem(newRow as T);
+  const processRowUpdate = (newRow: GridRowModel): GridValidRowModel => {
+    const { isNew, ...updatedRow } = newRow as any;
+
+    repository
+      .update(updatedRow.id, updatedRow as T)
+      .then(() => {
+        setMessage(messageFormat.updateSuccess(updatedRow));
+      })
+      .catch(() => {
+        setMessage(messageFormat.updateError(updatedRow));
+      });
+
     return newRow;
   };
 
@@ -107,16 +117,8 @@ const CollectionTable = <T extends { id: string }>({
     setRowModesModel(newRowModesModel);
   };
 
-  const addItems = async (items: T[]) => {
-    try {
-      const createdItems = await repository.createMany(items);
-      const newItems = createdItems.map((item, index) => ({ ...items[index], id: item.id, isNew: true }));
-      setRows((prevRows) => [...(prevRows || []), ...newItems]);
-      setMessage(messageFormat.addSuccess(items[0]));
-    } catch {
-      setMessage(messageFormat.addError(items[0]));
-    }
-  };
+  const columns = generateColumns(rows, setRows, rowModesModel, setRowModesModel, setMessage);
+  const columnsIds = columns.filter((column) => column.field !== 'actions').map((column) => column.field);
 
   return (
     <>
@@ -126,7 +128,7 @@ const CollectionTable = <T extends { id: string }>({
         fullWidth
         maxWidth="sm"
         className="dialog-container">
-        <DialogTitle>הוסף פריט</DialogTitle>
+        <DialogTitle>הוספה</DialogTitle>
         <div>
           <FormComponent onAddItem={addItem} />
         </div>
@@ -142,7 +144,7 @@ const CollectionTable = <T extends { id: string }>({
         </Typography>
         <DataGrid
           rows={rows || []}
-          columns={generateColumns(rows, setRows, rowModesModel, setRowModesModel, setMessage)}
+          columns={columns}
           pageSizeOptions={[5, 10, 20, 50]}
           checkboxSelection
           editMode="row"
@@ -152,7 +154,7 @@ const CollectionTable = <T extends { id: string }>({
           slotProps={{
             toolbar: {
               onAddClick: () => setShowAddItemForm(true),
-              onCSVImportClick: () => handleImportCSV(addItems),
+              onCSVImportClick: () => handleImportCSV(addItems, columnsIds),
               onRefreshClick: handleRefresh,
               showQuickFilter: true
             }
