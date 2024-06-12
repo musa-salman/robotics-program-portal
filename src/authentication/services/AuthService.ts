@@ -37,12 +37,12 @@ export class AuthService implements IAuthService {
   }
 
   isValidEmail(email: string) {
-    var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return re.test(String(email).toLowerCase());
   }
 
   async changeEmail(newEmail: string): Promise<void> {
-    var user = firebase.auth().currentUser;
+    const user = firebase.auth().currentUser;
     if (user !== null && this.isValidEmail(newEmail)) {
       user
         .updateEmail(newEmail)

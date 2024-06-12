@@ -42,6 +42,7 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
       loading: loading,
       authService: authService.authService
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [user, loading, authService]
   );
 
