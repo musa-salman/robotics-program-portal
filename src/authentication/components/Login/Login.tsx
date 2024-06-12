@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react';
-import { Form, Button, Card, Alert, FloatingLabel } from 'react-bootstrap';
 import { Link, Navigate } from 'react-router-dom';
+import { useAuth } from '../../services/useAuth';
+import { CardContent, Typography, TextField, Card, Button, Alert, InputAdornment, IconButton } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { useAuth } from '../../services/useAuth';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 /**
  * Renders the login component.
@@ -11,9 +12,9 @@ import { useAuth } from '../../services/useAuth';
  */
 export default function Login() {
   const { user, authService } = useAuth();
-
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [warning, setWarning] = useState('');
   const [error, setError] = useState('');
@@ -40,22 +41,41 @@ export default function Login() {
       });
   }
 
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+  };
+
   return (
     <>
       {user && <Navigate to="/" />}
       <Card>
-        <Card.Body>
-          <h2 className="mb-4">כניסה למערכת</h2>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group id="email">
-              <FloatingLabel controlId="floatingInput" label='דוא"ל' className="mb-3">
-                <Form.Control type="email" placeholder='דוא"ל' ref={emailRef} required />
-              </FloatingLabel>
-            </Form.Group>
-
-            <Form.Control
-              type="password"
-              placeholder="סיסמה"
+        <CardContent>
+          <Typography variant="h4" gutterBottom>
+            כניסה למערכת
+          </Typography>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              id="email"
+              label='דוא"ל'
+              variant="standard"
+              fullWidth
+              margin="normal"
+              inputRef={emailRef}
+              error={error.length !== 0}
+              required
+            />
+            <TextField
+              id="password"
+              label="סיסמה"
+              type={showPassword ? 'text' : 'password'}
+              variant="standard"
+              fullWidth
+              margin="normal"
+              inputRef={passwordRef}
               onKeyDown={(event) => {
                 if (event.getModifierState('CapsLock')) {
                   setWarning('כפתור הנעילה על אותיות גדולות מופעל');
@@ -63,31 +83,46 @@ export default function Login() {
                   setWarning('');
                 }
               }}
-              ref={passwordRef}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}>
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+
+                onKeyDown: (event) => {
+                  if (event.getModifierState('CapsLock')) {
+                    setWarning('כפתור הנעילה על אותיות גדולות מופעל');
+                  } else {
+                    setWarning('');
+                  }
+                }
+              }}
+              error={error.length !== 0}
               required
             />
-            <Button disabled={loading} className="w-100 mt-3" type="submit">
+            <Button type="submit" variant="contained" color="primary" disabled={loading} style={{ marginTop: '1rem' }}>
               התחבר/י
             </Button>
             {error && (
-              <Alert variant="danger" className="mt-3">
+              <Alert severity="error" style={{ marginTop: '1rem' }}>
                 {error}
               </Alert>
             )}
             {warning && (
-              <Alert variant="warning" className="mt-3">
+              <Alert severity="warning" style={{ marginTop: '1rem' }}>
                 {warning}
               </Alert>
             )}
             <hr />
             <Button
-              variant="link"
-              style={{
-                textDecoration: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
+              variant="outlined"
+              startIcon={<FontAwesomeIcon icon={faGoogle} />}
               onClick={() =>
                 authService
                   .loginWithGoogle()
@@ -99,15 +134,14 @@ export default function Login() {
                     setLoading(false);
                   })
               }
-              className="w-100 mt-3 mr-4">
-              <FontAwesomeIcon icon={faGoogle} className="ms-2" />
-              <div className="px-3">התחבר/י באמצעות גוגל</div>
+              style={{ marginTop: '1rem' }}>
+              התחבר/י באמצעות גוגל
             </Button>
-          </Form>
-          <div className="w-100 text-center mt-3">
+          </form>
+          <div style={{ textAlign: 'center', marginTop: '1rem' }}>
             <Link to="/forget-password">שכחחתי סיסימה?</Link>
           </div>
-        </Card.Body>
+        </CardContent>
       </Card>
     </>
   );
