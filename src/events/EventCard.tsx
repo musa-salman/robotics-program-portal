@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { EventContext } from './EventContext';
-import { Button, Card, Dropdown, Modal, Form } from 'react-bootstrap';
+import { Button, Card, Modal, Form } from 'react-bootstrap';
 import { IEvent } from './Event';
 import './EventCard.css';
 import moment from 'moment';
-import { getStorage, ref, deleteObject, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import AdminMenu from './AdminOptioins';
 
@@ -55,7 +55,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     setFormData((prevState) => ({ ...prevState, date: e.target.valueAsDate! }));
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prevState) => ({ ...prevState, image: e.target.value }));
     setFile(e.target.files?.[0] || null); // Provide a default value of null for the file state variable
   };
@@ -74,7 +74,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   const handleShowDelete = () => setShowModalDelete(true);
 
   const [file, setFile] = useState<File | null>(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [_uploadProgress, setUploadProgress] = useState(0);
 
   const eventRepository = useContext(EventContext);
   const storageService = useContext(StorageServiceContext);
@@ -288,4 +288,5 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     </Card>
   );
 };
+
 export default EventCard;

@@ -172,7 +172,7 @@ const EventContainer = () => {
       setFormData((prevState) => ({ ...prevState, date: e.target.valueAsDate! }));
     };
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData((prevState) => ({ ...prevState, image: formData.image }));
       setFile(e.target.files?.[0] || null); // Provide a default value of null for the file state variable
     };
@@ -292,4 +292,5 @@ const EventContainer = () => {
     </div>
   );
 };
+
 export default EventContainer;
