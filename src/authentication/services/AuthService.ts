@@ -1,7 +1,6 @@
 import {
   GoogleAuthProvider,
   UserCredential,
-  sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -37,35 +36,38 @@ export class AuthService implements IAuthService {
     return sendPasswordResetEmail(auth, email, actionCodeSettings);
   }
 
-  isValidEmail(email:string) {
+  isValidEmail(email: string) {
     var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return re.test(String(email).toLowerCase());
   }
 
+  async changeEmail(newEmail: string): Promise<void> {
+    var user = firebase.auth().currentUser;
+    if (user !== null && this.isValidEmail(newEmail)) {
+      user
+        .updateEmail(newEmail)
+        .then(function () {
+          console.log('Email updated successfully.');
 
-  async changeEmail(newEmail:string) : Promise<void> {
+          return firebase.auth().updateCurrentUser(user);
+        })
+        .then(function () {
+          console.log('Current user updated successfully.');
+        })
+        .catch(function (error) {
+          console.error('Error updating email or current user:', error);
+        });
 
-    var user =firebase.auth().currentUser;
-    if(user !== null && this.isValidEmail(newEmail)){
-      user.updateEmail(newEmail).then(function(){
-        console.log("Email updated successfully.");
-
-        return firebase.auth().updateCurrentUser(user);
-      }).then(function(){
-        console.log("Current user updated successfully.");
-      }).catch(function(error) {
-        console.error("Error updating email or current user:", error);
-      });
-
-      user.sendEmailVerification().then(function() {
-        console.log("Verification email sent.");
-      }).catch(function(error) {
-        console.error("Error sending verification email:", error);
-      });
-    }
-    else {
-      console.error("Email or user is null.");
+      user
+        .sendEmailVerification()
+        .then(function () {
+          console.log('Verification email sent.');
+        })
+        .catch(function (error) {
+          console.error('Error sending verification email:', error);
+        });
+    } else {
+      console.error('Email or user is null.');
     }
   }
-
 }
