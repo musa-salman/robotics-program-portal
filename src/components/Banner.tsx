@@ -9,8 +9,7 @@ import './Banner.css';
 
 const USER_LINKS = [
   { icon: <BookIcon />, label: 'חומרי לימוד', path: '/study-material' },
-  { icon: <EventIcon />, label: 'אירועים', path: '/events' },
-  { icon: <HomeIcon />, label: 'תשלום', path: '/' }
+  { icon: <EventIcon />, label: 'אירועים', path: '/events' }
 ];
 
 const ADMIN_LINKS = [{ icon: <PeopleIcon />, label: 'ניהול תלמדים', path: '/students' }];
