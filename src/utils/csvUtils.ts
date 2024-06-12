@@ -1,4 +1,4 @@
-const handleImportCSV = async <T>(processData: (data: T[]) => void): Promise<void> => {
+const handleImportCSV = async <T>(processData: (data: T[]) => void, headers: string[]): Promise<void> => {
   const input = document.createElement('input');
   input.type = 'file';
   input.accept = '.csv';
@@ -12,11 +12,18 @@ const handleImportCSV = async <T>(processData: (data: T[]) => void): Promise<voi
     reader.onload = async (e: ProgressEvent<FileReader>) => {
       const text = e.target?.result as string;
 
-      const rows = text.split('\n').slice(1);
+      const rows = text.split('\n');
 
-      const data: T[] = rows.map((row) => {
+      const data: T[] = rows.slice(1).map((row) => {
         const columns = row.split(',');
-        return columns as unknown as T;
+
+        const item: any = {};
+        headers.forEach((header, index) => {
+          item[header] = columns[index];
+        });
+
+        item.id = '';
+        return item;
       });
 
       processData(data);
