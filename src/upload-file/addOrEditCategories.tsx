@@ -2,14 +2,11 @@ import { useContext, useState } from 'react';
 import { Button, Col, FloatingLabel, Form, Modal, Row } from 'react-bootstrap';
 import { CategoryContext } from './CategoryContext';
 import { Category } from './Category';
-import { StudyMaterial } from '../study-material/StudyMaterial';
-import { StudyMaterialContext } from '../study-material/StudyMaterialContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import './addorEditCategories.css';
 interface YourComponentProps {
   categories: Category[] | null;
-  // studyMaterial: StudyMaterial[] | null;
   handleCloseAddEdit: () => void;
   handleSelect: (eventKey: string | null) => void;
   setCategories: React.Dispatch<React.SetStateAction<Category[] | null>>;
@@ -17,7 +14,6 @@ interface YourComponentProps {
 
 const AddEditCategories: React.FC<YourComponentProps> = ({
   categories,
-  // studyMaterial,
   handleCloseAddEdit,
   setCategories,
   handleSelect
@@ -25,7 +21,6 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
   const [category, setCategory] = useState('');
   const [editcategory, setEditCategory] = useState('');
   const [editingItem, setEditingItem] = useState<Category | null>(null);
-  const studyMaterialRepository = useContext(StudyMaterialContext);
   const categoryRepository = useContext(CategoryContext);
   const [showFirstButton, setShowFirstButton] = useState(true);
 
