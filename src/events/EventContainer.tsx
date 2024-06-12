@@ -5,6 +5,7 @@ import { EventContext } from './EventContext';
 import { IEvent } from './Event';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import { Container, CssBaseline, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import './EventContainer.css';
 
@@ -15,12 +16,12 @@ type EventContainer = {
 const EventContainer = () => {
   const [events, setEvents] = useState<EventProps[] | null>(null);
   const [showModalAddEvent, setShowModalAddEvent] = useState(false);
-  const [render, setRender] = useState(0);
   const handleCloseAddEvent = () => setShowModalAddEvent(false);
   const handleShowAddEvent = () => setShowModalAddEvent(true);
-  const [_uploadProgress, setUploadProgress] = useState(0);
   const [file, setFile] = useState<File | null>(null);
+  const [render, setRender] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [_uploadProgress, setUploadProgress] = useState(0);
 
   const eventRepository = useContext(EventContext);
   const storageService = useContext(StorageServiceContext);
@@ -76,6 +77,7 @@ const EventContainer = () => {
   const handleAddEvent = () => {
     handleShowAddEvent();
   };
+
   const handleSaveAdd = () => {
     handleAdd();
     setShowModalAddEvent(false);
@@ -144,25 +146,20 @@ const EventContainer = () => {
   }
 
   function addForm() {
+    const MAX_CHARS_Title = 17; // Set the maximum number of characters allowed
     const MAX_CHARS_Details = 100; // Set the maximum number of characters allowed
-    const [_charCountDetails, setCharCountDetails] = useState(0); // Track the current character count
 
     const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const value = e.target.value;
       if (value.length <= MAX_CHARS_Details) {
         setFormData((prevState) => ({ ...prevState, details: value }));
-        setCharCountDetails(value.length);
       }
     };
-
-    const MAX_CHARS_Title = 17; // Set the maximum number of characters allowed
-    const [_charCountTitle, setCharCountTitle] = useState(0); // Track the current character count
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const value = e.target.value;
       if (value.length <= MAX_CHARS_Title) {
         setFormData((prevState) => ({ ...prevState, title: value }));
-        setCharCountTitle(value.length);
       }
     };
 
@@ -228,15 +225,22 @@ const EventContainer = () => {
 
   return (
     <div className="events">
-      {showModalAllEvents ? (
-        <div className="events-container-default-style">
-          {events && events.length > 0 && (
+      <div className="events-header-button">
+        <Button className="add-button" onClick={handleAddEvent}>
+          <AddIcon />
+        </Button>
+        <Button className="show-all" onClick={handleAllEvents}>
+          {showModalAllEvents ? <div>הצג הכול</div> : <div>הראי פחות</div>}
+        </Button>
+      </div>
+
+      {events && events.length > 0 ? (
+        showModalAllEvents ? (
+          <div className="events-container-default-style">
             <Button className="shift-buttons" variant="primary" onClick={handleShiftEventsRight}>
               &lt;
             </Button>
-          )}
-          {events && events.length > 0 ? (
-            events
+            {events
               .sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
               .slice(currentIndex, currentIndex + 3)
               .map((event) => (
@@ -250,39 +254,43 @@ const EventContainer = () => {
                   onEventDelete={onEventDelete}
                   onEventEdit={onEventEdit}
                 />
-              ))
-          ) : (
-            <div className="emptyCard">אין אירועים, הוסף אירוע</div>
-          )}
-          {events && events.length > 0 && (
+              ))}
             <Button className="shift-buttons" variant="primary" onClick={handleShiftEventsLeft}>
               &gt;
             </Button>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="events-container-show-all-events-style">
+            {events?.map((event) => (
+              <EventCard
+                key={event.id}
+                id={event.id}
+                date={event.date}
+                title={event.title}
+                details={event.details}
+                image={event.image}
+                onEventDelete={onEventDelete}
+                onEventEdit={onEventEdit}
+              />
+            ))}
+          </div>
+        )
       ) : (
-        <div className="events-container-show-all-events-style">
-          {events?.map((event) => (
-            <EventCard
-              key={event.id}
-              id={event.id}
-              date={event.date}
-              title={event.title}
-              details={event.details}
-              image={event.image}
-              onEventDelete={onEventDelete}
-              onEventEdit={onEventEdit}
-            />
-          ))}
-        </div>
+        <Container className="container">
+          <img src="./Empty State Icon.jpg" alt="Image Description" />
+          <Typography variant="h5" className="text">
+            אין מה להראות
+          </Typography>
+          <Typography variant="body1" className="textt">
+            {' '}
+            זה ריק כאן אין קבצים
+          </Typography>
+          <button className="add-btn" onClick={handleAddEvent}>
+            הוספה
+            <AddIcon className="addIcon" />
+          </button>
+        </Container>
       )}
-      <Button className="addButton" onClick={handleAddEvent}>
-        <AddIcon />
-      </Button>
-
-      <Button className="showAll" onClick={handleAllEvents}>
-        Show All
-      </Button>
       {addWindow()}
     </div>
   );
