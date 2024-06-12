@@ -126,15 +126,13 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   };
 
   const handleSaveDelete = async () => {
-    const storage = getStorage();
     onEventDelete(id);
     setShowModalDelete(false);
     await eventRepository.delete(id);
     // Create a reference to the file to delete
     const filePath = '/event-img/' + id;
     // Delete the file
-    await deleteObject(ref(storage, filePath));
-    //db
+    storageService.delete(filePath);
   };
 
   const handleSaveRegister = () => {
