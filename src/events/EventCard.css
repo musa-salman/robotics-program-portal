@@ -35,51 +35,6 @@
   color: #333;
 }
 
-.events {
-  /* background-color: rgb(236, 213, 213); */
-}
-
-.eventsContainer {
-  padding: 10px;
-  border-radius: 10px;
-  align-items: center;
-  justify-content: space-between;
-  overflow: hidden;
-  padding: 10px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  overflow: hidden;
-  margin: 10px;
-  gap: 10px;
-  min-height: 550px;
-  /* Add this line to create spacing between components */
-}
-
-/* Positioning the Add Event button at the top left */
-.addButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-right: 1%;
-  margin-bottom: 1%;
-}
-
-/* Styling for the shift buttons*/
-.eventsContainer .btn-primary {
-  border: none;
-  color: white;
-  background-color: #606365;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.eventsContainer .btn-primary:hover {
-  background-color: #00b336;
-}
-
 /* Ensuring Event components have some spacing*/
 .event-component {
   margin: 0 5px;
@@ -153,12 +108,4 @@
 
 .event-card .btn-secondary:disabled {
   background-color: #adb5bd;
-}
-
-.emptyCard {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-right: 50%;
 }

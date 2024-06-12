@@ -1,0 +1,79 @@
+.eventsContainer {
+  padding: 10px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  margin: 10px;
+  gap: 10px;
+  min-height: 550px;
+  /* Add this line to create spacing between components */
+}
+
+/* Styling for the shift buttons*/
+.shift-buttons {
+  border: none;
+  color: white;
+  background-color: #606365;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.shift-buttons:hover {
+  background-color: #00b336;
+}
+
+/* Positioning the Add Event button at the top left */
+.addButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-right: 1%;
+  margin-bottom: 1%;
+}
+
+.emptyCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-right: 50%;
+}
+
+.show-all-events {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.show-all-events .modal-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap; /*Prevents wrapping to the next line*/
+  overflow-x: auto; /*Allows horizontal scrolling if needed*/
+}
+
+.show-all-events .event-card {
+  flex: 0 0 auto; /* Prevents the cards from shrinking */
+  margin-right: 10px; /* Adds some spacing between cards */
+}
+
+/* Optional: Add some padding to the modal content */
+.show-all-events .modal-content {
+  padding: 20px;
+  width: 900px;
+}
+
+/* Optional: Add a minimum width to each event card to maintain a consistent size */
+.show-all-events .event-card {
+  min-width: 200px;
+  min-height: 200px;
+}
