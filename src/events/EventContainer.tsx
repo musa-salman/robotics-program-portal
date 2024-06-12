@@ -26,11 +26,10 @@ const EventContainer = () => {
   const storageService = useContext(StorageServiceContext);
 
   const [showModalAllEvents, setShowModalAllEvents] = useState(false);
-  const handleCloseAllEvents = () => setShowModalAllEvents(false);
-  const handleShowAllEvents = () => setShowModalAllEvents(true);
 
   const handleAllEvents = () => {
-    handleShowAllEvents();
+    // handleShowAllEvents();
+    setShowModalAllEvents(!showModalAllEvents);
   };
 
   const handleShiftEventsRight = () => {
@@ -228,67 +227,64 @@ const EventContainer = () => {
     );
   }
 
-  function showAll() {
-    return (
-      <Modal className="show-all-events" show={showModalAllEvents} onHide={handleCloseAllEvents}>
-        {events?.map((event) => (
-          <EventCard
-            key={event.id}
-            id={event.id}
-            date={event.date}
-            title={event.title}
-            details={event.details}
-            image={event.image}
-            onEventDelete={onEventDelete}
-            onEventEdit={onEventEdit}
-          />
-        ))}
-      </Modal>
-    );
-  }
-
   return (
     <div className="events">
-      <div className="eventsContainer">
-        {events && events.length > 0 && (
-          <Button className="shift-buttons" variant="primary" onClick={handleShiftEventsRight}>
-            &lt;
-          </Button>
-        )}
-        {events && events.length > 0 ? (
-          events
-            .sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
-            .slice(currentIndex, currentIndex + 3)
-            .map((event) => (
-              <EventCard
-                key={event.id}
-                id={event.id}
-                date={event.date}
-                title={event.title}
-                details={event.details}
-                image={event.image}
-                onEventDelete={onEventDelete}
-                onEventEdit={onEventEdit}
-              />
-            ))
-        ) : (
-          <div className="emptyCard">אין אירועים, הוסף אירוע</div>
-        )}
-        {events && events.length > 0 && (
-          <Button className="shift-buttons" variant="primary" onClick={handleShiftEventsLeft}>
-            &gt;
-          </Button>
-        )}
-      </div>
+      {showModalAllEvents ? (
+        <div className="events-container-default-style">
+          {events && events.length > 0 && (
+            <Button className="shift-buttons" variant="primary" onClick={handleShiftEventsRight}>
+              &lt;
+            </Button>
+          )}
+          {events && events.length > 0 ? (
+            events
+              .sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
+              .slice(currentIndex, currentIndex + 3)
+              .map((event) => (
+                <EventCard
+                  key={event.id}
+                  id={event.id}
+                  date={event.date}
+                  title={event.title}
+                  details={event.details}
+                  image={event.image}
+                  onEventDelete={onEventDelete}
+                  onEventEdit={onEventEdit}
+                />
+              ))
+          ) : (
+            <div className="emptyCard">אין אירועים, הוסף אירוע</div>
+          )}
+          {events && events.length > 0 && (
+            <Button className="shift-buttons" variant="primary" onClick={handleShiftEventsLeft}>
+              &gt;
+            </Button>
+          )}
+        </div>
+      ) : (
+        <div className="events-container-show-all-events-style">
+          {events?.map((event) => (
+            <EventCard
+              key={event.id}
+              id={event.id}
+              date={event.date}
+              title={event.title}
+              details={event.details}
+              image={event.image}
+              onEventDelete={onEventDelete}
+              onEventEdit={onEventEdit}
+            />
+          ))}
+        </div>
+      )}
       <Button className="addButton" onClick={handleAddEvent}>
         <AddIcon />
       </Button>
 
       <Button className="showAll" onClick={handleAllEvents}>
-        show
+        Show All
       </Button>
       {addWindow()}
-      {showAll()}
     </div>
   );
 };
