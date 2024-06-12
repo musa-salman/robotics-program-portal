@@ -12,12 +12,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import EmptyStudyMaterials from './EmptyStudyMaterials';
 import { Fab } from '@mui/material';
 import NoResultFound from './NoResultFound';
+import MoveList from './MoveList';
 
 function StudyMaterialContainer() {
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
   const studyMaterialRepository = useContext(StudyMaterialContext);
-  // const [editCategory, setEditCategory] = useState<string>('');
-  // const [isEditing, setIsEditing] = useState(false);
 
   const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);
   const [show, setShow] = useState(false);
@@ -62,8 +61,10 @@ function StudyMaterialContainer() {
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
+  console.log(categories);
   return (
     <>
+      <MoveList categories={categories || []} />
       <div className="btn-search">
         <SearchBar
           studyMaterials={studyMaterials || []}

@@ -1,6 +1,7 @@
 import { Container, CssBaseline, Typography } from '@mui/material';
 import './EmptyStudyMaterials.css';
-import AddIcon from '@mui/icons-material/Add';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import FolderOffIcon from '@mui/icons-material/FolderOff';
 
 function EmptyStudyMaterials() {
   const handleAdd = () => {};
@@ -9,7 +10,7 @@ function EmptyStudyMaterials() {
     <>
       <CssBaseline />
       <Container className="container">
-        <img src="./Empty State Icon.jpg" alt="Image Description" />
+        <FolderOffIcon />
         <Typography variant="h5" className="text">
           אין מה להראות
         </Typography>
@@ -19,7 +20,7 @@ function EmptyStudyMaterials() {
         </Typography>
         <button className="add-btn" onClick={handleAdd}>
           הוספה
-          <AddIcon className="addIcon" />
+          <FileUploadIcon className="addIcon" />
         </button>
       </Container>
     </>
