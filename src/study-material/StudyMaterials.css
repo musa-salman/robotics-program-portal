@@ -73,3 +73,10 @@
   margin-right: 50px;
   color: whitesmoke;
 }
+
+.Card .whenedite {
+  padding: 5px;
+  border: 2px dashed rgb(231, 119, 39);
+  color: rgb(235, 143, 78);
+  margin-bottom: 2px;
+}

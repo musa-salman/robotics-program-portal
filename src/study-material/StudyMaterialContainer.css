@@ -1,6 +1,6 @@
 .primary {
-  border: 2px solid;
-  border-radius: 5px;
+  border: none;
+  border-radius: none;
   background-color: transparent;
   display: flex;
   margin: 20px;
@@ -18,11 +18,15 @@
   display: flex;
   align-items: center;
   padding: 20px;
+  flex-wrap: wrap;
+  column-gap: 10px;
+  justify-content: space-between;
 }
 
 .btn-search .adde-btn {
   background-color: rgb(16, 16, 144);
   color: whitesmoke;
+  margin-left: 50px;
 }
 
 .btn-search .adde-btn:hover {

@@ -8,6 +8,7 @@ import { StorageServiceContext } from '../storage-service/StorageContext';
 import { StudyMaterialContext } from './StudyMaterialContext';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
+import { TextField } from '@mui/material';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (deletedItemId: string) => void;
@@ -25,6 +26,7 @@ function StudyMaterials({
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(studyMaterial.title);
   const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
+  const [editedCategory, seteditedCategory] = useState(studyMaterial.category);
   const studyMaterialRepository = useContext(StudyMaterialContext);
 
   const handleDownload = async () => {
@@ -62,6 +64,21 @@ function StudyMaterials({
       });
   };
 
+  const handleMove = async () => {
+    const updatedCatergory = {
+      ...studyMaterial,
+      category: editedCategory
+    };
+    studyMaterialRepository
+      .update(studyMaterial.id, updatedCatergory)
+      .then(() => {
+        onUpdate(updatedCatergory);
+      })
+      .catch((error) => {
+        console.error('Error updating study material:', error);
+      });
+  };
+
   const momentDate = moment(studyMaterial.date).format('DD / MM / YYYY');
 
   return (
@@ -70,19 +87,32 @@ function StudyMaterials({
         handleEditToggle={handleEditToggle}
         handleSave={handleSave}
         handleDelete={handleDelete}
+        handleMove={handleMove}
         isEditing={isEditing}
       />
       <br />
       <Card.Body className="bodycard">
         {isEditing ? (
-          <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
+          <TextField
+            value={editedTitle}
+            onChange={(e) => setEditedTitle(e.target.value)}
+            variant="outlined"
+            fullWidth
+          />
         ) : (
           <Card.Title className="title-card">{studyMaterial.title}</Card.Title>
         )}
         <hr className="custom-hr" />
         <div>
           {isEditing ? (
-            <input type="text" value={editedDescription} onChange={(e) => setEditedDescription(e.target.value)} />
+            <TextField
+              value={editedDescription}
+              onChange={(e) => setEditedDescription(e.target.value)}
+              multiline
+              rows={4}
+              variant="outlined"
+              fullWidth
+            />
           ) : (
             <Card.Text className="description">{studyMaterial.description}</Card.Text>
           )}
