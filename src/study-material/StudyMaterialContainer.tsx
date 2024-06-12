@@ -57,14 +57,13 @@ function StudyMaterialContainer() {
     return <EmptyStudyMaterials />;
   }
 
-  const categories = (searchResults || studyMaterials || [])
+  const categories: string[] = (searchResults || studyMaterials || [])
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
-  console.log(categories);
   return (
     <>
-      <MoveList categories={categories || []} />
+      <MoveList categories={categories} />
       <div className="btn-search">
         <SearchBar
           studyMaterials={studyMaterials || []}

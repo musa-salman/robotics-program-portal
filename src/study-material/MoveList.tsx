@@ -1,7 +1,10 @@
-import { Box, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { Box, List, ListItemButton, ListItemText } from '@mui/material';
 
-function MoveList(categories: string[]) {
-  console.log(categories.categories);
+interface MoveListProps {
+  categories: string[];
+}
+
+const MoveList = ({ categories }: MoveListProps) => {
   return (
     <>
       <Box sx={{ width: '50%', bgcolor: 'blue', height: '120px' }}>
@@ -15,6 +18,6 @@ function MoveList(categories: string[]) {
       </Box>
     </>
   );
-}
+};
 
 export default MoveList;
