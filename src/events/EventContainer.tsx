@@ -6,11 +6,7 @@ import { IEvent } from './Event';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import AddIcon from '@mui/icons-material/Add';
-import { Fab } from '@mui/material';
-
-// import { firestore } from '../firebase';
-
-// import { eventContext } from '../event-img/eventContext';
+import './EventContainer.css';
 
 type EventContainer = {
   eventsProps: EventProps[];
@@ -18,16 +14,24 @@ type EventContainer = {
 
 const EventContainer = () => {
   const [events, setEvents] = useState<EventProps[] | null>(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showModalAddEvent, setShowModalAddEvent] = useState(false);
   const [render, setRender] = useState(0);
-  const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
+  const handleCloseAddEvent = () => setShowModalAddEvent(false);
+  const handleShowAddEvent = () => setShowModalAddEvent(true);
   const [_uploadProgress, setUploadProgress] = useState(0);
   const [file, setFile] = useState<File | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const eventRepository = useContext(EventContext);
   const storageService = useContext(StorageServiceContext);
+
+  const [showModalAllEvents, setShowModalAllEvents] = useState(false);
+  const handleCloseAllEvents = () => setShowModalAllEvents(false);
+  const handleShowAllEvents = () => setShowModalAllEvents(true);
+
+  const handleAllEvents = () => {
+    handleShowAllEvents();
+  };
 
   const handleShiftEventsRight = () => {
     if (events !== null) setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
@@ -72,11 +76,11 @@ const EventContainer = () => {
   }
 
   const handleAddEvent = () => {
-    handleShow();
+    handleShowAddEvent();
   };
   const handleSaveAdd = () => {
     handleAdd();
-    setShowModal(false);
+    setShowModalAddEvent(false);
   };
 
   const [formData, setFormData] = useState<EventProps>({
@@ -99,7 +103,7 @@ const EventContainer = () => {
   };
 
   async function handleAdd() {
-    handleShow();
+    handleShowAddEvent();
     const docRef = await eventRepository.create(event);
     event.id = docRef.id;
     if (file) {
@@ -130,7 +134,7 @@ const EventContainer = () => {
   function addWindow() {
     return (
       <>
-        <Modal show={showModal} onHide={handleClose} animation={false} style={{ display: 'center' }}>
+        <Modal show={showModalAddEvent} onHide={handleCloseAddEvent} animation={false} style={{ display: 'center' }}>
           <Modal.Header closeButton>
             <Modal.Title>הוסף אירוע</Modal.Title>
           </Modal.Header>
@@ -213,7 +217,7 @@ const EventContainer = () => {
           {/* Display the character count */}
         </Form.Group>
         <div style={{ display: 'flex', gap: '10px' }}>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleCloseAddEvent}>
             סגור
           </Button>
           <Button variant="primary" type="submit">
@@ -224,11 +228,30 @@ const EventContainer = () => {
     );
   }
 
+  function showAll() {
+    return (
+      <Modal className="show-all-events" show={showModalAllEvents} onHide={handleCloseAllEvents}>
+        {events?.map((event) => (
+          <EventCard
+            key={event.id}
+            id={event.id}
+            date={event.date}
+            title={event.title}
+            details={event.details}
+            image={event.image}
+            onEventDelete={onEventDelete}
+            onEventEdit={onEventEdit}
+          />
+        ))}
+      </Modal>
+    );
+  }
+
   return (
     <div className="events">
       <div className="eventsContainer">
         {events && events.length > 0 && (
-          <Button variant="primary" onClick={handleShiftEventsRight}>
+          <Button className="shift-buttons" variant="primary" onClick={handleShiftEventsRight}>
             &lt;
           </Button>
         )}
@@ -252,7 +275,7 @@ const EventContainer = () => {
           <div className="emptyCard">אין אירועים, הוסף אירוע</div>
         )}
         {events && events.length > 0 && (
-          <Button variant="primary" onClick={handleShiftEventsLeft}>
+          <Button className="shift-buttons" variant="primary" onClick={handleShiftEventsLeft}>
             &gt;
           </Button>
         )}
@@ -260,7 +283,12 @@ const EventContainer = () => {
       <Button className="addButton" onClick={handleAddEvent}>
         <AddIcon />
       </Button>
+
+      <Button className="showAll" onClick={handleAllEvents}>
+        show
+      </Button>
       {addWindow()}
+      {showAll()}
     </div>
   );
 };
