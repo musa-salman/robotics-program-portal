@@ -1,5 +1,5 @@
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.rtl.min.css';
+import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import RoleBasedAccessControl from './authentication/components/RoleBasedAccessControl';
 import { useAuthRoutes } from './authentication/AuthRoutes';
