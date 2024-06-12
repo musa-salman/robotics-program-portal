@@ -21,8 +21,8 @@ interface UploadFileComponentProps {
 const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, handleAdd }) => {
   const [file, setFile] = useState<File | null>(null);
   const [, setUploadProgress] = useState(0);
-  const [selectedItem, setSelectedItems] = useState<SelectedItem>('מיקןם הפיל');
-  const [allStudyMaterial, setAllStudyMaterial] = useState<StudyMaterial[] | null>(null);
+  const [selectedItem, setSelectedItems] = useState<SelectedItem>('הכל');
+  // const [allStudyMaterial, setAllStudyMaterial] = useState<StudyMaterial[] | null>(null);
   const [categories, setCategories] = useState<Category[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [showAddEdit, setShowAddEdit] = useState(false);
@@ -30,6 +30,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const handleShowAddEdit = () => setShowAddEdit(true);
   const categoryRepository = useContext(CategoryContext);
   const studyMaterialRepository = useContext(StudyMaterialContext);
+  const [validated, setValidated] = useState(false);
 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
     filename: '',
@@ -44,20 +45,20 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const getCategory = async () => {
     try {
       const data: Category[] = await categoryRepository.find();
+      console.log(data);
       setCategories(data);
     } catch (error) {
       console.error('Error fetching items:', error);
     }
   };
-  const getStudyMaterial = async () => {
-    setAllStudyMaterial(await studyMaterialRepository.find());
-  };
+  // const getStudyMaterial = async () => {
+  //   setAllStudyMaterial(await studyMaterialRepository.find());
+  // };
 
   useEffect(() => {
     if (loading && categories === null) {
       getCategory();
-      getStudyMaterial();
-      console.log('categories ' + categories);
+      // getStudyMaterial();
       setLoading(false);
     }
   }, [categories]);
@@ -69,7 +70,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const handleSelect = (eventKey: string | null) => {
     if (eventKey) {
       setSelectedItems(eventKey);
-      setStudyMaterial((prevData) => ({ ...prevData, category: eventKey }));
+      // setStudyMaterial((prevData) => ({ ...prevData, category: eventKey }));
     }
   };
 
@@ -94,24 +95,47 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
     }
   };
 
-  const handleSubmit = async () => {
-    if (file) {
-      const docRef = await studyMaterialRepository.create(studyMaterial);
-      storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename, setUploadProgress,(e)=>{},()=>{});
-      handleAdd(studyMaterial);
+
+ 
+
+
+  const handleSubmit = async (event: any) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
     }
-    console.log(studyMaterial);
-    handleClose();
-    handleDate();
+
+    setValidated(true);
+    console.log('before,', studyMaterial);
+
+    if (file !== null && studyMaterial.title !== '') {
+      // const docRef = await studyMaterialRepository.create(studyMaterial);
+      categories?.forEach((index)=>{
+        if(index.category === selectedItem){
+          const docRef = categoryRepository.addStudyMaterial(index,studyMaterial);
+          storageService.upload(
+            file,
+            '/study-material/' + docRef + '-' + studyMaterial.filename,
+            setUploadProgress,
+            (e) => {},
+            () => {}
+          );
+        }
+      });
+      handleAdd(studyMaterial);
+      handleClose();
+      handleDate();
+    }
   };
 
   return (
     <>
-      <Modal.Header closeButton className="bg mb-3 px-3" style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
+      <Modal.Header closeButton style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
         <h1 style={{ fontSize: '40px', color: 'black', border: 'none' }}>העלת קובץ</h1>
       </Modal.Header>
-      <Modal.Body style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
-        <Form className="px-3 mx-3">
+      <Modal.Body className='backgroundStyle'>
+        <Form className="px-3 mx-3" noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group className="px-1">
             <FloatingLabel controlId="floatingInput" label="כותרת">
               <Form.Control
@@ -123,7 +147,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
                 onChange={(event) => handleInput(event)}
               />
             </FloatingLabel>
-            <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="position-relative my-3 px-2" controlId="validationCustom02">
@@ -146,7 +169,8 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
                     menuVariant="dark"
                     onSelect={handleSelect}>
                     <div className="modal-footer-scroll2">
-                      {(categories || []).map((item, index) => (
+                      
+                      {((categories || []) ).filter(item => item.category !== 'הכל').map((item, index) => (
                         <NavDropdown.Item
                           eventKey={item.category}
                           onClick={() => handleSelect(item.category)}
@@ -190,9 +214,10 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
       <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
         <AddEditCategories
           categories={categories}
-          studyMaterial={allStudyMaterial}
+          // studyMaterial={allStudyMaterial}
           handleCloseAddEdit={handleCloseAddEdit}
-          setCategories={setCategories}></AddEditCategories>
+          setCategories={setCategories}
+          handleSelect={handleSelect}></AddEditCategories>
       </Modal>
     </>
   );

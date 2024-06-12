@@ -22,7 +22,7 @@ const AdminMenu: React.FC<AdminMenuProps> = ({ handleEdit, handleDelete }) => {
 
   return (
     <>
-      <div onClick={handleAvatarClick} className="avatar-menu-container">
+      <div onClick={handleAvatarClick} className="adminOptions">
         <MoreVertIcon />
       </div>
       <Menu
@@ -38,8 +38,12 @@ const AdminMenu: React.FC<AdminMenuProps> = ({ handleEdit, handleDelete }) => {
           horizontal: 'right'
         }}>
         <div className="avatar-menu">
-          <MenuItem onClick={handleEdit}>לַעֲרוֹך</MenuItem>
-          <MenuItem onClick={handleDelete}>לִמְחוֹק</MenuItem>
+          <div className="edit-button">
+            <MenuItem onClick={handleEdit}>לַעֲרוֹך</MenuItem>
+          </div>
+          <div className="delete-button">
+            <MenuItem onClick={handleDelete}>לִמְחוֹק</MenuItem>
+          </div>
         </div>
       </Menu>
     </>

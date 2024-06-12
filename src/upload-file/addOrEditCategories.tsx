@@ -5,25 +5,32 @@ import { Category } from './Category';
 import { StudyMaterial } from '../study-material/StudyMaterial';
 import { StudyMaterialContext } from '../study-material/StudyMaterialContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {  faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-
+import { faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import './addorEditCategories.css';
 interface YourComponentProps {
   categories: Category[] | null;
-  studyMaterial: StudyMaterial[] | null;
-  handleCloseAddEdit: () => void; 
-  setCategories:React.Dispatch<React.SetStateAction<Category[] | null>>;
+  // studyMaterial: StudyMaterial[] | null;
+  handleCloseAddEdit: () => void;
+  handleSelect: (eventKey: string | null) => void;
+  setCategories: React.Dispatch<React.SetStateAction<Category[] | null>>;
 }
 
-const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMaterial, handleCloseAddEdit ,setCategories}) => {
-  const [category, setCategory] = useState("");
-  const [editcategory, setEditCategory] = useState("");  
+const AddEditCategories: React.FC<YourComponentProps> = ({
+  categories,
+  // studyMaterial,
+  handleCloseAddEdit,
+  setCategories,
+  handleSelect
+}) => {
+  const [category, setCategory] = useState('');
+  const [editcategory, setEditCategory] = useState('');
   const [editingItem, setEditingItem] = useState<Category | null>(null);
   const studyMaterialRepository = useContext(StudyMaterialContext);
   const categoryRepository = useContext(CategoryContext);
   const [showFirstButton, setShowFirstButton] = useState(true);
 
   const handleEditItem = (item: Category) => {
-    if(showFirstButton){
+    if (showFirstButton) {
       setShowFirstButton(!showFirstButton);
       setShowFirstButton(false);
       setEditingItem(item);
@@ -31,137 +38,115 @@ const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMate
   };
 
   const handleInputCategories = (event: any) => {
-    setCategory(event.target.value );
+    setCategory(event.target.value);
   };
 
-  const checkRepeat =():boolean =>{
-    console.log(categories?.length);
-    let x:  number=0;
-    categories?.forEach((index)=>{
-      if(index.category !== category){
-        x+=1;
+  const checkRepeat = (input: string): boolean => {
+    let x: number = 0;
+    categories?.forEach((index) => {
+      if (index.category !== input) {
+        x += 1;
       }
     });
     return x === categories?.length;
-  }
+  };
 
   const addCategories = async () => {
-    if(checkRepeat()){
-      const docRef=await categoryRepository.create({ category}); 
-      const add:Category={
-        category:category,
-        id:docRef.id
+    if (checkRepeat(category)) {
+      const docRef = await categoryRepository.create({ category });
+      const add: Category = {
+        category: category,
+        id: docRef.id
       };
-      setCategories(prevCategories => {
+      handleSelect(add.category);
+      setCategories((prevCategories) => {
         if (prevCategories === null) {
           return [add];
         }
         return [...prevCategories, add];
       });
-    }
-    else{
-      console.log("the action dose not exist");
+    } else {
+      console.log('the action dose not exist');
     }
   };
 
-  const handleSaveItem = (item:Category) => {
-    if(item.category === editingItem?.category  && editcategory !==""){
+  const handleSaveItem = (item: Category) => {
+    if (!checkRepeat(editcategory) && editcategory !== item.category) {
+      console.log('this action dose not exist');
+    } else if (item.category === editingItem?.category && editcategory !== '') {
       const edit: Category = {
         category: editcategory,
         id: editingItem.id
       };
-      categoryRepository.update(editingItem.id,edit);
-  
-      studyMaterial?.forEach((index) => {
-        if (index.category === editingItem.category) {
-          const study: StudyMaterial = {
-            category: editcategory,
-            date: index.date,
-            description: index.description,
-            filename: index.filename,
-            id: index.id,
-            title: index.title
-          };
-          studyMaterialRepository.update(index.id, study);
-        }
-      });
-      setCategories(prevCategories => {
+      categoryRepository.update(editingItem.id, edit);
+
+      setCategories((prevCategories) => {
         if (prevCategories === null) {
           return null;
         }
-        return prevCategories.map(category =>
-          category.id === editingItem.id ?  edit: category
-        );
+        return prevCategories.map((category) => (category.id === editingItem.id ? edit : category));
       });
       setShowFirstButton(true);
       setEditingItem(null);
-      setEditCategory("");
-    }
-    else{
-      console.log("this action dose not exist");
+      setEditCategory('');
+    } else {
+      console.log('this action dose not exist');
       setShowFirstButton(true);
       setEditingItem(null);
-      setEditCategory("");
+      setEditCategory('');
     }
   };
 
   const handleEditInput = (event: any) => {
     setEditCategory(event.target.value);
-    console.log(editcategory);
   };
 
   const handleDeleteCategory = (item: Category) => {
- 
-    setCategories(prevCategories => {
+    categories?.forEach((index)=>{
+      if(index.category === 'הכל'){
+        categoryRepository.moveAllStudyMaterial(item,index);
+      }
+    })
+    categoryRepository.delete(item.id);
+    
+    setCategories((prevCategories) => {
       if (prevCategories !== null) {
-        return prevCategories.filter(category => category.id !== item.id);
+        return prevCategories.filter((category) => category.id !== item.id);
       }
       return null;
     });
-
-    categoryRepository.delete(item.id);
-    studyMaterial?.forEach((index) => {
-      if (index.category === item.category) {
-        const study: StudyMaterial = {
-          category: '',
-          date: index.date,
-          description: index.description,
-          filename: index.filename,
-          id: index.id,
-          title: index.title
-        };
-        studyMaterialRepository.update(index.id, study);
-      }
-    });
+    handleSelect('הכל');
   };
 
   return (
     <>
-      <Modal.Header closeButton style={{ backgroundColor: '#d1c8bf'}}>
-        <Modal.Title  style={{ backgroundColor: '#d1c8bf',fontSize: '40px' ,color: 'black', border: 'none' }}>הוספה/שינוי</Modal.Title>
+      <Modal.Header closeButton style={{ backgroundColor: '#d1c8bf' }}>
+        <Modal.Title style={{ backgroundColor: '#d1c8bf', fontSize: '40px', color: 'black', border: 'none' }}>
+          הוספה/שינוי
+        </Modal.Title>
       </Modal.Header>
-      <Modal.Body style={{ backgroundColor: '#d1c8bf'}}>
-        <Row className="mb-3" style={{ backgroundColor: '#d1c8bf'}}>
+      <Modal.Body style={{ backgroundColor: '#d1c8bf' }}>
+        <Row className="mb-3" style={{ backgroundColor: '#d1c8bf' }}>
           <Form.Group as={Col} controlId="validationCustom01" className="position-relative ">
             <FloatingLabel controlId="floatingInput" label="קטגוריה">
               <Form.Control
                 type="text"
                 name="title"
                 required
-                style={{ backgroundColor: '#f5f4f3' ,color: 'black', border: 'none' }}
+                style={{ backgroundColor: '#f5f4f3', color: 'black', border: 'none' }}
                 placeholder="קטגוריה"
                 onChange={(event) => handleInputCategories(event)}
               />
             </FloatingLabel>
           </Form.Group>
           <Form.Group as={Col} md="3" className=" mt-2 px-3" controlId="validationCustom02">
-            <Button onClick={addCategories}>
-              <FontAwesomeIcon icon={faFloppyDisk} />
+            <Button onClick={addCategories} style={{ color: 'black', fontSize: '18px', fontWeight: 'bold' }}>
+              שמירה
             </Button>
           </Form.Group>
         </Row>
         <Modal.Footer className="modal-footer-scroll">
-          {(categories || []).map((item) => (
+          {(categories || []).filter(item => item.category !== 'הכל').map((item) => (
             <Row className="px-3" key={item.category}>
               <Form.Group as={Col} controlId="validationCustom01" className="position-relative ">
                 <Form.Control
@@ -175,16 +160,15 @@ const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMate
               </Form.Group>
 
               <Form.Group as={Col} md="2" className=" mt-2" controlId="validationCustom02">
-                { item.category !== editingItem?.category ? (
+                {item.category !== editingItem?.category ? (
                   <Button onClick={() => handleEditItem(item)}>
                     <FontAwesomeIcon icon={faPenToSquare} />
                   </Button>
                 ) : (
-                  <Button onClick={() =>handleSaveItem(item)}>
+                  <Button onClick={() => handleSaveItem(item)}>
                     <FontAwesomeIcon icon={faFloppyDisk} />
                   </Button>
                 )}
-                
               </Form.Group>
               <Form.Group as={Col} md="2" className=" mt-2" controlId="validationCustom02">
                 <Button variant="danger" onClick={() => handleDeleteCategory(item)}>
@@ -195,7 +179,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({ categories, studyMate
           ))}
         </Modal.Footer>
       </Modal.Body>
-      <Modal.Footer className="justify-content-center" style={{ backgroundColor: '#d1c8bf'}}>
+      <Modal.Footer className="justify-content-center" style={{ backgroundColor: '#d1c8bf' }}>
         <Button variant="secondary" className=" px-5" onClick={handleCloseAddEdit}>
           סגירה
         </Button>

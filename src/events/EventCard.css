@@ -24,7 +24,6 @@
 .edit-button:hover {
   background-color: #f0f0f0;
 }
-
 .delete-button:hover {
   color: white;
   background-color: #ff0000;
@@ -38,14 +37,14 @@
 
 .events {
   /* background-color: rgb(236, 213, 213); */
+}
+
+.eventsContainer {
   padding: 10px;
   border-radius: 10px;
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
-}
-
-.eventsContainer {
   padding: 10px;
   border-radius: 10px;
   display: flex;
@@ -59,21 +58,13 @@
 }
 
 /* Positioning the Add Event button at the top left */
-.add-event-button {
-  position: center;
-  z-index: 10;
-  background-color: #49b161;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.add-event-button:hover {
-  background-color: #218838;
+.addButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-right: 1%;
+  margin-bottom: 1%;
 }
 
 /* Styling for the shift buttons*/
@@ -94,60 +85,56 @@
   margin: 0 5px;
 }
 
-/* --------------------------------- */
+/* Base styling for the card */
 .event-card {
-  min-width: 20rem;
-  max-width: 20rem;
-  max-height: 200px;
-  min-height: 300px;
-  background-color: transparent;
+  width: min-content;
+  background-color: #edecf3;
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
   border-radius: 10px;
   overflow: hidden;
   align-items: center;
-  /* min-width: 25rem;
-    min-height: 500px; */
-  padding: 0;
-  margin: 0;
-  border-radius: 30px;
+  min-width: 300px;
+  min-height: 500px;
 }
 
-/* --------------------------------- */
-
+/* Hover effect to make the card grow and add shadow */
 .event-card:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* .card-title {
+.card-title {
+  text-decoration: underline;
 }
 
+/* Optional: Ensure images within the card are properly styled */
 .event-card img {
-  /* width: 100%;
-    height: 170px;
-    object-fit: fill;
-    position: absolute;
-    top: 0px;
-    right: 0px; */
-/* } */
+  width: 100%;
+  height: 170px;
+  /* Set height to fill the top half */
+  object-fit: cover;
+  /* Ensures the image covers the space without distortion */
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
 
 /* Styling for the card title */
-/* .event-card .card-title { */
-/* font-weight: bold;
-    font-size: 1.25rem;
-    margin-bottom: 1rem; */
-/* } */
+.event-card .card-title {
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
 
 /* Styling for card text */
-/* .event-card .card-text p { */
-/* margin: 0.5rem 0;
-    width: 16rem;
-    overflow-wrap: break-word;
-    align-items: start; */
-/* } */
-*/
+.event-card .card-text p {
+  margin: 0.5rem 0;
+  width: 16rem;
+  overflow-wrap: break-word;
+  align-items: start;
+}
 
 /* Optional: Button styling */
 .event-card .btn-primary {
@@ -168,60 +155,10 @@
   background-color: #adb5bd;
 }
 
-/* -------------------------------- */
-
-.event-card-body {
-  /* margin-top: 150px; */
-  display: flex;
-  flex-direction: row-reverse;
-  flex-wrap: wrap;
-  columns: auto;
-  column-gap: 10px;
-  align-items: center;
-  justify-content: center;
-  margin: auto;
-}
-
-.date-section {
-  /* max-width: 10rem; */
-  flex: 1;
+.emptyCard {
   display: flex;
   justify-content: center;
   align-items: center;
-  columns: auto, 6px;
-  border-right: solid;
-  padding: 10px;
-}
-
-.content-section {
-  flex: 2;
-  text-align: right;
-  display: flex;
-  align-items: center;
-  /* flex-direction: column; */
-  font-size: 10px;
-  columns: auto, 6rem;
-}
-
-.button-container {
-  flex: 3;
-  text-align: right;
-  display: flex;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-  background-color: transparent;
-}
-
-.button-container .sub-btn {
-  background-color: #e8618a;
-}
-
-.button-container .sub-btn:hover {
-  background-color: #ef366d;
-}
-
-.eve-title {
-  font-size: 15px;
-  font-weight: bold;
+  text-align: center;
+  margin-right: 50%;
 }

@@ -30,4 +30,9 @@ export interface IAuthService {
    * @returns A promise that resolves when the password reset link is generated.
    */
   generatePasswordResetLink: (email: string) => Promise<void>;
+
+
+
+
+  changeEmail:(email:string) => Promise<void>;
 }

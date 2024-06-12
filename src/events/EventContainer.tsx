@@ -5,6 +5,9 @@ import { EventContext } from './EventContext';
 import { IEvent } from './Event';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import AddIcon from '@mui/icons-material/Add';
+import { Fab } from '@mui/material';
+
 // import { firestore } from '../firebase';
 
 // import { eventContext } from '../event-img/eventContext';
@@ -19,7 +22,7 @@ const EventContainer = () => {
   const [render, setRender] = useState(0);
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [_uploadProgress, setUploadProgress] = useState(0);
   const [file, setFile] = useState<File | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -192,7 +195,7 @@ const EventContainer = () => {
         </Form.Group>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>העלאת תמונה</Form.Label>
-          <Form.Control type="file" onChange={handleImageChange} />
+          <Form.Control type="file" accept="image/*" onChange={handleImageChange} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label>פרטים</Form.Label>
@@ -224,30 +227,38 @@ const EventContainer = () => {
   return (
     <div className="events">
       <div className="eventsContainer">
-        <Button variant="primary" onClick={handleShiftEventsRight}>
-          &lt;
-        </Button>
-        {(events || [])
-          .sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
-          .slice(currentIndex, currentIndex + 3)
-          .map((event) => (
-            <EventCard
-              key={event.id}
-              id={event.id}
-              date={event.date}
-              title={event.title}
-              details={event.details}
-              image={event.image}
-              onEventDelete={onEventDelete}
-              onEventEdit={onEventEdit}
-            />
-          ))}
-        <Button variant="primary" onClick={handleShiftEventsLeft}>
-          &gt;
-        </Button>
+        {events && events.length > 0 && (
+          <Button variant="primary" onClick={handleShiftEventsRight}>
+            &lt;
+          </Button>
+        )}
+        {events && events.length > 0 ? (
+          events
+            .sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
+            .slice(currentIndex, currentIndex + 3)
+            .map((event) => (
+              <EventCard
+                key={event.id}
+                id={event.id}
+                date={event.date}
+                title={event.title}
+                details={event.details}
+                image={event.image}
+                onEventDelete={onEventDelete}
+                onEventEdit={onEventEdit}
+              />
+            ))
+        ) : (
+          <div className="emptyCard">אין אירועים, הוסף אירוע</div>
+        )}
+        {events && events.length > 0 && (
+          <Button variant="primary" onClick={handleShiftEventsLeft}>
+            &gt;
+          </Button>
+        )}
       </div>
-      <Button variant="success" onClick={handleAddEvent}>
-        הוסף אירוע
+      <Button className="addButton" onClick={handleAddEvent}>
+        <AddIcon />
       </Button>
       {addWindow()}
     </div>
