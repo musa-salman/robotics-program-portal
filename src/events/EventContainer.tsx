@@ -28,7 +28,6 @@ const EventContainer = () => {
   const [showModalAllEvents, setShowModalAllEvents] = useState(false);
 
   const handleAllEvents = () => {
-    // handleShowAllEvents();
     setShowModalAllEvents(!showModalAllEvents);
   };
 
