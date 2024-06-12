@@ -42,6 +42,7 @@ interface CollectionTableProps<T> {
     setMessage: React.Dispatch<React.SetStateAction<string | null>>
   ) => GridColDef[];
   repository: BaseRepository<T>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   FormComponent: React.FC<any>;
   messageFormat: MessageFormat<T>;
 }
@@ -89,7 +90,7 @@ const CollectionTable = <T extends { id: string }>({
         setMessage(messageFormat.addSuccess(newItem));
         setShowAddItemForm(false);
       })
-      .catch((_) => {
+      .catch(() => {
         setMessage(messageFormat.addError(newItem));
       });
   };
@@ -99,7 +100,7 @@ const CollectionTable = <T extends { id: string }>({
   };
 
   const processRowUpdate = (newRow: GridRowModel): GridValidRowModel => {
-    const { isNew, ...updatedRow } = newRow as any;
+    const { _, ...updatedRow } = newRow as any;
 
     repository
       .update(updatedRow.id, updatedRow as T)
