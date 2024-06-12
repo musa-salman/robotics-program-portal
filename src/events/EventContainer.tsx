@@ -285,7 +285,7 @@ const EventContainer = () => {
             {' '}
             זה ריק כאן אין קבצים
           </Typography>
-          <button className="add-btn" onClick={handleAdd}>
+          <button className="add-btn" onClick={handleAddEvent}>
             הוספה
             <AddIcon className="addIcon" />
           </button>
