@@ -2,10 +2,7 @@
   padding: 10px;
   border-radius: 10px;
   align-items: center;
-  justify-content: space-between;
   overflow: hidden;
-  padding: 10px;
-  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -17,9 +14,14 @@
 }
 
 .events-container-show-all-events-style {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px; /* adjust this value to add space between the cards */
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  justify-content: center;
+  margin: 10px;
+  gap: 10px;
 }
 
 /* Styling for the shift buttons*/
@@ -35,14 +37,14 @@
   background-color: #00b336;
 }
 
-/* Positioning the Add Event button at the top left */
-.addButton {
+.show-all {
+  margin-right: 5%;
+}
+
+.events-header-button {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-right: 1%;
-  margin-bottom: 1%;
+  margin-top: 10px;
+  margin-right: 10px;
 }
 
 .emptyCard {

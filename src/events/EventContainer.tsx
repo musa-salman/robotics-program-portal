@@ -228,6 +228,14 @@ const EventContainer = () => {
 
   return (
     <div className="events">
+      <div className="events-header-button">
+        <Button className="add-button" onClick={handleAddEvent}>
+          <AddIcon />
+        </Button>
+        <Button className="show-all" onClick={handleAllEvents}>
+          {showModalAllEvents ? <div>הצג הכול</div> : <div>הראי פחות</div>}
+        </Button>
+      </div>
       {showModalAllEvents ? (
         <div className="events-container-default-style">
           {events && events.length > 0 && (
@@ -276,13 +284,6 @@ const EventContainer = () => {
           ))}
         </div>
       )}
-      <Button className="addButton" onClick={handleAddEvent}>
-        <AddIcon />
-      </Button>
-
-      <Button className="showAll" onClick={handleAllEvents}>
-        Show All
-      </Button>
       {addWindow()}
     </div>
   );
