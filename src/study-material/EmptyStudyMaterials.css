@@ -6,17 +6,12 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.image {
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 20px;
-}
-
-.text {
+.container .text {
   color: #333;
+  font-size: 12px;
 }
 
-.textt {
+.container .textt {
   color: #b06464;
 }
 

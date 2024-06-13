@@ -9,6 +9,8 @@ import { StudyMaterialContext } from './StudyMaterialContext';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
 import { TextField } from '@mui/material';
+import { CategoryRepository } from '../upload-file/CategoryRepository';
+import { CategoryContext } from '../upload-file/CategoryContext';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (deletedItemId: string) => void;
@@ -28,6 +30,7 @@ function StudyMaterials({
   const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
   const [editedCategory, seteditedCategory] = useState(studyMaterial.category);
   const studyMaterialRepository = useContext(StudyMaterialContext);
+  const CategoryRepository = useContext(CategoryContext);
 
   const handleDownload = async () => {
     storageService.download(
@@ -38,7 +41,8 @@ function StudyMaterials({
 
   const handleDelete = async () => {
     storageService.delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename);
-    studyMaterialRepository.delete(studyMaterial.id);
+    // studyMaterialRepository.delete(studyMaterial.id);
+    // CategoryRepository.addStudyMaterial(studyMaterial.category , studyMaterial.id)
     onDelete(studyMaterial.id);
   };
 

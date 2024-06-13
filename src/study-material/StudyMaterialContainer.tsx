@@ -9,10 +9,10 @@ import UploadFileComponent from '../upload-file/UploadFile';
 import { Modal } from 'react-bootstrap';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-import EmptyStudyMaterials from './EmptyStudyMaterials';
 import { Fab } from '@mui/material';
 import NoResultFound from './NoResultFound';
 import MoveList from './MoveList';
+import EmptyStudyMaterials from './EmptyStudyMaterials';
 
 function StudyMaterialContainer() {
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
@@ -54,7 +54,7 @@ function StudyMaterialContainer() {
   }
 
   if (studyMaterials.length === 0) {
-    return <EmptyStudyMaterials />;
+    return <EmptyStudyMaterials handleAdd={handleAdd} />;
   }
 
   const categories = (searchResults || studyMaterials || [])
@@ -64,7 +64,8 @@ function StudyMaterialContainer() {
   console.log(categories);
   return (
     <>
-      <MoveList categories={categories || []} />
+      {/* <MoveList categories={categories || []} /> */}
+      <EmptyStudyMaterials handleAdd={handleAdd} />;
       <div className="btn-search">
         <SearchBar
           studyMaterials={studyMaterials || []}
@@ -79,10 +80,10 @@ function StudyMaterialContainer() {
       {searchResults?.length === 0 ? (
         <NoResultFound />
       ) : (
-        (categories || []).map((category) => (
+        (categories || []).map((category, index) => (
           <Card className="primary">
             <Card.Header className="Card-Header">
-              <div key={category}>
+              <div key={index}>
                 <h2>{category}</h2>
               </div>
               <Fab className="edit-button" aria-label="edit">
