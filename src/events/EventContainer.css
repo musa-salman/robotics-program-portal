@@ -9,6 +9,7 @@
   overflow: hidden;
   margin: 10px;
   gap: 10px;
+  height: 550px;
 }
 
 .events-container-show-all-events-style {
@@ -20,6 +21,7 @@
   justify-content: center;
   margin: 10px;
   gap: 10px;
+  height: 550px;
 }
 
 /* Styling for the shift buttons*/
@@ -85,4 +87,10 @@
 .container .addIcon {
   color: crimson;
   margin-right: 30px;
+}
+
+.loading {
+  justify-content: center;
+  align-items: center;
+  margin-top: 275px;
 }

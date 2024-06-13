@@ -5,7 +5,7 @@ import { EventContext } from './EventContext';
 import { IEvent } from './Event';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
-import { Container, CssBaseline, Typography } from '@mui/material';
+import { Container, Typography, CircularProgress, Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import './EventContainer.css';
 
@@ -22,11 +22,9 @@ const EventContainer = () => {
   const [render, setRender] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [_uploadProgress, setUploadProgress] = useState(0);
-
   const eventRepository = useContext(EventContext);
   const storageService = useContext(StorageServiceContext);
-
-  const [showModalAllEvents, setShowModalAllEvents] = useState(false);
+  const [showModalAllEvents, setShowModalAllEvents] = useState(true);
 
   const handleAllEvents = () => {
     setShowModalAllEvents(!showModalAllEvents);
@@ -223,6 +221,33 @@ const EventContainer = () => {
     );
   }
 
+  if (events === null) {
+    return (
+      <Box className="loading">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (events.length === 0) {
+    return (
+      <Container className="container">
+        <img src="./Empty State Icon.jpg" alt="Image Description" />
+        <Typography variant="h5" className="text">
+          אין מה להראות
+        </Typography>
+        <Typography variant="body1" className="textt">
+          {' '}
+          זה ריק כאן אין קבצים
+        </Typography>
+        <button className="add-btn" onClick={handleAddEvent}>
+          הוספה
+          <AddIcon className="addIcon" />
+        </button>
+      </Container>
+    );
+  }
+
   return (
     <div className="events">
       <div className="events-header-button">
@@ -233,35 +258,16 @@ const EventContainer = () => {
           {showModalAllEvents ? <div>הצג הכול</div> : <div>הראי פחות</div>}
         </Button>
       </div>
-
-      {events && events.length > 0 ? (
-        showModalAllEvents ? (
-          <div className="events-container-default-style">
-            <Button className="shift-buttons" variant="primary" onClick={handleShiftEventsRight}>
-              &lt;
-            </Button>
-            {events
-              .sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
-              .slice(currentIndex, currentIndex + 3)
-              .map((event) => (
-                <EventCard
-                  key={event.id}
-                  id={event.id}
-                  date={event.date}
-                  title={event.title}
-                  details={event.details}
-                  image={event.image}
-                  onEventDelete={onEventDelete}
-                  onEventEdit={onEventEdit}
-                />
-              ))}
-            <Button className="shift-buttons" variant="primary" onClick={handleShiftEventsLeft}>
-              &gt;
-            </Button>
-          </div>
-        ) : (
-          <div className="events-container-show-all-events-style">
-            {events?.map((event) => (
+      {/* {events && events.length > 0 ? ( */}
+      {showModalAllEvents ? (
+        <div className="events-container-default-style">
+          <Button className="shift-buttons" variant="primary" onClick={handleShiftEventsRight}>
+            &lt;
+          </Button>
+          {events
+            .sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
+            .slice(currentIndex, currentIndex + 3)
+            .map((event) => (
               <EventCard
                 key={event.id}
                 id={event.id}
@@ -273,23 +279,25 @@ const EventContainer = () => {
                 onEventEdit={onEventEdit}
               />
             ))}
-          </div>
-        )
+          <Button className="shift-buttons" variant="primary" onClick={handleShiftEventsLeft}>
+            &gt;
+          </Button>
+        </div>
       ) : (
-        <Container className="container">
-          <img src="./Empty State Icon.jpg" alt="Image Description" />
-          <Typography variant="h5" className="text">
-            אין מה להראות
-          </Typography>
-          <Typography variant="body1" className="textt">
-            {' '}
-            זה ריק כאן אין קבצים
-          </Typography>
-          <button className="add-btn" onClick={handleAddEvent}>
-            הוספה
-            <AddIcon className="addIcon" />
-          </button>
-        </Container>
+        <div className="events-container-show-all-events-style">
+          {events?.map((event) => (
+            <EventCard
+              key={event.id}
+              id={event.id}
+              date={event.date}
+              title={event.title}
+              details={event.details}
+              image={event.image}
+              onEventDelete={onEventDelete}
+              onEventEdit={onEventEdit}
+            />
+          ))}
+        </div>
       )}
       {addWindow()}
     </div>
