@@ -232,7 +232,11 @@ const EventContainer = () => {
   }
 
   if (events.length === 0) {
-    return <EmptyEventCard handleAddEvent={handleAddEvent} />;
+    return (
+      <>
+        <EmptyEventCard handleAddEvent={handleAddEvent} />;{addWindow()}
+      </>
+    );
   }
 
   return (
