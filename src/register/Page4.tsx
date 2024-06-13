@@ -64,7 +64,6 @@ const Page4Component = () => {
             </Grid>
             </FormControl>
 
-        <Button type="submit" variant="contained" color="primary">Submit</Button>
         </Box>
     </>
   );

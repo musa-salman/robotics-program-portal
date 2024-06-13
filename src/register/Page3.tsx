@@ -78,7 +78,7 @@ const Page3Component = () => {
         </RadioGroup>
       </FormControl>
       
-      <Button type="submit" variant="contained" color="primary">Submit</Button>
+ 
     </Box>
   );
 };
