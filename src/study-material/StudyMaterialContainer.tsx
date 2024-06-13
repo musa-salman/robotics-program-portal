@@ -2,7 +2,7 @@ import Card from 'react-bootstrap/Card';
 import StudyMaterials from './StudyMaterials';
 import { useState, useEffect, useContext } from 'react';
 import './StudyMaterialContainer.css';
-import { StudyMaterialContext } from './StudyMaterialContext';
+import { StudyMaterialContext } from './repository/StudyMaterialContext';
 import { StudyMaterial } from './StudyMaterial';
 import { SearchBar } from './SearchBar';
 import UploadFileComponent from '../upload-file/UploadFile';
@@ -57,11 +57,10 @@ function StudyMaterialContainer() {
     return <EmptyStudyMaterials handleAdd={handleAdd} />;
   }
 
-  const categories = (searchResults || studyMaterials || [])
+  const categories: string[] = (searchResults || studyMaterials || [])
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
-  console.log(categories);
   return (
     <>
       {/* <MoveList categories={categories || []} /> */}
@@ -110,7 +109,7 @@ function StudyMaterialContainer() {
         ))
       )}
       <Modal show={show} onHide={handleClose}>
-        <UploadFileComponent handleClose={handleClose} handleAdd={handleAdd}></UploadFileComponent>
+        <UploadFileComponent handleClose={handleClose} handleAdd={handleAdd} />
       </Modal>
     </>
   );

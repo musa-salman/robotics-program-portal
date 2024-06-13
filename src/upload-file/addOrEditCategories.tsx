@@ -1,9 +1,7 @@
 import { useContext, useState } from 'react';
 import { Button, Col, FloatingLabel, Form, Modal, Row } from 'react-bootstrap';
-import { CategoryContext } from './CategoryContext';
 import { Category } from './Category';
-import { StudyMaterial } from '../study-material/StudyMaterial';
-import { StudyMaterialContext } from '../study-material/StudyMaterialContext';
+import { StudyMaterialContext } from '../study-material/repository/StudyMaterialContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import './addorEditCategories.css';
@@ -25,8 +23,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
   const [category, setCategory] = useState('');
   const [editcategory, setEditCategory] = useState('');
   const [editingItem, setEditingItem] = useState<Category | null>(null);
-  const studyMaterialRepository = useContext(StudyMaterialContext);
-  const categoryRepository = useContext(CategoryContext);
+  const studyMaterialManagement = useContext(StudyMaterialContext);
   const [showFirstButton, setShowFirstButton] = useState(true);
 
   const handleEditItem = (item: Category) => {
@@ -53,7 +50,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
 
   const addCategories = async () => {
     if (checkRepeat(category)) {
-      const docRef = await categoryRepository.create({ category });
+      const docRef = await studyMaterialManagement.categoryRepository.create({ category: category });
       const add: Category = {
         category: category,
         id: docRef.id
@@ -78,7 +75,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
         category: editcategory,
         id: editingItem.id
       };
-      categoryRepository.update(editingItem.id, edit);
+      studyMaterialManagement.categoryRepository.update(editingItem.id, edit);
 
       setCategories((prevCategories) => {
         if (prevCategories === null) {
@@ -102,13 +99,14 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
   };
 
   const handleDeleteCategory = (item: Category) => {
-    categories?.forEach((index)=>{
-      if(index.category === 'הכל'){
-        categoryRepository.moveAllStudyMaterial(item,index);
+    categories?.forEach((index) => {
+      if (index.category === 'הכל') {
+        studyMaterialManagement.moveAllMaterialsToCategory(item.id, index.id).then(() => {
+          studyMaterialManagement.categoryRepository.delete(item.id);
+        });
       }
-    })
-    categoryRepository.delete(item.id);
-    
+    });
+
     setCategories((prevCategories) => {
       if (prevCategories !== null) {
         return prevCategories.filter((category) => category.id !== item.id);
@@ -146,37 +144,39 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
           </Form.Group>
         </Row>
         <Modal.Footer className="modal-footer-scroll">
-          {(categories || []).filter(item => item.category !== 'הכל').map((item) => (
-            <Row className="px-3" key={item.category}>
-              <Form.Group as={Col} controlId="validationCustom01" className="position-relative ">
-                <Form.Control
-                  type="text"
-                  name="title"
-                  defaultValue={item.category}
-                  required
-                  disabled={editingItem?.category !== item.category}
-                  onChange={(event) => handleEditInput(event)}
-                />
-              </Form.Group>
+          {(categories || [])
+            .filter((item) => item.category !== 'הכל')
+            .map((item) => (
+              <Row className="px-3" key={item.category}>
+                <Form.Group as={Col} controlId="validationCustom01" className="position-relative ">
+                  <Form.Control
+                    type="text"
+                    name="title"
+                    defaultValue={item.category}
+                    required
+                    disabled={editingItem?.category !== item.category}
+                    onChange={(event) => handleEditInput(event)}
+                  />
+                </Form.Group>
 
-              <Form.Group as={Col} md="2" className=" mt-2" controlId="validationCustom02">
-                {item.category !== editingItem?.category ? (
-                  <Button onClick={() => handleEditItem(item)}>
-                    <FontAwesomeIcon icon={faPenToSquare} />
+                <Form.Group as={Col} md="2" className=" mt-2" controlId="validationCustom02">
+                  {item.category !== editingItem?.category ? (
+                    <Button onClick={() => handleEditItem(item)}>
+                      <FontAwesomeIcon icon={faPenToSquare} />
+                    </Button>
+                  ) : (
+                    <Button onClick={() => handleSaveItem(item)}>
+                      <FontAwesomeIcon icon={faFloppyDisk} />
+                    </Button>
+                  )}
+                </Form.Group>
+                <Form.Group as={Col} md="2" className=" mt-2" controlId="validationCustom02">
+                  <Button variant="danger" onClick={() => handleDeleteCategory(item)}>
+                    <FontAwesomeIcon icon={faTrashCan} />
                   </Button>
-                ) : (
-                  <Button onClick={() => handleSaveItem(item)}>
-                    <FontAwesomeIcon icon={faFloppyDisk} />
-                  </Button>
-                )}
-              </Form.Group>
-              <Form.Group as={Col} md="2" className=" mt-2" controlId="validationCustom02">
-                <Button variant="danger" onClick={() => handleDeleteCategory(item)}>
-                  <FontAwesomeIcon icon={faTrashCan} />
-                </Button>
-              </Form.Group>
-            </Row>
-          ))}
+                </Form.Group>
+              </Row>
+            ))}
         </Modal.Footer>
       </Modal.Body>
       <Modal.Footer className="justify-content-center" style={{ backgroundColor: '#d1c8bf' }}>
