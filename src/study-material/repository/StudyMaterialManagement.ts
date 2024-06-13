@@ -66,7 +66,7 @@ export class StudyMaterialManagement implements IUnitOfWork {
     categoryId: string,
     data: StudyMaterial
   ): Promise<DocumentReference<StudyMaterial, DocumentData>> {
-    return this.getStudyMaterialRepository(categoryId).create(data);
+    return this.getStudyMaterialRepository(categoryId).then((s) => s.create(data));
   }
 
   /**
@@ -77,7 +77,7 @@ export class StudyMaterialManagement implements IUnitOfWork {
    * @returns A Promise that resolves to void.
    */
   async deleteStudyMaterialFromCategory(categoryId: string, materialId: string): Promise<void> {
-    await this.getStudyMaterialRepository(categoryId).delete(materialId);
+    return this.getStudyMaterialRepository(categoryId).then((s) => s.delete(materialId));
   }
 
   /**
@@ -93,7 +93,7 @@ export class StudyMaterialManagement implements IUnitOfWork {
     materialId: string,
     data: Partial<StudyMaterial>
   ): Promise<void> {
-    return this.getStudyMaterialRepository(categoryId).update(materialId, data);
+    return this.getStudyMaterialRepository(categoryId).then((s) => s.update(materialId, data));
   }
 
   /**
@@ -102,7 +102,7 @@ export class StudyMaterialManagement implements IUnitOfWork {
    * @returns A promise that resolves to an array of StudyMaterial objects.
    */
   async findStudyMaterialInCategory(categoryId: string): Promise<StudyMaterial[]> {
-    return this.getStudyMaterialRepository(categoryId).find();
+    return this.getStudyMaterialRepository(categoryId).then((s) => s.find());
   }
 
   /**
@@ -119,8 +119,8 @@ export class StudyMaterialManagement implements IUnitOfWork {
     newCategoryId: string
   ): Promise<void> {
     const batch = writeBatch(db);
-    const oldDocRef = doc(this.getStudyMaterialRepository(oldCategoryId)._collection, studyMaterial.id);
-    const newDocRef = doc(this.getStudyMaterialRepository(newCategoryId)._collection, studyMaterial.id);
+    const oldDocRef = doc((await this.getStudyMaterialRepository(oldCategoryId))._collection, studyMaterial.id);
+    const newDocRef = doc((await this.getStudyMaterialRepository(newCategoryId))._collection, studyMaterial.id);
 
     // without id or category
     const { id, category, ...remainingProperties } = studyMaterial;
@@ -151,10 +151,14 @@ export class StudyMaterialManagement implements IUnitOfWork {
    * @param categoryId - The ID of the category.
    * @returns The study material repository for the specified category ID.
    */
-  getStudyMaterialRepository(categoryId: string): StudyMaterialRepository {
+  async getStudyMaterialRepository(categoryId: string): Promise<StudyMaterialRepository> {
     let studyMaterialRepository = this.studyMaterialRepositories.get(categoryId);
     if (!studyMaterialRepository) {
-      studyMaterialRepository = new CachingRepository(new StudyMaterialRepository(categoryId));
+      const category = await this.categoryRepository.findOne(categoryId);
+      if (!category) {
+        throw new Error(`Category with ID ${categoryId} not found.`);
+      }
+      studyMaterialRepository = new CachingRepository(new StudyMaterialRepository(category));
       this.studyMaterialRepositories.set(categoryId, studyMaterialRepository);
     }
     return studyMaterialRepository;
