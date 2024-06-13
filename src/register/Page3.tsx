@@ -1,25 +1,35 @@
 import React, { useState } from 'react';
 import { Box, TextField, FormControl, InputLabel, Select, MenuItem, RadioGroup, FormControlLabel, Radio, Button, Autocomplete, FormLabel, Grid, InputAdornment } from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
+import { Register } from './Register';
 
-const Page3Component = () => {
+interface Page3ComponentProps {
+    // handleChange: (event:any) => void;
+    // handleSubmit: (event:any) => void;
+    setRegister: React.Dispatch<React.SetStateAction<Register>>;
+}
+
+
+const Page3Component: React.FC<Page3ComponentProps> = ({setRegister}) => {
   const [schoolName, setSchoolName] = useState('');
   const [interest, setInterest] = useState('');
   const [additionalSubject, setAdditionalSubject] = useState('');
   const [mathUnits, setMathUnits] = useState('');
   const [value, setValue] = React.useState('female');
 
-  const handleSubmit = (e:any) => {
-    e.preventDefault();
-    // Handle form submission
-    console.log({ schoolName, interest, additionalSubject, mathUnits });
+  const handleChange = (event:any) => {
+    const { name, value } = event.target;
+    setRegister((prevData) => ({ ...prevData, [name]: value }));
+    
   };
 
-  
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue((event.target as HTMLInputElement).value);
+  const handleSubmit = (event:any) => {
+    event.preventDefault();
+    // Handle form submission logic
+    // console.log(formData);
   };
+
+
   const options = [
     'אני מתעניינת ב-5 יח"ל מכטרוניקה',
     'אני מתעניינת ב-10 יח"ל מכטרוניקה',

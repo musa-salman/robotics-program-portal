@@ -1,37 +1,36 @@
-import React, { useState } from 'react';
-import { TextField, Grid, Button, Container, Typography, InputAdornment } from '@mui/material';
+import  { useState } from 'react';
+import { TextField, Grid, Container, InputAdornment } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
-import SchoolIcon from '@mui/icons-material/School';
-import IdIcon from '@mui/icons-material/Badge'; // Icon for ID
+import IdIcon from '@mui/icons-material/Badge'; 
+import { Register } from './Register';
 
-const Page2Component = () => {
-  const [formData, setFormData] = useState({
-    parentEmail: '',
-    studentEmail: '',
-    parentPhone: '',
-    address: '',
-    firstName: '',
-    lastName: '',
-    studentId: '',
-    studentPhone: '',
-    schoolName: ''
-  });
 
-  const handleChange = (e:any) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
 
-  const handleSubmit = (e:any) => {
-    e.preventDefault();
-    // Handle form submission logic
-    console.log(formData);
-  };
+
+
+interface Page2ComponentProps {
+    // handleChange: (event:any) => void;
+    // handleSubmit: (event:any) => void;
+    setRegister: React.Dispatch<React.SetStateAction<Page2Register>>;
+    Register: Register;
+}
+
+const Page2Component : React.FC<Page2ComponentProps> = ({setRegister,Register}) => {
+
+    const handleChange = (event:any) => {
+        const { name, value } = event.target;
+        setRegister((prevData) => ({ ...prevData, [name]: value }));
+        
+      };
+    
+      const handleSubmit = (event:any) => {
+        event.preventDefault();
+        // Handle form submission logic
+        // console.log(formData);
+      };
 
   return (
     <Container>
@@ -42,8 +41,8 @@ const Page2Component = () => {
                 <TextField
                     fullWidth
                     label="שם פרטי"
-                    name="firstName"
-                    value={formData.firstName}
+                    name="studentFirstName"
+                    value={Register.studentFirstName}
                     onChange={handleChange}
                     required
                     InputProps={{
@@ -60,8 +59,8 @@ const Page2Component = () => {
                 <TextField
                     fullWidth
                     label="שם משפחה"
-                    name="lastName"
-                    value={formData.lastName}
+                    name="studentLastName"
+                    value={Register.studentLastName}
                     onChange={handleChange}
                     required
                     InputProps={{
@@ -79,7 +78,7 @@ const Page2Component = () => {
                     fullWidth
                     label="טלפון הורה"
                     name="parentPhone"
-                    value={formData.parentPhone}
+                    value={Register.parentPhone}
                     onChange={handleChange}
                     required
                     InputProps={{
@@ -97,7 +96,6 @@ const Page2Component = () => {
                     fullWidth
                     label="פלאפון תלמיד\ה"
                     name="studentPhone"
-                    value={formData.studentPhone}
                     onChange={handleChange}
                     required
                     InputProps={{
@@ -115,7 +113,6 @@ const Page2Component = () => {
                     fullWidth
                     label="תעודת זהות תלמיד"
                     name="studentId"
-                    value={formData.studentId}
                     onChange={handleChange}
                     required
                     InputProps={{
@@ -133,7 +130,6 @@ const Page2Component = () => {
                     fullWidth
                     label="Email address של אחד ההורים"
                     name="parentEmail"
-                    value={formData.parentEmail}
                     onChange={handleChange}
                     required
                     InputProps={{
@@ -151,7 +147,6 @@ const Page2Component = () => {
                     fullWidth
                     label="Email תלמיד\ה"
                     name="studentEmail"
-                    value={formData.studentEmail}
                     onChange={handleChange}
                     required
                     InputProps={{
@@ -168,8 +163,7 @@ const Page2Component = () => {
                 <TextField
                     fullWidth
                     label="כתובת מגורים"
-                    name="address"
-                    value={formData.address}
+                    name="studentAddress"
                     onChange={handleChange}
                     required
                     InputProps={{
