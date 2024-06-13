@@ -12,7 +12,7 @@ import Page3Component from './Page3';
 import Page4Component from './Page4';
 
 
-const steps = ['על המתחם החדש', 'פרטים אישיים', 'פרטים בית הספר','נוספות'];
+const steps = ['על המתחם החדש', 'פרטים אישיים', 'פרטים בית הספר','שאלות אחרונות'];
 
 const pages =[<Page1Component />,<Page2Component />,<Page3Component />,<Page4Component />];
 

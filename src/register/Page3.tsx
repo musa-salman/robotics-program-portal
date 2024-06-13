@@ -21,8 +21,8 @@ const Page3Component = () => {
     setValue((event.target as HTMLInputElement).value);
   };
   const options = [
-    'אני מתעניינ\\ת ב-5 יח"ל מכטרוניקה',
-    'אני מתעניינ\\ת ב-10 יח"ל מכטרוניקה',
+    'אני מתעניינת ב-5 יח"ל מכטרוניקה',
+    'אני מתעניינת ב-10 יח"ל מכטרוניקה',
     'עדיין לא ידוע',
     'אחרת'
   ];
@@ -55,8 +55,8 @@ const Page3Component = () => {
         value={value}
         onChange={handleChange}
       >
-        <FormControlLabel value="0" control={<Radio />} label='אני מתעניינ\\ת ב-5 יח"ל מכטרוניקה' />
-        <FormControlLabel value="1" control={<Radio />} label='אני מתעניינ\\ת ב-10 יח"ל מכטרוניקה' />
+        <FormControlLabel value="0" control={<Radio />} label='אני מתעניינת ב-5 יח"ל מכטרוניקה' />
+        <FormControlLabel value="1" control={<Radio />} label='אני מתעניינת ב-10 יח"ל מכטרוניקה' />
         <FormControlLabel value="2" control={<Radio />} label='עדיין לא ידוע' />
         <FormControlLabel value="3" control={<Radio />} label='אחרת' />
       </RadioGroup>
