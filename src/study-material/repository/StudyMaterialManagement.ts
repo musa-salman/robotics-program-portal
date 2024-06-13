@@ -3,17 +3,25 @@ import { StudyMaterial } from '../StudyMaterial';
 import { CategoryRepository } from './CategoryRepository';
 import { StudyMaterialRepository } from './StudyMaterialRepository';
 import { db } from '../../firebase';
+import { CachingRepository } from '../../repositories/caching/CachingRepository';
 
 export interface IUnitOfWork {
   addStudyMaterialToCategory(
     categoryId: string,
     data: StudyMaterial
   ): Promise<DocumentReference<StudyMaterial, DocumentData>>;
+
   deleteStudyMaterialFromCategory(categoryId: string, materialId: string): Promise<void>;
+
   updateStudyMaterialInCategory(categoryId: string, materialId: string, data: Partial<StudyMaterial>): Promise<void>;
+
   findStudyMaterialInCategory(categoryId: string): Promise<StudyMaterial[]>;
+
   getStudyMaterialsByCategory(): Promise<Map<string, StudyMaterial[]>>;
+
   moveMaterialToCategory(studyMaterial: StudyMaterial, oldCategoryId: string, newCategoryId: string): Promise<void>;
+
+  moveAllMaterialsToCategory(oldCategoryId: string, newCategoryId: string): Promise<void>;
 }
 
 /**
@@ -25,7 +33,7 @@ export class StudyMaterialManagement implements IUnitOfWork {
   readonly studyMaterialRepositories: Map<string, StudyMaterialRepository>;
 
   constructor() {
-    this.categoryRepository = new CategoryRepository();
+    this.categoryRepository = new CachingRepository(new CategoryRepository());
     this.studyMaterialRepositories = new Map<string, StudyMaterialRepository>();
   }
 
@@ -38,7 +46,9 @@ export class StudyMaterialManagement implements IUnitOfWork {
 
     this.categoryRepository.find().then((categories) => {
       categories.forEach(async (category) => {
-        this.findStudyMaterialInCategory(category.id).then((materials) => studyMaterials.set(category.id, materials));
+        this.findStudyMaterialInCategory(category.id).then((materials) =>
+          studyMaterials.set(category.category, materials)
+        );
       });
     });
 
@@ -120,6 +130,21 @@ export class StudyMaterialManagement implements IUnitOfWork {
 
     batch.delete(oldDocRef).set(newDocRef, remainingProperties);
     return batch.commit();
+  }
+
+  /**
+   * Moves all study materials from one category to another.
+   *
+   * @param oldCategoryId - The ID of the old category.
+   * @param newCategoryId - The ID of the new category.
+   * @returns A promise that resolves when all study materials have been moved successfully.
+   */
+  async moveAllMaterialsToCategory(oldCategoryId: string, newCategoryId: string): Promise<void> {
+    this.findStudyMaterialInCategory(oldCategoryId).then((studyMaterials) => {
+      studyMaterials.forEach((studyMaterial) => {
+        this.moveMaterialToCategory(studyMaterial, oldCategoryId, newCategoryId);
+      });
+    });
   }
 
   /**

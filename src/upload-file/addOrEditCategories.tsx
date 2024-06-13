@@ -1,8 +1,6 @@
 import { useContext, useState } from 'react';
 import { Button, Col, FloatingLabel, Form, Modal, Row } from 'react-bootstrap';
-import { CategoryContext } from './CategoryContext';
 import { Category } from './Category';
-import { StudyMaterial } from '../study-material/StudyMaterial';
 import { StudyMaterialContext } from '../study-material/repository/StudyMaterialContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
@@ -25,8 +23,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
   const [category, setCategory] = useState('');
   const [editcategory, setEditCategory] = useState('');
   const [editingItem, setEditingItem] = useState<Category | null>(null);
-  const studyMaterialRepository = useContext(StudyMaterialContext);
-  const categoryRepository = useContext(CategoryContext);
+  const studyMaterialManagement = useContext(StudyMaterialContext);
   const [showFirstButton, setShowFirstButton] = useState(true);
 
   const handleEditItem = (item: Category) => {
@@ -53,7 +50,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
 
   const addCategories = async () => {
     if (checkRepeat(category)) {
-      const docRef = await categoryRepository.create({ category });
+      const docRef = await studyMaterialManagement.categoryRepository.create({ category: category });
       const add: Category = {
         category: category,
         id: docRef.id
@@ -78,7 +75,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
         category: editcategory,
         id: editingItem.id
       };
-      categoryRepository.update(editingItem.id, edit);
+      studyMaterialManagement.categoryRepository.update(editingItem.id, edit);
 
       setCategories((prevCategories) => {
         if (prevCategories === null) {
@@ -104,10 +101,11 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
   const handleDeleteCategory = (item: Category) => {
     categories?.forEach((index) => {
       if (index.category === 'הכל') {
-        categoryRepository.moveAllStudyMaterial(item, index);
+        studyMaterialManagement.moveAllMaterialsToCategory(item.id, index.id).then(() => {
+          studyMaterialManagement.categoryRepository.delete(item.id);
+        });
       }
     });
-    categoryRepository.delete(item.id);
 
     setCategories((prevCategories) => {
       if (prevCategories !== null) {

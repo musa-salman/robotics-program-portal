@@ -28,8 +28,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const [showAddEdit, setShowAddEdit] = useState(false);
   const handleCloseAddEdit = () => setShowAddEdit(false);
   const handleShowAddEdit = () => setShowAddEdit(true);
-  const categoryRepository = useContext(CategoryContext);
-  const studyMaterialRepository = useContext(StudyMaterialContext);
+  const studyMaterialManagement = useContext(StudyMaterialContext);
   const [validated, setValidated] = useState(false);
 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
@@ -44,7 +43,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
 
   const getCategory = async () => {
     try {
-      const data: Category[] = await categoryRepository.find();
+      const data: Category[] = await studyMaterialManagement.categoryRepository.find();
       console.log(data);
       setCategories(data);
     } catch (error) {
@@ -109,7 +108,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
       // const docRef = await studyMaterialRepository.create(studyMaterial);
       categories?.forEach((index) => {
         if (index.category === selectedItem) {
-          const docRef = categoryRepository.addStudyMaterial(index, studyMaterial);
+          const docRef = studyMaterialManagement.addStudyMaterialToCategory(index.id, studyMaterial);
           storageService.upload(
             file,
             '/study-material/' + docRef + '-' + studyMaterial.filename,
