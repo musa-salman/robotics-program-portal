@@ -129,7 +129,7 @@ export class StudyMaterialManagement implements IUnitOfWork {
    * @param categoryId - The ID of the category.
    * @returns The study material repository for the specified category ID.
    */
-  private getStudyMaterialRepository(categoryId: string): StudyMaterialRepository {
+  getStudyMaterialRepository(categoryId: string): StudyMaterialRepository {
     let studyMaterialRepository = this.studyMaterialRepositories.get(categoryId);
     if (!studyMaterialRepository) {
       studyMaterialRepository = new StudyMaterialRepository(categoryId);
