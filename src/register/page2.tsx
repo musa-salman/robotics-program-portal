@@ -1,35 +1,26 @@
-import  { useState } from 'react';
 import { TextField, Grid, Container, InputAdornment } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import IdIcon from '@mui/icons-material/Badge'; 
-import { Register } from './Register';
-
-
-
-
 
 interface Page2ComponentProps {
-    // handleChange: (event:any) => void;
-    // handleSubmit: (event:any) => void;
-    setRegister: React.Dispatch<React.SetStateAction<Page2Register>>;
-    Register: Register;
+    setPage2Register: React.Dispatch<React.SetStateAction<Page2Register>>;
+    page2Register: Page2Register;
 }
 
-const Page2Component : React.FC<Page2ComponentProps> = ({setRegister,Register}) => {
+const Page2Component : React.FC<Page2ComponentProps> = ({setPage2Register,page2Register}) => {
 
     const handleChange = (event:any) => {
         const { name, value } = event.target;
-        setRegister((prevData) => ({ ...prevData, [name]: value }));
+        setPage2Register((prevData) => ({ ...prevData, [name]: value }));
         
       };
     
       const handleSubmit = (event:any) => {
         event.preventDefault();
-        // Handle form submission logic
-        // console.log(formData);
+        
       };
 
   return (
@@ -42,7 +33,7 @@ const Page2Component : React.FC<Page2ComponentProps> = ({setRegister,Register}) 
                     fullWidth
                     label="שם פרטי"
                     name="studentFirstName"
-                    value={Register.studentFirstName}
+                    value={page2Register.studentFirstName}
                     onChange={handleChange}
                     required
                     InputProps={{
@@ -60,7 +51,7 @@ const Page2Component : React.FC<Page2ComponentProps> = ({setRegister,Register}) 
                     fullWidth
                     label="שם משפחה"
                     name="studentLastName"
-                    value={Register.studentLastName}
+                    value={page2Register.studentLastName}
                     onChange={handleChange}
                     required
                     InputProps={{
@@ -78,7 +69,7 @@ const Page2Component : React.FC<Page2ComponentProps> = ({setRegister,Register}) 
                     fullWidth
                     label="טלפון הורה"
                     name="parentPhone"
-                    value={Register.parentPhone}
+                    value={page2Register.parentPhone}
                     onChange={handleChange}
                     required
                     InputProps={{
@@ -96,6 +87,7 @@ const Page2Component : React.FC<Page2ComponentProps> = ({setRegister,Register}) 
                     fullWidth
                     label="פלאפון תלמיד\ה"
                     name="studentPhone"
+                    value={page2Register.studentPhone}
                     onChange={handleChange}
                     required
                     InputProps={{
@@ -113,6 +105,7 @@ const Page2Component : React.FC<Page2ComponentProps> = ({setRegister,Register}) 
                     fullWidth
                     label="תעודת זהות תלמיד"
                     name="studentId"
+                    value={page2Register.studentId}
                     onChange={handleChange}
                     required
                     InputProps={{
@@ -130,6 +123,7 @@ const Page2Component : React.FC<Page2ComponentProps> = ({setRegister,Register}) 
                     fullWidth
                     label="Email address של אחד ההורים"
                     name="parentEmail"
+                    value={page2Register.parentEmail}
                     onChange={handleChange}
                     required
                     InputProps={{
@@ -147,6 +141,7 @@ const Page2Component : React.FC<Page2ComponentProps> = ({setRegister,Register}) 
                     fullWidth
                     label="Email תלמיד\ה"
                     name="studentEmail"
+                    value={page2Register.studentEmail}
                     onChange={handleChange}
                     required
                     InputProps={{
@@ -164,6 +159,7 @@ const Page2Component : React.FC<Page2ComponentProps> = ({setRegister,Register}) 
                     fullWidth
                     label="כתובת מגורים"
                     name="studentAddress"
+                    value={page2Register.studentAddress}
                     onChange={handleChange}
                     required
                     InputProps={{

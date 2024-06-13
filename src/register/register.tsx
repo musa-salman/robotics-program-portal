@@ -22,7 +22,7 @@ const steps = ['על המתחם החדש', 'פרטים אישיים', 'פרטי�
 const RegisterComponent =  () => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
-  const [page1Register,setPage1Register]=useState<Page2Register>({
+  const [page2Register,setPage2Register]=useState<Page2Register>({
     studentFirstName: '',
     studentLastName: '',
     studentPhone: '',
@@ -32,8 +32,12 @@ const RegisterComponent =  () => {
     parentEmail: '',
     studentAddress: ''
   })
+  const [page3Register,setPage3Register]=useState<Page3Register>({
+    studentSchool: '',
+    studyUnitsMajor: '',
+    numStudyUnitsMath: ''
+  })
   const [register,setRegister]=useState<Register >({
-    id: '',
     studentFirstName: '',
     studentLastName: '',
     studentPhone: '',
@@ -47,21 +51,7 @@ const RegisterComponent =  () => {
     numStudyUnitsMath: '',
     hearAboutUs: '',
     otherQuestions: ''
-
-
   });
-
-  // const handleChange = (event:any) => {
-  //   const { name, value } = event.target;
-  //   setRegister((prevData) => ({ ...prevData, [name]: value }));
-  //   console.log(register);
-  // };
-
-  // const handleSubmit = (event:any) => {
-  //   event.preventDefault();
-  //   // Handle form submission logic
-  //   // console.log(formData);
-  // };
 
   const pages =[
     {
@@ -70,11 +60,11 @@ const RegisterComponent =  () => {
     },
     {
       inputs:'',
-      page:<Page2Component setRegister={setPage1Register} />,
+      page:<Page2Component setPage2Register={setPage2Register} page2Register={page2Register} />,
     },
     {
       inputs:'',
-      page:<Page3Component setRegister={setRegister}/>,
+      page:<Page3Component setPage3Register={setPage3Register} page3Register={page3Register}/>,
     },
     {
       inputs:'',
@@ -91,22 +81,31 @@ const RegisterComponent =  () => {
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
-      
     }
-    
-    console.log(register);
-    setRegister((prevData) => ({ ...prevData, 
-      studentFirstName: page1Register.studentFirstName,
-      studentLastName: page1Register.studentLastName,
-      studentPhone:page1Register.studentPhone,
-      parentPhone:page1Register.parentPhone,
-      studentId:page1Register.studentId,
-      studentEmail: page1Register.studentEmail,
-      parentEmail: page1Register.parentEmail,
-      studentAddress: page1Register.studentAddress
-      
-    }));
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+    if(activeStep === 1){
+      console.log("activeStep ",activeStep);
+      setRegister((prevData) => ({ ...prevData, 
+        studentFirstName: page2Register.studentFirstName,
+        studentLastName: page2Register.studentLastName,
+        studentPhone:page2Register.studentPhone,
+        parentPhone:page2Register.parentPhone,
+        studentId:page2Register.studentId,
+        studentEmail: page2Register.studentEmail,
+        parentEmail: page2Register.parentEmail,
+        studentAddress: page2Register.studentAddress  
+      }));
+    }
+    if(activeStep === 2){
+      console.log("activeStep ",activeStep);
+      setRegister((prevData) => ({ ...prevData, 
+        studentSchool: page3Register.studentSchool,
+        studyUnitsMajor: page3Register.studyUnitsMajor,
+        numStudyUnitsMath: page3Register.numStudyUnitsMath
+      }));
+    }
+      console.log(register);
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
   };
 

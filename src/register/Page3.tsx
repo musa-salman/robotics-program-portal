@@ -4,22 +4,19 @@ import SchoolIcon from '@mui/icons-material/School';
 import { Register } from './Register';
 
 interface Page3ComponentProps {
-    // handleChange: (event:any) => void;
-    // handleSubmit: (event:any) => void;
-    setRegister: React.Dispatch<React.SetStateAction<Register>>;
+    setPage3Register: React.Dispatch<React.SetStateAction<Page3Register>>;
+    page3Register: Page3Register;
 }
 
 
-const Page3Component: React.FC<Page3ComponentProps> = ({setRegister}) => {
-  const [schoolName, setSchoolName] = useState('');
-  const [interest, setInterest] = useState('');
-  const [additionalSubject, setAdditionalSubject] = useState('');
+const Page3Component: React.FC<Page3ComponentProps> = ({setPage3Register,page3Register}) => {
+
   const [mathUnits, setMathUnits] = useState('');
   const [value, setValue] = React.useState('female');
 
   const handleChange = (event:any) => {
     const { name, value } = event.target;
-    setRegister((prevData) => ({ ...prevData, [name]: value }));
+    setPage3Register((prevData) => ({ ...prevData, [name]: value }));
     
   };
 
@@ -43,7 +40,8 @@ const Page3Component: React.FC<Page3ComponentProps> = ({setRegister}) => {
             <TextField
                 fullWidth
                 label="שם בית הספר"
-                name="schoolName"
+                name="studentSchool"
+                value={page3Register.studentSchool}
                 onChange={handleChange}
                 required
                 InputProps={{
@@ -62,7 +60,7 @@ const Page3Component: React.FC<Page3ComponentProps> = ({setRegister}) => {
       <RadioGroup
         aria-labelledby="demo-controlled-radio-buttons-group"
         name="controlled-radio-buttons-group"
-        value={value}
+        value={page3Register.studyUnitsMajor}
         onChange={handleChange}
       >
         <FormControlLabel value="0" control={<Radio />} label='אני מתעניינת ב-5 יח"ל מכטרוניקה' />
@@ -78,8 +76,8 @@ const Page3Component: React.FC<Page3ComponentProps> = ({setRegister}) => {
       
       <FormControl component="fieldset" required>
         <RadioGroup
-          value={mathUnits}
-          onChange={(e) => setMathUnits(e.target.value)}
+          value={page3Register.numStudyUnitsMath}
+          onChange={handleChange}
         >
           <FormControlLabel value="3" control={<Radio />} label="3" />
           <FormControlLabel value="4" control={<Radio />} label="4" />
