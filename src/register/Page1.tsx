@@ -1,17 +1,13 @@
-
-import { useState } from 'react';
-import HomeIcon from '@mui/icons-material/Home';
 import SchoolIcon from '@mui/icons-material/School';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import './Page1.css';
-import { Box, Button, Container, Link, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import { Box,Container, Link, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
 
-const PageComponent =() =>{
-    const data:string='מגמת מכטרוניקה עברה למתחם חדש בבית ספר קשת רא"ם בארמון הנציב. הושקע תקציב רב בהצטיידות המתחם ובצוות מורים ומנטורים מעולים. \nהמגמה משתתפת בתחרות בינלואומית FRC (מתחיל משלב ארצי כמובן) כחלק מארגון FIRST.\nשנה הקרובה אנחנו מתכננים להפעיל את המגמה במספר רמות על מנת לאפשר בחירה\nלתלמידים. 5-8-10 יח"ל. בין יום ליומים לימודים אחר הצהריים בשבוע ובנוסף ימי תחרות מרוכזים בהתאם למסלול בו התלמידים בחרו.\nמוזמנים לפנות גם ב erez833@gmail.com או  0502786860';
-  
+const Page1Component =() =>{
+    
     return(
         <>
             
@@ -79,4 +75,4 @@ const PageComponent =() =>{
 };
 
 
-export default PageComponent;
+export default Page1Component;

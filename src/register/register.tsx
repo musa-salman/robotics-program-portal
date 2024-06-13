@@ -6,19 +6,20 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import './Register.css';
-import PageComponent from './Page1';
+import Page1Component from './Page1';
+import Page2Component from './page2';
+import Page3Component from './Page3';
+import Page4Component from './Page4';
 
 
-const steps = ['על המתחם החדש', 'Create an ad group', 'Create an ad'];
+const steps = ['על המתחם החדש', 'פרטים אישיים', 'פרטים בית הספר','נוספות'];
 
+const pages =[<Page1Component />,<Page2Component />,<Page3Component />,<Page4Component />];
 
 const RegisterComponent =  () => {
     const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
 
-  const isStepOptional = (step: number) => {
-    return step === 1;
-  };
 
   const isStepSkipped = (step: number) => {
     return skipped.has(step);
@@ -54,11 +55,6 @@ const RegisterComponent =  () => {
                 const labelProps: {
                     optional?: React.ReactNode;
                 } = {};
-                if (isStepOptional(index)) {
-                    labelProps.optional = (
-                    <Typography variant="caption">Optional</Typography>
-                    );
-                }
                 if (isStepSkipped(index)) {
                     stepProps.completed = false;
                 }
@@ -81,10 +77,8 @@ const RegisterComponent =  () => {
                 </React.Fragment>
             ) : (
                 <React.Fragment>
-                <Typography sx={{ mt: 2, mb: 1 }}>
-                    <PageComponent /> 
-                
-                </Typography>
+                 <Typography>{pages[activeStep]}</Typography>
+
                 <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                     <Button
                     color="inherit"
