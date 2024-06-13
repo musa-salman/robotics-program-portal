@@ -18,12 +18,14 @@ import { IRead } from './interfaces/IRead';
 import { IWrite } from './interfaces/IWrite';
 import { createConverter } from '../utils/db/firestoreDataConverter';
 
+export interface IRepositoryBase<T> extends IRead<T>, IWrite<T> {}
+
 /**
  * Represents a base repository class that provides common CRUD operations for a specific collection in Firestore.
  *
  * @template T - The type of the data stored in the collection.
  */
-export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
+export abstract class BaseRepository<T> implements IRepositoryBase<T> {
   public readonly _collection: CollectionReference<T, DocumentData>;
 
   constructor(db: Firestore, collectionPath: string) {
