@@ -6,7 +6,7 @@ import './EventCard.css';
 import moment from 'moment';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { StorageServiceContext } from '../storage-service/StorageContext';
-import AdminMenu from './AdminOptioins';
+import AdminMenu from './AdminOptions';
 
 export interface EventProps {
   date: Date;
