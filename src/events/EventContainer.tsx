@@ -224,7 +224,7 @@ const EventContainer = () => {
 
   if (events === null) {
     return (
-      <Box className="loading">
+      <Box className="loading-event">
         <CircularProgress />
       </Box>
     );

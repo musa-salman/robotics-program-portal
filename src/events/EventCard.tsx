@@ -7,6 +7,7 @@ import moment from 'moment';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import AdminMenu from './AdminOptions';
+import { CircularProgress, Box } from '@mui/material';
 
 export interface EventProps {
   date: Date;
@@ -55,6 +56,8 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     setFormData((prevState) => ({ ...prevState, image: e.target.value }));
     setFile(e.target.files?.[0] || null); // Provide a default value of null for the file state variable
   };
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const [registerd, setRegister] = useState(false);
   const [showModalRegister, setShowModalRegister] = useState(false);
@@ -256,7 +259,17 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
 
   return (
     <Card className="event-card">
-      <Card.Img variant="top" src={image} />
+      {isLoading && (
+        <Box className="loading-image">
+          <CircularProgress />
+        </Box>
+      )}
+      <Card.Img
+        variant="top"
+        src={image}
+        onLoad={() => setIsLoading(false)}
+        style={{ display: isLoading ? 'none' : 'block' }}
+      />
       <Card.Body style={{ marginTop: '150px' }}>
         <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} />
         <Card.Title>{title}</Card.Title>
