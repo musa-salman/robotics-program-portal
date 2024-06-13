@@ -22,7 +22,7 @@
 }
 
 .bu-more {
-  width: fit-content;
+  /* width: fit-content; */
   background-color: transparent;
   border: none;
   border-radius: 20px;

@@ -7,7 +7,7 @@ import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import './UploadFile.css';
 import { CategoryContext } from './CategoryContext';
 import { Category } from './Category';
-import { StudyMaterialContext } from '../study-material/StudyMaterialContext';
+import { StudyMaterialContext } from '../study-material/repository/StudyMaterialContext';
 import { StudyMaterial } from '../study-material/StudyMaterial';
 import { AddEditCategories } from './addOrEditCategories';
 import { StorageServiceContext } from '../storage-service/StorageContext';
@@ -95,10 +95,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
     }
   };
 
-
- 
-
-
   const handleSubmit = async (event: any) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -111,9 +107,9 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
 
     if (file !== null && studyMaterial.title !== '') {
       // const docRef = await studyMaterialRepository.create(studyMaterial);
-      categories?.forEach((index)=>{
-        if(index.category === selectedItem){
-          const docRef = categoryRepository.addStudyMaterial(index,studyMaterial);
+      categories?.forEach((index) => {
+        if (index.category === selectedItem) {
+          const docRef = categoryRepository.addStudyMaterial(index, studyMaterial);
           storageService.upload(
             file,
             '/study-material/' + docRef + '-' + studyMaterial.filename,
@@ -134,7 +130,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
       <Modal.Header closeButton style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
         <h1 style={{ fontSize: '40px', color: 'black', border: 'none' }}>העלת קובץ</h1>
       </Modal.Header>
-      <Modal.Body className='backgroundStyle'>
+      <Modal.Body className="backgroundStyle">
         <Form className="px-3 mx-3" noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group className="px-1">
             <FloatingLabel controlId="floatingInput" label="כותרת">
@@ -169,15 +165,16 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
                     menuVariant="dark"
                     onSelect={handleSelect}>
                     <div className="modal-footer-scroll2">
-                      
-                      {((categories || []) ).filter(item => item.category !== 'הכל').map((item, index) => (
-                        <NavDropdown.Item
-                          eventKey={item.category}
-                          onClick={() => handleSelect(item.category)}
-                          key={index}>
-                          {item.category}
-                        </NavDropdown.Item>
-                      ))}
+                      {(categories || [])
+                        .filter((item) => item.category !== 'הכל')
+                        .map((item, index) => (
+                          <NavDropdown.Item
+                            eventKey={item.category}
+                            onClick={() => handleSelect(item.category)}
+                            key={index}>
+                            {item.category}
+                          </NavDropdown.Item>
+                        ))}
 
                       <Button variant="link" onClick={handleShowAddEdit}>
                         הוספה/שינוי

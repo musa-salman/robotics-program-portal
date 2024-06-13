@@ -5,7 +5,7 @@ import { useContext, useState } from 'react';
 import { StudyMaterial } from './StudyMaterial';
 import moment from 'moment';
 import { StorageServiceContext } from '../storage-service/StorageContext';
-import { StudyMaterialContext } from './StudyMaterialContext';
+import { StudyMaterialContext } from './repository/StudyMaterialContext';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
 import { TextField } from '@mui/material';
