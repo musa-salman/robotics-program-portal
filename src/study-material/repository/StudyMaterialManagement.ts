@@ -118,12 +118,9 @@ export class StudyMaterialManagement implements IUnitOfWork {
     oldCategoryId: string,
     newCategoryId: string
   ): Promise<void> {
-    const oldStudyMaterialRepository = await this.getStudyMaterialRepository(oldCategoryId);
-    const newStudyMaterialRepository = await this.getStudyMaterialRepository(newCategoryId);
-
     const batch = writeBatch(db);
-    const oldDocRef = doc(oldStudyMaterialRepository._collection, studyMaterial.id);
-    const newDocRef = doc(newStudyMaterialRepository._collection, studyMaterial.id);
+    const oldDocRef = doc(this.getStudyMaterialRepository(oldCategoryId)._collection, studyMaterial.id);
+    const newDocRef = doc(this.getStudyMaterialRepository(newCategoryId)._collection, studyMaterial.id);
 
     // without id or category
     const { id, category, ...remainingProperties } = studyMaterial;
@@ -157,7 +154,7 @@ export class StudyMaterialManagement implements IUnitOfWork {
   getStudyMaterialRepository(categoryId: string): StudyMaterialRepository {
     let studyMaterialRepository = this.studyMaterialRepositories.get(categoryId);
     if (!studyMaterialRepository) {
-      studyMaterialRepository = new StudyMaterialRepository(categoryId);
+      studyMaterialRepository = new CachingRepository(new StudyMaterialRepository(categoryId));
       this.studyMaterialRepositories.set(categoryId, studyMaterialRepository);
     }
     return studyMaterialRepository;
