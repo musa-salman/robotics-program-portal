@@ -5,9 +5,10 @@ import { EventContext } from './EventContext';
 import { IEvent } from './Event';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
-import { Container, Typography, CircularProgress, Box } from '@mui/material';
+import { CircularProgress, Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import './EventContainer.css';
+import EmptyEventCard from './EmptyEventCard';
 
 type EventContainer = {
   eventsProps: EventProps[];
@@ -40,7 +41,8 @@ const EventContainer = () => {
 
   useEffect(() => {
     const getEvents = async () => {
-      setEvents(convertIEventsToEventProps(await eventRepository.find()));
+      // setEvents(convertIEventsToEventProps(await eventRepository.find()));
+      setEvents([]);
     };
     if (events === null) getEvents();
   }, [events]);
@@ -230,22 +232,7 @@ const EventContainer = () => {
   }
 
   if (events.length === 0) {
-    return (
-      <Container className="container">
-        <img src="./Empty State Icon.jpg" alt="Image Description" />
-        <Typography variant="h5" className="text">
-          אין מה להראות
-        </Typography>
-        <Typography variant="body1" className="textt">
-          {' '}
-          זה ריק כאן אין קבצים
-        </Typography>
-        <button className="add-btn" onClick={handleAddEvent}>
-          הוספה
-          <AddIcon className="addIcon" />
-        </button>
-      </Container>
-    );
+    return <EmptyEventCard handleAddEvent={handleAddEvent} />;
   }
 
   return (
