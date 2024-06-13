@@ -41,8 +41,7 @@ const EventContainer = () => {
 
   useEffect(() => {
     const getEvents = async () => {
-      // setEvents(convertIEventsToEventProps(await eventRepository.find()));
-      setEvents([]);
+      setEvents(convertIEventsToEventProps(await eventRepository.find()));
     };
     if (events === null) getEvents();
   }, [events]);
@@ -232,7 +231,12 @@ const EventContainer = () => {
   }
 
   if (events.length === 0) {
-    return <EmptyEventCard handleAddEvent={handleAddEvent} />;
+    return (
+      <>
+        <EmptyEventCard handleAddEvent={handleAddEvent} />
+        {addWindow()}
+      </>
+    );
   }
 
   return (

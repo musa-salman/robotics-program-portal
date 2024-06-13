@@ -18,10 +18,9 @@
   display: flex;
   flex-wrap: wrap;
   align-content: space-between;
-  justify-content: center;
+  justify-content: right;
   margin: 10px;
   gap: 10px;
-  height: 550px;
 }
 
 /* Styling for the shift buttons*/
