@@ -182,11 +182,7 @@ const Page2Component = () => {
                 />
             </Grid>
 
-            <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary" startIcon={<PersonIcon />}>
-                שלח
-                </Button>
-            </Grid>
+            
         </Grid>
       </form>
     </Container>
