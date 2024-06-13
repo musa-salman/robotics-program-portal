@@ -1,9 +1,8 @@
 import React from 'react';
 import { Container, Typography, Button, Box } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
-import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { useNavigate } from 'react-router-dom';
-import RobotImage from './robot.png';
+import RobotImage from '/pico_logo.png';
 
 const NotFoundPage: React.FC = () => {
   const navigate = useNavigate();

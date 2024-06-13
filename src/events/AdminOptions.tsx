@@ -45,6 +45,9 @@ const AdminMenu: React.FC<AdminMenuProps> = ({ handleEdit, handleDelete }) => {
           <div className="delete-button">
             <MenuItem onClick={handleDelete}>לִמְחוֹק</MenuItem>
           </div>
+          <div className="details-button">
+            <MenuItem >פרטים</MenuItem>
+          </div>
         </div>
       </Menu>
     </>
