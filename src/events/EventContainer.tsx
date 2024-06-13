@@ -249,7 +249,6 @@ const EventContainer = () => {
           {showModalAllEvents ? <div>הצג הכול</div> : <div>הראי פחות</div>}
         </Button>
       </div>
-      {/* {events && events.length > 0 ? ( */}
       {showModalAllEvents ? (
         <div className="events-container-default-style">
           <Button className="shift-buttons" variant="primary" onClick={handleShiftEventsRight}>
