@@ -30,6 +30,8 @@ export interface IUnitOfWork {
  */
 export class StudyMaterialManagement implements IUnitOfWork {
   readonly categoryRepository: CategoryRepository;
+
+  // Map of study material repositories, keyed by category ID.
   readonly studyMaterialRepositories: Map<string, StudyMaterialRepository>;
 
   constructor() {
