@@ -46,9 +46,9 @@ export class StudyMaterialManagement implements IUnitOfWork {
 
     this.categoryRepository.find().then((categories) => {
       categories.forEach(async (category) => {
-        this.findStudyMaterialInCategory(category.id).then((materials) =>
-          studyMaterials.set(category.category, materials)
-        );
+        this.findStudyMaterialInCategory(category.id).then((materials) => {
+          if (materials.length > 0) studyMaterials.set(category.category, materials);
+        });
       });
     });
 
