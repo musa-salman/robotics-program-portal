@@ -18,21 +18,7 @@ const steps = ['על המתחם החדש', 'פרטים אישיים', 'פרטי�
 const RegisterComponent = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
-  const [page2Register, setPage2Register] = useState<Page2Register>({
-    studentFirstName: '',
-    studentLastName: '',
-    studentPhone: '',
-    parentPhone: '',
-    studentId: '',
-    studentEmail: '',
-    parentEmail: '',
-    studentAddress: ''
-  });
-  const [page3Register, setPage3Register] = useState<Page3Register>({
-    studentSchool: '',
-    studyUnitsMajor: '',
-    numStudyUnitsMath: ''
-  });
+
   const [register, setRegister] = useState<Register>({
     studentFirstName: '',
     studentLastName: '',
@@ -56,11 +42,11 @@ const RegisterComponent = () => {
     },
     {
       inputs: '',
-      page: <Page2Component setPage2Register={setPage2Register} page2Register={page2Register} />
+      page: <Page2Component setRegister={setRegister} register={register} />
     },
     {
       inputs: '',
-      page: <Page3Component setPage3Register={setPage3Register} page3Register={page3Register} />
+      page: <Page3Component setRegister={setRegister} register={register} />
     },
     {
       inputs: '',
@@ -79,29 +65,6 @@ const RegisterComponent = () => {
       newSkipped.delete(activeStep);
     }
 
-    if (activeStep === 1) {
-      console.log('activeStep ', activeStep);
-      setRegister((prevData) => ({
-        ...prevData,
-        studentFirstName: page2Register.studentFirstName,
-        studentLastName: page2Register.studentLastName,
-        studentPhone: page2Register.studentPhone,
-        parentPhone: page2Register.parentPhone,
-        studentId: page2Register.studentId,
-        studentEmail: page2Register.studentEmail,
-        parentEmail: page2Register.parentEmail,
-        studentAddress: page2Register.studentAddress
-      }));
-    }
-    if (activeStep === 2) {
-      console.log('activeStep ', activeStep);
-      setRegister((prevData) => ({
-        ...prevData,
-        studentSchool: page3Register.studentSchool,
-        studyUnitsMajor: page3Register.studyUnitsMajor,
-        numStudyUnitsMath: page3Register.numStudyUnitsMath
-      }));
-    }
     console.log(register);
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
