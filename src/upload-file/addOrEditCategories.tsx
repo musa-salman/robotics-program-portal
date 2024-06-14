@@ -7,7 +7,6 @@ import { faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid
 import './addorEditCategories.css';
 interface YourComponentProps {
   categories: Category[] | null;
-  // studyMaterial: StudyMaterial[] | null;
   handleCloseAddEdit: () => void;
   handleSelect: (eventKey: string | null) => void;
   setCategories: React.Dispatch<React.SetStateAction<Category[] | null>>;
@@ -15,7 +14,6 @@ interface YourComponentProps {
 
 const AddEditCategories: React.FC<YourComponentProps> = ({
   categories,
-  // studyMaterial,
   handleCloseAddEdit,
   setCategories,
   handleSelect
