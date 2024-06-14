@@ -7,7 +7,7 @@ const Page4Component = () => {
   const [interest, setInterest] = useState('');
   const [additionalSubject, setAdditionalSubject] = useState('');
   const [mathUnits, setMathUnits] = useState('');
-  const [value, setValue] = React.useState('female');
+  const [value, setValue] = useState('');
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
@@ -19,6 +19,7 @@ const Page4Component = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
+    console.log((event.target as HTMLInputElement).value);
   };
   const options = [
     'בית הספר',

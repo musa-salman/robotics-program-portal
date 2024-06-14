@@ -10,14 +10,26 @@ interface Page3ComponentProps {
 
 
 const Page3Component: React.FC<Page3ComponentProps> = ({setPage3Register,page3Register}) => {
-
+  
   const [mathUnits, setMathUnits] = useState('');
-  const [value, setValue] = React.useState('female');
+  const [value, setValue] = useState('');
+
+  const options = [
+    'אני מתעניינת ב-5 יח"ל מכטרוניקה',
+    'אני מתעניינת ב-10 יח"ל מכטרוניקה',
+    'עדיין לא ידוע',
+    'אחרת'
+  ];
 
   const handleChange = (event:any) => {
-    const { name, value } = event.target;
-    setPage3Register((prevData) => ({ ...prevData, [name]: value }));
-    
+    setValue((event.target as HTMLInputElement).value);
+    // const { name, value } = event.target;
+    setPage3Register((prevData) => ({ ...prevData, 
+      studentSchool: event.target.value,
+      studyUnitsMajor: options[parseInt(value,10)],
+      numStudyUnitsMath: options[parseInt(value,10)]
+       }));
+    console.log(page3Register);
   };
 
   const handleSubmit = (event:any) => {
@@ -27,12 +39,7 @@ const Page3Component: React.FC<Page3ComponentProps> = ({setPage3Register,page3Re
   };
 
 
-  const options = [
-    'אני מתעניינת ב-5 יח"ל מכטרוניקה',
-    'אני מתעניינת ב-10 יח"ל מכטרוניקה',
-    'עדיין לא ידוע',
-    'אחרת'
-  ];
+ 
   return (
     <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2,maxWidth: '600px', margin: 'auto', mt: 5 }}>
       
@@ -59,8 +66,8 @@ const Page3Component: React.FC<Page3ComponentProps> = ({setPage3Register,page3Re
       </FormLabel>
       <RadioGroup
         aria-labelledby="demo-controlled-radio-buttons-group"
-        name="controlled-radio-buttons-group"
-        value={page3Register.studyUnitsMajor}
+        name="studyUnitsMajor"
+        value={value}
         onChange={handleChange}
       >
         <FormControlLabel value="0" control={<Radio />} label='אני מתעניינת ב-5 יח"ל מכטרוניקה' />
@@ -76,6 +83,7 @@ const Page3Component: React.FC<Page3ComponentProps> = ({setPage3Register,page3Re
       
       <FormControl component="fieldset" required>
         <RadioGroup
+          name='numStudyUnitsMath'
           value={page3Register.numStudyUnitsMath}
           onChange={handleChange}
         >
