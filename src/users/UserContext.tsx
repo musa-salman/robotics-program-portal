@@ -5,7 +5,7 @@ import { UserRepository } from './UserRepository';
  * Context object for managing user data.
  * @type {React.Context<UserRepository>}
  */
-export const UserContext = createContext<UserRepository>(new UserRepository());
+export const UserContext: React.Context<UserRepository> = createContext<UserRepository>(new UserRepository());
 
 /**
  * Provides the user repository to the component tree.
