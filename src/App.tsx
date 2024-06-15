@@ -1,5 +1,5 @@
-import 'bootstrap/dist/css/bootstrap.rtl.min.css';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.rtl.min.css';
 import { Route, Routes } from 'react-router-dom';
 import RoleBasedAccessControl from './authentication/components/RoleBasedAccessControl';
 import { useAuthRoutes } from './authentication/AuthRoutes';
@@ -10,6 +10,7 @@ import TestingLayout from './components/layout/TestingLayout';
 import Role from './authentication/components/Roles';
 import Banner from './components/Banner';
 import StudentsManagement from './students-management/StudentsManagement';
+import NotFoundPage from './components/NotFoundPage';
 
 function App() {
   const AuthRoutes = useAuthRoutes();
@@ -35,7 +36,7 @@ function App() {
                 </>
               }
             />
-            <Route path="*" element={<div>Not Found</div>} />
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Route>
       </Routes>

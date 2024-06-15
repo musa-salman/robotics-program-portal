@@ -5,7 +5,6 @@ import Modal from 'react-bootstrap/Modal';
 import { useContext, useEffect, useState } from 'react';
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import './UploadFile.css';
-import { CategoryContext } from './CategoryContext';
 import { Category } from './Category';
 import { StudyMaterialContext } from '../study-material/repository/StudyMaterialContext';
 import { StudyMaterial } from '../study-material/StudyMaterial';
@@ -22,7 +21,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const [file, setFile] = useState<File | null>(null);
   const [, setUploadProgress] = useState(0);
   const [selectedItem, setSelectedItems] = useState<SelectedItem>('הכל');
-  // const [allStudyMaterial, setAllStudyMaterial] = useState<StudyMaterial[] | null>(null);
   const [categories, setCategories] = useState<Category[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [showAddEdit, setShowAddEdit] = useState(false);
@@ -34,7 +32,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
     filename: '',
     id: '',
-    category: '',
+    category: { id: '', category: '' },
     title: '',
     description: '',
     date: new Date()
@@ -44,20 +42,15 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const getCategory = async () => {
     try {
       const data: Category[] = await studyMaterialManagement.categoryRepository.find();
-      console.log(data);
       setCategories(data);
     } catch (error) {
       console.error('Error fetching items:', error);
     }
   };
-  // const getStudyMaterial = async () => {
-  //   setAllStudyMaterial(await studyMaterialRepository.find());
-  // };
 
   useEffect(() => {
     if (loading && categories === null) {
       getCategory();
-      // getStudyMaterial();
       setLoading(false);
     }
   }, [categories]);
@@ -69,7 +62,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const handleSelect = (eventKey: string | null) => {
     if (eventKey) {
       setSelectedItems(eventKey);
-      // setStudyMaterial((prevData) => ({ ...prevData, category: eventKey }));
     }
   };
 
@@ -102,7 +94,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
     }
 
     setValidated(true);
-    console.log('before,', studyMaterial);
 
     if (file !== null && studyMaterial.title !== '') {
       // const docRef = await studyMaterialRepository.create(studyMaterial);
@@ -210,7 +201,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
       <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
         <AddEditCategories
           categories={categories}
-          // studyMaterial={allStudyMaterial}
           handleCloseAddEdit={handleCloseAddEdit}
           setCategories={setCategories}
           handleSelect={handleSelect}></AddEditCategories>

@@ -6,6 +6,7 @@ import { StudyMaterial } from '../StudyMaterial';
 export class StudyMaterialRepository extends BaseRepository<StudyMaterial> {
   constructor(category: Category) {
     super(db, 'categories/' + category.id + '/studyMaterials');
+
     this._collection.withConverter({
       toFirestore: (data: StudyMaterial) => {
         return {
