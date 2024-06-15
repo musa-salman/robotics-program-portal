@@ -4,6 +4,7 @@ import {
   DocumentData,
   DocumentReference,
   Firestore,
+  FirestoreDataConverter,
   PartialWithFieldValue,
   WithFieldValue,
   addDoc,
@@ -28,8 +29,8 @@ export interface IRepositoryBase<T> extends IRead<T>, IWrite<T> {}
 export abstract class BaseRepository<T> implements IRepositoryBase<T> {
   public readonly _collection: CollectionReference<T, DocumentData>;
 
-  constructor(db: Firestore, collectionPath: string) {
-    this._collection = collection(db, collectionPath).withConverter(createConverter<T>());
+  constructor(db: Firestore, collectionPath: string, converter?: FirestoreDataConverter<T>) {
+    this._collection = collection(db, collectionPath).withConverter(converter || createConverter<T>());
   }
 
   async find(): Promise<T[]> {
