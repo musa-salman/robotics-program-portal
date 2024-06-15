@@ -4,6 +4,6 @@ import { Category } from '../../upload-file/Category';
 
 export class CategoryRepository extends BaseRepository<Category> {
   constructor() {
-    super(db, 'categoriesANDstudyMaterials');
+    super(db, 'categories');
   }
 }
