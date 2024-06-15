@@ -61,11 +61,12 @@ function StudyMaterials({
       title: editedTitle,
       description: editedDescription
     };
-
+    console.log(updatedStudyMaterial);
     studyMaterialRepository
-      .updateStudyMaterialInCategory(studyMaterial.category.id, studyMaterial.id, { date: studyMaterial.date })
+      .updateStudyMaterialInCategory(studyMaterial.category.id, studyMaterial.id, updatedStudyMaterial)
       .then(() => {
         onUpdate(updatedStudyMaterial);
+        console.log(updatedStudyMaterial);
         setIsEditing(false);
       })
       .catch((error) => {

@@ -11,16 +11,17 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import { Fab } from '@mui/material';
 import NoResultFound from './NoResultFound';
+import { Map as ImmutableMap } from 'immutable';
 import MoveList from './MoveList';
 import EmptyStudyMaterials from './EmptyStudyMaterials';
 import SuccessAlerts from './Success';
 // import { Category } from '@mui/icons-material';
 
 function StudyMaterialContainer() {
-  const [studyMaterials, setStudyMaterials] = useState<Map<string, StudyMaterial[]> | null>(null);
+  const [studyMaterials, setStudyMaterials] = useState<ImmutableMap<string, StudyMaterial[]> | null>(null);
   const studyMaterialRepository = useContext(StudyMaterialContext);
 
-  const [searchResults, setSearchResults] = useState<Map<string, StudyMaterial[]> | null>(null);
+  const [searchResults, setSearchResults] = useState<ImmutableMap<string, StudyMaterial[]> | null>(null);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -35,11 +36,18 @@ function StudyMaterialContainer() {
   }, [studyMaterials]);
 
   const handleUpdate = (updatedMaterial: StudyMaterial) => {
-    const updatedMaterials = (studyMaterials?.get(updatedMaterial.category.category) || []).map((material) =>
+    if (!studyMaterials) return;
+
+    const categoryMaterials = studyMaterials.get(updatedMaterial.category.category) || [];
+    const updatedMaterials = categoryMaterials.map((material) =>
       material.id === updatedMaterial.id ? updatedMaterial : material
     );
-    studyMaterials?.set(updatedMaterial.category.category, updatedMaterials);
-    setStudyMaterials(studyMaterials);
+
+    console.log('########', categoryMaterials === updatedMaterials);
+
+    const updatedStudyMaterials = studyMaterials.set(updatedMaterial.category.category, updatedMaterials);
+    console.log('%%%%%%%%%', updatedStudyMaterials === studyMaterials);
+    setStudyMaterials(updatedStudyMaterials);
   };
 
   const handleDelete = (studyMaterial: StudyMaterial) => {
@@ -93,12 +101,12 @@ function StudyMaterialContainer() {
   return (
     <>
       <div className="btn-search">
-        <SearchBar
-          studyMaterials={studyMaterials || {}}
-          onSearchResults={setSearchResults}
+        {/* <SearchBar
+          // studyMaterials={studyMaterials || {}}
+          // onSearchResults={setSearchResults}
           query={query}
           setQuery={setQuery}
-        />
+        /> */}
         <Fab className="adde-btn" aria-label="add" onClick={handleShow}>
           <AddIcon />
         </Fab>
