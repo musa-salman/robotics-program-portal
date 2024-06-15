@@ -17,7 +17,7 @@ export interface IUnitOfWork {
 
   findStudyMaterialInCategory(categoryId: string): Promise<StudyMaterial[]>;
 
-  getStudyMaterialsByCategory(): Promise<Map<string, StudyMaterial[]>>;
+  getStudyMaterialsByCategory(): Promise<StudyMaterial[]>;
 
   moveMaterialToCategory(studyMaterial: StudyMaterial, oldCategoryId: string, newCategoryId: string): Promise<void>;
 
@@ -43,13 +43,15 @@ export class StudyMaterialManagement implements IUnitOfWork {
    * Retrieves study materials grouped by category.
    * @returns A Promise that resolves to a Map containing study materials grouped by category.
    */
-  async getStudyMaterialsByCategory(): Promise<Map<string, StudyMaterial[]>> {
-    let studyMaterials = new Map<string, StudyMaterial[]>();
+  async getStudyMaterialsByCategory(): Promise<StudyMaterial[]> {
+    const studyMaterials: StudyMaterial[] = [];
 
     this.categoryRepository.find().then((categories) => {
       categories.forEach(async (category) => {
         this.findStudyMaterialInCategory(category.id).then((materials) => {
-          if (materials.length > 0) studyMaterials.set(category.category, materials);
+          if (materials.length > 0) {
+            studyMaterials.push(...materials);
+          }
         });
       });
     });
