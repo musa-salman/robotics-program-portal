@@ -1,27 +1,27 @@
-import { DocumentData, DocumentReference, doc, writeBatch } from 'firebase/firestore';
-import { StudyMaterial } from '../StudyMaterial';
 import { CategoryRepository } from './CategoryRepository';
 import { StudyMaterialRepository } from './StudyMaterialRepository';
-import { db } from '../../firebase';
 import { CachingRepository } from '../../repositories/caching/CachingRepository';
+import { WriteBatch, doc, writeBatch } from 'firebase/firestore';
+import { db } from '../../firebase';
 
+/**
+ * Represents a unit of work for managing study materials.
+ */
 export interface IUnitOfWork {
-  addStudyMaterialToCategory(
-    categoryId: string,
-    data: StudyMaterial
-  ): Promise<DocumentReference<StudyMaterial, DocumentData>>;
+  /**
+   * Deletes a category by its ID.
+   * @param categoryId - The ID of the category to delete.
+   * @returns A promise that resolves when the category is deleted.
+   */
+  deleteCategory(categoryId: string): Promise<void>;
 
-  deleteStudyMaterialFromCategory(categoryId: string, materialId: string): Promise<void>;
-
-  updateStudyMaterialInCategory(categoryId: string, materialId: string, data: Partial<StudyMaterial>): Promise<void>;
-
-  findStudyMaterialInCategory(categoryId: string): Promise<StudyMaterial[]>;
-
-  getStudyMaterialsByCategory(): Promise<StudyMaterial[]>;
-
-  moveMaterialToCategory(studyMaterial: StudyMaterial, oldCategoryId: string, newCategoryId: string): Promise<void>;
-
-  moveAllMaterialsToCategory(oldCategoryId: string, newCategoryId: string): Promise<void>;
+  /**
+   * Renames a category.
+   * @param oldCategory - The current name of the category.
+   * @param newCategory - The new name for the category.
+   * @returns A promise that resolves when the category is renamed.
+   */
+  renameCategory(oldCategory: string, newCategory: string): Promise<void>;
 }
 
 /**
@@ -30,141 +30,51 @@ export interface IUnitOfWork {
  */
 export class StudyMaterialManagement implements IUnitOfWork {
   readonly categoryRepository: CategoryRepository;
-
-  // Map of study material repositories, keyed by category ID.
-  readonly studyMaterialRepositories: Map<string, StudyMaterialRepository>;
+  readonly studyMaterialRepository: StudyMaterialRepository;
 
   constructor() {
     this.categoryRepository = new CachingRepository(new CategoryRepository());
-    this.studyMaterialRepositories = new Map<string, StudyMaterialRepository>();
+    this.studyMaterialRepository = new CachingRepository(new StudyMaterialRepository());
   }
 
-  /**
-   * Retrieves study materials grouped by category.
-   * @returns A Promise that resolves to a Map containing study materials grouped by category.
-   */
-  async getStudyMaterialsByCategory(): Promise<StudyMaterial[]> {
-    const studyMaterials: StudyMaterial[] = [];
-
-    this.categoryRepository.find().then((categories) => {
-      categories.forEach(async (category) => {
-        this.findStudyMaterialInCategory(category.id).then((materials) => {
-          if (materials.length > 0) {
-            studyMaterials.push(...materials);
-          }
-        });
-      });
-    });
-
-    return studyMaterials;
-  }
-
-  /**
-   * Adds a study material to a category.
-   *
-   * @param categoryId - The ID of the category to add the study material to.
-   * @param data - The study material data to add.
-   * @returns A promise that resolves to the reference of the created study material document.
-   */
-  async addStudyMaterialToCategory(
-    categoryId: string,
-    data: StudyMaterial
-  ): Promise<DocumentReference<StudyMaterial, DocumentData>> {
-    return this.getStudyMaterialRepository(categoryId).then((s) => s.create(data));
-  }
-
-  /**
-   * Deletes a study material from a category.
-   *
-   * @param categoryId - The ID of the category.
-   * @param materialId - The ID of the study material to delete.
-   * @returns A Promise that resolves to void.
-   */
-  async deleteStudyMaterialFromCategory(categoryId: string, materialId: string): Promise<void> {
-    return this.getStudyMaterialRepository(categoryId).then((s) => s.delete(materialId));
-  }
-
-  /**
-   * Updates a study material in a specific category.
-   *
-   * @param categoryId - The ID of the category.
-   * @param materialId - The ID of the material to update.
-   * @param data - The partial data of the study material to update.
-   * @returns A promise that resolves to void.
-   */
-  async updateStudyMaterialInCategory(
-    categoryId: string,
-    materialId: string,
-    data: Partial<StudyMaterial>
-  ): Promise<void> {
-    return this.getStudyMaterialRepository(categoryId).then((s) => s.update(materialId, data));
-  }
-
-  /**
-   * Finds study materials in a specific category.
-   * @param categoryId - The ID of the category to search in.
-   * @returns A promise that resolves to an array of StudyMaterial objects.
-   */
-  async findStudyMaterialInCategory(categoryId: string): Promise<StudyMaterial[]> {
-    return this.getStudyMaterialRepository(categoryId).then((s) => s.find());
-  }
-
-  /**
-   * Moves a study material from one category to another.
-   *
-   * @param studyMaterial - The study material to be moved.
-   * @param oldCategoryId - The ID of the old category.
-   * @param newCategoryId - The ID of the new category.
-   * @returns A promise that resolves when the study material has been moved successfully.
-   */
-  async moveMaterialToCategory(
-    studyMaterial: StudyMaterial,
-    oldCategoryId: string,
-    newCategoryId: string
-  ): Promise<void> {
-    const batch = writeBatch(db);
-    const oldDocRef = doc((await this.getStudyMaterialRepository(oldCategoryId))._collection, studyMaterial.id);
-    const newDocRef = doc((await this.getStudyMaterialRepository(newCategoryId))._collection, studyMaterial.id);
-
-    // without id or category
-    const { id, category, ...remainingProperties } = studyMaterial;
-
-    batch.delete(oldDocRef).set(newDocRef, remainingProperties);
-    return batch.commit();
-  }
-
-  /**
-   * Moves all study materials from one category to another.
-   *
-   * @param oldCategoryId - The ID of the old category.
-   * @param newCategoryId - The ID of the new category.
-   * @returns A promise that resolves when all study materials have been moved successfully.
-   */
-  async moveAllMaterialsToCategory(oldCategoryId: string, newCategoryId: string): Promise<void> {
-    this.findStudyMaterialInCategory(oldCategoryId).then((studyMaterials) => {
+  _moveStudyMaterials(oldCategory: string, newCategory: string, batch: WriteBatch): void {
+    this.studyMaterialRepository.find().then((studyMaterials) => {
       studyMaterials.forEach((studyMaterial) => {
-        this.moveMaterialToCategory(studyMaterial, oldCategoryId, newCategoryId);
+        if (studyMaterial.category === oldCategory) {
+          const ref = doc(this.studyMaterialRepository._collection, studyMaterial.id);
+          batch.update(ref, { category: newCategory });
+        }
       });
     });
   }
 
-  /**
-   * Retrieves the study material repository for the specified category ID.
-   * If the repository does not exist, a new one is created and stored.
-   *
-   * @param categoryId - The ID of the category.
-   * @returns The study material repository for the specified category ID.
-   */
-  async getStudyMaterialRepository(categoryId: string): Promise<StudyMaterialRepository> {
-    let studyMaterialRepository = this.studyMaterialRepositories.get(categoryId);
-    if (!studyMaterialRepository) {
-      const category = await this.categoryRepository.findOne(categoryId);
+  deleteCategory(categoryId: string): Promise<void> {
+    const batch = writeBatch(db);
+
+    return this.categoryRepository.findOne(categoryId).then((category) => {
       if (!category) {
-        throw new Error(`Category with ID ${categoryId} not found.`);
+        return;
       }
-      studyMaterialRepository = new CachingRepository(new StudyMaterialRepository(category));
-      this.studyMaterialRepositories.set(categoryId, studyMaterialRepository);
-    }
-    return studyMaterialRepository;
+
+      this._moveStudyMaterials(category.category, '', batch);
+
+      batch.delete(doc(this.categoryRepository._collection, categoryId));
+      return batch.commit();
+    });
+  }
+
+  renameCategory(oldCategory: string, newCategory: string): Promise<void> {
+    const batch = writeBatch(db);
+
+    return this.categoryRepository.findOne(oldCategory).then((category) => {
+      if (!category) {
+        return;
+      }
+
+      this._moveStudyMaterials(oldCategory, newCategory, batch);
+
+      batch.update(doc(this.categoryRepository._collection, oldCategory), { category: newCategory });
+      return batch.commit();
+    });
   }
 }

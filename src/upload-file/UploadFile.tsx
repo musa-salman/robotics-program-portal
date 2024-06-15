@@ -32,7 +32,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
     filename: '',
     id: '',
-    category: { id: '', category: '' },
+    category: '',
     title: '',
     description: '',
     date: new Date()
@@ -99,7 +99,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
       // const docRef = await studyMaterialRepository.create(studyMaterial);
       categories?.forEach((index) => {
         if (index.category === selectedItem) {
-          studyMaterialManagement.addStudyMaterialToCategory(index.id, studyMaterial).then((docRef) => {
+          studyMaterialManagement.studyMaterialRepository.create(studyMaterial).then((docRef) => {
             storageService.upload(
               file,
               '/study-material/' + docRef.id + '-' + studyMaterial.filename,

@@ -1,9 +1,7 @@
-import { Category } from '../upload-file/Category';
-
 export interface StudyMaterial {
   id: string;
   filename: string;
-  category: Category;
+  category: string;
   title: string;
   description: string;
   date: Date;
