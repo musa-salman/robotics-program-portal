@@ -48,33 +48,28 @@ export class StudyMaterialManagement implements IUnitOfWork {
     });
   }
 
-  deleteCategory(categoryId: string): Promise<void> {
+  async deleteCategory(categoryId: string): Promise<void> {
+    const defaultCategory = 'הכל';
     const batch = writeBatch(db);
 
-    return this.categoryRepository.findOne(categoryId).then((category) => {
-      if (!category) {
-        return;
-      }
-
-      this._moveStudyMaterials(category.category, '', batch);
-
-      batch.delete(doc(this.categoryRepository._collection, categoryId));
-      return batch.commit();
-    });
+    const category = await this.categoryRepository.findOne(categoryId);
+    if (!category) {
+      return;
+    }
+    this._moveStudyMaterials(category.category, defaultCategory, batch);
+    batch.delete(doc(this.categoryRepository._collection, categoryId));
+    return batch.commit();
   }
 
-  renameCategory(oldCategory: string, newCategory: string): Promise<void> {
+  async renameCategory(oldCategory: string, newCategory: string): Promise<void> {
     const batch = writeBatch(db);
 
-    return this.categoryRepository.findOne(oldCategory).then((category) => {
-      if (!category) {
-        return;
-      }
-
-      this._moveStudyMaterials(oldCategory, newCategory, batch);
-
-      batch.update(doc(this.categoryRepository._collection, oldCategory), { category: newCategory });
-      return batch.commit();
-    });
+    const category = await this.categoryRepository.findOne(oldCategory);
+    if (!category) {
+      return;
+    }
+    this._moveStudyMaterials(oldCategory, newCategory, batch);
+    batch.update(doc(this.categoryRepository._collection, oldCategory), { category: newCategory });
+    return batch.commit();
   }
 }
