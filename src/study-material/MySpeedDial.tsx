@@ -9,21 +9,29 @@ import './MySpeedDial.css';
 import { MouseEventHandler } from 'react';
 
 interface MySpeedDialProps {
-  handleEditToggle: MouseEventHandler<HTMLDivElement> | undefined; // Adjust the type signature as necessary
+  handleEditToggle: MouseEventHandler<HTMLDivElement> | undefined;
+  handleMoveToggle: MouseEventHandler<HTMLDivElement> | undefined;
   handleSave: () => void;
   handleDelete: () => void;
-  handleMove: () => void;
+  handleMove: (selectCategory: string) => void;
   isEditing: boolean;
 }
 
-function MySpeedDial({ handleEditToggle, handleSave, handleDelete, handleMove, isEditing }: MySpeedDialProps) {
+function MySpeedDial({
+  handleEditToggle,
+  handleMoveToggle,
+  handleSave,
+  handleDelete,
+  handleMove,
+  isEditing
+}: MySpeedDialProps) {
   let actions = [];
 
   if (!isEditing) {
     actions = [
       { icon: <EditIcon />, name: 'Edit', action: handleEditToggle, className: '' },
       { icon: <DeleteIcon />, name: 'Delete', action: handleDelete, className: 'delete-action' },
-      { icon: <DriveFileMoveIcon />, name: 'Move', action: handleMove, className: '' }
+      { icon: <DriveFileMoveIcon />, name: 'Move', action: handleMoveToggle, className: '' }
     ];
   } else {
     actions = [

@@ -4,8 +4,8 @@ import './SearchBar.css';
 import { StudyMaterial } from './StudyMaterial';
 
 interface SearchBarProps {
-  studyMaterials: StudyMaterial[];
-  onSearchResults: (results: StudyMaterial[] | null) => void;
+  studyMaterials: Map<string, StudyMaterial[]>;
+  onSearchResults: (results: Map<string, StudyMaterial[]> | null) => void;
   query: string;
   setQuery: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -22,12 +22,24 @@ export const SearchBar: React.FC<SearchBarProps> = ({ studyMaterials, onSearchRe
       onSearchResults(null);
       return;
     }
-    const filteredResults = studyMaterials.filter(
-      (material) =>
-        material.title.toLowerCase().includes(text.toLowerCase()) ||
-        material.description.toLowerCase().includes(text.toLowerCase())
-    );
-    onSearchResults(filteredResults);
+
+    const filteredResults = new Map<string, StudyMaterial[]>();
+    studyMaterials.forEach((materials, category) => {
+      // Filter materials array based on search text
+      const filteredMaterials = materials.filter(
+        (material) =>
+          material.title.toLowerCase().includes(text.toLowerCase()) ||
+          material.description.toLowerCase().includes(text.toLowerCase())
+      );
+
+      // Add to filteredResults map if there are filtered materials
+      if (filteredMaterials.length > 0) {
+        filteredResults.set(category, filteredMaterials);
+      }
+    });
+
+    // Pass the filteredResults map to onSearchResults
+    onSearchResults(filteredResults.size > 0 ? filteredResults : null);
   };
 
   return (

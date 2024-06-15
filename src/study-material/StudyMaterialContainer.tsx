@@ -13,12 +13,14 @@ import { Fab } from '@mui/material';
 import NoResultFound from './NoResultFound';
 import MoveList from './MoveList';
 import EmptyStudyMaterials from './EmptyStudyMaterials';
+import SuccessAlerts from './Success';
+// import { Category } from '@mui/icons-material';
 
 function StudyMaterialContainer() {
-  const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
+  const [studyMaterials, setStudyMaterials] = useState<Map<string, StudyMaterial[]> | null>(null);
   const studyMaterialRepository = useContext(StudyMaterialContext);
 
-  const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);
+  const [searchResults, setSearchResults] = useState<Map<string, StudyMaterial[]> | null>(null);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -26,48 +28,73 @@ function StudyMaterialContainer() {
 
   useEffect(() => {
     const getStudyMaterials = async () => {
-      setStudyMaterials(await studyMaterialRepository.find());
+      setStudyMaterials(await studyMaterialRepository.getStudyMaterialsByCategory());
     };
 
     if (studyMaterials === null) getStudyMaterials();
   }, [studyMaterials]);
 
   const handleUpdate = (updatedMaterial: StudyMaterial) => {
-    const updatedMaterials = (studyMaterials || []).map((material) =>
+    const updatedMaterials = (studyMaterials?.get(updatedMaterial.category.category) || []).map((material) =>
       material.id === updatedMaterial.id ? updatedMaterial : material
     );
-    setStudyMaterials(updatedMaterials);
+    studyMaterials?.set(updatedMaterial.category.category, updatedMaterials);
+    setStudyMaterials(studyMaterials);
   };
 
-  const handleDelete = (deletedItemId: string) => {
-    const updatedMaterials = (studyMaterials || []).filter((material) => material.id !== deletedItemId);
-    setStudyMaterials(updatedMaterials);
+  const handleDelete = (studyMaterial: StudyMaterial) => {
+    const updatedMaterials = (studyMaterials?.get(studyMaterial.category.category) || []).filter(
+      (material) => material.id !== studyMaterial.id
+    );
+    studyMaterials?.set(studyMaterial.category.category, updatedMaterials);
+    setStudyMaterials(studyMaterials);
   };
 
   const handleAdd = (studyMaterial: StudyMaterial) => {
-    studyMaterials?.push(studyMaterial);
+    studyMaterials?.get(studyMaterial.category.category)?.push(studyMaterial);
     setStudyMaterials(studyMaterials);
+  };
+
+  const handleMove = (updatedMaterial: StudyMaterial, oldCategory: string) => {
+    ///
+    const oldCategoryMaterials = (studyMaterials?.get(oldCategory) || []).filter(
+      (material) => material.id !== updatedMaterial.id
+    );
+    studyMaterials?.set(oldCategory, oldCategoryMaterials);
+
+    const newCategoryMaterials = studyMaterials?.get(updatedMaterial.category.category) || [];
+    newCategoryMaterials.push(updatedMaterial);
+    // studyMaterials?.set(updatedMaterial.category.category, newCategoryMaterials);
+    // setStudyMaterials(new Map(studyMaterials));
   };
 
   if (studyMaterials === null) {
     return <>loading</>;
   }
 
-  if (studyMaterials.length === 0) {
-    return <EmptyStudyMaterials handleAdd={handleAdd} />;
-  }
+  // if (studyMaterials.size === 0) {
+  //   return <EmptyStudyMaterials handleAdd={handleAdd} />;
+  // }
 
-  const categories: string[] = (searchResults || studyMaterials || [])
-    .map((s) => s.category)
-    .filter((item, index, arr) => arr.indexOf(item) === index);
+  const getKeys = () => {
+    if (studyMaterials) {
+      return Array.from(studyMaterials.keys());
+    }
+    return [];
+  };
+
+  const categories = getKeys();
+  const choose = searchResults ? searchResults : studyMaterials;
+
+  console.log(studyMaterials);
+  console.log('the search result ', searchResults);
+  console.log('the choose', choose);
 
   return (
     <>
-      {/* <MoveList categories={categories || []} /> */}
-      <EmptyStudyMaterials handleAdd={handleAdd} />;
       <div className="btn-search">
         <SearchBar
-          studyMaterials={studyMaterials || []}
+          studyMaterials={studyMaterials || {}}
           onSearchResults={setSearchResults}
           query={query}
           setQuery={setQuery}
@@ -76,14 +103,14 @@ function StudyMaterialContainer() {
           <AddIcon />
         </Fab>
       </div>
-      {searchResults?.length === 0 ? (
+      {searchResults?.size === 0 ? (
         <NoResultFound />
       ) : (
-        (categories || []).map((category, index) => (
-          <Card className="primary">
+        Array.from(choose.entries()).map(([key, value]) => (
+          <Card className="primary" key={key}>
             <Card.Header className="Card-Header">
-              <div key={index}>
-                <h2>{category}</h2>
+              <div>
+                <h2>{key}</h2>
               </div>
               <Fab className="edit-button" aria-label="edit">
                 <EditIcon />
@@ -93,16 +120,16 @@ function StudyMaterialContainer() {
             <Card.Body className="body">
               <br></br>
               <div className="study-materials-container">
-                {(searchResults || studyMaterials || [])
-                  .filter((s) => s.category === category)
-                  .map((studyMaterial) => (
-                    <StudyMaterials
-                      key={studyMaterial.id}
-                      studyMaterial={studyMaterial}
-                      onUpdate={handleUpdate}
-                      onDelete={handleDelete}
-                    />
-                  ))}
+                {value.map((material) => (
+                  <StudyMaterials
+                    key={material.id}
+                    studyMaterial={material}
+                    categories={categories}
+                    onUpdate={handleUpdate}
+                    onDelete={handleDelete}
+                    onMove={handleMove}
+                  />
+                ))}
               </div>
             </Card.Body>
           </Card>
@@ -114,5 +141,4 @@ function StudyMaterialContainer() {
     </>
   );
 }
-
 export default StudyMaterialContainer;

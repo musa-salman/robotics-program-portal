@@ -8,29 +8,33 @@ import { StorageServiceContext } from '../storage-service/StorageContext';
 import { StudyMaterialContext } from './repository/StudyMaterialContext';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
-import { TextField } from '@mui/material';
-import { CategoryRepository } from '../upload-file/CategoryRepository';
-import { CategoryContext } from '../upload-file/CategoryContext';
+import { Alert, TextField } from '@mui/material';
+import MoveList from './MoveList';
+import { Category } from '@mui/icons-material';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
-type DeleteHandler = (deletedItemId: string) => void;
+type DeleteHandler = (studyMaterial: StudyMaterial) => void;
+type MoveHandler = (updatedCategory: StudyMaterial, oldCategory: string) => void;
 
 function StudyMaterials({
   studyMaterial,
+  categories,
   onUpdate,
-  onDelete
+  onDelete,
+  onMove
 }: {
   studyMaterial: StudyMaterial;
+  categories: string[];
   onUpdate: UpdateHandler;
   onDelete: DeleteHandler;
+  onMove: MoveHandler;
 }) {
   const storageService = useContext(StorageServiceContext);
   const [isEditing, setIsEditing] = useState(false);
+  const [isMove, setIsMove] = useState(false);
   const [editedTitle, setEditedTitle] = useState(studyMaterial.title);
   const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
-  const [editedCategory, seteditedCategory] = useState(studyMaterial.category);
   const studyMaterialRepository = useContext(StudyMaterialContext);
-  const CategoryRepository = useContext(CategoryContext);
 
   const handleDownload = async () => {
     storageService.download(
@@ -40,10 +44,11 @@ function StudyMaterials({
   };
 
   const handleDelete = async () => {
-    storageService.delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename);
-    // studyMaterialRepository.delete(studyMaterial.id);
-    // CategoryRepository.addStudyMaterial(studyMaterial.category , studyMaterial.id)
-    onDelete(studyMaterial.id);
+    storageService.delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename).then(() => {
+      studyMaterialRepository.deleteStudyMaterialFromCategory(studyMaterial.category.id, studyMaterial.id);
+      onDelete(studyMaterial);
+    });
+    // TODO catch
   };
 
   const handleEditToggle = () => {
@@ -58,7 +63,7 @@ function StudyMaterials({
     };
 
     studyMaterialRepository
-      .update(studyMaterial.id, updatedStudyMaterial)
+      .updateStudyMaterialInCategory(studyMaterial.category.id, studyMaterial.id, { date: studyMaterial.date })
       .then(() => {
         onUpdate(updatedStudyMaterial);
         setIsEditing(false);
@@ -68,19 +73,27 @@ function StudyMaterials({
       });
   };
 
-  const handleMove = async () => {
-    const updatedCatergory = {
+  const handleMove = (selectCategory: string) => {
+    const updatedCategory = {
       ...studyMaterial,
-      category: editedCategory
+      category: {
+        ...studyMaterial.category,
+        category: selectCategory
+      }
     };
     studyMaterialRepository
-      .update(studyMaterial.id, updatedCatergory)
+      .moveMaterialToCategory(studyMaterial, studyMaterial.category.category, selectCategory)
       .then(() => {
-        onUpdate(updatedCatergory);
+        onMove(updatedCategory, studyMaterial.category.category);
+        setIsMove(false);
       })
       .catch((error) => {
-        console.error('Error updating study material:', error);
+        console.error('Error move study material:', error);
       });
+  };
+
+  const handleMoveToggle = async () => {
+    setIsMove(!isMove);
   };
 
   const momentDate = moment(studyMaterial.date).format('DD / MM / YYYY');
@@ -89,6 +102,7 @@ function StudyMaterials({
     <Card className="Card">
       <MySpeedDial
         handleEditToggle={handleEditToggle}
+        handleMoveToggle={handleMoveToggle}
         handleSave={handleSave}
         handleDelete={handleDelete}
         handleMove={handleMove}
@@ -122,12 +136,12 @@ function StudyMaterials({
           )}
         </div>
         <p className="date"> תאריך : {momentDate} </p>
-        {/* <div className="btns"> */}
         <Button className="dow-button" onClick={handleDownload}>
           הורדה
           <DownloadIcon className="dow-icon" />
         </Button>
       </Card.Body>
+      {isMove && <MoveList categories={categories} onMove={handleMove} />}
     </Card>
   );
 }
