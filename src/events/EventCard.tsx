@@ -92,6 +92,10 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     handleShowRegister();
   }
 
+  const handleDetails = () => {
+    alert(registeredStudents?.length);
+  };
+
   const handleSaveEdit = async () => {
     const event: IEvent = {
       date: formData.date,
@@ -314,7 +318,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
         style={{ display: isLoading ? 'none' : 'block' }}
       />
       <Card.Body style={{ marginTop: '150px' }}>
-        <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} />
+        <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} handleDetails={handleDetails} />
         <Card.Title>{title}</Card.Title>
         <Card.Text>
           <p>
