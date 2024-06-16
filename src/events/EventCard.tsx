@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { EventContext } from './EventContext';
 import { Button, Card, Modal, Form } from 'react-bootstrap';
 import { IEvent } from './Event';
@@ -8,6 +8,8 @@ import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import AdminMenu from './AdminOptions';
 import { CircularProgress, Box } from '@mui/material';
+import { StudentEventContext } from './StudentEventContext';
+import { StudentEventProps } from './StudentEventProps';
 
 export interface EventProps {
   date: Date;
@@ -132,12 +134,42 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     const filePath = '/event-img/' + id;
     // Delete the file
     storageService.delete(filePath);
+    // Delete associated records from Firestore
   };
 
-  const handleSaveRegister = () => {
-    setRegister(true);
+  const [registeredStudents, setRegisteredStudents] = useState<StudentEventProps[] | null>(null);
+  const StudentEventRepository = useContext(StudentEventContext);
+
+  //FIXME: get user id
+  const StudentEvent: StudentEventProps = {
+    StudentId: 'getUserID', // get user id
+    EventId: id
+  };
+
+  const checkIfRegistered = () => {
+    if (registeredStudents?.some((user) => user.StudentId === StudentEvent.StudentId)) {
+      setRegister(true);
+    }
+  };
+
+  useEffect(() => {
+    const getRegisteredStudents = async () => {
+      setRegisteredStudents((await StudentEventRepository.find()).filter((student) => student.EventId === id));
+    };
+
+    if (registeredStudents === null) getRegisteredStudents();
+    if (registeredStudents !== null) checkIfRegistered();
+  }, [registeredStudents]);
+
+  const handleSaveRegister = async () => {
     setShowModalRegister(false);
-    //db
+    if (registeredStudents && !registeredStudents.some((user) => user.StudentId === StudentEvent.StudentId)) {
+      await StudentEventRepository.create(StudentEvent);
+      setRegisteredStudents([...registeredStudents, StudentEvent]);
+      setRegister(true);
+    } else {
+      setRegister(true);
+    }
   };
 
   function editWindow() {
