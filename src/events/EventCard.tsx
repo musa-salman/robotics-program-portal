@@ -129,21 +129,26 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   const handleSaveDelete = async () => {
     onEventDelete(id);
     setShowModalDelete(false);
+    // Delete associated records from Firestore
+    registeredStudents?.forEach(async (studentEvent) => {
+      await StudentEventRepository.delete(studentEvent.id);
+    });
+    setRegisteredStudents((registeredStudents || []).filter((e) => e.EventId !== id));
     await eventRepository.delete(id);
     // Create a reference to the file to delete
     const filePath = '/event-img/' + id;
     // Delete the file
     storageService.delete(filePath);
-    // Delete associated records from Firestore
   };
 
   const [registeredStudents, setRegisteredStudents] = useState<StudentEventProps[] | null>(null);
   const StudentEventRepository = useContext(StudentEventContext);
 
-  //FIXME: get user id
+  // //FIXME: get user id
   const StudentEvent: StudentEventProps = {
     StudentId: 'getUserID', // get user id
-    EventId: id
+    EventId: formData.id,
+    id: ''
   };
 
   const checkIfRegistered = () => {
@@ -161,13 +166,19 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     if (registeredStudents !== null) checkIfRegistered();
   }, [registeredStudents]);
 
+  console.log(registeredStudents);
+
   const handleSaveRegister = async () => {
     setShowModalRegister(false);
-    if (registeredStudents && !registeredStudents.some((user) => user.StudentId === StudentEvent.StudentId)) {
-      await StudentEventRepository.create(StudentEvent);
-      setRegisteredStudents([...registeredStudents, StudentEvent]);
-      setRegister(true);
-    } else {
+    if (
+      registeredStudents &&
+      !registeredStudents.some((user) => user.StudentId === StudentEvent.StudentId) &&
+      id !== ''
+    ) {
+      StudentEvent.EventId = formData.id;
+      const docRef = await StudentEventRepository.create(StudentEvent);
+      StudentEvent.id = docRef.id;
+      registeredStudents?.push(StudentEvent);
       setRegister(true);
     }
   };

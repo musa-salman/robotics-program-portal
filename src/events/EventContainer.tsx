@@ -105,6 +105,7 @@ const EventContainer = () => {
     handleShowAddEvent();
     const docRef = await eventRepository.create(event);
     event.id = docRef.id;
+    formData.id = docRef.id;
     if (file) {
       await storageService.upload(
         file,
