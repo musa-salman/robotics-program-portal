@@ -97,13 +97,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
   };
 
   const handleDeleteCategory = (item: Category) => {
-    categories?.forEach((index) => {
-      if (index.category === 'הכל') {
-        studyMaterialManagement.moveAllMaterialsToCategory(item.id, index.id).then(() => {
-          studyMaterialManagement.categoryRepository.delete(item.id);
-        });
-      }
-    });
+    studyMaterialManagement.deleteCategory(item.id);
 
     setCategories((prevCategories) => {
       if (prevCategories !== null) {
