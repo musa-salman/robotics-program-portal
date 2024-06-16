@@ -1,33 +1,37 @@
-import React, { useState } from 'react';
-import { Box, TextField, FormControl, InputLabel, Select, MenuItem, RadioGroup, FormControlLabel, Radio, Button, Autocomplete, FormLabel, Grid, InputAdornment } from '@mui/material';
-import SchoolIcon from '@mui/icons-material/School';
+import React from 'react';
+import { Box, TextField, FormControl, RadioGroup, FormControlLabel, Radio,  FormLabel, Grid} from '@mui/material';
 
-const Page4Component = () => {
-  const [schoolName, setSchoolName] = useState('');
-  const [interest, setInterest] = useState('');
-  const [additionalSubject, setAdditionalSubject] = useState('');
-  const [mathUnits, setMathUnits] = useState('');
-  const [value, setValue] = useState('');
+import { Register } from './Register';
+
+interface Page4ComponentProps {
+  setRegister: React.Dispatch<React.SetStateAction<Register>>;
+  register: Register;
+}
+
+const Page4Component: React.FC<Page4ComponentProps> = ({setRegister,register})=> {
+
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
     // Handle form submission
-    console.log({ schoolName, interest, additionalSubject, mathUnits });
+  
   };
 
   
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue((event.target as HTMLInputElement).value);
-    console.log((event.target as HTMLInputElement).value);
+  const handleChange = (event:any) => {
+
+    const { name, value } = event.target;
+    setRegister((prevData) => ({ ...prevData, [name]: value }));
+    console.log(register);
   };
-  const options = [
-    'בית הספר',
-    'עלון מנח"י',
-    'קרוב משפחה שלמד במגמה',
-    'חיפוש עצמי באינטרנט',
-    'אחרת'
-  ];
+  // const options = [
+  //   'בית הספר',
+  //   'עלון מנח"י',
+  //   'קרוב משפחה שלמד במגמה',
+  //   'חיפוש עצמי באינטרנט',
+  //   'אחרת'
+  // ];
   return (
     <>
         <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2,maxWidth: '600px', margin: 'auto', mt: 5 }}>
@@ -37,8 +41,8 @@ const Page4Component = () => {
                 </FormLabel>
                 <RadioGroup
                     aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="controlled-radio-buttons-group"
-                    value={value}
+                    name="hearAboutUs"
+                    value={register.hearAboutUs}
                     onChange={handleChange}
                 >
                     <FormControlLabel value="0" control={<Radio />} label='בית הספר' />
@@ -55,12 +59,10 @@ const Page4Component = () => {
                 <Grid item xs={12}>
                 <TextField
                     fullWidth
-                    // label="שם פרטי"
-                    name="firstName"
-                    
+                    name="otherQuestions"
+                    value={register.otherQuestions}
                     onChange={handleChange}
                     required
-                    
                 />
             </Grid>
             </FormControl>

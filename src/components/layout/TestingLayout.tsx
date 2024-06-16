@@ -29,7 +29,7 @@ const TestingLayout: React.FC = () => {
             <Link to="/events">Events</Link>
           </li>
           <li>
-            <Link to="/Register">Register</Link>
+            <Link to="/register">Register</Link>
           </li>
         </ul>
       </nav>

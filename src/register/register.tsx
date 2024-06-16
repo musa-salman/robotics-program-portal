@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -12,6 +12,7 @@ import Page3Component from './Page3';
 import Page4Component from './Page4';
 import { useState } from 'react';
 import { Register } from './Register';
+import { RegisterContext } from './RegisterContext';
 
 
 const steps = ['על המתחם החדש', 'פרטים אישיים', 'פרטים בית הספר','שאלות אחרונות'];
@@ -22,7 +23,7 @@ const steps = ['על המתחם החדש', 'פרטים אישיים', 'פרטי�
 const RegisterComponent =  () => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
-
+  const registerRepository = useContext(RegisterContext);
   const [register,setRegister]=useState<Register >({
     studentFirstName: '',
     studentLastName: '',
@@ -41,20 +42,16 @@ const RegisterComponent =  () => {
 
   const pages =[
     {
-      inputs:'',
       page:<Page1Component />,
     },
     {
-      inputs:'',
       page:<Page2Component setRegister={setRegister} register={register} />,
     },
     {
-      inputs:'',
       page:<Page3Component setRegister={setRegister} register={register}/>,
     },
     {
-      inputs:'',
-      page:<Page4Component />,
+      page:<Page4Component setRegister={setRegister} register={register}/>,
     },
   ];
 
@@ -72,6 +69,10 @@ const RegisterComponent =  () => {
       console.log(register);
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
+    console.log("activ ",activeStep);
+    if(activeStep === 3){
+      registerRepository.create(register);
+    }
   };
 
   
