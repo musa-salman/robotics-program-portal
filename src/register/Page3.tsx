@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, TextField, FormControl,  RadioGroup, FormControlLabel, Radio, FormLabel, Grid, InputAdornment } from '@mui/material';
+import { Box, TextField, FormControl,  RadioGroup, FormControlLabel, Radio, FormLabel, Grid, InputAdornment, FormHelperText } from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
 import { Register } from './Register';
+
 
 interface Page3ComponentProps {
   setRegister: React.Dispatch<React.SetStateAction<Register>>;
@@ -10,6 +11,7 @@ interface Page3ComponentProps {
 
 
 const Page3Component: React.FC<Page3ComponentProps> = ({setRegister,register}) => {
+ 
 
   // const options = [
   //   'אני מתעניינת ב-5 יח"ל מכטרוניקה',
@@ -22,16 +24,12 @@ const Page3Component: React.FC<Page3ComponentProps> = ({setRegister,register}) =
 
     const { name, value } = event.target;
     setRegister((prevData) => ({ ...prevData, [name]: value }));
-    console.log(register);
   };
 
-  const handleSubmit = (event:any) => {
-    event.preventDefault();
-
-  };
+  
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2,maxWidth: '600px', margin: 'auto', mt: 5 }}>
+    <Box component="form"  sx={{ display: 'flex', flexDirection: 'column', gap: 2,maxWidth: '600px', margin: 'auto', mt: 5 }}>
       
         <Grid item xs={4}>
             <TextField
@@ -41,6 +39,8 @@ const Page3Component: React.FC<Page3ComponentProps> = ({setRegister,register}) =
                 value={register.studentSchool}
                 onChange={handleChange}
                 required
+                error={register.studentSchool === ""}
+                
                 InputProps={{
                     startAdornment: (
                     <InputAdornment position="start">
@@ -51,28 +51,29 @@ const Page3Component: React.FC<Page3ComponentProps> = ({setRegister,register}) =
             />
         </Grid>
 
-      <FormControl>
-      <FormLabel  sx={{fontSize:'30px'}} >התעניינות בהיקף יחידות לימוד במגמה
-      </FormLabel>
-      <RadioGroup
-        aria-labelledby="demo-controlled-radio-buttons-group"
-        name="studyUnitsMajor"
-        value={register.studyUnitsMajor}
-        onChange={handleChange}
-      >
-        <FormControlLabel value="0"  control={<Radio />} label='אני מתעניינת ב-5 יח"ל מכטרוניקה' />
-        <FormControlLabel value="1" control={<Radio />} label='אני מתעניינת ב-10 יח"ל מכטרוניקה' />
-        <FormControlLabel value="2" control={<Radio />} label='עדיין לא ידוע' />
-        <FormControlLabel value="3" control={<Radio />} label='אחרת' />
-      </RadioGroup>
-    </FormControl> 
-
-    <FormLabel  sx={{fontSize:'30px'}} >מספר יחידות לימוד במתמטיקה
- 
-    </FormLabel>
-      
-      <FormControl component="fieldset" required>
+      <FormControl error={register.studyUnitsMajor === ''}>
+        <FormLabel  sx={{fontSize:'30px'} } >התעניינות בהיקף יחידות לימוד במגמה
+        </FormLabel>
         <RadioGroup
+          aria-labelledby="demo-controlled-radio-buttons-group"
+          name="studyUnitsMajor"
+          value={register.studyUnitsMajor}
+          onChange={handleChange}
+        >
+          <FormControlLabel value="0"  control={<Radio />} label='אני מתעניינת ב-5 יח"ל מכטרוניקה' required/>
+          <FormControlLabel value="1" control={<Radio />} label='אני מתעניינת ב-10 יח"ל מכטרוניקה' required/>
+          <FormControlLabel value="2" control={<Radio />} label='עדיין לא ידוע' required/>
+          <FormControlLabel value="3" control={<Radio />} label='אחרת' required/>
+        </RadioGroup>
+        <FormHelperText>{register.studyUnitsMajor === ""? "נה לבחור" : ""}</FormHelperText>
+      </FormControl> 
+
+      <FormControl error={register.numStudyUnitsMath === ""}>
+        <FormLabel  sx={{fontSize:'30px'}} >מספר יחידות לימוד במתמטיקה
+        </FormLabel>
+      
+        <RadioGroup
+          aria-labelledby="demo-controlled-radio-buttons-group"
           name='numStudyUnitsMath'
           value={register.numStudyUnitsMath}
           onChange={handleChange}
@@ -82,9 +83,10 @@ const Page3Component: React.FC<Page3ComponentProps> = ({setRegister,register}) =
           <FormControlLabel value="2" control={<Radio />} label="5" />
           <FormControlLabel value="3" control={<Radio />} label="אחרת" />
         </RadioGroup>
+        
+        <FormHelperText>{register.numStudyUnitsMath === ""? "נה לבחור" : ""}</FormHelperText>
       </FormControl>
-      
- 
+
     </Box>
   );
 };

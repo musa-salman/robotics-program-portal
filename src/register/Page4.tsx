@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, TextField, FormControl, RadioGroup, FormControlLabel, Radio,  FormLabel, Grid} from '@mui/material';
+import { Box, TextField, FormControl, RadioGroup, FormControlLabel, Radio,  FormLabel, Grid, FormHelperText} from '@mui/material';
 
 import { Register } from './Register';
 
@@ -11,32 +11,20 @@ interface Page4ComponentProps {
 const Page4Component: React.FC<Page4ComponentProps> = ({setRegister,register})=> {
 
 
-  const handleSubmit = (e:any) => {
-    e.preventDefault();
-    // Handle form submission
   
-  };
-
   
 
   const handleChange = (event:any) => {
-
+    
     const { name, value } = event.target;
     setRegister((prevData) => ({ ...prevData, [name]: value }));
-    console.log(register);
   };
-  // const options = [
-  //   'בית הספר',
-  //   'עלון מנח"י',
-  //   'קרוב משפחה שלמד במגמה',
-  //   'חיפוש עצמי באינטרנט',
-  //   'אחרת'
-  // ];
+ 
   return (
     <>
-        <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2,maxWidth: '600px', margin: 'auto', mt: 5 }}>
+        <Box component="form"  sx={{ display: 'flex', flexDirection: 'column', gap: 2,maxWidth: '600px', margin: 'auto', mt: 5 }}>
       
-            <FormControl>
+            <FormControl  error={register.hearAboutUs === ''}>
                 <FormLabel  sx={{fontSize:'30px'}} >איך שמעתם עלינו?
                 </FormLabel>
                 <RadioGroup
@@ -51,6 +39,7 @@ const Page4Component: React.FC<Page4ComponentProps> = ({setRegister,register})=>
                     <FormControlLabel value="3" control={<Radio />} label='חיפוש עצמי באינטרנט' />
                     <FormControlLabel value="4" control={<Radio />} label='אחרת' />
                 </RadioGroup>
+                <FormHelperText>{register.hearAboutUs === ""? "נה לבחור" : ""}</FormHelperText>
             </FormControl>
 
             <FormControl>
