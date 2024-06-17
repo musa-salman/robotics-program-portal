@@ -84,7 +84,7 @@ export class EventManager implements EventManagerInterface {
 
   getStudentEventRepository(studentId: string): StudentEventRepository {
     if (!this.studentEventRepositories.has(studentId)) {
-      this.studentEventRepositories.set(studentId, new StudentEventRepository(studentId));
+      this.studentEventRepositories.set(studentId, new CachingRepository(new StudentEventRepository(studentId)));
     }
 
     return this.studentEventRepositories.get(studentId)!;
@@ -92,7 +92,7 @@ export class EventManager implements EventManagerInterface {
 
   getEventRegistrationRepository(eventId: string): EventRegistrationRepository {
     if (!this.eventRegistrationRepositories.has(eventId)) {
-      this.eventRegistrationRepositories.set(eventId, new EventRegistrationRepository(eventId));
+      this.eventRegistrationRepositories.set(eventId, new CachingRepository(new EventRegistrationRepository(eventId)));
     }
 
     return this.eventRegistrationRepositories.get(eventId)!;
