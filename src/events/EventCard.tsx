@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { EventContext } from './EventContext';
+import { eventManagerContext } from './repository/EventManagerContext';
 import { Button, Card, Modal, Form } from 'react-bootstrap';
-import { IEvent } from './Event';
+import { IEvent } from './repository/Event';
 import './EventCard.css';
 import moment from 'moment';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
@@ -81,7 +81,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
 
   const [showDetails, setShowDetails] = useState(false);
 
-  const eventRepository = useContext(EventContext);
+  const eventRepository = useContext(eventManagerContext);
   const storageService = useContext(StorageServiceContext);
 
   function handleDelete() {

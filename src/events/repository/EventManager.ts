@@ -1,10 +1,10 @@
 import { doc, writeBatch } from 'firebase/firestore';
 import { CachingRepository } from '../../repositories/caching/CachingRepository';
-import { StudentEventRepository } from '../StudentEventRepository';
 import { BriefEvent } from './BriefEvent';
 import { EventRegistrationRepository } from './EventRegistrationRepository';
 import { EventRepository } from './EventRepository';
 import { db } from '../../firebase';
+import { StudentEventRepository } from './StudentEventRepository';
 
 /**
  * Represents the interface for managing events.
