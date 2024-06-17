@@ -11,20 +11,6 @@ import { StudentEventRepository } from './StudentEventRepository';
  */
 export interface EventManagerInterface {
   /**
-   * Retrieves the student event repository for a given student ID.
-   * @param studentId - The ID of the student.
-   * @returns The student event repository.
-   */
-  getStudentEventRepository(studentId: string): StudentEventRepository;
-
-  /**
-   * Retrieves the event registration repository for a given event ID.
-   * @param eventId - The ID of the event.
-   * @returns The event registration repository.
-   */
-  getEventRegistrationRepository(eventId: string): EventRegistrationRepository;
-
-  /**
    * Registers a student for an event.
    * @param student - The student to register.
    * @param eventId - The ID of the event.
@@ -65,6 +51,20 @@ export interface EventManagerInterface {
    * @returns A promise that resolves to a boolean indicating if the student is registered.
    */
   isStudentRegistered(studentId: string, eventId: string): Promise<boolean>;
+
+  /**
+   * Retrieves the student event repository for a given student ID.
+   * @param studentId - The ID of the student.
+   * @returns The student event repository.
+   */
+  getStudentEventRepository(studentId: string): StudentEventRepository;
+
+  /**
+   * Retrieves the event registration repository for a given event ID.
+   * @param eventId - The ID of the event.
+   * @returns The event registration repository.
+   */
+  getEventRegistrationRepository(eventId: string): EventRegistrationRepository;
 }
 
 export class EventManager implements EventManagerInterface {
