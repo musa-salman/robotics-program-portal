@@ -39,16 +39,16 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   });
   const storageService = useContext(StorageServiceContext);
 
-  const getCategory = async () => {
-    try {
-      const data: Category[] = await studyMaterialManagement.categoryRepository.find();
-      setCategories(data);
-    } catch (error) {
-      console.error('Error fetching items:', error);
-    }
-  };
-
   useEffect(() => {
+    const getCategory = async () => {
+      try {
+        const data: Category[] = await studyMaterialManagement.categoryRepository.find();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      }
+    };
+
     if (loading && categories === null) {
       getCategory();
       setLoading(false);
@@ -97,19 +97,17 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
 
     if (file !== null && studyMaterial.title !== '') {
       // const docRef = await studyMaterialRepository.create(studyMaterial);
-      categories?.forEach((index) => {
-        if (index.category === selectedItem) {
-          studyMaterialManagement.studyMaterialRepository.create(studyMaterial).then((docRef) => {
-            storageService.upload(
-              file,
-              '/study-material/' + docRef.id + '-' + studyMaterial.filename,
-              setUploadProgress,
-              () => {},
-              () => {}
-            );
-          });
-        }
+      studyMaterial.category = selectedItem;
+      studyMaterialManagement.studyMaterialRepository.create(studyMaterial).then((docRef) => {
+        storageService.upload(
+          file,
+          '/study-material/' + docRef.id + '-' + studyMaterial.filename,
+          setUploadProgress,
+          () => {},
+          () => {}
+        );
       });
+
       handleAdd(studyMaterial);
       handleClose();
       handleDate();
