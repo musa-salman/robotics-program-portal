@@ -3,6 +3,7 @@ import { StudyMaterialRepository } from './StudyMaterialRepository';
 import { CachingRepository } from '../../repositories/caching/CachingRepository';
 import { WriteBatch, doc, writeBatch } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { StudyMaterial } from '../StudyMaterial';
 
 /**
  * Represents a unit of work for managing study materials.
@@ -14,6 +15,14 @@ export interface IUnitOfWork {
    * @returns A promise that resolves when the category is deleted.
    */
   deleteCategory(categoryId: string): Promise<void>;
+
+  /**
+   * Moves a study material to a new category.
+   * @param studyMaterial - The study material to move.
+   * @param newCategory - The new category for the study material.
+   * @returns A promise that resolves when the study material is moved.
+   */
+  moveStudyMaterial(studyMaterial: StudyMaterial, newCategory: string): Promise<void>;
 
   /**
    * Renames a category.
@@ -59,6 +68,10 @@ export class StudyMaterialManagement implements IUnitOfWork {
     this._moveStudyMaterials(category.category, defaultCategory, batch);
     batch.delete(doc(this.categoryRepository._collection, categoryId));
     return batch.commit();
+  }
+
+  async moveStudyMaterial(studyMaterial: StudyMaterial, newCategory: string): Promise<void> {
+    return this.studyMaterialRepository.update(studyMaterial.id, { ...studyMaterial, category: newCategory });
   }
 
   async renameCategory(oldCategory: string, newCategory: string): Promise<void> {
