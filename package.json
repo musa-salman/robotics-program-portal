@@ -22,9 +22,9 @@
     "@mui/icons-material": "^5.15.19",
     "@mui/material": "^5.15.19",
     "@mui/x-data-grid": "^7.6.2",
+    "@types/validator": "^13.12.0",
     "bootstrap": "^5.3.3",
     "firebase": "^10.12.0",
-    "libphonenumber-js": "^1.11.3",
     "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
@@ -32,7 +32,8 @@
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.23.1",
     "stylis": "^4.3.2",
-    "stylis-plugin-rtl": "^2.1.1"
+    "stylis-plugin-rtl": "^2.1.1",
+    "validator": "^13.12.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",

@@ -5,14 +5,16 @@ import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import IdIcon from '@mui/icons-material/Badge';
 import { Register } from './Register';
-import { hasOnlyHebrew, hasOnlyNumbers, isValidGmail, isValidIsraeliID } from './FixInput';
+import { isHebrewOnly } from './InputValidator';
+import { isIdentityCard, isMobilePhone } from 'validator';
+import isEmail from 'validator/lib/isEmail';
 
-interface Page2ComponentProps {
+interface PersonalInfoProps {
   setRegister: React.Dispatch<React.SetStateAction<Register>>;
   register: Register;
 }
 
-const Page2Component: React.FC<Page2ComponentProps> = ({ setRegister, register }) => {
+const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }) => {
   const handleChange = (event: any) => {
     const { name, value } = event.target;
     setRegister((prevData) => ({ ...prevData, [name]: value }));
@@ -30,8 +32,8 @@ const Page2Component: React.FC<Page2ComponentProps> = ({ setRegister, register }
               value={register.studentFirstName}
               onChange={handleChange}
               required
-              error={!hasOnlyHebrew(register.studentFirstName)}
-              helperText={!hasOnlyHebrew(register.studentFirstName) ? 'יש להזין רק אותיות עבריות' : ''}
+              error={!isHebrewOnly(register.studentFirstName)}
+              helperText={!isHebrewOnly(register.studentFirstName) ? 'יש להזין רק אותיות עבריות' : ''}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -50,8 +52,8 @@ const Page2Component: React.FC<Page2ComponentProps> = ({ setRegister, register }
               value={register.studentLastName}
               onChange={handleChange}
               required
-              error={!hasOnlyHebrew(register.studentLastName)}
-              helperText={!hasOnlyHebrew(register.studentLastName) ? 'יש להזין רק אותיות עבריות' : ''}
+              error={!isHebrewOnly(register.studentLastName)}
+              helperText={!isHebrewOnly(register.studentLastName) ? 'יש להזין רק אותיות עבריות' : ''}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -70,8 +72,8 @@ const Page2Component: React.FC<Page2ComponentProps> = ({ setRegister, register }
               value={register.parentPhone}
               onChange={handleChange}
               required
-              error={!hasOnlyNumbers(register.parentPhone)}
-              helperText={!hasOnlyNumbers(register.parentPhone) ? 'יש להזין מספר טלפון תקין' : ''}
+              error={!isMobilePhone(register.parentPhone, 'he-IL')}
+              helperText={!isMobilePhone(register.parentPhone) ? 'יש להזין מספר טלפון תקין' : ''}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -90,8 +92,8 @@ const Page2Component: React.FC<Page2ComponentProps> = ({ setRegister, register }
               value={register.studentPhone}
               onChange={handleChange}
               required
-              error={!hasOnlyNumbers(register.studentPhone)}
-              helperText={!hasOnlyNumbers(register.studentPhone) ? 'יש להזין מספר טלפון תקין' : ''}
+              error={!isMobilePhone(register.studentPhone)}
+              helperText={!isMobilePhone(register.studentPhone) ? 'יש להזין מספר טלפון תקין' : ''}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -110,8 +112,8 @@ const Page2Component: React.FC<Page2ComponentProps> = ({ setRegister, register }
               value={register.studentId}
               onChange={handleChange}
               required
-              error={!isValidIsraeliID(register.studentId)}
-              helperText={!isValidIsraeliID(register.studentId) ? 'יש להזין ת.ז תקין' : ''}
+              error={!isIdentityCard(register.studentId || '', 'he-IL')} // FIXME:
+              helperText={!isIdentityCard(register.studentId || '', 'he-IL') ? 'יש להזין ת.ז תקין' : ''}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -130,8 +132,8 @@ const Page2Component: React.FC<Page2ComponentProps> = ({ setRegister, register }
               value={register.parentEmail}
               onChange={handleChange}
               required
-              error={!isValidGmail(register.parentEmail)}
-              helperText={!isValidGmail(register.parentEmail) ? 'יש להזין כתובת דואר אלקטרוני Gmail תקינה' : ''}
+              error={!isEmail(register.parentEmail)}
+              helperText={!isEmail(register.parentEmail) ? 'יש להזין כתובת דואר אלקטרוני Gmail תקינה' : ''}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -150,8 +152,8 @@ const Page2Component: React.FC<Page2ComponentProps> = ({ setRegister, register }
               value={register.studentEmail}
               onChange={handleChange}
               required
-              error={!isValidGmail(register.studentEmail)}
-              helperText={!isValidGmail(register.studentEmail) ? 'יש להזין כתובת דואר אלקטרוני Gmail תקינה' : ''}
+              error={!isEmail(register.studentEmail)}
+              helperText={!isEmail(register.studentEmail) ? 'יש להזין כתובת דואר אלקטרוני Gmail תקינה' : ''}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -186,4 +188,4 @@ const Page2Component: React.FC<Page2ComponentProps> = ({ setRegister, register }
   );
 };
 
-export default Page2Component;
+export default PersonalInfoStep;

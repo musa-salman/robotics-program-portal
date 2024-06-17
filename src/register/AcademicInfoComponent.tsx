@@ -14,12 +14,12 @@ import {
 import SchoolIcon from '@mui/icons-material/School';
 import { Register } from './Register';
 
-interface Page3ComponentProps {
+interface AcademicFormProps {
   setRegister: React.Dispatch<React.SetStateAction<Register>>;
   register: Register;
 }
 
-const Page3Component: React.FC<Page3ComponentProps> = ({ setRegister, register }) => {
+const AcademicForm: React.FC<AcademicFormProps> = ({ setRegister, register }) => {
   // const options = [
   //   'אני מתעניינת ב-5 יח"ל מכטרוניקה',
   //   'אני מתעניינת ב-10 יח"ל מכטרוניקה',
@@ -90,4 +90,4 @@ const Page3Component: React.FC<Page3ComponentProps> = ({ setRegister, register }
   );
 };
 
-export default Page3Component;
+export default AcademicForm;

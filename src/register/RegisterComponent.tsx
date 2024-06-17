@@ -6,14 +6,16 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import './Register.css';
-import Page2Component from './page2';
-import Page3Component from './Page3';
-import Page4Component from './Page4';
+import PersonalInfoStep from './PersonalInfoComponent';
+import AcademicForm from './AcademicInfoComponent';
+import SubmissionForm from './SubmissionComponent';
 import { useState } from 'react';
 import { Register } from './Register';
-import { hasOnlyHebrew, hasOnlyNumbers, isValidGmail, isValidIsraeliID } from './FixInput';
-import Page1Component from './Page1';
+import { isHebrewOnly } from './InputValidator';
+import IntroComponent from './IntroComponent';
 import { RegisterContext } from './RegisterContext';
+import { isIdentityCard, isMobilePhone } from 'validator';
+import isEmail from 'validator/lib/isEmail';
 
 const steps = ['על המתחם החדש', 'פרטים אישיים', 'פרטים בית הספר', 'שאלות אחרונות'];
 
@@ -50,13 +52,13 @@ const RegisterComponent = () => {
     }
     if (
       activeStep === 1 &&
-      hasOnlyHebrew(register.studentFirstName) &&
-      hasOnlyHebrew(register.studentLastName) &&
-      hasOnlyNumbers(register.studentPhone) &&
-      hasOnlyNumbers(register.parentPhone) &&
-      isValidIsraeliID(register.studentId) &&
-      isValidGmail(register.studentEmail) &&
-      isValidGmail(register.parentEmail) &&
+      isHebrewOnly(register.studentFirstName) &&
+      isHebrewOnly(register.studentLastName) &&
+      isMobilePhone(register.studentPhone, 'he-IL') &&
+      isMobilePhone(register.parentPhone, 'he-IL') &&
+      isIdentityCard(register.studentId, 'he-IL') &&
+      isEmail(register.studentEmail) &&
+      isEmail(register.parentEmail) &&
       register.studentAddress !== ''
     ) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -84,16 +86,16 @@ const RegisterComponent = () => {
 
   const pages = [
     {
-      page: <Page1Component />
+      page: <IntroComponent />
     },
     {
-      page: <Page2Component setRegister={setRegister} register={register} />
+      page: <PersonalInfoStep setRegister={setRegister} register={register} />
     },
     {
-      page: <Page3Component setRegister={setRegister} register={register} />
+      page: <AcademicForm setRegister={setRegister} register={register} />
     },
     {
-      page: <Page4Component setRegister={setRegister} register={register} />
+      page: <SubmissionForm setRegister={setRegister} register={register} />
     }
   ];
 

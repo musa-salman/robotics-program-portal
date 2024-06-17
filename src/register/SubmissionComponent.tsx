@@ -18,7 +18,7 @@ interface Page4ComponentProps {
   register: Register;
 }
 
-const Page4Component: React.FC<Page4ComponentProps> = ({ setRegister, register }) => {
+const SubmissionForm: React.FC<Page4ComponentProps> = ({ setRegister, register }) => {
   const handleChange = (event: any) => {
     const { name, value } = event.target;
     setRegister((prevData) => ({ ...prevData, [name]: value }));
@@ -64,4 +64,4 @@ const Page4Component: React.FC<Page4ComponentProps> = ({ setRegister, register }
   );
 };
 
-export default Page4Component;
+export default SubmissionForm;
