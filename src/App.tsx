@@ -12,6 +12,7 @@ import Banner from './components/Banner';
 import StudentsManagement from './students-management/StudentsManagement';
 import NotFoundPage from './components/NotFoundPage';
 import RegisterComponent from './register/RegisterComponent';
+import GPTPlayGround from './gpt-service/GPTPlayGround';
 
 function App() {
   const AuthRoutes = useAuthRoutes();
@@ -28,6 +29,7 @@ function App() {
             <Route path="/events" element={<EventContainer />} />
             <Route path="/students" element={<StudentsManagement />} />
             <Route path="/register" element={<RegisterComponent />} />
+            <Route path="/gpt" element={<GPTPlayGround />} />
             <Route
               path="/dashboard"
               element={
