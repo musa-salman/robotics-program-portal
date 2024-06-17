@@ -79,6 +79,8 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   const [file, setFile] = useState<File | null>(null);
   const [_uploadProgress, setUploadProgress] = useState(0);
 
+  const [showDetails, setShowDetails] = useState(false);
+
   const eventRepository = useContext(EventContext);
   const storageService = useContext(StorageServiceContext);
 
@@ -93,6 +95,10 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   function handleRegister() {
     handleShowRegister();
   }
+
+  const handleDetails = () => {
+    setShowDetails(!showDetails);
+  };
 
   const handleSaveEdit = async () => {
     const event: IEvent = {
@@ -125,7 +131,6 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
       onEventEdit(formData);
       eventRepository.update(id, event);
     }
-    //db
   };
 
   const handleSaveDelete = async () => {
@@ -183,12 +188,6 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     }
   };
 
-  const handleDetails = () => {
-    setShowDetails(!showDetails);
-  };
-
-  const [showDetails, setShowDetails] = useState(false);
-
   const handleRemoveRegistration = (studentId: string) => {
     // Add your code to remove the student registration here
     const docId = registeredStudents?.find((student) => student.StudentId === studentId)?.id;
@@ -203,7 +202,10 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   const handleShowDetails = () => {
     return (
       <div>
-        {showDetails && (
+        <Modal show={showDetails} onHide={handleDetails} animation={false} style={{ display: 'center' }}>
+          <Modal.Header closeButton>
+            <Modal.Title>רשומים לאירוע</Modal.Title>
+          </Modal.Header>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -228,7 +230,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
               </TableBody>
             </Table>
           </TableContainer>
-        )}
+        </Modal>
       </div>
     );
   };
