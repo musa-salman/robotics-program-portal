@@ -10,6 +10,7 @@ import AdminMenu from './AdminOptions';
 import { CircularProgress, Box } from '@mui/material';
 import { StudentEventContext } from './StudentEventContext';
 import { StudentEventProps } from './StudentEventProps';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 export interface EventProps {
   date: Date;
@@ -92,10 +93,6 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     handleShowRegister();
   }
 
-  const handleDetails = () => {
-    alert(registeredStudents?.length);
-  };
-
   const handleSaveEdit = async () => {
     const event: IEvent = {
       date: formData.date,
@@ -170,8 +167,6 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     if (registeredStudents !== null) checkIfRegistered();
   }, [registeredStudents]);
 
-  console.log(registeredStudents);
-
   const handleSaveRegister = async () => {
     setShowModalRegister(false);
     if (
@@ -185,6 +180,37 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
       registeredStudents?.push(StudentEvent);
       setRegister(true);
     }
+  };
+
+  const handleDetails = () => {
+    setShowDetails(!showDetails);
+  };
+
+  const [showDetails, setShowDetails] = useState(false);
+
+  const handleShowDetails = () => {
+    return (
+      <div>
+        {showDetails && (
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>סך הסטודנטים הרשומים : {registeredStudents?.length}</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {registeredStudents?.map((student, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{student.StudentId}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </div>
+    );
   };
 
   function editWindow() {
@@ -341,6 +367,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
       {editWindow()}
       {deleteWindow()}
       {registerWindow()}
+      {handleShowDetails()}
     </Card>
   );
 };
