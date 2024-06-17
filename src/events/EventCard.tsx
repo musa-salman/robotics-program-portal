@@ -7,10 +7,11 @@ import moment from 'moment';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import AdminMenu from './AdminOptions';
-import { CircularProgress, Box } from '@mui/material';
+import { CircularProgress, Box, IconButton } from '@mui/material';
 import { StudentEventContext } from './StudentEventContext';
 import { StudentEventProps } from './StudentEventProps';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export interface EventProps {
   date: Date;
@@ -188,6 +189,17 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
 
   const [showDetails, setShowDetails] = useState(false);
 
+  const handleRemoveRegistration = (studentId: string) => {
+    // Add your code to remove the student registration here
+    const docId = registeredStudents?.find((student) => student.StudentId === studentId)?.id;
+    if (docId) {
+      StudentEventRepository.delete(docId);
+      setRegisteredStudents((registeredStudents || []).filter((student) => student.StudentId !== studentId));
+    } else {
+      alert('Error: Student not found in the registered students list. Please try again.');
+    }
+  };
+
   const handleShowDetails = () => {
     return (
       <div>
@@ -203,6 +215,14 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
                 {registeredStudents?.map((student, index) => (
                   <TableRow key={index}>
                     <TableCell>{student.StudentId}</TableCell>
+                    <TableCell>
+                      <IconButton
+                        onClick={() => handleRemoveRegistration(student.StudentId)}
+                        aria-label="delete"
+                        size="small">
+                        <DeleteIcon fontSize="inherit" />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
