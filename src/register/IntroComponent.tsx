@@ -6,7 +6,7 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import './Page1.css';
 import { Box, Container, Link, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
 
-const Page1Component = () => {
+const IntroComponent = () => {
   return (
     <>
       <Container maxWidth="md" style={{ marginTop: '20px' }}>
@@ -70,4 +70,4 @@ const Page1Component = () => {
   );
 };
 
-export default Page1Component;
+export default IntroComponent;

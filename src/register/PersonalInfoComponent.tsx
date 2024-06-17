@@ -9,12 +9,12 @@ import { isHebrewOnly } from './InputValidator';
 import { isIdentityCard, isMobilePhone } from 'validator';
 import isEmail from 'validator/lib/isEmail';
 
-interface Page2ComponentProps {
+interface PersonalInfoProps {
   setRegister: React.Dispatch<React.SetStateAction<Register>>;
   register: Register;
 }
 
-const Page2Component: React.FC<Page2ComponentProps> = ({ setRegister, register }) => {
+const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }) => {
   const handleChange = (event: any) => {
     const { name, value } = event.target;
     setRegister((prevData) => ({ ...prevData, [name]: value }));
@@ -112,8 +112,8 @@ const Page2Component: React.FC<Page2ComponentProps> = ({ setRegister, register }
               value={register.studentId}
               onChange={handleChange}
               required
-              error={!isIdentityCard(register.studentId, 'he-IL')}
-              helperText={!isIdentityCard(register.studentId) ? 'יש להזין ת.ז תקין' : ''}
+              error={!isIdentityCard(register.studentId || '', 'he-IL')} // FIXME:
+              helperText={!isIdentityCard(register.studentId || '', 'he-IL') ? 'יש להזין ת.ז תקין' : ''}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -188,4 +188,4 @@ const Page2Component: React.FC<Page2ComponentProps> = ({ setRegister, register }
   );
 };
 
-export default Page2Component;
+export default PersonalInfoStep;

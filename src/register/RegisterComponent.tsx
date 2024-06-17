@@ -6,13 +6,13 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import './Register.css';
-import Page2Component from './PersonalInfoComponent';
-import Page3Component from './AcademicInfoComponent';
-import Page4Component from './SubmissionComponent';
+import PersonalInfoStep from './PersonalInfoComponent';
+import AcademicForm from './AcademicInfoComponent';
+import SubmissionForm from './SubmissionComponent';
 import { useState } from 'react';
 import { Register } from './Register';
 import { isHebrewOnly } from './InputValidator';
-import Page1Component from './IntroComponent';
+import IntroComponent from './IntroComponent';
 import { RegisterContext } from './RegisterContext';
 import { isIdentityCard, isMobilePhone } from 'validator';
 import isEmail from 'validator/lib/isEmail';
@@ -86,16 +86,16 @@ const RegisterComponent = () => {
 
   const pages = [
     {
-      page: <Page1Component />
+      page: <IntroComponent />
     },
     {
-      page: <Page2Component setRegister={setRegister} register={register} />
+      page: <PersonalInfoStep setRegister={setRegister} register={register} />
     },
     {
-      page: <Page3Component setRegister={setRegister} register={register} />
+      page: <AcademicForm setRegister={setRegister} register={register} />
     },
     {
-      page: <Page4Component setRegister={setRegister} register={register} />
+      page: <SubmissionForm setRegister={setRegister} register={register} />
     }
   ];
 
