@@ -11,7 +11,7 @@ import Role from './authentication/components/Roles';
 import Banner from './components/Banner';
 import StudentsManagement from './students-management/StudentsManagement';
 import NotFoundPage from './components/NotFoundPage';
-import RegisterComponent from './register/register';
+import RegisterComponent from './register/RegisterComponent';
 
 function App() {
   const AuthRoutes = useAuthRoutes();

@@ -1,52 +1,40 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   TextField,
   FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   RadioGroup,
   FormControlLabel,
   Radio,
-  Button,
-  Autocomplete,
   FormLabel,
   Grid,
-  InputAdornment
+  FormHelperText
 } from '@mui/material';
-import SchoolIcon from '@mui/icons-material/School';
 
-const Page4Component = () => {
-  const [schoolName, setSchoolName] = useState('');
-  const [interest, setInterest] = useState('');
-  const [additionalSubject, setAdditionalSubject] = useState('');
-  const [mathUnits, setMathUnits] = useState('');
-  const [value, setValue] = useState('');
+import { Register } from './Register';
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    // Handle form submission
-    console.log({ schoolName, interest, additionalSubject, mathUnits });
+interface Page4ComponentProps {
+  setRegister: React.Dispatch<React.SetStateAction<Register>>;
+  register: Register;
+}
+
+const Page4Component: React.FC<Page4ComponentProps> = ({ setRegister, register }) => {
+  const handleChange = (event: any) => {
+    const { name, value } = event.target;
+    setRegister((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue((event.target as HTMLInputElement).value);
-    console.log((event.target as HTMLInputElement).value);
-  };
-  const options = ['בית הספר', 'עלון מנח"י', 'קרוב משפחה שלמד במגמה', 'חיפוש עצמי באינטרנט', 'אחרת'];
   return (
     <>
       <Box
         component="form"
-        onSubmit={handleSubmit}
         sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: '600px', margin: 'auto', mt: 5 }}>
-        <FormControl>
+        <FormControl error={register.hearAboutUs === ''}>
           <FormLabel sx={{ fontSize: '30px' }}>איך שמעתם עלינו?</FormLabel>
           <RadioGroup
             aria-labelledby="demo-controlled-radio-buttons-group"
-            name="controlled-radio-buttons-group"
-            value={value}
+            name="hearAboutUs"
+            value={register.hearAboutUs}
             onChange={handleChange}>
             <FormControlLabel value="0" control={<Radio />} label="בית הספר" />
             <FormControlLabel value="1" control={<Radio />} label='עלון מנח"י' />
@@ -54,6 +42,7 @@ const Page4Component = () => {
             <FormControlLabel value="3" control={<Radio />} label="חיפוש עצמי באינטרנט" />
             <FormControlLabel value="4" control={<Radio />} label="אחרת" />
           </RadioGroup>
+          <FormHelperText>{register.hearAboutUs === '' ? 'נה לבחור' : ''}</FormHelperText>
         </FormControl>
 
         <FormControl>
@@ -63,8 +52,8 @@ const Page4Component = () => {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              // label="שם פרטי"
-              name="firstName"
+              name="otherQuestions"
+              value={register.otherQuestions}
               onChange={handleChange}
               required
             />

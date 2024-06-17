@@ -1,5 +1,5 @@
 export interface Register {
-  studentFirstName: string;
+  studentFirstName?: string;
   studentLastName: string;
   studentPhone: string;
   parentPhone: string;
