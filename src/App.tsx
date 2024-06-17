@@ -11,7 +11,6 @@ import Role from './authentication/components/Roles';
 import Banner from './components/Banner';
 import StudentsManagement from './students-management/StudentsManagement';
 import NotFoundPage from './components/NotFoundPage';
-import RegisterComponent from './register/register';
 
 function App() {
   const AuthRoutes = useAuthRoutes();
@@ -27,7 +26,6 @@ function App() {
             <Route path="/" element={<Banner />} />
             <Route path="/events" element={<EventContainer />} />
             <Route path="/students" element={<StudentsManagement />} />
-            <Route path="/register" element={<RegisterComponent />} />
             <Route
               path="/dashboard"
               element={
