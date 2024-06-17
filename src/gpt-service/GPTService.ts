@@ -43,4 +43,12 @@ export class GPTService implements IGPTService {
         text
     );
   }
+
+  async generateWithInput(data: string): Promise<string> {
+    return this.generateText(
+      'צור טקסט מבוסס על הנתונים הבאים תוך שימוש במילים מדויקות וביטויים מובנים, והבנה ברורה של התוכן. בנוסף, ספק רק את התשובה הסופית.' +
+        'כתוב את הטקסט בעברית: ' +
+        data
+    );
+  }
 }
