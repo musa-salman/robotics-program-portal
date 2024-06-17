@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
-import { StudyMaterialRepository } from './StudyMaterialRepository';
+import { StudyMaterialManagement } from './StudyMaterialManagement';
 
-export const StudyMaterialContext = createContext<StudyMaterialRepository>(new StudyMaterialRepository());
+export const StudyMaterialContext = createContext<StudyMaterialManagement>(new StudyMaterialManagement());
 
 function StudyMaterialProvider({ children }: { children: React.ReactNode }) {
   const studyMaterialRepository = useContext(StudyMaterialContext);

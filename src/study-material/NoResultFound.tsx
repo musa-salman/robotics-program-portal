@@ -1,4 +1,5 @@
 import { Container, CssBaseline, Typography } from '@mui/material';
+import SearchOffIcon from '@mui/icons-material/SearchOff';
 import './EmptyStudyMaterials.css';
 
 function NoResultFound() {
@@ -6,7 +7,7 @@ function NoResultFound() {
     <>
       <CssBaseline />
       <Container className="container">
-        <img src="./Empty State Icon.jpg" alt="Image Description" />
+        <SearchOffIcon />
         <Typography variant="h5" className="text">
           אין תוצאות למה בקשת להראות
         </Typography>

@@ -4,32 +4,27 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import './MySpeedDial.css';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'; // Import the icon for three dots
 import { MouseEventHandler } from 'react';
 
 interface MySpeedDialProps {
-  handleEditToggle: MouseEventHandler<HTMLDivElement> | undefined; // Adjust the type signature as necessary
+  handleEditToggle: MouseEventHandler<HTMLDivElement> | undefined;
+  handleMoveToggle: MouseEventHandler<HTMLDivElement> | undefined;
   handleSave: () => void;
   handleDelete: () => void;
+  // handleMove: (selectCategory: string) => void;
   isEditing: boolean;
 }
 
-function MySpeedDial({ handleEditToggle, handleSave, handleDelete, isEditing }: MySpeedDialProps) {
+function MySpeedDial({ handleEditToggle, handleMoveToggle, handleSave, handleDelete, isEditing }: MySpeedDialProps) {
   let actions = [];
 
   if (!isEditing) {
     actions = [
       { icon: <EditIcon />, name: 'Edit', action: handleEditToggle, className: '' },
       { icon: <DeleteIcon />, name: 'Delete', action: handleDelete, className: 'delete-action' },
-      {
-        icon: <DriveFileMoveIcon />,
-        name: 'Move',
-        action: () => {
-          console.log('Move clicked');
-        },
-        className: ''
-      }
+      { icon: <DriveFileMoveIcon />, name: 'Move', action: handleMoveToggle, className: '' }
     ];
   } else {
     actions = [
@@ -42,7 +37,7 @@ function MySpeedDial({ handleEditToggle, handleSave, handleDelete, isEditing }: 
     <SpeedDial
       ariaLabel="SpeedDial basic example"
       className="speedDial"
-      icon={<MoreHorizIcon sx={{ color: 'white', fontSize: '2rem' }} />}
+      icon={<MoreVertIcon sx={{ color: 'white', fontSize: '2rem' }} />}
       direction="down">
       {actions.map((action) => (
         <SpeedDialAction

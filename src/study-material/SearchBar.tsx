@@ -5,7 +5,7 @@ import { StudyMaterial } from './StudyMaterial';
 
 interface SearchBarProps {
   studyMaterials: StudyMaterial[];
-  onSearchResults: (results: StudyMaterial[] | null) => void;
+  onSearchResults: (results: StudyMaterial[]) => void;
   query: string;
   setQuery: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -19,7 +19,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ studyMaterials, onSearchRe
   const search = (text: string) => {
     setQuery(text);
     if (text.length === 0) {
-      onSearchResults(null);
+      onSearchResults([]);
       return;
     }
     const filteredResults = studyMaterials.filter(

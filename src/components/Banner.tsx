@@ -1,7 +1,6 @@
 import React from 'react';
-import { Grid, Icon } from '@mui/material';
+import { Grid } from '@mui/material';
 import BannerButton from './BannerButton';
-import HomeIcon from '@mui/icons-material/Home';
 import BookIcon from '@mui/icons-material/Book';
 import EventIcon from '@mui/icons-material/Event';
 import PeopleIcon from '@mui/icons-material/People';

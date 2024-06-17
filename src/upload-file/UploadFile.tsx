@@ -5,8 +5,8 @@ import Modal from 'react-bootstrap/Modal';
 import { useContext, useEffect, useState } from 'react';
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import './UploadFile.css';
-import { CategoryContext } from './CategoryContext';
 import { Category } from './Category';
+import { StudyMaterialContext } from '../study-material/repository/StudyMaterialContext';
 import { StudyMaterial } from '../study-material/StudyMaterial';
 import { AddEditCategories } from './addOrEditCategories';
 import { StorageServiceContext } from '../storage-service/StorageContext';
@@ -26,7 +26,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const [showAddEdit, setShowAddEdit] = useState(false);
   const handleCloseAddEdit = () => setShowAddEdit(false);
   const handleShowAddEdit = () => setShowAddEdit(true);
-  const categoryRepository = useContext(CategoryContext);
+  const studyMaterialManagement = useContext(StudyMaterialContext);
   const [validated, setValidated] = useState(false);
 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
@@ -39,17 +39,16 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   });
   const storageService = useContext(StorageServiceContext);
 
-  const getCategory = async () => {
-    try {
-      const data: Category[] = await categoryRepository.find();
-      setCategories(data);
-    } catch (error) {
-      console.error('Error fetching items:', error);
-    }
-  };
-
-
   useEffect(() => {
+    const getCategory = async () => {
+      try {
+        const data: Category[] = await studyMaterialManagement.categoryRepository.find();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      }
+    };
+
     if (loading && categories === null) {
       getCategory();
       setLoading(false);
@@ -97,18 +96,18 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
     setValidated(true);
 
     if (file !== null && studyMaterial.title !== '') {
-      categories?.forEach((index)=>{
-        if(index.category === selectedItem){
-          const docRef = categoryRepository.addStudyMaterial(index,studyMaterial);
-          storageService.upload(
-            file,
-            '/study-material/' + docRef + '-' + studyMaterial.filename,
-            setUploadProgress,
-            (e) => {},
-            () => {}
-          );
-        }
+      // const docRef = await studyMaterialRepository.create(studyMaterial);
+      studyMaterial.category = selectedItem;
+      studyMaterialManagement.studyMaterialRepository.create(studyMaterial).then((docRef) => {
+        storageService.upload(
+          file,
+          '/study-material/' + docRef.id + '-' + studyMaterial.filename,
+          setUploadProgress,
+          () => {},
+          () => {}
+        );
       });
+
       handleAdd(studyMaterial);
       handleClose();
       handleDate();
@@ -120,7 +119,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
       <Modal.Header closeButton style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
         <h1 style={{ fontSize: '40px', color: 'black', border: 'none' }}>העלת קובץ</h1>
       </Modal.Header>
-      <Modal.Body className='backgroundStyle'>
+      <Modal.Body className="backgroundStyle">
         <Form className="px-3 mx-3" noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group className="px-1">
             <FloatingLabel controlId="floatingInput" label="כותרת">
@@ -155,15 +154,16 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
                     menuVariant="dark"
                     onSelect={handleSelect}>
                     <div className="modal-footer-scroll2">
-                      
-                      {((categories || []) ).filter(item => item.category !== 'הכל').map((item, index) => (
-                        <NavDropdown.Item
-                          eventKey={item.category}
-                          onClick={() => handleSelect(item.category)}
-                          key={index}>
-                          {item.category}
-                        </NavDropdown.Item>
-                      ))}
+                      {(categories || [])
+                        .filter((item) => item.category !== 'הכל')
+                        .map((item, index) => (
+                          <NavDropdown.Item
+                            eventKey={item.category}
+                            onClick={() => handleSelect(item.category)}
+                            key={index}>
+                            {item.category}
+                          </NavDropdown.Item>
+                        ))}
 
                       <Button variant="link" onClick={handleShowAddEdit}>
                         הוספה/שינוי

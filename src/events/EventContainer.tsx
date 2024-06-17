@@ -9,6 +9,7 @@ import { CircularProgress, Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import './EventContainer.css';
 import EmptyEventCard from './EmptyEventCard';
+import GPT from '../gpt-service/GPTComponent';
 
 type EventContainer = {
   eventsProps: EventProps[];
@@ -197,14 +198,16 @@ const EventContainer = () => {
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label>פרטים</Form.Label>
-          <Form.Control
-            required
-            as="textarea"
-            rows={3}
-            placeholder="פרטי האירוע"
-            onChange={handleDetailsChange}
-            maxLength={MAX_CHARS_Details} // Set the maximum length of the textarea
-          />
+          <GPT initialValue="">
+            <Form.Control
+              required
+              as="textarea"
+              rows={3}
+              placeholder="פרטי האירוע"
+              onChange={handleDetailsChange}
+              maxLength={MAX_CHARS_Details} // Set the maximum length of the textarea
+            />
+          </GPT>
           <small>
             {formData.details.length}/{MAX_CHARS_Details} אותיות
           </small>{' '}

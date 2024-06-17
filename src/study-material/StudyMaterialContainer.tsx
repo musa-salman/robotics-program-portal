@@ -2,24 +2,30 @@ import Card from 'react-bootstrap/Card';
 import StudyMaterials from './StudyMaterials';
 import { useState, useEffect, useContext } from 'react';
 import './StudyMaterialContainer.css';
-import { StudyMaterialContext } from './StudyMaterialContext';
+import { StudyMaterialContext } from './repository/StudyMaterialContext';
 import { StudyMaterial } from './StudyMaterial';
 import { SearchBar } from './SearchBar';
 import UploadFileComponent from '../upload-file/UploadFile';
 import { Modal } from 'react-bootstrap';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-import EmptyStudyMaterials from './EmptyStudyMaterials';
 import { Fab } from '@mui/material';
 import NoResultFound from './NoResultFound';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import MoveList from './MoveList';
+import EmptyStudyMaterials from './EmptyStudyMaterials';
+import { StudyMaterialManagement } from './repository/StudyMaterialManagement';
+import { Category } from '../upload-file/Category';
 
 function StudyMaterialContainer() {
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
   const studyMaterialRepository = useContext(StudyMaterialContext);
-  // const [editCategory, setEditCategory] = useState<string>('');
-  // const [isEditing, setIsEditing] = useState(false);
+  const studyMaterialManagement = new StudyMaterialManagement();
+  const [categoryList, setCategoryList] = useState<Category[] | null>(null);
 
   const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);
+  const [selectedMaterial, setSelectedMaterial] = useState<StudyMaterial | null>(null);
+  const [isMoveMode, setIsMoveMode] = useState(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -27,11 +33,15 @@ function StudyMaterialContainer() {
 
   useEffect(() => {
     const getStudyMaterials = async () => {
-      setStudyMaterials(await studyMaterialRepository.find());
+      setStudyMaterials(await studyMaterialManagement.studyMaterialRepository.find());
+    };
+    const getCategries = async () => {
+      setCategoryList(await studyMaterialManagement.categoryRepository.find());
     };
 
     if (studyMaterials === null) getStudyMaterials();
-  }, [studyMaterials]);
+    if (categoryList === null) getCategries();
+  }, [studyMaterials, categoryList]);
 
   const handleUpdate = (updatedMaterial: StudyMaterial) => {
     const updatedMaterials = (studyMaterials || []).map((material) =>
@@ -40,8 +50,8 @@ function StudyMaterialContainer() {
     setStudyMaterials(updatedMaterials);
   };
 
-  const handleDelete = (deletedItemId: string) => {
-    const updatedMaterials = (studyMaterials || []).filter((material) => material.id !== deletedItemId);
+  const handleDelete = (deletedStudy: StudyMaterial) => {
+    const updatedMaterials = (studyMaterials || []).filter((material) => material.id !== deletedStudy.id);
     setStudyMaterials(updatedMaterials);
   };
 
@@ -50,20 +60,35 @@ function StudyMaterialContainer() {
     setStudyMaterials(studyMaterials);
   };
 
+  const handelDeleteAll = () => {
+    // studyMaterialManagement.categoryRepository.deleteAll();
+  };
+
+  const handleMoveClick = (studyMaterial: StudyMaterial) => {
+    setSelectedMaterial(studyMaterial);
+    setIsMoveMode(true);
+  };
+
+  const handleMove = (categorySelected: Category) => {};
+
   if (studyMaterials === null) {
     return <>loading</>;
   }
 
   if (studyMaterials.length === 0) {
-    return <EmptyStudyMaterials />;
+    return <EmptyStudyMaterials handleAdd={handleAdd} />;
   }
 
-  const categories = (searchResults || studyMaterials || [])
+  const categories: string[] = (searchResults || studyMaterials || [])
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
+  console.log(studyMaterials);
+  console.log('categories', categories);
   return (
     <>
+      <MoveList categories={categoryList || []} onMove={handleMove} onCancel={() => setIsMoveMode(false)} />
+
       <div className="btn-search">
         <SearchBar
           studyMaterials={studyMaterials || []}
@@ -71,17 +96,22 @@ function StudyMaterialContainer() {
           query={query}
           setQuery={setQuery}
         />
-        <Fab className="adde-btn" aria-label="add" onClick={handleShow}>
-          <AddIcon />
-        </Fab>
+        <div className="btns">
+          <Fab className="adde-btn" aria-label="add" onClick={handleShow}>
+            <AddIcon />
+          </Fab>
+          <Fab className="del-btn" aria-label="add" onClick={handelDeleteAll}>
+            <DeleteForeverIcon />
+          </Fab>
+        </div>
       </div>
       {searchResults?.length === 0 ? (
         <NoResultFound />
       ) : (
-        (categories || []).map((category) => (
-          <Card className="primary">
+        (categories || []).map((category, index) => (
+          <Card className="primary" key={index}>
             <Card.Header className="Card-Header">
-              <div key={category}>
+              <div>
                 <h2>{category}</h2>
               </div>
               <Fab className="edit-button" aria-label="edit">
@@ -100,6 +130,7 @@ function StudyMaterialContainer() {
                       studyMaterial={studyMaterial}
                       onUpdate={handleUpdate}
                       onDelete={handleDelete}
+                      handleMoveClick={handleMoveClick}
                     />
                   ))}
               </div>
@@ -108,7 +139,7 @@ function StudyMaterialContainer() {
         ))
       )}
       <Modal show={show} onHide={handleClose}>
-        <UploadFileComponent handleClose={handleClose} handleAdd={handleAdd}></UploadFileComponent>
+        <UploadFileComponent handleClose={handleClose} handleAdd={handleAdd} />
       </Modal>
     </>
   );

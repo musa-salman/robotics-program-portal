@@ -4,6 +4,7 @@ import {
   DocumentData,
   DocumentReference,
   Firestore,
+  FirestoreDataConverter,
   PartialWithFieldValue,
   WithFieldValue,
   addDoc,
@@ -18,16 +19,18 @@ import { IRead } from './interfaces/IRead';
 import { IWrite } from './interfaces/IWrite';
 import { createConverter } from '../utils/db/firestoreDataConverter';
 
+export interface IRepositoryBase<T> extends IRead<T>, IWrite<T> {}
+
 /**
  * Represents a base repository class that provides common CRUD operations for a specific collection in Firestore.
  *
  * @template T - The type of the data stored in the collection.
  */
-export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
+export abstract class BaseRepository<T> implements IRepositoryBase<T> {
   public readonly _collection: CollectionReference<T, DocumentData>;
 
-  constructor(db: Firestore, collectionPath: string) {
-    this._collection = collection(db, collectionPath).withConverter(createConverter<T>());
+  constructor(db: Firestore, collectionPath: string, converter?: FirestoreDataConverter<T>) {
+    this._collection = collection(db, collectionPath).withConverter(converter || createConverter<T>());
   }
 
   async find(): Promise<T[]> {
@@ -56,8 +59,9 @@ export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
   async update(id: string, item: PartialWithFieldValue<T>): Promise<void> {
     if ((item as any).id) delete (item as Record<string, unknown>).id;
 
+    const firestoreItem = this._collection.converter!.toFirestore(item as T);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return updateDoc(doc(this._collection, id), item as WithFieldValue<T> & AddPrefixToKeys<string, any>);
+    return updateDoc(doc(this._collection, id), firestoreItem as any);
   }
 
   async delete(id: string): Promise<void> {
