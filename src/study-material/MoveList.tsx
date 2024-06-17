@@ -1,33 +1,41 @@
-import { Autocomplete, Box, Button, List, ListItemButton, ListItemText, TextField } from '@mui/material';
+import { Autocomplete, Box, Button, List, ListItemButton, ListItemText, Modal, TextField } from '@mui/material';
 import './MoveList.css';
 import { useState } from 'react';
+import { Category } from '../upload-file/Category';
 
 interface MoveListProps {
-  categories: string[];
-  onMove: (category: string) => void;
+  categories: Category[];
+  onMove: (categorySelected: Category) => void;
   onCancel: () => void;
 }
 
 const MoveList: React.FC<MoveListProps> = ({ categories, onMove, onCancel }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  // const [selectedCategory, setSelectedCategory] = useState<Category[] | null>(null);
+  const [open, setOpen] = useState(false);
 
-  const moveHandler = (category: string) => {
-    setSelectedCategory(category);
-    onMove(selectedCategory);
+  const moveHandler = (category: Category) => {
+    // setSelectedCategory(category);
+    onMove(category);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
     <>
-      <Box className="move-list-container">
-        <List className="move-list">
-          {categories.map((category, index) => (
-            <ListItemButton key={index} className="move-list-item-button" onClick={() => moveHandler(category)}>
-              <ListItemText primary={category} className="move-list-item-text" />
-            </ListItemButton>
-          ))}
-        </List>
-        <Button onClick={onCancel}>Cancel</Button>
-      </Box>
+      <Modal open={open} onClose={handleClose}>
+        <Box className="move-list-container">
+          <List className="move-list">
+            {categories.map((category, index) => (
+              <ListItemButton key={index} className="move-list-item-button" onClick={() => moveHandler(category)}>
+                <ListItemText primary={category.category} className="move-list-item-text" />
+              </ListItemButton>
+            ))}
+          </List>
+          <Button onClick={onCancel}>Cancel</Button>
+        </Box>
+      </Modal>
     </>
   );
 };

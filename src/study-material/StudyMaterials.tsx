@@ -11,6 +11,7 @@ import MySpeedDial from './MySpeedDial';
 import { Alert, TextField } from '@mui/material';
 import MoveList from './MoveList';
 import { StudyMaterialManagement } from './repository/StudyMaterialManagement';
+import { Category } from '../upload-file/Category';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -73,21 +74,22 @@ function StudyMaterials({
       });
   };
 
-  // const handleMove = (selectCategory: string) => {
-  //   const updatedCategory = {
-  //     ...studyMaterial,
-  //     };
+  const handleMove = (selectCategory: Category) => {
+    const updatedCategory = {
+      ...studyMaterial,
+      category: selectCategory.category
+    };
 
-  //     studyMaterialManagement._moveStudyMaterials();
-  //     // .moveMaterialToCategory(studyMaterial, studyMaterial.category.category, selectCategory)
-  //     .then(() => {
-  //       onMove(updatedCategory, studyMaterial.category);
-  //       setIsMove(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error move study material:', error);
-  //     });
-  // };
+    // studyMaterialManagement._moveStudyMaterials();
+    // .moveMaterialToCategory(studyMaterial, studyMaterial.category.category, )
+    // .then(() => {
+    //   onMove(updatedCategory, studyMaterial.category);
+    //   setIsMove(false);
+    // })
+    // .catch((error) => {
+    //   console.error('Error move study material:', error);
+    // });
+  };
 
   const handleMoveToggle = async () => {
     setIsMove(!isMove);

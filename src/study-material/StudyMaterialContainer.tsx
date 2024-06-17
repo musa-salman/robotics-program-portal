@@ -35,16 +35,13 @@ function StudyMaterialContainer() {
     const getStudyMaterials = async () => {
       setStudyMaterials(await studyMaterialManagement.studyMaterialRepository.find());
     };
-
-    if (studyMaterials === null) getStudyMaterials();
-  }, [studyMaterials]);
-
-  useEffect(() => {
-    const getCategory = async () => {
+    const getCategries = async () => {
       setCategoryList(await studyMaterialManagement.categoryRepository.find());
     };
-    if (categoryList === null) getCategory();
-  }, [categoryList]);
+
+    if (studyMaterials === null) getStudyMaterials();
+    if (categoryList === null) getCategries();
+  }, [studyMaterials, categoryList]);
 
   const handleUpdate = (updatedMaterial: StudyMaterial) => {
     const updatedMaterials = (studyMaterials || []).map((material) =>
@@ -72,7 +69,7 @@ function StudyMaterialContainer() {
     setIsMoveMode(true);
   };
 
-  const handleMove = (category: string) => {};
+  const handleMove = (categorySelected: Category) => {};
 
   if (studyMaterials === null) {
     return <>loading</>;
@@ -90,11 +87,7 @@ function StudyMaterialContainer() {
   console.log('categories', categories);
   return (
     <>
-      {/* <MoveList
-        categories={categoryNames}
-        onMove={handleMove}
-        onCancel={() => setIsMoveMode(false)}
-      /> */}
+      <MoveList categories={categoryList || []} onMove={handleMove} onCancel={() => setIsMoveMode(false)} />
 
       <div className="btn-search">
         <SearchBar
