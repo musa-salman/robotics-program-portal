@@ -6,14 +6,14 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import './Register.css';
-import Page1Component from './Page1';
 import Page2Component from './page2';
 import Page3Component from './Page3';
 import Page4Component from './Page4';
 import { useState } from 'react';
 import { Register } from './Register';
-import { RegisterContext } from './RegisterContext';
 import { hasOnlyHebrew, hasOnlyNumbers, isValidGmail, isValidIsraeliID } from './FixInput';
+import Page1Component from './Page1';
+import { RegisterContext } from './RegisterContext';
 
 const steps = ['על המתחם החדש', 'פרטים אישיים', 'פרטים בית הספר', 'שאלות אחרונות'];
 
