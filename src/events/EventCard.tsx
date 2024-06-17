@@ -8,8 +8,6 @@ import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import AdminMenu from './AdminOptions';
 import { CircularProgress, Box, IconButton } from '@mui/material';
-import { StudentEventContext } from './StudentEventContext';
-import { StudentEventProps } from './StudentEventProps';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -63,7 +61,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [registerd, setRegister] = useState(false);
+  const [isRegistered, setRegister] = useState(false);
   const [showModalRegister, setShowModalRegister] = useState(false);
   const handleCloseRegister = () => setShowModalRegister(false);
   const handleShowRegister = () => setShowModalRegister(true);
@@ -81,7 +79,8 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
 
   const [showDetails, setShowDetails] = useState(false);
 
-  const eventRepository = useContext(eventManagerContext);
+  const eventManager = useContext(eventManagerContext);
+  const eventRepository = eventManager.eventRepository;
   const storageService = useContext(StorageServiceContext);
 
   function handleDelete() {
@@ -136,20 +135,15 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   const handleSaveDelete = async () => {
     onEventDelete(id);
     setShowModalDelete(false);
-    // Delete associated records from Firestore
-    registeredStudents?.forEach(async (studentEvent) => {
-      await StudentEventRepository.delete(studentEvent.id);
-    });
+
     setRegisteredStudents((registeredStudents || []).filter((e) => e.EventId !== id));
-    await eventRepository.delete(id);
     // Create a reference to the file to delete
     const filePath = '/event-img/' + id;
     // Delete the file
     storageService.delete(filePath);
   };
 
-  const [registeredStudents, setRegisteredStudents] = useState<StudentEventProps[] | null>(null);
-  const StudentEventRepository = useContext(StudentEventContext);
+  const [registeredStudents, setRegisteredStudents] = useState<BriefStudent[] | null>(null);
 
   // //FIXME: get user id
   const StudentEvent: StudentEventProps = {
@@ -166,7 +160,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
 
   useEffect(() => {
     const getRegisteredStudents = async () => {
-      setRegisteredStudents((await StudentEventRepository.find()).filter((student) => student.EventId === id));
+      setRegisteredStudents(await eventManager.getRegisteredStudents(id));
     };
 
     if (registeredStudents === null) getRegisteredStudents();
@@ -190,13 +184,8 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
 
   const handleRemoveRegistration = (studentId: string) => {
     // Add your code to remove the student registration here
-    const docId = registeredStudents?.find((student) => student.StudentId === studentId)?.id;
-    if (docId) {
-      StudentEventRepository.delete(docId);
-      setRegisteredStudents((registeredStudents || []).filter((student) => student.StudentId !== studentId));
-    } else {
-      alert('Error: Student not found in the registered students list. Please try again.');
-    }
+    eventManager.cancelRegistration(studentId, id);
+    setRegisteredStudents((registeredStudents || []).filter((student) => student.StudentId !== studentId));
   };
 
   const handleShowDetails = () => {
@@ -376,7 +365,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
             <strong>פרטים:</strong> {details}
           </p>
         </Card.Text>
-        {registerd ? (
+        {isRegistered ? (
           <Button variant="secondary" disabled>
             רשום
           </Button>

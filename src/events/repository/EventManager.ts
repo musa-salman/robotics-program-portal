@@ -51,6 +51,12 @@ export interface EventManagerInterface {
    * @returns A promise that resolves to an array of brief event objects.
    */
   getStudentEventsSchedule(studentId: string): Promise<BriefEvent[]>;
+
+  /**
+   * Deletes an event.
+   * @param eventId - The ID of the event to delete.
+   */
+  deleteEvent(eventId: string): Promise<void>;
 }
 
 export class EventManager implements EventManagerInterface {
@@ -110,5 +116,19 @@ export class EventManager implements EventManagerInterface {
 
   async getStudentEventsSchedule(studentId: string): Promise<BriefEvent[]> {
     return this.getStudentEventRepository(studentId).find();
+  }
+
+  async deleteEvent(eventId: string): Promise<void> {
+    const eventRef = doc(this.eventRepository._collection, eventId);
+    const registeredStudents = await this.getRegisteredStudents(eventId);
+
+    const batch = writeBatch(db);
+
+    batch.delete(eventRef);
+    registeredStudents.forEach((student) => {
+      batch.delete(doc(this.getStudentEventRepository(student.id)._collection, eventId));
+    });
+
+    return batch.commit();
   }
 }
