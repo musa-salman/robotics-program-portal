@@ -3,7 +3,7 @@ import { BaseRepository } from '../repositories/BaseRepository';
 import { StudentEventProps } from './StudentEventProps';
 
 export class StudentEventRepository extends BaseRepository<StudentEventProps> {
-  constructor() {
-    super(db, 'students-events');
+  constructor(studentId: string) {
+    super(db, 'students/' + studentId + '/events');
   }
 }
