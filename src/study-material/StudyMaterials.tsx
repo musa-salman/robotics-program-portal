@@ -10,24 +10,22 @@ import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
 import { Alert, TextField } from '@mui/material';
 import MoveList from './MoveList';
-import { Category } from '@mui/icons-material';
+import { StudyMaterialManagement } from './repository/StudyMaterialManagement';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
-type MoveHandler = (updatedCategory: StudyMaterial, oldCategory: string) => void;
+type MoveHandler = (studyMaterial: StudyMaterial) => void;
 
 function StudyMaterials({
   studyMaterial,
-  categories,
   onUpdate,
   onDelete,
-  onMove
+  handleMoveClick
 }: {
   studyMaterial: StudyMaterial;
-  categories: string[];
   onUpdate: UpdateHandler;
   onDelete: DeleteHandler;
-  onMove: MoveHandler;
+  handleMoveClick: MoveHandler;
 }) {
   const storageService = useContext(StorageServiceContext);
   const [isEditing, setIsEditing] = useState(false);
@@ -35,6 +33,7 @@ function StudyMaterials({
   const [editedTitle, setEditedTitle] = useState(studyMaterial.title);
   const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
   const studyMaterialRepository = useContext(StudyMaterialContext);
+  const studyMaterialManagement = new StudyMaterialManagement();
 
   const handleDownload = async () => {
     storageService.download(
@@ -45,7 +44,7 @@ function StudyMaterials({
 
   const handleDelete = async () => {
     storageService.delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename).then(() => {
-      studyMaterialRepository.deleteStudyMaterialFromCategory(studyMaterial.category.id, studyMaterial.id);
+      studyMaterialManagement.studyMaterialRepository.delete(studyMaterial.id);
       onDelete(studyMaterial);
     });
     // TODO catch
@@ -62,8 +61,8 @@ function StudyMaterials({
       description: editedDescription
     };
     console.log(updatedStudyMaterial);
-    studyMaterialRepository
-      .updateStudyMaterialInCategory(studyMaterial.category.id, studyMaterial.id, updatedStudyMaterial)
+    studyMaterialManagement.studyMaterialRepository
+      .update(studyMaterial.id, updatedStudyMaterial)
       .then(() => {
         onUpdate(updatedStudyMaterial);
         console.log(updatedStudyMaterial);
@@ -74,24 +73,21 @@ function StudyMaterials({
       });
   };
 
-  const handleMove = (selectCategory: string) => {
-    const updatedCategory = {
-      ...studyMaterial,
-      category: {
-        ...studyMaterial.category,
-        category: selectCategory
-      }
-    };
-    studyMaterialRepository
-      .moveMaterialToCategory(studyMaterial, studyMaterial.category.category, selectCategory)
-      .then(() => {
-        onMove(updatedCategory, studyMaterial.category.category);
-        setIsMove(false);
-      })
-      .catch((error) => {
-        console.error('Error move study material:', error);
-      });
-  };
+  // const handleMove = (selectCategory: string) => {
+  //   const updatedCategory = {
+  //     ...studyMaterial,
+  //     };
+
+  //     studyMaterialManagement._moveStudyMaterials();
+  //     // .moveMaterialToCategory(studyMaterial, studyMaterial.category.category, selectCategory)
+  //     .then(() => {
+  //       onMove(updatedCategory, studyMaterial.category);
+  //       setIsMove(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error move study material:', error);
+  //     });
+  // };
 
   const handleMoveToggle = async () => {
     setIsMove(!isMove);
@@ -106,7 +102,6 @@ function StudyMaterials({
         handleMoveToggle={handleMoveToggle}
         handleSave={handleSave}
         handleDelete={handleDelete}
-        handleMove={handleMove}
         isEditing={isEditing}
       />
       <br />
@@ -142,7 +137,7 @@ function StudyMaterials({
           <DownloadIcon className="dow-icon" />
         </Button>
       </Card.Body>
-      {isMove && <MoveList categories={categories} onMove={handleMove} />}
+      {/* {isMove && <MoveList categories={categories} onMove={handleMove} />} */}
     </Card>
   );
 }

@@ -11,14 +11,21 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import { Fab } from '@mui/material';
 import NoResultFound from './NoResultFound';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import MoveList from './MoveList';
 import EmptyStudyMaterials from './EmptyStudyMaterials';
+import { StudyMaterialManagement } from './repository/StudyMaterialManagement';
+import { Category } from '../upload-file/Category';
 
 function StudyMaterialContainer() {
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
   const studyMaterialRepository = useContext(StudyMaterialContext);
+  const studyMaterialManagement = new StudyMaterialManagement();
+  const [categoryList, setCategoryList] = useState<Category[] | null>(null);
 
   const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);
+  const [selectedMaterial, setSelectedMaterial] = useState<StudyMaterial | null>(null);
+  const [isMoveMode, setIsMoveMode] = useState(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -26,11 +33,18 @@ function StudyMaterialContainer() {
 
   useEffect(() => {
     const getStudyMaterials = async () => {
-      setStudyMaterials(await studyMaterialRepository.find());
+      setStudyMaterials(await studyMaterialManagement.studyMaterialRepository.find());
     };
 
     if (studyMaterials === null) getStudyMaterials();
   }, [studyMaterials]);
+
+  useEffect(() => {
+    const getCategory = async () => {
+      setCategoryList(await studyMaterialManagement.categoryRepository.find());
+    };
+    if (categoryList === null) getCategory();
+  }, [categoryList]);
 
   const handleUpdate = (updatedMaterial: StudyMaterial) => {
     const updatedMaterials = (studyMaterials || []).map((material) =>
@@ -49,6 +63,17 @@ function StudyMaterialContainer() {
     setStudyMaterials(studyMaterials);
   };
 
+  const handelDeleteAll = () => {
+    // studyMaterialManagement.categoryRepository.deleteAll();
+  };
+
+  const handleMoveClick = (studyMaterial: StudyMaterial) => {
+    setSelectedMaterial(studyMaterial);
+    setIsMoveMode(true);
+  };
+
+  const handleMove = (category: string) => {};
+
   if (studyMaterials === null) {
     return <>loading</>;
   }
@@ -61,10 +86,16 @@ function StudyMaterialContainer() {
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
+  console.log(studyMaterials);
+  console.log('categories', categories);
   return (
     <>
-      {/* <MoveList categories={categories || []} /> */}
-      <EmptyStudyMaterials handleAdd={handleAdd} />;
+      {/* <MoveList
+        categories={categoryNames}
+        onMove={handleMove}
+        onCancel={() => setIsMoveMode(false)}
+      /> */}
+
       <div className="btn-search">
         <SearchBar
           studyMaterials={studyMaterials || []}
@@ -72,16 +103,21 @@ function StudyMaterialContainer() {
           query={query}
           setQuery={setQuery}
         />
-        <Fab className="adde-btn" aria-label="add" onClick={handleShow}>
-          <AddIcon />
-        </Fab>
+        <div className="btns">
+          <Fab className="adde-btn" aria-label="add" onClick={handleShow}>
+            <AddIcon />
+          </Fab>
+          <Fab className="del-btn" aria-label="add" onClick={handelDeleteAll}>
+            <DeleteForeverIcon />
+          </Fab>
+        </div>
       </div>
       {searchResults?.length === 0 ? (
         <NoResultFound />
       ) : (
         (categories || []).map((category, index) => (
-          <Card className="primary">
-            <Card.Header className="Card-Header" key={index}>
+          <Card className="primary" key={index}>
+            <Card.Header className="Card-Header">
               <div>
                 <h2>{category}</h2>
               </div>
@@ -101,6 +137,7 @@ function StudyMaterialContainer() {
                       studyMaterial={studyMaterial}
                       onUpdate={handleUpdate}
                       onDelete={handleDelete}
+                      handleMoveClick={handleMoveClick}
                     />
                   ))}
               </div>

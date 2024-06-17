@@ -13,18 +13,11 @@ interface MySpeedDialProps {
   handleMoveToggle: MouseEventHandler<HTMLDivElement> | undefined;
   handleSave: () => void;
   handleDelete: () => void;
-  handleMove: (selectCategory: string) => void;
+  // handleMove: (selectCategory: string) => void;
   isEditing: boolean;
 }
 
-function MySpeedDial({
-  handleEditToggle,
-  handleMoveToggle,
-  handleSave,
-  handleDelete,
-  handleMove,
-  isEditing
-}: MySpeedDialProps) {
+function MySpeedDial({ handleEditToggle, handleMoveToggle, handleSave, handleDelete, isEditing }: MySpeedDialProps) {
   let actions = [];
 
   if (!isEditing) {

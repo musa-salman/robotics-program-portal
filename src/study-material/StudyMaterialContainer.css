@@ -23,14 +23,27 @@
   justify-content: space-between;
 }
 
+.btns {
+  margin-left: 14px;
+}
+
 .btn-search .adde-btn {
-  background-color: rgb(16, 16, 144);
+  background-color: rgb(236, 222, 66);
   color: whitesmoke;
   margin-left: 18px;
 }
 
 .btn-search .adde-btn:hover {
-  background-color: rgb(53, 53, 212);
+  background-color: rgb(226, 211, 47);
+}
+
+.btn-search .del-btn {
+  color: whitesmoke;
+  background-color: rgb(222, 86, 86);
+}
+
+.btn-search .del-btn:hover {
+  background-color: rgb(195, 64, 64);
 }
 
 .Card-Header .edit-button {
