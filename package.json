@@ -24,6 +24,7 @@
     "@mui/x-data-grid": "^7.6.2",
     "bootstrap": "^5.3.3",
     "firebase": "^10.12.0",
+    "libphonenumber-js": "^1.11.3",
     "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
@@ -34,6 +35,8 @@
     "stylis-plugin-rtl": "^2.1.1"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.14.2",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",

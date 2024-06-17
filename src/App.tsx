@@ -26,6 +26,7 @@ function App() {
             <Route path="/" element={<Banner />} />
             <Route path="/events" element={<EventContainer />} />
             <Route path="/students" element={<StudentsManagement />} />
+            <Route path="/register" element={<RegisterComponent />} />
             <Route
               path="/dashboard"
               element={
