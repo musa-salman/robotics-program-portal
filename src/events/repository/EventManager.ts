@@ -57,6 +57,14 @@ export interface EventManagerInterface {
    * @param eventId - The ID of the event to delete.
    */
   deleteEvent(eventId: string): Promise<void>;
+
+  /**
+   * Checks if a student is registered for an event.
+   * @param studentId - The ID of the student.
+   * @param eventId - The ID of the event.
+   * @returns A promise that resolves to a boolean indicating if the student is registered.
+   */
+  isStudentRegistered(studentId: string, eventId: string): Promise<boolean>;
 }
 
 export class EventManager implements EventManagerInterface {
@@ -116,6 +124,13 @@ export class EventManager implements EventManagerInterface {
 
   async getStudentEventsSchedule(studentId: string): Promise<BriefEvent[]> {
     return this.getStudentEventRepository(studentId).find();
+  }
+
+  async isStudentRegistered(studentId: string, eventId: string): Promise<boolean> {
+    const studentEventRepository = this.getStudentEventRepository(studentId);
+    const studentEventDoc = await studentEventRepository.findOne(eventId);
+
+    return studentEventDoc !== null;
   }
 
   async deleteEvent(eventId: string): Promise<void> {
