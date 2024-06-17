@@ -5,7 +5,7 @@ import { StudyMaterialRepository } from './StudyMaterialRepository';
 import { db } from '../../firebase';
 import { CachingRepository } from '../../repositories/caching/CachingRepository';
 
-export interface IUnitOfWork {
+export interface StudyMaterialUnitOfWork {
   addStudyMaterialToCategory(
     categoryId: string,
     data: StudyMaterial
@@ -28,7 +28,7 @@ export interface IUnitOfWork {
  * Represents the management class for study materials.
  * Implements the IUnitOfWork interface.
  */
-export class StudyMaterialManagement implements IUnitOfWork {
+export class StudyMaterialManagement implements StudyMaterialUnitOfWork {
   readonly categoryRepository: CategoryRepository;
 
   // Map of study material repositories, keyed by category ID.
