@@ -10,6 +10,7 @@ import { StudyMaterialContext } from '../study-material/repository/StudyMaterial
 import { StudyMaterial } from '../study-material/StudyMaterial';
 import { AddEditCategories } from './addOrEditCategories';
 import { StorageServiceContext } from '../storage-service/StorageContext';
+import GPT from '../gpt-service/GPTComponent';
 
 type SelectedItem = string;
 interface UploadFileComponentProps {
@@ -176,15 +177,20 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
             </Container>
           </Navbar>
 
-          <FloatingLabel className="my-3" controlId="floatingTextarea1" label="תיאור">
+          <Form.Label>תיאור</Form.Label>
+          <GPT
+            initialValue=""
+            getData={() =>
+              studyMaterial.description + ' ' + studyMaterial.title + ', ' + selectedItem + ' תעשה מזה תיאור'
+            }>
             <Form.Control
               as="textarea"
               name="description"
-              placeholder="Leave a comment here"
+              placeholder="הכנס תיאור"
               onChange={(event) => handleInput(event)}
               style={{ height: '100px', backgroundColor: '#f5f4f3', color: 'black', border: 'none' }}
             />
-          </FloatingLabel>
+          </GPT>
 
           <Modal.Footer className="justify-content-center">
             <Button variant="primary" className="mx-3 px-5" onClick={handleSubmit}>

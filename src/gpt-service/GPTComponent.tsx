@@ -10,10 +10,11 @@ import { GPTServiceContext } from './GPTContext';
 
 interface GPTProps {
   initialValue: string;
+  getData?: () => string;
   children: React.ReactNode;
 }
 
-const GPT: React.FC<GPTProps> = ({ initialValue, children }) => {
+const GPT: React.FC<GPTProps> = ({ initialValue, getData, children }) => {
   const [textValue, setTextValue] = useState(initialValue);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [suggestedValue, setSuggestedValue] = useState('');
@@ -62,6 +63,15 @@ const GPT: React.FC<GPTProps> = ({ initialValue, children }) => {
     });
   };
 
+  const handleGenerateText = () => {
+    if (getData) {
+      const data = getData();
+      gptService.generateWithInput(data).then((generatedText) => {
+        setTextValue(generatedText);
+      });
+    }
+  };
+
   return (
     <>
       <Tooltip title="אפשרויות">
@@ -79,6 +89,11 @@ const GPT: React.FC<GPTProps> = ({ initialValue, children }) => {
         <MenuItem onClick={handleShortenText}>
           <TrendingFlatIcon sx={{ marginRight: 1 }} /> קצר
         </MenuItem>
+        {getData && (
+          <MenuItem onClick={handleGenerateText}>
+            <AutoAwesome sx={{ marginRight: 1 }} /> צור
+          </MenuItem>
+        )}
         <MenuItem onClick={handleDiscardChanges}>בטל שינויים</MenuItem>
         <MenuItem onClick={handleSaveChanges}>שמור שינויים</MenuItem>
       </Menu>
