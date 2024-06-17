@@ -16,7 +16,6 @@ const hasOnlyNumbers = (phoneNumber: string | undefined): boolean => {
     }
     const numberRegex = /^[0-9]+$/;
     if(numberRegex.test(phoneNumber)){
-        // const phoneUtil = PhoneNumber.PhoneNumberUtil.getInstance();
         const number = parsePhoneNumberFromString(phoneNumber, 'IL');
         return !!number && number.isValid();
     }
