@@ -99,6 +99,7 @@ const GPT: React.FC<GPTProps> = ({
   };
 
   const handleImproveText = () => {
+    setAnchorEl(null);
     setLoading(true);
     gptService.improveText(textValue).then((improvedText) => {
       setSuggestedValue(improvedText);
@@ -107,6 +108,7 @@ const GPT: React.FC<GPTProps> = ({
   };
 
   const handleSimplifyText = () => {
+    setAnchorEl(null);
     setLoading(true);
     gptService.simplify(textValue).then((simplifiedText) => {
       setSuggestedValue(simplifiedText);
@@ -115,6 +117,7 @@ const GPT: React.FC<GPTProps> = ({
   };
 
   const handleShortenText = () => {
+    setAnchorEl(null);
     setLoading(true);
     gptService.makeItShorter(textValue).then((shortenedText) => {
       setSuggestedValue(shortenedText);
@@ -123,6 +126,7 @@ const GPT: React.FC<GPTProps> = ({
   };
 
   const handleGenerateText = () => {
+    setAnchorEl(null);
     if (getData) {
       const data = getData();
       setLoading(true);
