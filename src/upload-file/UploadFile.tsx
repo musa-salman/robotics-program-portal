@@ -1,6 +1,5 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Modal from 'react-bootstrap/Modal';
 import { useContext, useEffect, useState } from 'react';
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
@@ -12,7 +11,6 @@ import { AddEditCategories } from './addOrEditCategories';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import GPT from '../gpt-service/GPTComponent';
 import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
-import GPTSelector from '../gpt-service/GPTList';
 
 type SelectedItem = string;
 interface UploadFileComponentProps {
