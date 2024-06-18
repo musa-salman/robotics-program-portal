@@ -11,6 +11,8 @@ import { StudyMaterial } from '../study-material/StudyMaterial';
 import { AddEditCategories } from './addOrEditCategories';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import GPT from '../gpt-service/GPTComponent';
+import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
+import GPTSelector from '../gpt-service/GPTList';
 
 type SelectedItem = string;
 interface UploadFileComponentProps {
@@ -123,7 +125,11 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
       <Modal.Body className="backgroundStyle">
         <Form className="px-3 mx-3" noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group className="px-1">
-            <FloatingLabel controlId="floatingInput" label="כותרת">
+            <Form.Label>כותרת</Form.Label>
+            <GPT
+              initialValue=""
+              getData={() => suggestMaterialTitles(studyMaterial)}
+              options={{ simplify: false, improve: false, shorten: false }}>
               <Form.Control
                 type="text"
                 name="title"
@@ -132,7 +138,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
                 placeholder="כותרת"
                 onChange={(event) => handleInput(event)}
               />
-            </FloatingLabel>
+            </GPT>
           </Form.Group>
 
           <Form.Group className="position-relative my-3 px-2" controlId="validationCustom02">
@@ -178,11 +184,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
           </Navbar>
 
           <Form.Label>תיאור</Form.Label>
-          <GPT
-            initialValue=""
-            getData={() =>
-              studyMaterial.description + ' ' + studyMaterial.title + ', ' + selectedItem + ' תעשה מזה תיאור'
-            }>
+          <GPT initialValue="" getData={() => generateMaterialDescription(studyMaterial)}>
             <Form.Control
               as="textarea"
               name="description"
