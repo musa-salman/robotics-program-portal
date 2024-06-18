@@ -10,6 +10,7 @@ import AdminMenu from './AdminOptions';
 import { CircularProgress, Box, IconButton } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { AuthContext } from '../authentication/AuthContext';
 
 export interface EventProps {
   date: Date;
@@ -59,6 +60,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     setFile(e.target.files?.[0] || null); // Provide a default value of null for the file state variable
   };
 
+  const { user } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
 
   const [isRegistered, setRegister] = useState(false);
@@ -99,6 +101,13 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     setShowDetails(!showDetails);
   };
 
+  const student: BriefStudent = {
+    id: 'getUserId()',
+    name: 'getName()',
+    email: 'getEmail()',
+    phone: 'getPhone()'
+  };
+
   const handleSaveEdit = async () => {
     const event: IEvent = {
       date: formData.date,
@@ -136,7 +145,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     onEventDelete(id);
     setShowModalDelete(false);
 
-    setRegisteredStudents((registeredStudents || []).filter((e) => e.EventId !== id));
+    setRegisteredStudents((registeredStudents || []).filter((e) => e.id !== id));
     // Create a reference to the file to delete
     const filePath = '/event-img/' + id;
     // Delete the file
@@ -146,16 +155,10 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   const [registeredStudents, setRegisteredStudents] = useState<BriefStudent[] | null>(null);
 
   // //FIXME: get user id
-  const StudentEvent: StudentEventProps = {
-    StudentId: 'getUserID', // get user id
-    EventId: formData.id,
-    id: ''
-  };
 
-  const checkIfRegistered = () => {
-    if (registeredStudents?.some((user) => user.StudentId === StudentEvent.StudentId)) {
-      setRegister(true);
-    }
+  const checkIfRegistered = async () => {
+    setRegister(await eventManager.isStudentRegistered(student.id, id));
+    console.log('isRegistered', isRegistered);
   };
 
   useEffect(() => {
@@ -169,15 +172,9 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
 
   const handleSaveRegister = async () => {
     setShowModalRegister(false);
-    if (
-      registeredStudents &&
-      !registeredStudents.some((user) => user.StudentId === StudentEvent.StudentId) &&
-      id !== ''
-    ) {
-      StudentEvent.EventId = formData.id;
-      const docRef = await StudentEventRepository.create(StudentEvent);
-      StudentEvent.id = docRef.id;
-      registeredStudents?.push(StudentEvent);
+    if (registeredStudents && !registeredStudents.find((user) => user.id === student.id) && id !== '') {
+      eventManager.registerStudentForEvent(student, id);
+      registeredStudents?.push(student);
       setRegister(true);
     }
   };
@@ -185,7 +182,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   const handleRemoveRegistration = (studentId: string) => {
     // Add your code to remove the student registration here
     eventManager.cancelRegistration(studentId, id);
-    setRegisteredStudents((registeredStudents || []).filter((student) => student.StudentId !== studentId));
+    setRegisteredStudents((registeredStudents || []).filter((student) => student.id !== studentId));
   };
 
   const handleShowDetails = () => {
@@ -205,12 +202,9 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
               <TableBody>
                 {registeredStudents?.map((student, index) => (
                   <TableRow key={index}>
-                    <TableCell>{student.StudentId}</TableCell>
+                    <TableCell>{student.name}</TableCell>
                     <TableCell>
-                      <IconButton
-                        onClick={() => handleRemoveRegistration(student.StudentId)}
-                        aria-label="delete"
-                        size="small">
+                      <IconButton onClick={() => handleRemoveRegistration(student.id)} aria-label="delete" size="small">
                         <DeleteIcon fontSize="inherit" />
                       </IconButton>
                     </TableCell>
