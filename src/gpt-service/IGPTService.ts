@@ -1,5 +1,5 @@
 export interface IGPTService {
-  generateText(prompt: string): Promise<string>;
+  generateText(prompt: string): Promise<string[]>;
 
   simplify(text: string): Promise<string>;
 
