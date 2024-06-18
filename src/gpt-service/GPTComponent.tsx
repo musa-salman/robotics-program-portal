@@ -9,6 +9,7 @@ import {
   AutoAwesome
 } from '@mui/icons-material';
 import { GPTServiceContext } from './GPTContext';
+import './GPT.css';
 
 interface GPTOptions {
   simplify?: boolean;
@@ -28,8 +29,18 @@ const SuggestedText: React.FC<{
   onAccept: () => void;
   onDiscard: () => void;
 }> = ({ suggestedValue, onAccept, onDiscard }) => (
-  <Box mt={2} p={2} border={1} borderColor="primary.main" borderRadius={2} bgcolor="primary.light">
-    <Typography variant="body1" color="textPrimary">
+  <Box
+    mt={2}
+    p={2}
+    border={1}
+    borderColor="grey.300"
+    borderRadius={1}
+    bgcolor="grey.100"
+    boxShadow={1}
+    position="relative"
+    zIndex={1}
+    className="suggested-text">
+    <Typography variant="body1" color="textSecondary">
       {suggestedValue}
     </Typography>
     <Box mt={1} display="flex" justifyContent="flex-end">
@@ -45,7 +56,7 @@ const SuggestedText: React.FC<{
 
 const LoadingComponent: React.FC = () => (
   <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
-    <AutoAwesome fontSize="large" sx={{ color: 'primary.main', animation: 'rotate 2s linear infinite' }} />
+    <AutoAwesome sx={{ fontSize: 40, animation: 'rotate 2s linear infinite' }} className="ai-icon-loading" />
     <style>
       {`
                 @keyframes rotate {
@@ -139,33 +150,34 @@ const GPT: React.FC<GPTProps> = ({
 
   return (
     <>
-      <Tooltip title="Options">
+      <Tooltip title="פעולות על הטקסט" arrow>
         <IconButton onClick={handleMenuOpen} size="large">
-          <AutoAwesome />
+          <AutoAwesome className="ai-icon" />
         </IconButton>
       </Tooltip>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
         {options.simplify && (
           <MenuItem onClick={handleSimplifyText}>
-            <TextFieldsIcon />
+            <TextFieldsIcon className="ai-icon" />
             <span>פשט</span>
           </MenuItem>
         )}
         {options.improve && (
           <MenuItem onClick={handleImproveText}>
-            <EditIcon />
+            <EditIcon className="ai-icon" />
             <span>שפר</span>
           </MenuItem>
         )}
         {options.shorten && (
           <MenuItem onClick={handleShortenText}>
-            <TrendingFlatIcon />
+            <TrendingFlatIcon className="ai-icon" />
             <span>קצר</span>
           </MenuItem>
         )}
         {getData && (
           <MenuItem onClick={handleGenerateText}>
-            <AutoAwesome sx={{ marginRight: 1 }} /> צור
+            <AutoAwesome className="ai-icon" />
+            <span>צור</span>
           </MenuItem>
         )}
       </Menu>
