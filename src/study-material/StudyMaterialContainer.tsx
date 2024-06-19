@@ -17,8 +17,9 @@ import EmptyStudyMaterials from './EmptyStudyMaterials';
 import { Category } from '../upload-file/Category';
 
 function StudyMaterialContainer() {
-  const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
   const materialManager = useContext(MaterialContext);
+
+  const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
   const [categoryList, setCategoryList] = useState<Category[] | null>(null);
 
   const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);

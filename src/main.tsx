@@ -6,7 +6,7 @@ import ThemeProvider from 'react-bootstrap/esm/ThemeProvider';
 import { BrowserRouter } from 'react-router-dom';
 import UserProvider from './users/UserContext.tsx';
 import CategoryProvider from './upload-file/CategoryContext.tsx';
-import StudyMaterialProvider from './study-material/repository/StudyMaterialContext.tsx';
+import MaterialProvider from './study-material/repository/StudyMaterialContext.tsx';
 import StorageServiceProvider from './storage-service/StorageContext.tsx';
 import EventManagerProvider from './events/repository/EventManagerContext.tsx';
 import { AuthProvider } from './authentication/AuthContext.tsx';
@@ -43,7 +43,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <UserProvider>
               <GPTServiceProvider>
                 <CategoryProvider>
-                  <StudyMaterialProvider>
+                  <MaterialProvider>
                     <EventManagerProvider>
                       <StudentProvider>
                         <StorageServiceProvider>
@@ -55,7 +55,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                         </StorageServiceProvider>
                       </StudentProvider>
                     </EventManagerProvider>
-                  </StudyMaterialProvider>
+                  </MaterialProvider>
                 </CategoryProvider>
               </GPTServiceProvider>
             </UserProvider>

@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import './UploadFile.css';
 import { Category } from './Category';
-import { StudyMaterialContext } from '../study-material/repository/StudyMaterialContext';
+import { MaterialContext } from '../study-material/repository/StudyMaterialContext';
 import { StudyMaterial } from '../study-material/StudyMaterial';
 import { AddEditCategories } from './addOrEditCategories';
 import { StorageServiceContext } from '../storage-service/StorageContext';
@@ -27,7 +27,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const [showAddEdit, setShowAddEdit] = useState(false);
   const handleCloseAddEdit = () => setShowAddEdit(false);
   const handleShowAddEdit = () => setShowAddEdit(true);
-  const studyMaterialManagement = useContext(StudyMaterialContext);
+  const studyMaterialManagement = useContext(MaterialContext);
   const [validated, setValidated] = useState(false);
 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({

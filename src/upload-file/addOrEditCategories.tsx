@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { Button, Col, FloatingLabel, Form, Modal, Row } from 'react-bootstrap';
 import { Category } from './Category';
-import { StudyMaterialContext } from '../study-material/repository/StudyMaterialContext';
+import { MaterialContext } from '../study-material/repository/StudyMaterialContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import './addorEditCategories.css';
@@ -21,7 +21,7 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
   const [category, setCategory] = useState('');
   const [editcategory, setEditCategory] = useState('');
   const [editingItem, setEditingItem] = useState<Category | null>(null);
-  const studyMaterialManagement = useContext(StudyMaterialContext);
+  const studyMaterialManagement = useContext(MaterialContext);
   const [showFirstButton, setShowFirstButton] = useState(true);
 
   const handleEditItem = (item: Category) => {
