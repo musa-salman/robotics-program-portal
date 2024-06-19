@@ -1,4 +1,5 @@
 export interface Register {
+  id: string;
   studentFirstName?: string;
   studentLastName: string;
   studentPhone: string;
