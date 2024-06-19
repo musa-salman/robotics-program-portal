@@ -163,12 +163,9 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
         {/* <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} handleDetails={handleDetails} /> */}
         <Card.Title>{title}</Card.Title>
         <Card.Text>
-          <p>
-            <strong>תאריך:</strong> {moment(date).format('YYYY-MM-DD')}
-          </p>
-          <p>
-            <strong>פרטים:</strong> {details}
-          </p>
+          <strong>תאריך:</strong> {moment(date).format('YYYY-MM-DD')}
+          <br />
+          <strong>פרטים:</strong> {details}
         </Card.Text>
         {/* {isRegistered ? (
           <Button variant="secondary" disabled>
