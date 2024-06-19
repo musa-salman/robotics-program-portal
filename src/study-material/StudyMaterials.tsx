@@ -12,6 +12,8 @@ import { Alert, TextField } from '@mui/material';
 import MoveList from './MoveList';
 import { StudyMaterialManagement } from './repository/StudyMaterialManagement';
 import { Category } from '../upload-file/Category';
+import GPT from '../gpt-service/GPTComponent';
+import { suggestMaterialTitles } from '../upload-file/StudyMaterialPrompts';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -109,26 +111,30 @@ function StudyMaterials({
       <br />
       <Card.Body className="bodycard">
         {isEditing ? (
-          <TextField
-            value={editedTitle}
-            onChange={(e) => setEditedTitle(e.target.value)}
-            variant="outlined"
-            fullWidth
-          />
+          <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>
+            <TextField
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+              variant="outlined"
+              fullWidth
+            />
+          </GPT>
         ) : (
           <Card.Title className="title-card">{studyMaterial.title}</Card.Title>
         )}
         <hr className="custom-hr" />
         <div>
           {isEditing ? (
-            <TextField
-              value={editedDescription}
-              onChange={(e) => setEditedDescription(e.target.value)}
-              multiline
-              rows={4}
-              variant="outlined"
-              fullWidth
-            />
+            <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>
+              <TextField
+                value={editedDescription}
+                onChange={(e) => setEditedDescription(e.target.value)}
+                multiline
+                rows={4}
+                variant="outlined"
+                fullWidth
+              />
+            </GPT>
           ) : (
             <Card.Text className="description">{studyMaterial.description}</Card.Text>
           )}
