@@ -88,7 +88,16 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
             <Modal.Title>הוסף אירוע</Modal.Title>
           </Modal.Header>
           <Modal.Body>{addForm()}</Modal.Body>
-          <Modal.Footer></Modal.Footer>
+          <Modal.Footer>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <Button variant="secondary" onClick={handleCloseAddEvent}>
+                סגור
+              </Button>
+              <Button variant="primary" type="submit">
+                הוסף
+              </Button>
+            </div>
+          </Modal.Footer>
         </Modal>
       </>
     );
@@ -160,14 +169,6 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
           </small>{' '}
           {/* Display the character count */}
         </Form.Group>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <Button variant="secondary" onClick={handleCloseAddEvent}>
-            סגור
-          </Button>
-          <Button variant="primary" type="submit">
-            הוסף
-          </Button>
-        </div>
       </Form>
     );
   }
