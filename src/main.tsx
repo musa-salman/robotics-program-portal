@@ -8,7 +8,7 @@ import UserProvider from './users/UserContext.tsx';
 import CategoryProvider from './upload-file/CategoryContext.tsx';
 import StudyMaterialProvider from './study-material/repository/StudyMaterialContext.tsx';
 import StorageServiceProvider from './storage-service/StorageContext.tsx';
-import EventProvider from './events/EventContext.tsx';
+import EventManagerProvider from './events/repository/EventManagerContext.tsx';
 import { AuthProvider } from './authentication/AuthContext.tsx';
 import StudentProvider from './students-management/StudentContext.tsx';
 import { CacheProvider } from '@emotion/react';
@@ -44,7 +44,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <GPTServiceProvider>
                 <CategoryProvider>
                   <StudyMaterialProvider>
-                    <EventProvider>
+                    <EventManagerProvider>
                       <StudentProvider>
                         <StorageServiceProvider>
                           <RegisterProvider>
@@ -54,7 +54,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                           </RegisterProvider>
                         </StorageServiceProvider>
                       </StudentProvider>
-                    </EventProvider>
+                    </EventManagerProvider>
                   </StudyMaterialProvider>
                 </CategoryProvider>
               </GPTServiceProvider>

@@ -1,13 +1,16 @@
-import React, { useContext, useState } from 'react';
-import { EventContext } from './EventContext';
+import React, { useContext, useState, useEffect } from 'react';
+import { eventManagerContext } from './repository/EventManagerContext';
 import { Button, Card, Modal, Form } from 'react-bootstrap';
-import { IEvent } from './Event';
+import { IEvent } from './repository/Event';
 import './EventCard.css';
 import moment from 'moment';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import AdminMenu from './AdminOptions';
-import { CircularProgress, Box } from '@mui/material';
+import { CircularProgress, Box, IconButton } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { AuthContext } from '../authentication/AuthContext';
 
 export interface EventProps {
   date: Date;
@@ -57,9 +60,10 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     setFile(e.target.files?.[0] || null); // Provide a default value of null for the file state variable
   };
 
+  const { user } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [registerd, setRegister] = useState(false);
+  const [isRegistered, setRegister] = useState(false);
   const [showModalRegister, setShowModalRegister] = useState(false);
   const handleCloseRegister = () => setShowModalRegister(false);
   const handleShowRegister = () => setShowModalRegister(true);
@@ -75,7 +79,10 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   const [file, setFile] = useState<File | null>(null);
   const [_uploadProgress, setUploadProgress] = useState(0);
 
-  const eventRepository = useContext(EventContext);
+  const [showDetails, setShowDetails] = useState(false);
+
+  const eventManager = useContext(eventManagerContext);
+  const eventRepository = eventManager.eventRepository;
   const storageService = useContext(StorageServiceContext);
 
   function handleDelete() {
@@ -89,6 +96,17 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   function handleRegister() {
     handleShowRegister();
   }
+
+  const handleDetails = () => {
+    setShowDetails(!showDetails);
+  };
+
+  const student: BriefStudent = {
+    id: 'getUserId()',
+    name: 'getName()',
+    email: 'getEmail()',
+    phone: 'getPhone()'
+  };
 
   const handleSaveEdit = async () => {
     const event: IEvent = {
@@ -121,23 +139,83 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
       onEventEdit(formData);
       eventRepository.update(id, event);
     }
-    //db
   };
 
   const handleSaveDelete = async () => {
     onEventDelete(id);
     setShowModalDelete(false);
-    await eventRepository.delete(id);
+
+    setRegisteredStudents((registeredStudents || []).filter((e) => e.id !== id));
     // Create a reference to the file to delete
     const filePath = '/event-img/' + id;
     // Delete the file
     storageService.delete(filePath);
   };
 
-  const handleSaveRegister = () => {
-    setRegister(true);
+  const [registeredStudents, setRegisteredStudents] = useState<BriefStudent[] | null>(null);
+
+  // //FIXME: get user id
+
+  const checkIfRegistered = async () => {
+    setRegister(await eventManager.isStudentRegistered(student.id, id));
+    console.log('isRegistered', isRegistered);
+  };
+
+  useEffect(() => {
+    const getRegisteredStudents = async () => {
+      setRegisteredStudents(await eventManager.getRegisteredStudents(id));
+    };
+
+    if (registeredStudents === null) getRegisteredStudents();
+    if (registeredStudents !== null) checkIfRegistered();
+  }, [registeredStudents]);
+
+  const handleSaveRegister = async () => {
     setShowModalRegister(false);
-    //db
+    if (registeredStudents && !registeredStudents.find((user) => user.id === student.id) && id !== '') {
+      eventManager.registerStudentForEvent(student, id);
+      registeredStudents?.push(student);
+      setRegister(true);
+    }
+  };
+
+  const handleRemoveRegistration = (studentId: string) => {
+    // Add your code to remove the student registration here
+    eventManager.cancelRegistration(studentId, id);
+    setRegisteredStudents((registeredStudents || []).filter((student) => student.id !== studentId));
+  };
+
+  const handleShowDetails = () => {
+    return (
+      <div>
+        <Modal show={showDetails} onHide={handleDetails} animation={false} style={{ display: 'center' }}>
+          <Modal.Header closeButton>
+            <Modal.Title>רשומים לאירוע</Modal.Title>
+          </Modal.Header>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>סך הסטודנטים הרשומים : {registeredStudents?.length}</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {registeredStudents?.map((student, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{student.name}</TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => handleRemoveRegistration(student.id)} aria-label="delete" size="small">
+                        <DeleteIcon fontSize="inherit" />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Modal>
+      </div>
+    );
   };
 
   function editWindow() {
@@ -271,7 +349,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
         style={{ display: isLoading ? 'none' : 'block' }}
       />
       <Card.Body style={{ marginTop: '150px' }}>
-        <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} />
+        <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} handleDetails={handleDetails} />
         <Card.Title>{title}</Card.Title>
         <Card.Text>
           <p>
@@ -281,7 +359,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
             <strong>פרטים:</strong> {details}
           </p>
         </Card.Text>
-        {registerd ? (
+        {isRegistered ? (
           <Button variant="secondary" disabled>
             רשום
           </Button>
@@ -294,6 +372,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
       {editWindow()}
       {deleteWindow()}
       {registerWindow()}
+      {handleShowDetails()}
     </Card>
   );
 };

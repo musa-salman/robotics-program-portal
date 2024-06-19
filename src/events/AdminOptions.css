@@ -15,6 +15,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.details-button,
 .edit-button,
 .delete-button {
   padding: 10px;
@@ -24,11 +25,18 @@
 .edit-button:hover {
   background-color: #f0f0f0;
 }
+
 .delete-button:hover {
   color: white;
   background-color: #ff0000;
 }
 
+.details-button:hover {
+  color: white;
+  background-color: #b0e6b1;
+}
+
+.details-button > MenuItem,
 .edit-button > MenuItem,
 .delete-button > MenuItem {
   font-size: 16px;

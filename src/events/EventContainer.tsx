@@ -1,8 +1,8 @@
 import EventCard, { EventProps } from './EventCard';
 import { Button, Modal, Form } from 'react-bootstrap';
 import React, { useState, useEffect, useContext } from 'react';
-import { EventContext } from './EventContext';
-import { IEvent } from './Event';
+import { eventManagerContext } from './repository/EventManagerContext';
+import { IEvent } from './repository/Event';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { CircularProgress, Box } from '@mui/material';
@@ -24,9 +24,11 @@ const EventContainer = () => {
   const [render, setRender] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [_uploadProgress, setUploadProgress] = useState(0);
-  const eventRepository = useContext(EventContext);
-  const storageService = useContext(StorageServiceContext);
   const [showModalAllEvents, setShowModalAllEvents] = useState(true);
+
+  const eventManager = useContext(eventManagerContext);
+  const eventRepository = eventManager.eventRepository;
+  const storageService = useContext(StorageServiceContext);
 
   const handleAllEvents = () => {
     setShowModalAllEvents(!showModalAllEvents);
@@ -106,6 +108,7 @@ const EventContainer = () => {
     handleShowAddEvent();
     const docRef = await eventRepository.create(event);
     event.id = docRef.id;
+    formData.id = docRef.id;
     if (file) {
       await storageService.upload(
         file,
