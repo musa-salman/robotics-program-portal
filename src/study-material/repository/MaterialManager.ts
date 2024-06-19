@@ -5,7 +5,7 @@ import { WriteBatch, doc, writeBatch } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { StudyMaterial } from '../StudyMaterial';
 
-export interface StudyMaterialUnitOfWork {
+export interface IMaterialManager {
   /**
    * Deletes a category.
    * @param categoryId - The ID of the category to delete.
@@ -31,10 +31,9 @@ export interface StudyMaterialUnitOfWork {
 }
 
 /**
- * Represents the management class for study materials.
- * Implements the IUnitOfWork interface.
+ * Represents a study material management service.
  */
-export class StudyMaterialManagement implements StudyMaterialUnitOfWork {
+export class MaterialManager implements IMaterialManager {
   readonly categoryRepository: CategoryRepository;
   readonly studyMaterialRepository: StudyMaterialRepository;
 
