@@ -1,4 +1,3 @@
-// AddEvent.tsx
 import React, { useContext, useState } from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
 import { EventProps } from './EventCard';
@@ -76,6 +75,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
         }
       );
     } else {
+      formData.image = event.imageURL;
       addEvent(formData);
     }
   }
@@ -143,7 +143,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
         </Form.Group>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>העלאת תמונה</Form.Label>
-          <Form.Control type="file" accept="image/*" onChange={handleImageChange} />
+          <Form.Control required type="file" accept="image/*" onChange={handleImageChange} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label>פרטים</Form.Label>

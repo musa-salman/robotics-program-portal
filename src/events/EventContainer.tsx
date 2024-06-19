@@ -60,15 +60,21 @@ const EventContainer = () => {
 
   function onEventDelete(id: string) {
     setEvents((events || []).filter((e) => e.id !== id));
-    setRender(render === 1 ? 0 : 1);
   }
 
-  function onEventEdit(event: EventProps) {
-    const index = (events || []).findIndex((e) => e.id === event.id);
-    if (index !== -1) {
-      (events || [])[index] = event;
-      setRender(render === 1 ? 0 : 1);
-    }
+  function onEventEdit(updatedEvent: EventProps) {
+    setEvents((prevEvents) => {
+      if (!prevEvents) return [];
+      const index = prevEvents.findIndex((event) => event.id === updatedEvent.id);
+      if (index !== -1) {
+        // Create a new array with the updated event
+        const newEvents = [...prevEvents];
+        newEvents[index] = updatedEvent;
+        return newEvents;
+      }
+      // If the event was not found, return the previous state
+      return prevEvents;
+    });
   }
 
   if (events === null) {
