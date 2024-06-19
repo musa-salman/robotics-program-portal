@@ -13,12 +13,12 @@ import {
 
 import { Register } from './Register';
 
-interface Page4ComponentProps {
+interface SubmissionFormProps {
   setRegister: React.Dispatch<React.SetStateAction<Register>>;
   register: Register;
 }
 
-const SubmissionForm: React.FC<Page4ComponentProps> = ({ setRegister, register }) => {
+const SubmissionForm: React.FC<SubmissionFormProps> = ({ setRegister, register }) => {
   const handleChange = (event: any) => {
     const { name, value } = event.target;
     setRegister((prevData) => ({ ...prevData, [name]: value }));
