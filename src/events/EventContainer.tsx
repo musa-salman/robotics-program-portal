@@ -1,10 +1,8 @@
 import EventCard, { EventProps } from './EventCard';
-import { Button, Modal, Form } from 'react-bootstrap';
-import React, { useState, useEffect, useContext } from 'react';
+import { Button } from 'react-bootstrap';
+import { useState, useEffect, useContext } from 'react';
 import { eventManagerContext } from './repository/EventManagerContext';
 import { IEvent } from './repository/Event';
-import { StorageServiceContext } from '../storage-service/StorageContext';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { CircularProgress, Box } from '@mui/material';
 import './EventContainer.css';
 import EmptyEventCard from './EmptyEventCard';
@@ -18,12 +16,10 @@ const EventContainer = () => {
   const [events, setEvents] = useState<EventProps[] | null>(null);
   const [render, setRender] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [_uploadProgress, setUploadProgress] = useState(0);
   const [showModalAllEvents, setShowModalAllEvents] = useState(true);
 
   const eventManager = useContext(eventManagerContext);
   const eventRepository = eventManager.eventRepository;
-  const storageService = useContext(StorageServiceContext);
 
   const handleAllEvents = () => {
     setShowModalAllEvents(!showModalAllEvents);
