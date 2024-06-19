@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AuthContext } from '../authentication/AuthContext';
 import EditDeleteEvent from './EditDeleteEvent';
+import RegisterStudentToEvent from './RegisterStudentToEvent';
 
 export interface EventProps {
   date: Date;
@@ -169,7 +170,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
             <strong>פרטים:</strong> {details}
           </p>
         </Card.Text>
-        {isRegistered ? (
+        {/* {isRegistered ? (
           <Button variant="secondary" disabled>
             רשום
           </Button>
@@ -177,14 +178,14 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
           <Button variant="primary" onClick={handleRegister}>
             הירשם
           </Button>
-        )}
+        )} */}
+        <RegisterStudentToEvent />
       </Card.Body>
       <EditDeleteEvent
         event={{ date, title, details, image, onEventDelete, onEventEdit, id }}
         editEvent={onEventEdit}
         deleteEvent={onEventDelete}
       />
-      {registerWindow()}
       {handleShowDetails()}
     </Card>
   );
