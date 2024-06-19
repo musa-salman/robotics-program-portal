@@ -103,6 +103,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
     );
   }
 
+  // Define the function to render the add event form
   function addForm() {
     const MAX_CHARS_Title = 17; // Set the maximum number of characters allowed
     const MAX_CHARS_Details = 100; // Set the maximum number of characters allowed
@@ -173,6 +174,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
     );
   }
 
+  // Return the rendered component
   return (
     <>
       <Button className="add-button" onClick={handleAddEvent}>
@@ -182,5 +184,5 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
     </>
   );
 };
-
+// Export the AddEvent component
 export default AddEvent;
