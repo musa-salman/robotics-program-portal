@@ -1,12 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { eventManagerContext } from './repository/EventManagerContext';
 import { Button, Card, Modal, Form } from 'react-bootstrap';
-import { IEvent } from './repository/Event';
 import './EventCard.css';
 import moment from 'moment';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
-import { StorageServiceContext } from '../storage-service/StorageContext';
-import AdminMenu from './AdminOptions';
 import { CircularProgress, Box, IconButton } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -183,13 +179,11 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
           </Button>
         )}
       </Card.Body>
-      {/* {editWindow()} */}
       <EditDeleteEvent
         event={{ date, title, details, image, onEventDelete, onEventEdit, id }}
         editEvent={onEventEdit}
         deleteEvent={onEventDelete}
       />
-      {/* {deleteWindow()} */}
       {registerWindow()}
       {handleShowDetails()}
     </Card>

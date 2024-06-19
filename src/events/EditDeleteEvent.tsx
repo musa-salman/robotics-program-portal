@@ -23,10 +23,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
   const [showModalDelete, setShowModalDelete] = useState(false);
 
   const handleCloseEdit = () => setShowModalEdit(false);
-  const handleShowEdit = () => setShowModalEdit(true);
-
   const handleCloseDelete = () => setShowModalDelete(false);
-  const handleShowDelete = () => setShowModalDelete(true);
 
   const eventManager = useContext(eventManagerContext);
   const eventRepository = eventManager.eventRepository;
@@ -108,14 +105,10 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
     setShowModalDelete(true);
   }
 
-  function handleDetails(): void {
-    throw new Error('Function not implemented.');
-  }
-
   function editWindow() {
     return (
       <>
-        <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} handleDetails={handleDetails} />
+        <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} />
         <Modal show={showModalEdit} onHide={handleCloseEdit} animation={false} style={{ display: 'center' }}>
           <Modal.Header closeButton>
             <Modal.Title>שינוי אירוע</Modal.Title>

@@ -7,10 +7,9 @@ import './AdminOptions.css';
 interface AdminMenuProps {
   handleEdit: () => void;
   handleDelete: () => void;
-  handleDetails: () => void;
 }
 
-const AdminMenu: React.FC<AdminMenuProps> = ({ handleEdit, handleDelete, handleDetails }) => {
+const AdminMenu: React.FC<AdminMenuProps> = ({ handleEdit, handleDelete }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -45,9 +44,6 @@ const AdminMenu: React.FC<AdminMenuProps> = ({ handleEdit, handleDelete, handleD
           </div>
           <div className="delete-button">
             <MenuItem onClick={handleDelete}>לִמְחוֹק</MenuItem>
-          </div>
-          <div className="details-button">
-            <MenuItem onClick={handleDetails}>פרטים</MenuItem>
           </div>
         </div>
       </Menu>

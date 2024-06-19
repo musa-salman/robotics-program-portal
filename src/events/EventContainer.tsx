@@ -14,7 +14,6 @@ type EventContainer = {
 
 const EventContainer = () => {
   const [events, setEvents] = useState<EventProps[] | null>(null);
-  const [render, setRender] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showModalAllEvents, setShowModalAllEvents] = useState(true);
 
