@@ -38,7 +38,8 @@ export abstract class BaseRepository<T> implements IRepositoryBase<T> {
     return snapshot.docs.map((doc) => doc.data());
   }
 
-  async findOne(id: string): Promise<T | null> {
+  async findOne(id: string | undefined): Promise<T | null> {
+    if (!id) return null;
     return getDoc(doc(this._collection, id)).then((docSnap) => (docSnap.exists() ? (docSnap.data() as T) : null));
   }
 
