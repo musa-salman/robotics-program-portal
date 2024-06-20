@@ -28,10 +28,19 @@ export class CachingRepository<T> extends BaseRepository<T> {
 
   async findOne(id: string): Promise<T | null> {
     if (this._cache !== null) {
-      return this._cache.get(id) || null;
+      console.log(this._cache);
+      if (this._cache.has(id)) {
+        return this._cache.get(id) ?? null;
+      }
+
+      return this.repositoryBase.findOne(id).then((item) => {
+        if (item) this._cache!.set((item as any).id, item);
+        return item;
+      });
     }
 
     const item = await this.repositoryBase.findOne(id);
+    this._cache = new Map<string, T>();
     if (item) {
       this._cache!.set((item as any).id, item);
     }
