@@ -1,9 +1,10 @@
 export interface Register {
-  studentFirstName?: string;
-  studentLastName: string;
-  studentPhone: string;
-  parentPhone: string;
+  id: string;
   studentId: string;
+  firstName: string;
+  lastName: string;
+  studentPhoneNumber: string;
+  parentPhoneNumber: string;
   studentEmail: string;
   parentEmail: string;
   studentAddress: string;

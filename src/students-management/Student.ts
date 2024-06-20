@@ -1,7 +1,11 @@
 export interface Student {
   id: string;
+  studentId: string;
   firstName: string;
   lastName: string;
+  studentPhoneNumber: string;
+  parentPhoneNumber: string;
   studentEmail: string;
-  motherEmail: string;
+  parentEmail: string;
+  studentAddress: string;
 }

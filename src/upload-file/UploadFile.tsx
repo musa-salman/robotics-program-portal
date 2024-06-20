@@ -1,15 +1,16 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Modal from 'react-bootstrap/Modal';
 import { useContext, useEffect, useState } from 'react';
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import './UploadFile.css';
 import { Category } from './Category';
-import { StudyMaterialContext } from '../study-material/repository/StudyMaterialContext';
+import { MaterialContext } from '../study-material/repository/StudyMaterialContext';
 import { StudyMaterial } from '../study-material/StudyMaterial';
 import { AddEditCategories } from './addOrEditCategories';
 import { StorageServiceContext } from '../storage-service/StorageContext';
+import GPT from '../gpt-service/GPTComponent';
+import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
 
 type SelectedItem = string;
 interface UploadFileComponentProps {
@@ -26,7 +27,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const [showAddEdit, setShowAddEdit] = useState(false);
   const handleCloseAddEdit = () => setShowAddEdit(false);
   const handleShowAddEdit = () => setShowAddEdit(true);
-  const studyMaterialManagement = useContext(StudyMaterialContext);
+  const studyMaterialManagement = useContext(MaterialContext);
   const [validated, setValidated] = useState(false);
 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
@@ -122,7 +123,11 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
       <Modal.Body className="backgroundStyle">
         <Form className="px-3 mx-3" noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group className="px-1">
-            <FloatingLabel controlId="floatingInput" label="כותרת">
+            <Form.Label>כותרת</Form.Label>
+            <GPT
+              initialValue=""
+              getData={() => suggestMaterialTitles(studyMaterial)}
+              options={{ simplify: false, improve: false, shorten: false }}>
               <Form.Control
                 type="text"
                 name="title"
@@ -131,7 +136,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
                 placeholder="כותרת"
                 onChange={(event) => handleInput(event)}
               />
-            </FloatingLabel>
+            </GPT>
           </Form.Group>
 
           <Form.Group className="position-relative my-3 px-2" controlId="validationCustom02">
@@ -176,15 +181,16 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
             </Container>
           </Navbar>
 
-          <FloatingLabel className="my-3" controlId="floatingTextarea1" label="תיאור">
+          <Form.Label>תיאור</Form.Label>
+          <GPT initialValue="" getData={() => generateMaterialDescription(studyMaterial)}>
             <Form.Control
               as="textarea"
               name="description"
-              placeholder="Leave a comment here"
+              placeholder="הכנס תיאור"
               onChange={(event) => handleInput(event)}
               style={{ height: '100px', backgroundColor: '#f5f4f3', color: 'black', border: 'none' }}
             />
-          </FloatingLabel>
+          </GPT>
 
           <Modal.Footer className="justify-content-center">
             <Button variant="primary" className="mx-3 px-5" onClick={handleSubmit}>

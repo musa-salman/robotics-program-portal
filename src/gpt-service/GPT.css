@@ -1,0 +1,20 @@
+.ai-icon {
+  width: 24px;
+  height: 24px;
+  color: #8053af;
+  display: inline-block;
+  vertical-align: middle;
+  background-size: cover;
+  background-position: center;
+}
+
+.ai-icon-loading {
+  color: #8053af;
+}
+
+.suggested-text {
+  color: #8053af;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}

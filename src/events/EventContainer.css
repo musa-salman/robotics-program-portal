@@ -1,15 +1,12 @@
 .events-container-default-style {
   padding: 10px;
   border-radius: 10px;
-  align-items: center;
-  overflow: hidden;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  overflow: hidden;
+  flex-wrap: wrap;
+  align-content: space-between;
+  justify-content: right;
   margin: 10px;
   gap: 10px;
-  height: 550px;
 }
 
 .events-container-show-all-events-style {
@@ -30,6 +27,13 @@
   background-color: #606365;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
 }
 
 .shift-buttons:hover {
