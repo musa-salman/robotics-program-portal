@@ -126,7 +126,11 @@ export class EventManager implements EventManagerInterface {
     return this.getStudentEventRepository(studentId).find();
   }
 
-  async isStudentRegistered(studentId: string, eventId: string): Promise<boolean> {
+  async isStudentRegistered(studentId: string | undefined, eventId: string): Promise<boolean> {
+    if (!studentId) {
+      return false;
+    }
+
     const studentEventRepository = this.getStudentEventRepository(studentId);
     const studentEventDoc = await studentEventRepository.findOne(eventId);
 
