@@ -18,7 +18,7 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
   const { user } = useContext(AuthContext);
 
   const student: BriefStudent = {
-    id: 'jtR353I9jwh8zMs8wvPLL5p0iom1',
+    id: user?.id || '',
     name: 'getName()',
     email: 'getEmail()',
     phone: 'getPhone()'
@@ -39,7 +39,11 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
 
   ///FIXME: get user id
   const checkIfRegistered = async () => {
-    setRegister(await eventManager.isStudentRegistered(student.id, eventId));
+    if (registeredStudents?.some((registeredStudent) => registeredStudent.id === student.id)) {
+      setRegister(true);
+    }
+    //FIXME:
+    // setRegister(await eventManager.isStudentRegistered(student.id, eventId));
   };
 
   const handleSaveRegister = async () => {

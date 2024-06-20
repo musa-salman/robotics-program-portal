@@ -130,7 +130,10 @@ export class EventManager implements EventManagerInterface {
     const studentEventRepository = this.getStudentEventRepository(studentId);
     const studentEventDoc = await studentEventRepository.findOne(eventId);
 
-    return studentEventDoc !== null;
+    console.log('studentEventDoc', studentEventDoc);
+    console.log('eventId', eventId);
+
+    return studentEventDoc == null;
   }
 
   async deleteEvent(eventId: string): Promise<void> {
