@@ -80,7 +80,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
     }
   }
 
-  function addWindow() {
+  function AddWindow() {
     return (
       <>
         <Modal show={showModalAddEvent} onHide={handleCloseAddEvent} animation={false} style={{ display: 'center' }}>
@@ -177,7 +177,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
       <Button className="add-button" onClick={handleAddEvent}>
         <AddIcon />
       </Button>
-      {addWindow()}
+      <AddWindow />
     </>
   );
 };

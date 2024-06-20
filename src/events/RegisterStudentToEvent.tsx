@@ -55,7 +55,7 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
     }
   };
 
-  function registerWindow() {
+  function RegisterWindow() {
     const handleSubmitRegister = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       handleSaveRegister();
@@ -99,7 +99,7 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
           הירשם
         </Button>
       )}
-      {registerWindow()}
+      <RegisterWindow />
     </>
   );
 };
