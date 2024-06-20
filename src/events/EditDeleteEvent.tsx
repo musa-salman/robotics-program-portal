@@ -7,6 +7,7 @@ import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import moment from 'moment';
 import AdminMenu from './AdminOptions';
+import CustomForm from './CustomForm';
 
 interface EditDeleteEventProps {
   event: EventProps;
@@ -114,14 +115,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
             <Modal.Title>שינוי אירוע</Modal.Title>
           </Modal.Header>
           <Modal.Body>{editForm()}</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseEdit}>
-              סגור
-            </Button>
-            <Button variant="primary" onClick={handleSaveEdit}>
-              שמור שינויים
-            </Button>
-          </Modal.Footer>
+          <Modal.Footer></Modal.Footer>
         </Modal>
       </>
     );
@@ -129,43 +123,18 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
 
   function editForm() {
     return (
-      <Form>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label>כותרת</Form.Label>
-          <Form.Control
-            type="text"
-            defaultValue={title}
-            onChange={handleTitleChange}
-            maxLength={MAX_CHARS_Title} // Set the maximum length of the textarea
-          />
-          <small>
-            {formData.title.length}/{MAX_CHARS_Title} אותיות
-          </small>{' '}
-          {/* Display the character count */}
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label>תאריך</Form.Label>
-          <Form.Control type="date" defaultValue={moment(date).format('YYYY-MM-DD')} onChange={handleDateChange} />
-        </Form.Group>
-        <Form.Group controlId="formFile" className="mb-3">
-          <Form.Label>העלאת תמונה</Form.Label>
-          <Form.Control type="file" accept="image/*" onChange={handleImageChange} />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Label>פרטים</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            defaultValue={details}
-            onChange={handleDetailsChange}
-            maxLength={MAX_CHARS_Details} // Set the maximum length of the textarea
-          />
-          <small>
-            {formData.details.length}/{MAX_CHARS_Details} אותיות
-          </small>{' '}
-          {/* Display the character count */}
-        </Form.Group>
-      </Form>
+      <CustomForm
+        handleSaveAdd={handleSaveEdit} // make sure this function exists in your code
+        handleTitleChange={handleTitleChange}
+        handleDateChange={handleDateChange}
+        handleImageChange={handleImageChange}
+        handleDetailsChange={handleDetailsChange}
+        handleCloseAddEvent={handleCloseEdit} // make sure this function exists in your code
+        formData={event}
+        MAX_CHARS_Title={MAX_CHARS_Title}
+        MAX_CHARS_Details={MAX_CHARS_Details}
+        requiredFields={{ title: false, date: false, image: false, details: false }}
+      />
     );
   }
 

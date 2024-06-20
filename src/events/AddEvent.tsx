@@ -6,6 +6,7 @@ import { eventManagerContext } from './repository/EventManagerContext';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import AddIcon from '@mui/icons-material/Add';
+import CustomForm from './CustomForm';
 
 interface AddEventProps {
   addEvent: (event: EventProps) => void;
@@ -122,53 +123,18 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
     };
 
     return (
-      <Form onSubmit={handleSaveAdd}>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label>כותרת</Form.Label>
-          <Form.Control
-            required
-            type="text"
-            placeholder="שם אירוע"
-            onChange={handleTitleChange}
-            maxLength={MAX_CHARS_Title} // Set the maximum length of the textarea
-          />
-          <small>
-            {formData.title.length}/{MAX_CHARS_Title} אותיות
-          </small>{' '}
-          {/* Display the character count */}
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label>תאריך</Form.Label>
-          <Form.Control required type="date" placeholder="יום /חודש /שנה" onChange={handleDateChange} />
-        </Form.Group>
-        <Form.Group controlId="formFile" className="mb-3">
-          <Form.Label>העלאת תמונה</Form.Label>
-          <Form.Control required type="file" accept="image/*" onChange={handleImageChange} />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Label>פרטים</Form.Label>
-          <Form.Control
-            required
-            as="textarea"
-            rows={3}
-            placeholder="פרטי האירוע"
-            onChange={handleDetailsChange}
-            maxLength={MAX_CHARS_Details} // Set the maximum length of the textarea
-          />
-          <small>
-            {formData.details.length}/{MAX_CHARS_Details} אותיות
-          </small>{' '}
-          {/* Display the character count */}
-        </Form.Group>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <Button variant="secondary" onClick={handleCloseAddEvent}>
-            סגור
-          </Button>
-          <Button variant="primary" type="submit">
-            הוסף
-          </Button>
-        </div>
-      </Form>
+      <CustomForm
+        handleSaveAdd={handleSaveAdd}
+        handleTitleChange={handleTitleChange}
+        handleDateChange={handleDateChange}
+        handleImageChange={handleImageChange}
+        handleDetailsChange={handleDetailsChange}
+        handleCloseAddEvent={handleCloseAddEvent}
+        formData={formData}
+        MAX_CHARS_Title={MAX_CHARS_Title}
+        MAX_CHARS_Details={MAX_CHARS_Details}
+        requiredFields={{ title: true, date: true, image: true, details: true }}
+      />
     );
   }
 
