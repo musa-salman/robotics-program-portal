@@ -3,46 +3,47 @@ import { BaseRepository } from '../BaseRepository';
 
 export class CachingRepository<T> extends BaseRepository<T> {
   private readonly repositoryBase: BaseRepository<T>;
-  public _cache: Map<string, T> | null;
+  private cacheManager: CacheManager<T>;
 
   constructor(repositoryBase: BaseRepository<T>) {
     super(repositoryBase._collection.firestore, repositoryBase._collection.path);
     this.repositoryBase = repositoryBase;
-    this._cache = null;
+    this.cacheManager = new CacheManager<T>();
   }
 
   async find(): Promise<T[]> {
-    if (this._cache !== null) {
-      return Array.from(this._cache.values());
+    if (this.cacheManager.hasCache()) {
+      return this.cacheManager.cacheValues();
     }
 
     const items = await this.repositoryBase.find();
-    this._cache = new Map<string, T>();
+    this.cacheManager.initialize();
 
     items.forEach((item) => {
-      this._cache!.set((item as any).id, item);
+      this.cacheManager.setItem((item as any).id, item);
     });
 
     return items;
   }
 
   async findOne(id: string): Promise<T | null> {
-    if (this._cache !== null) {
-      console.log(this._cache);
-      if (this._cache.has(id)) {
-        return this._cache.get(id) ?? null;
+    if (this.cacheManager.hasCache()) {
+      const cachedItem = this.cacheManager.getItem(id);
+      if (cachedItem) {
+        return cachedItem;
       }
 
-      return this.repositoryBase.findOne(id).then((item) => {
-        if (item) this._cache!.set((item as any).id, item);
-        return item;
-      });
+      const item = await this.repositoryBase.findOne(id);
+      if (item) {
+        this.cacheManager.setItem((item as any).id, item);
+      }
+      return item;
     }
 
     const item = await this.repositoryBase.findOne(id);
-    this._cache = new Map<string, T>();
+    this.cacheManager.initialize();
     if (item) {
-      this._cache!.set((item as any).id, item);
+      this.cacheManager.setItem((item as any).id, item);
     }
 
     return item;
@@ -50,64 +51,53 @@ export class CachingRepository<T> extends BaseRepository<T> {
 
   async create(item: T): Promise<DocumentReference<T, DocumentData>> {
     const createdItem = await this.repositoryBase.create(item);
-
-    if (this._cache === null) {
-      this._cache = new Map<string, T>();
-    }
-
-    this._cache.set((createdItem as any).id, item);
+    this.cacheManager.initialize();
+    this.cacheManager.setItem((createdItem as any).id, item);
     return createdItem;
   }
 
   async createMany(items: T[]): Promise<DocumentReference<T, DocumentData>[]> {
     const createdItems = await this.repositoryBase.createMany(items);
-
-    if (this._cache === null) {
-      this._cache = new Map<string, T>();
-    }
+    this.cacheManager.initialize();
 
     items.forEach((item, index) => {
-      this._cache!.set((createdItems[index] as any).id, item);
+      this.cacheManager.setItem((createdItems[index] as any).id, item);
     });
 
     return createdItems;
   }
 
   async update(id: string, item: T): Promise<void> {
-    this.repositoryBase.update(id, item).then(() => {
-      if (this._cache !== null) {
-        this._cache.set(id, item);
-      }
-    });
+    await this.repositoryBase.update(id, item);
+    if (this.cacheManager.hasCache()) {
+      this.cacheManager.setItem(id, item);
+    }
   }
 
   async delete(id: string): Promise<void> {
-    this.repositoryBase.delete(id).then(() => {
-      if (this._cache !== null) {
-        this._cache.delete(id);
-      }
-    });
+    await this.repositoryBase.delete(id);
+    if (this.cacheManager.hasCache()) {
+      this.cacheManager.deleteItem(id);
+    }
   }
 
   async deleteMany(ids: string[]): Promise<void> {
-    this.repositoryBase.deleteMany(ids).then(() => {
-      if (this._cache !== null) {
-        ids.forEach((id) => {
-          this._cache!.delete(id);
-        });
-      }
-    });
+    await this.repositoryBase.deleteMany(ids);
+    if (this.cacheManager.hasCache()) {
+      ids.forEach((id) => {
+        this.cacheManager.deleteItem(id);
+      });
+    }
   }
 
   async deleteAll(): Promise<void> {
-    this.repositoryBase.deleteAll().then(() => {
-      if (this._cache !== null) {
-        this._cache.clear();
-      }
-    });
+    await this.repositoryBase.deleteAll();
+    if (this.cacheManager.hasCache()) {
+      this.cacheManager.flush();
+    }
   }
 
   invalidateCache() {
-    this._cache = null;
+    this.cacheManager = new CacheManager<T>();
   }
 }
