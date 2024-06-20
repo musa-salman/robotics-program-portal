@@ -15,7 +15,7 @@ interface EditDeleteEventProps {
 }
 
 const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, deleteEvent }) => {
-  const { id, title, details, date, image } = event;
+  const { id, title, details, date } = event;
   const [formData, setFormData] = useState<EventProps>(event);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [file, setFile] = useState<File | null>(null);
