@@ -6,6 +6,7 @@
   font-family: Arial, sans-serif;
   color: #ffffff;
   border-radius: 50%;
+  background: transparent;
 }
 
 .adminOptions :hover {
@@ -15,7 +16,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.details-button,
 .edit-button,
 .delete-button {
   padding: 10px;
@@ -31,12 +31,6 @@
   background-color: #ff0000;
 }
 
-.details-button:hover {
-  color: white;
-  background-color: #b0e6b1;
-}
-
-.details-button > MenuItem,
 .edit-button > MenuItem,
 .delete-button > MenuItem {
   font-size: 16px;
