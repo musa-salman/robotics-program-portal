@@ -6,42 +6,13 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Student } from './Student';
 import { StudentContext } from './StudentContext';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext } from 'react';
 import AddStudentForm from './AddStudentForm';
 import './StudentsManagement.css';
 import { Typography } from '@mui/material';
 
 const StudentsManagement = () => {
   const studentRepository = useContext(StudentContext);
-  const [isMinHeightReached, setIsMinHeightReached] = useState(false);
-  const observerRef = useRef<MutationObserver | null>(null);
-
-  useEffect(() => {
-    const checkHeight = () => {
-      const element = document.querySelector('.MuiDataGrid-row');
-      if (element && element.getBoundingClientRect().height <= 36) {
-        setIsMinHeightReached(true);
-      } else {
-        setIsMinHeightReached(false);
-      }
-      console.log('isMinHeightReached', isMinHeightReached);
-      console.log('height', element?.getBoundingClientRect().height);
-      console.log('element', element);
-    };
-
-    observerRef.current = new MutationObserver(checkHeight);
-
-    const element = document.querySelector('.MuiDataGrid-row');
-    if (element) {
-      observerRef.current.observe(element, { attributes: true, childList: true, subtree: true });
-    }
-
-    return () => {
-      if (observerRef.current && element) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, []);
 
   const generateColumns = (
     rows: (Student & { isNew: boolean })[] | null,
