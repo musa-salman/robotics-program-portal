@@ -21,58 +21,17 @@ export interface EventProps {
 }
 
 const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventDelete, onEventEdit, id }) => {
-  const { user } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [isRegistered, setRegister] = useState(false);
-  const [showModalRegister, setShowModalRegister] = useState(false);
-  const handleCloseRegister = () => setShowModalRegister(false);
-  const handleShowRegister = () => setShowModalRegister(true);
   const [showDetails, setShowDetails] = useState(false);
 
   const eventManager = useContext(eventManagerContext);
-
-  function handleRegister() {
-    handleShowRegister();
-  }
 
   const handleDetails = () => {
     setShowDetails(!showDetails);
   };
 
-  const student: BriefStudent = {
-    id: 'getUserId()',
-    name: 'getName()',
-    email: 'getEmail()',
-    phone: 'getPhone()'
-  };
-
   const [registeredStudents, setRegisteredStudents] = useState<BriefStudent[] | null>(null);
-
-  // //FIXME: get user id
-
-  const checkIfRegistered = async () => {
-    setRegister(await eventManager.isStudentRegistered(student.id, id));
-    console.log('isRegistered', isRegistered);
-  };
-
-  useEffect(() => {
-    const getRegisteredStudents = async () => {
-      setRegisteredStudents(await eventManager.getRegisteredStudents(id));
-    };
-
-    if (registeredStudents === null) getRegisteredStudents();
-    if (registeredStudents !== null) checkIfRegistered();
-  }, [registeredStudents]);
-
-  const handleSaveRegister = async () => {
-    setShowModalRegister(false);
-    if (registeredStudents && !registeredStudents.find((user) => user.id === student.id) && id !== '') {
-      eventManager.registerStudentForEvent(student, id);
-      registeredStudents?.push(student);
-      setRegister(true);
-    }
-  };
 
   const handleRemoveRegistration = (studentId: string) => {
     // Add your code to remove the student registration here
@@ -113,39 +72,6 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     );
   };
 
-  function registerWindow() {
-    const handleSubmitRegister = (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      handleSaveRegister();
-    };
-
-    return (
-      <>
-        <Modal show={showModalRegister} onHide={handleCloseRegister} style={{ display: 'center' }}>
-          <Form onSubmit={handleSubmitRegister}>
-            <Modal.Header closeButton>
-              <Modal.Title>האם אתה בטוח שאתה רוצה להירשם לאירוע</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <Form.Check required aria-label="option 1" feedback="You must agree before submitting." />
-                אני מאשר שאני רוצה להירשם לאירוע
-              </div>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseRegister}>
-                  סגור
-                </Button>
-                <Button variant="primary" type="submit">
-                  מאשר
-                </Button>
-              </Modal.Footer>
-            </Modal.Body>
-          </Form>
-        </Modal>
-      </>
-    );
-  }
-
   return (
     <Card className="event-card">
       {isLoading && (
@@ -167,16 +93,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
           <br />
           <strong>פרטים:</strong> {details}
         </Card.Text>
-        {/* {isRegistered ? (
-          <Button variant="secondary" disabled>
-            רשום
-          </Button>
-        ) : (
-          <Button variant="primary" onClick={handleRegister}>
-            הירשם
-          </Button>
-        )} */}
-        <RegisterStudentToEvent />
+        <RegisterStudentToEvent eventId={id} />
       </Card.Body>
       <EditDeleteEvent
         event={{ date, title, details, image, onEventDelete, onEventEdit, id }}
