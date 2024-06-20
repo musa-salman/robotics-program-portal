@@ -192,8 +192,8 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
 
   return (
     <>
-      <EditWindow />
-      <DeleteWindow />
+      {EditWindow()}
+      {DeleteWindow()}
     </>
   );
 };
