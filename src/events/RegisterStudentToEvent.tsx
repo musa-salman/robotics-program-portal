@@ -26,7 +26,7 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
 
   useEffect(() => {
     const getRegisteredStudents = async () => {
-      setRegisteredStudents(await eventManager.getRegisteredStudents(eventId));
+      setRegister(await eventManager.isStudentRegistered(student.id, eventId));
     };
 
     if (registeredStudents === null) getRegisteredStudents();
@@ -51,7 +51,7 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
     }
   };
 
-  function registerWindow() {
+  function RegisterWindow() {
     const handleSubmitRegister = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       handleSaveRegister();
@@ -95,7 +95,7 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
           הירשם
         </Button>
       )}
-      {registerWindow()}
+      <RegisterWindow />
     </>
   );
 };

@@ -31,6 +31,13 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
     setShowDetails(!showDetails);
   };
 
+  const student: BriefStudent = {
+    id: user?.id || '',
+    name: 'getName()',
+    email: 'getEmail()',
+    phone: 'getPhone()'
+  };
+
   const [registeredStudents, setRegisteredStudents] = useState<BriefStudent[] | null>(null);
 
   const handleRemoveRegistration = (studentId: string) => {
