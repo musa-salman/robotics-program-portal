@@ -1,9 +1,5 @@
 .multiline-cell {
   display: flex;
   flex-direction: column;
-}
-
-.multiline-cell.min-height-reached {
-  flex-direction: row;
-  justify-content: space-between;
+  align-items: flex-end;
 }

@@ -152,6 +152,9 @@ const CollectionTable = <T extends { id: string }>({
             pageSizeOptions={[5, 10, 20, 50]}
             checkboxSelection
             editMode="row"
+            initialState={{
+              density: 'comfortable'
+            }}
             slots={{
               toolbar: CustomToolbar
             }}
@@ -189,6 +192,8 @@ const CollectionTable = <T extends { id: string }>({
                 alignItems: 'center'
               },
               '& .MuiDataGrid-colCellTitle': {
+                display: 'flex',
+                alignItems: 'center',
                 textAlign: 'center'
               },
               m: 10,

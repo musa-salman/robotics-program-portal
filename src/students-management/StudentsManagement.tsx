@@ -6,7 +6,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Student } from './Student';
 import { StudentContext } from './StudentContext';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import AddStudentForm from './AddStudentForm';
 import './StudentsManagement.css';
 import { Typography } from '@mui/material';
@@ -14,22 +14,32 @@ import { Typography } from '@mui/material';
 const StudentsManagement = () => {
   const studentRepository = useContext(StudentContext);
   const [isMinHeightReached, setIsMinHeightReached] = useState(false);
+  const observerRef = useRef<MutationObserver | null>(null);
 
   useEffect(() => {
     const checkHeight = () => {
       const element = document.querySelector('.MuiDataGrid-row');
-      if (element && element.getBoundingClientRect().height >= 36) {
+      if (element && element.getBoundingClientRect().height <= 36) {
         setIsMinHeightReached(true);
       } else {
         setIsMinHeightReached(false);
       }
+      console.log('isMinHeightReached', isMinHeightReached);
+      console.log('height', element?.getBoundingClientRect().height);
+      console.log('element', element);
     };
 
-    window.addEventListener('resize', checkHeight);
-    checkHeight();
+    observerRef.current = new MutationObserver(checkHeight);
+
+    const element = document.querySelector('.MuiDataGrid-row');
+    if (element) {
+      observerRef.current.observe(element, { attributes: true, childList: true, subtree: true });
+    }
 
     return () => {
-      window.removeEventListener('resize', checkHeight);
+      if (observerRef.current && element) {
+        observerRef.current.disconnect();
+      }
     };
   }, []);
 
@@ -42,6 +52,7 @@ const StudentsManagement = () => {
   ): GridColDef[] => {
     return [
       { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1, editable: true },
+      { field: 'studentAddress', type: 'string', headerName: 'כתובת', flex: 1, editable: true },
       {
         field: 'studentName',
         type: 'string',
@@ -61,10 +72,9 @@ const StudentsManagement = () => {
         headerName: 'פרטי תלמיד',
         flex: 1,
         renderCell: ({ row }) => (
-          <div>
-            <Typography>
-              {row.studentPhoneNumber} {row.studentEmail}
-            </Typography>
+          <div className="multiline-cell">
+            <Typography>{row.studentPhoneNumber}</Typography>
+            <Typography>{row.studentEmail}</Typography>
           </div>
         )
       },
@@ -74,7 +84,7 @@ const StudentsManagement = () => {
         headerName: 'פרטי הורה',
         flex: 1,
         renderCell: ({ row }) => (
-          <div className={`multiline-cell ${isMinHeightReached ? 'min-height-reached' : ''}`}>
+          <div className="multiline-cell">
             <Typography>{row.parentPhoneNumber}</Typography>
             <Typography>{row.parentEmail}</Typography>
           </div>
