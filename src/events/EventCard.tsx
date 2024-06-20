@@ -34,7 +34,6 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
         style={{ display: isLoading ? 'none' : 'block' }}
       />
       <Card.Body style={{ marginTop: '150px' }}>
-        {/* <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} handleDetails={handleDetails} /> */}
         <Card.Title>{title}</Card.Title>
         <Card.Text>
           <strong>תאריך:</strong> {moment(date).format('YYYY-MM-DD')}

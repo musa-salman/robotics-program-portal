@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { eventManagerContext } from './repository/EventManagerContext';
+import GroupsIcon from '@mui/icons-material/Groups';
+import './ShowRegisteredStudents.css';
 import {
   Table,
   TableBody,
@@ -45,8 +47,8 @@ const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId
   const ShowDetails = () => {
     return (
       <div>
-        <Button variant="contained" onClick={handleDetails}>
-          תלמידים רשומים
+        <Button className="show-button" variant="contained" onClick={handleDetails}>
+          <GroupsIcon />
         </Button>
         <Modal show={showDetails} onHide={handleDetails} animation={false} style={{ display: 'center' }}>
           <Modal.Header closeButton>
