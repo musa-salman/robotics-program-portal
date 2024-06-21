@@ -25,10 +25,10 @@ const RegisterComponent = () => {
   const registerRepository = useContext(RegisterContext);
 
   const [register, setRegister] = useState<Register>({
-    studentFirstName: '',
-    studentLastName: '',
-    studentPhone: '',
-    parentPhone: '',
+    firstName: '',
+    lastName: '',
+    studentPhoneNumber: '',
+    parentPhoneNumber: '',
     studentId: '',
     studentEmail: '',
     parentEmail: '',
@@ -52,10 +52,10 @@ const RegisterComponent = () => {
     }
     if (
       activeStep === 1 &&
-      isHebrewOnly(register.studentFirstName) &&
-      isHebrewOnly(register.studentLastName) &&
-      isMobilePhone(register.studentPhone, 'he-IL') &&
-      isMobilePhone(register.parentPhone, 'he-IL') &&
+      isHebrewOnly(register.firstName) &&
+      isHebrewOnly(register.lastName) &&
+      isMobilePhone(register.studentPhoneNumber, 'he-IL') &&
+      isMobilePhone(register.parentPhoneNumber, 'he-IL') &&
       isIdentityCard(register.studentId, 'he-IL') &&
       isEmail(register.studentEmail) &&
       isEmail(register.parentEmail) &&

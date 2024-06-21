@@ -25,7 +25,6 @@ const CustomToolbar: React.JSXElementConstructor<GridToolbarProps & ToolbarProps
       <div className="custom-toolbar__left">
         <GridToolbarQuickFilter className="custom-toolbar__quick-filter" />
         <GridToolbarFilterButton />
-        <GridToolbarDensitySelector />
         <GridToolbarColumnsButton />
         <GridToolbarExport />
       </div>

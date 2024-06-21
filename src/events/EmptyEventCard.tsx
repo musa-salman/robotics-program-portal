@@ -1,12 +1,13 @@
 import { Container, Typography } from '@mui/material';
 import './EmptyEventCard.css';
-import AddIcon from '@mui/icons-material/Add';
+import AddEvent from './AddEvent';
+import { EventProps } from './EventCard';
 
-interface EmptyEventCardProps {
-  handleAddEvent: () => void;
+interface AddEventProps {
+  addEvent: (event: EventProps) => void;
 }
 
-const EmptyEventCard: React.FC<EmptyEventCardProps> = ({ handleAddEvent }) => {
+const EmptyEventCard: React.FC<AddEventProps> = ({ addEvent }) => {
   return (
     <Container className="container">
       <img src="./Empty State Icon.jpg" alt="Image Description" />
@@ -17,10 +18,7 @@ const EmptyEventCard: React.FC<EmptyEventCardProps> = ({ handleAddEvent }) => {
         {' '}
         זה ריק כאן אין קבצים
       </Typography>
-      <button className="add-btn" onClick={handleAddEvent}>
-        הוספה
-        <AddIcon className="addIcon" />
-      </button>
+      <AddEvent addEvent={addEvent} />
     </Container>
   );
 };

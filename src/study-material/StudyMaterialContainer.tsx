@@ -1,8 +1,8 @@
 import Card from 'react-bootstrap/Card';
-import StudyMaterials from './StudyMaterials';
+import MaterialCard from './MaterialCard';
 import { useState, useEffect, useContext } from 'react';
 import './StudyMaterialContainer.css';
-import { StudyMaterialContext } from './repository/StudyMaterialContext';
+import { MaterialContext } from './repository/StudyMaterialContext';
 import { StudyMaterial } from './StudyMaterial';
 import { SearchBar } from './SearchBar';
 import UploadFileComponent from '../upload-file/UploadFile';
@@ -14,13 +14,12 @@ import NoResultFound from './NoResultFound';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import MoveList from './MoveList';
 import EmptyStudyMaterials from './EmptyStudyMaterials';
-import { StudyMaterialManagement } from './repository/StudyMaterialManagement';
 import { Category } from '../upload-file/Category';
 
 function StudyMaterialContainer() {
+  const materialManager = useContext(MaterialContext);
+
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
-  const studyMaterialRepository = useContext(StudyMaterialContext);
-  const studyMaterialManagement = new StudyMaterialManagement();
   const [categoryList, setCategoryList] = useState<Category[] | null>(null);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -36,14 +35,14 @@ function StudyMaterialContainer() {
 
   useEffect(() => {
     const getStudyMaterials = async () => {
-      setStudyMaterials(await studyMaterialManagement.studyMaterialRepository.find());
+      setStudyMaterials(await materialManager.studyMaterialRepository.find());
     };
-    const getCategries = async () => {
-      setCategoryList(await studyMaterialManagement.categoryRepository.find());
+    const getCategories = async () => {
+      setCategoryList(await materialManager.categoryRepository.find());
     };
 
     if (studyMaterials === null) getStudyMaterials();
-    if (categoryList === null) getCategries();
+    if (categoryList === null) getCategories();
   }, [studyMaterials, categoryList]);
 
   const handleUpdate = (updatedMaterial: StudyMaterial) => {
@@ -155,7 +154,7 @@ function StudyMaterialContainer() {
                 {(searchResults || studyMaterials || [])
                   .filter((s) => s.category === category)
                   .map((studyMaterial) => (
-                    <StudyMaterials
+                    <MaterialCard
                       key={studyMaterial.id}
                       studyMaterial={studyMaterial}
                       onUpdate={handleUpdate}

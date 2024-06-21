@@ -6,6 +6,8 @@ import SimpleSnackbar from '../components/snackbar/SnackBar';
 import handleImportCSV from '../utils/csvUtils';
 import { BaseRepository } from '../repositories/BaseRepository';
 import CustomToolbar from './CustomToolbar';
+import { height } from '@fortawesome/free-brands-svg-icons/fa42Group';
+import { Margin } from '@mui/icons-material';
 
 interface MessageFormat<T> {
   addManySuccess: (count: number) => string;
@@ -143,48 +145,62 @@ const CollectionTable = <T extends { id: string }>({
         <Typography variant="h4" component="h2" gutterBottom className="table-title">
           {title}
         </Typography>
-        <DataGrid
-          rows={rows || []}
-          columns={columns}
-          pageSizeOptions={[5, 10, 20, 50]}
-          checkboxSelection
-          editMode="row"
-          slots={{
-            toolbar: CustomToolbar
-          }}
-          slotProps={{
-            toolbar: {
-              onAddClick: () => setShowAddItemForm(true),
-              onCSVImportClick: () => handleImportCSV(addItems, columnsIds),
-              onRefreshClick: handleRefresh,
-              showQuickFilter: true
-            }
-          }}
-          rowModesModel={rowModesModel}
-          onRowModesModelChange={handleRowModesModelChange}
-          processRowUpdate={processRowUpdate}
-          onProcessRowUpdateError={(error) => console.error(error)}
-          localeText={heIL.components.MuiDataGrid.defaultProps.localeText}
-          className="data-grid"
-          sx={{
-            '& .actions': {
-              display: 'flex',
-              justifyContent: 'center'
-            },
-            '& .MuiDataGrid-overlayWrapper': {
-              height: 500
-            },
-            '& .MuiDataGrid-columnsContainer': {
-              backgroundColor: '#f5f5f5'
-            },
-            '& .MuiTablePagination-root': {
-              direction: 'rtl',
-              width: '100%'
-            },
-            m: 10,
-            p: 1
-          }}
-        />
+        <div style={{ height: 500, width: '300' }}>
+          <DataGrid
+            rows={rows || []}
+            columns={columns}
+            pageSizeOptions={[5, 10, 20, 50]}
+            checkboxSelection
+            editMode="row"
+            initialState={{
+              density: 'comfortable'
+            }}
+            slots={{
+              toolbar: CustomToolbar
+            }}
+            slotProps={{
+              toolbar: {
+                onAddClick: () => setShowAddItemForm(true),
+                onCSVImportClick: () => handleImportCSV(addItems, columnsIds),
+                onRefreshClick: handleRefresh,
+                showQuickFilter: true
+              }
+            }}
+            rowModesModel={rowModesModel}
+            onRowModesModelChange={handleRowModesModelChange}
+            processRowUpdate={processRowUpdate}
+            onProcessRowUpdateError={(error) => console.error(error)}
+            localeText={heIL.components.MuiDataGrid.defaultProps.localeText}
+            className="data-grid"
+            sx={{
+              '& .actions': {
+                display: 'flex',
+                justifyContent: 'center'
+              },
+              '& .MuiDataGrid-overlayWrapper': {
+                height: 500
+              },
+              '& .MuiDataGrid-columnsContainer': {
+                backgroundColor: '#f5f5f5'
+              },
+              '& .MuiTablePagination-root': {
+                direction: 'rtl',
+                width: '100%'
+              },
+              '& .MuiDataGrid-cell': {
+                display: 'flex',
+                alignItems: 'center'
+              },
+              '& .MuiDataGrid-colCellTitle': {
+                display: 'flex',
+                alignItems: 'center',
+                textAlign: 'center'
+              },
+              m: 10,
+              p: 1
+            }}
+          />
+        </div>
       </Box>
       {message && <SimpleSnackbar message={message} />}
     </>

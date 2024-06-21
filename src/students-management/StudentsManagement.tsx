@@ -8,6 +8,8 @@ import { Student } from './Student';
 import { StudentContext } from './StudentContext';
 import { useContext } from 'react';
 import AddStudentForm from './AddStudentForm';
+import './StudentsManagement.css';
+import { Typography } from '@mui/material';
 
 const StudentsManagement = () => {
   const studentRepository = useContext(StudentContext);
@@ -20,10 +22,45 @@ const StudentsManagement = () => {
     setMessage: React.Dispatch<React.SetStateAction<string | null>>
   ): GridColDef[] => {
     return [
-      { field: 'firstName', type: 'string', headerName: 'שם פרטי', flex: 1, editable: true },
-      { field: 'lastName', type: 'string', headerName: 'שם משפחה', flex: 1, editable: true },
-      { field: 'studentEmail', type: 'string', headerName: 'דוא"ל תלמיד', flex: 1, editable: true },
-      { field: 'motherEmail', type: 'string', headerName: 'דוא"ל אם', flex: 1, editable: true },
+      { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1, editable: true },
+      { field: 'studentAddress', type: 'string', headerName: 'כתובת', flex: 1, editable: true },
+      {
+        field: 'studentName',
+        type: 'string',
+        headerName: 'שם תלמיד',
+        flex: 1,
+        renderCell: ({ row }) => (
+          <div>
+            <Typography>
+              {row.firstName} {row.lastName}
+            </Typography>
+          </div>
+        )
+      },
+      {
+        field: 'studentContact',
+        type: 'custom',
+        headerName: 'פרטי תלמיד',
+        flex: 1,
+        renderCell: ({ row }) => (
+          <div className="multiline-cell">
+            <Typography>{row.studentPhoneNumber}</Typography>
+            <Typography>{row.studentEmail}</Typography>
+          </div>
+        )
+      },
+      {
+        field: 'parentContact',
+        type: 'custom',
+        headerName: 'פרטי הורה',
+        flex: 1,
+        renderCell: ({ row }) => (
+          <div className="multiline-cell">
+            <Typography>{row.parentPhoneNumber}</Typography>
+            <Typography>{row.parentEmail}</Typography>
+          </div>
+        )
+      },
       {
         field: 'actions',
         type: 'actions',
@@ -61,14 +98,14 @@ const StudentsManagement = () => {
 
           return [
             <GridActionsCellItem
-              icon={<EditIcon color="secondary" />}
+              icon={<EditIcon color="action" />}
               label="ערוך"
               onClick={(_) => {
                 setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
               }}
             />,
             <GridActionsCellItem
-              icon={<DeleteIcon color="error" />}
+              icon={<DeleteIcon color="action" />}
               label="מחק"
               onClick={(_) => {
                 studentRepository

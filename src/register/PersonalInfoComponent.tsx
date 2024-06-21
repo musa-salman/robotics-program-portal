@@ -29,11 +29,11 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
               fullWidth
               label="שם פרטי"
               name="studentFirstName"
-              value={register.studentFirstName}
+              value={register.firstName}
               onChange={handleChange}
               required
-              error={!isHebrewOnly(register.studentFirstName)}
-              helperText={!isHebrewOnly(register.studentFirstName) ? 'יש להזין רק אותיות עבריות' : ''}
+              error={!isHebrewOnly(register.firstName)}
+              helperText={!isHebrewOnly(register.firstName) ? 'יש להזין רק אותיות עבריות' : ''}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -49,11 +49,11 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
               fullWidth
               label="שם משפחה"
               name="studentLastName"
-              value={register.studentLastName}
+              value={register.lastName}
               onChange={handleChange}
               required
-              error={!isHebrewOnly(register.studentLastName)}
-              helperText={!isHebrewOnly(register.studentLastName) ? 'יש להזין רק אותיות עבריות' : ''}
+              error={!isHebrewOnly(register.lastName)}
+              helperText={!isHebrewOnly(register.lastName) ? 'יש להזין רק אותיות עבריות' : ''}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -69,11 +69,11 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
               fullWidth
               label="טלפון הורה"
               name="parentPhone"
-              value={register.parentPhone}
+              value={register.parentPhoneNumber}
               onChange={handleChange}
               required
-              error={!isMobilePhone(register.parentPhone, 'he-IL')}
-              helperText={!isMobilePhone(register.parentPhone) ? 'יש להזין מספר טלפון תקין' : ''}
+              error={!isMobilePhone(register.parentPhoneNumber, 'he-IL')}
+              helperText={!isMobilePhone(register.parentPhoneNumber) ? 'יש להזין מספר טלפון תקין' : ''}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -89,11 +89,11 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
               fullWidth
               label="פלאפון תלמיד\ה"
               name="studentPhone"
-              value={register.studentPhone}
+              value={register.studentPhoneNumber}
               onChange={handleChange}
               required
-              error={!isMobilePhone(register.studentPhone)}
-              helperText={!isMobilePhone(register.studentPhone) ? 'יש להזין מספר טלפון תקין' : ''}
+              error={!isMobilePhone(register.studentPhoneNumber)}
+              helperText={!isMobilePhone(register.studentPhoneNumber) ? 'יש להזין מספר טלפון תקין' : ''}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">

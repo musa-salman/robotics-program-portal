@@ -36,6 +36,15 @@ export class AuthService implements IAuthService {
     return sendPasswordResetEmail(auth, email, actionCodeSettings);
   }
 
+  async sendEmailVerification(): Promise<void> {
+    const user = firebase.auth().currentUser;
+    if (user !== null) {
+      return user.sendEmailVerification();
+    } else {
+      console.error('User is null.');
+    }
+  }
+
   isValidEmail(email: string) {
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return re.test(String(email).toLowerCase());

@@ -1,12 +1,12 @@
 import { createContext, useContext } from 'react';
-import { StudyMaterialManagement } from './StudyMaterialManagement';
+import { MaterialManager } from './MaterialManager';
 
-export const StudyMaterialContext = createContext<StudyMaterialManagement>(new StudyMaterialManagement());
+export const MaterialContext = createContext<MaterialManager>(new MaterialManager());
 
-function StudyMaterialProvider({ children }: { children: React.ReactNode }) {
-  const studyMaterialRepository = useContext(StudyMaterialContext);
+function MaterialProvider({ children }: { children: React.ReactNode }) {
+  const materialRepository = useContext(MaterialContext);
 
-  return <StudyMaterialContext.Provider value={studyMaterialRepository}>{children}</StudyMaterialContext.Provider>;
+  return <MaterialContext.Provider value={materialRepository}>{children}</MaterialContext.Provider>;
 }
 
-export default StudyMaterialProvider;
+export default MaterialProvider;

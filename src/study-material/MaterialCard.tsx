@@ -5,19 +5,19 @@ import { useContext, useState } from 'react';
 import { StudyMaterial } from './StudyMaterial';
 import moment from 'moment';
 import { StorageServiceContext } from '../storage-service/StorageContext';
-import { StudyMaterialContext } from './repository/StudyMaterialContext';
+import { MaterialContext } from './repository/StudyMaterialContext';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
-import { Alert, TextField } from '@mui/material';
-import MoveList from './MoveList';
-import { StudyMaterialManagement } from './repository/StudyMaterialManagement';
+import { TextField } from '@mui/material';
 import { Category } from '../upload-file/Category';
+import GPT from '../gpt-service/GPTComponent';
+import { suggestMaterialTitles } from '../upload-file/StudyMaterialPrompts';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
 type MoveHandler = (studyMaterial: StudyMaterial) => void;
 
-function StudyMaterials({
+function MaterialCard({
   studyMaterial,
   onUpdate,
   onDelete,
@@ -33,8 +33,7 @@ function StudyMaterials({
   const [isMove, setIsMove] = useState(false);
   const [editedTitle, setEditedTitle] = useState(studyMaterial.title);
   const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
-  const studyMaterialRepository = useContext(StudyMaterialContext);
-  const studyMaterialManagement = new StudyMaterialManagement();
+  const materialManager = useContext(MaterialContext);
 
   const handleDownload = async () => {
     storageService.download(
@@ -45,7 +44,7 @@ function StudyMaterials({
 
   const handleDelete = async () => {
     storageService.delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename).then(() => {
-      studyMaterialManagement.studyMaterialRepository.delete(studyMaterial.id);
+      materialManager.studyMaterialRepository.delete(studyMaterial.id);
       onDelete(studyMaterial);
     });
     // TODO catch
@@ -62,7 +61,7 @@ function StudyMaterials({
       description: editedDescription
     };
     console.log(updatedStudyMaterial);
-    studyMaterialManagement.studyMaterialRepository
+    materialManager.studyMaterialRepository
       .update(studyMaterial.id, updatedStudyMaterial)
       .then(() => {
         onUpdate(updatedStudyMaterial);
@@ -110,26 +109,30 @@ function StudyMaterials({
       <br />
       <Card.Body className="bodycard">
         {isEditing ? (
-          <TextField
-            value={editedTitle}
-            onChange={(e) => setEditedTitle(e.target.value)}
-            variant="outlined"
-            fullWidth
-          />
+          <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>
+            <TextField
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+              variant="outlined"
+              fullWidth
+            />
+          </GPT>
         ) : (
           <Card.Title className="title-card">{studyMaterial.title}</Card.Title>
         )}
         <hr className="custom-hr" />
         <div>
           {isEditing ? (
-            <TextField
-              value={editedDescription}
-              onChange={(e) => setEditedDescription(e.target.value)}
-              multiline
-              rows={4}
-              variant="outlined"
-              fullWidth
-            />
+            <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>
+              <TextField
+                value={editedDescription}
+                onChange={(e) => setEditedDescription(e.target.value)}
+                multiline
+                rows={4}
+                variant="outlined"
+                fullWidth
+              />
+            </GPT>
           ) : (
             <Card.Text className="description">{studyMaterial.description}</Card.Text>
           )}
@@ -144,4 +147,4 @@ function StudyMaterials({
     </Card>
   );
 }
-export default StudyMaterials;
+export default MaterialCard;
