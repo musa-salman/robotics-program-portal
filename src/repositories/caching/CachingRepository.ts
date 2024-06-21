@@ -1,14 +1,16 @@
 import { DocumentData, DocumentReference } from 'firebase/firestore';
 import { BaseRepository } from '../BaseRepository';
+import ICacheManager from './ICacheManager';
+import CacheManager from './CacheManager';
 
 export class CachingRepository<T> extends BaseRepository<T> {
   private readonly repositoryBase: BaseRepository<T>;
-  private cacheManager: CacheManager<T>;
+  private cacheManager: ICacheManager<T>;
 
-  constructor(repositoryBase: BaseRepository<T>) {
+  constructor(repositoryBase: BaseRepository<T>, cacheManager?: ICacheManager<T>) {
     super(repositoryBase._collection.firestore, repositoryBase._collection.path);
     this.repositoryBase = repositoryBase;
-    this.cacheManager = new CacheManager<T>();
+    this.cacheManager = cacheManager || new CacheManager<T>();
   }
 
   async find(): Promise<T[]> {
@@ -98,6 +100,6 @@ export class CachingRepository<T> extends BaseRepository<T> {
   }
 
   invalidateCache() {
-    this.cacheManager = new CacheManager<T>();
+    this.cacheManager.flush();
   }
 }

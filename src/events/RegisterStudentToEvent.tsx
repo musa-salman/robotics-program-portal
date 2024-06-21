@@ -24,7 +24,6 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
     const checkIfRegistered = () => {
       eventManager.isStudentRegistered(user?.id, eventId).then((isRegistered) => {
         setRegister(isRegistered);
-        console.log('isRegistered', isRegistered, 'student', student, 'eventId', eventId, 'user', user);
       });
     };
 

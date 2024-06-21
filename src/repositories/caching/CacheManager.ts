@@ -1,3 +1,5 @@
+import ICacheManager from './ICacheManager';
+
 class CacheManager<T> implements ICacheManager<T> {
   private _cache: Map<string, T> | null = null;
 
@@ -11,7 +13,7 @@ class CacheManager<T> implements ICacheManager<T> {
     return this._cache;
   }
 
-  getItem(id: string): T | null {
+  getItem(id: string): T | undefined | null {
     return this._cache?.get(id) ?? null;
   }
 
@@ -35,3 +37,5 @@ class CacheManager<T> implements ICacheManager<T> {
     return this._cache ? Array.from(this._cache.values()) : [];
   }
 }
+
+export default CacheManager;

@@ -5,6 +5,8 @@ import { EventRegistrationRepository } from './EventRegistrationRepository';
 import { EventRepository } from './EventRepository';
 import { db } from '../../firebase';
 import { StudentEventRepository } from './StudentEventRepository';
+import MissingDocCache from '../../repositories/caching/MissingDocCache';
+import CacheManager from '../../repositories/caching/CacheManager';
 
 /**
  * Represents the interface for managing events.
@@ -84,7 +86,13 @@ export class EventManager implements EventManagerInterface {
 
   getStudentEventRepository(studentId: string): StudentEventRepository {
     if (!this.studentEventRepositories.has(studentId)) {
-      this.studentEventRepositories.set(studentId, new CachingRepository(new StudentEventRepository(studentId)));
+      this.studentEventRepositories.set(
+        studentId,
+        new CachingRepository(
+          new StudentEventRepository(studentId),
+          new MissingDocCache(new CacheManager<BriefEvent>())
+        )
+      );
     }
 
     return this.studentEventRepositories.get(studentId)!;
