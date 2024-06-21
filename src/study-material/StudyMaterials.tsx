@@ -80,19 +80,20 @@ function StudyMaterials({
       category: selectCategory.category
     };
 
-    // studyMaterialManagement._moveStudyMaterials();
-    // .moveMaterialToCategory(studyMaterial, studyMaterial.category.category, )
-    // .then(() => {
-    //   onMove(updatedCategory, studyMaterial.category);
-    //   setIsMove(false);
-    // })
-    // .catch((error) => {
-    //   console.error('Error move study material:', error);
-    // });
+    studyMaterialManagement
+      .moveStudyMaterial(updatedCategory, selectCategory.category)
+      .then(() => {
+        onUpdate(updatedCategory);
+        setIsMove(false);
+      })
+      .catch((error) => {
+        console.error('Error move study material:', error);
+      });
   };
 
   const handleMoveToggle = async () => {
     setIsMove(!isMove);
+    // handleMoveClick(studyMaterial);
   };
 
   const momentDate = moment(studyMaterial.date).format('DD / MM / YYYY');

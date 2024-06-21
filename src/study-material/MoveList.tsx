@@ -22,6 +22,10 @@ const MoveList: React.FC<MoveListProps> = ({ categories, onMove, onCancel }) => 
     setOpen(false);
   };
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
   return (
     <>
       <Modal open={open} onClose={handleClose}>
