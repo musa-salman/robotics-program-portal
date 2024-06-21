@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
   GridToolbarColumnsButton,
   GridToolbarContainer,
-  GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
   GridToolbarQuickFilter,

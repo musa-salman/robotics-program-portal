@@ -35,7 +35,7 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
     };
 
     if (user && student === null) fetchStudent();
-    if (user && isRegistered === null) checkIfRegistered();
+    if (student && isRegistered === null) checkIfRegistered();
   }, [isRegistered, student]);
 
   function handleRegister() {

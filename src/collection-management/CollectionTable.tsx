@@ -6,8 +6,6 @@ import SimpleSnackbar from '../components/snackbar/SnackBar';
 import handleImportCSV from '../utils/csvUtils';
 import { BaseRepository } from '../repositories/BaseRepository';
 import CustomToolbar from './CustomToolbar';
-import { height } from '@fortawesome/free-brands-svg-icons/fa42Group';
-import { Margin } from '@mui/icons-material';
 
 interface MessageFormat<T> {
   addManySuccess: (count: number) => string;

@@ -1,11 +1,14 @@
 import { createContext, useContext } from 'react';
 import { UserRepository } from './UserRepository';
+import { CachingRepository } from '../repositories/caching/CachingRepository';
 
 /**
  * Context object for managing user data.
  * @type {React.Context<UserRepository>}
  */
-export const UserContext: React.Context<UserRepository> = createContext<UserRepository>(new UserRepository());
+export const UserContext: React.Context<UserRepository> = createContext<UserRepository>(
+  new CachingRepository(new UserRepository())
+);
 
 /**
  * Provides the user repository to the component tree.

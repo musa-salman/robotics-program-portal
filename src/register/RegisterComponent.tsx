@@ -25,6 +25,7 @@ const RegisterComponent = () => {
   const registerRepository = useContext(RegisterContext);
 
   const [register, setRegister] = useState<Register>({
+    id: '',
     firstName: '',
     lastName: '',
     studentPhoneNumber: '',
