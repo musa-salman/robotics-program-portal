@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { eventManagerContext } from './repository/EventManagerContext';
+import { eventServiceContext } from './repository/EventContext';
 import {
   Table,
   TableBody,
@@ -22,7 +22,7 @@ const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId
   const [registeredStudents, setRegisteredStudents] = useState<BriefStudent[] | null>(null);
   const [showDetails, setShowDetails] = useState(false);
 
-  const eventManager = useContext(eventManagerContext);
+  const eventManager = useContext(eventServiceContext);
 
   useEffect(() => {
     const getRegisteredStudents = async () => {

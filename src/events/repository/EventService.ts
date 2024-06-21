@@ -5,13 +5,11 @@ import { EventRegistrationRepository } from './EventRegistrationRepository';
 import { EventRepository } from './EventRepository';
 import { db } from '../../firebase';
 import { StudentEventRepository } from './StudentEventRepository';
-import MissingDocCache from '../../repositories/caching/MissingDocCache';
-import CacheManager from '../../repositories/caching/CacheManager';
 
 /**
  * Represents the interface for managing events.
  */
-export interface EventManagerInterface {
+export interface IEventService {
   /**
    * Registers a student for an event.
    * @param student - The student to register.
@@ -69,7 +67,7 @@ export interface EventManagerInterface {
   getEventRegistrationRepository(eventId: string): EventRegistrationRepository;
 }
 
-export class EventManager implements EventManagerInterface {
+export class EventService implements IEventService {
   readonly eventRepository: EventRepository;
 
   // Map of event registration repositories, keyed by event ID.
@@ -86,13 +84,7 @@ export class EventManager implements EventManagerInterface {
 
   getStudentEventRepository(studentId: string): StudentEventRepository {
     if (!this.studentEventRepositories.has(studentId)) {
-      this.studentEventRepositories.set(
-        studentId,
-        new CachingRepository(
-          new StudentEventRepository(studentId),
-          new MissingDocCache(new CacheManager<BriefEvent>())
-        )
-      );
+      this.studentEventRepositories.set(studentId, new CachingRepository(new StudentEventRepository(studentId)));
     }
 
     return this.studentEventRepositories.get(studentId)!;
@@ -140,9 +132,9 @@ export class EventManager implements EventManagerInterface {
     }
 
     const studentEventRepository = this.getStudentEventRepository(studentId);
-    const studentEventDoc = await studentEventRepository.findOne(eventId);
+    const studentEventDoc = await studentEventRepository.find();
 
-    return studentEventDoc !== null;
+    return studentEventDoc.some((event) => event.id === eventId);
   }
 
   async deleteEvent(eventId: string): Promise<void> {
