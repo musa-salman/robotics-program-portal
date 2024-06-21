@@ -1,7 +1,4 @@
 {
-  "database": {
-    "rules": "database.rules.json"
-  },
   "firestore": {
     "rules": "firestore.rules"
   },
@@ -9,7 +6,7 @@
     "rules": "storage.rules"
   },
   "hosting": {
-    "public": "public"
+    "public": "./dist"
   },
   "emulators": {
     "singleProjectMode": false,
