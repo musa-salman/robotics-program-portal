@@ -107,7 +107,13 @@ export class EventService implements IEventService {
     };
 
     const batch = writeBatch(db);
-    return batch.set(studentEventDocRef, registered).set(eventRef, student).commit();
+    return batch
+      .set(studentEventDocRef, registered)
+      .set(eventRef, student)
+      .commit()
+      .then(() => {
+        this.getStudentEventRepository(student.id).findOne(eventId);
+      });
   }
 
   async cancelRegistration(studentId: string, eventId: string): Promise<void> {
