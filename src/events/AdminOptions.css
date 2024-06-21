@@ -1,0 +1,44 @@
+/* Main container styling */
+.adminOptions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-family: Arial, sans-serif;
+  color: #a5a7a5;
+}
+
+.adminOptions :hover {
+  color: #07cf32;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.details-button,
+.edit-button,
+.delete-button {
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #f0f0f0;
+}
+
+.delete-button:hover {
+  color: white;
+  background-color: #ff0000;
+}
+
+.details-button:hover {
+  color: white;
+  background-color: #b0e6b1;
+}
+
+.details-button > MenuItem,
+.edit-button > MenuItem,
+.delete-button > MenuItem {
+  font-size: 16px;
+  color: #333;
+}

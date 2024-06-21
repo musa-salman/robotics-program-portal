@@ -24,7 +24,7 @@ type RoleBasedAccessControlProps = {
 };
 
 /**
- * RoleBasedAccessControl component provides role-based access control functionality.
+ * RoleBasedAccessControl component is responsible for rendering different components based on user roles and authentication status.
  *
  * @component
  * @example
@@ -38,6 +38,14 @@ type RoleBasedAccessControlProps = {
  *   <AuthorizedComponent />
  * </RoleBasedAccessControl>
  * ```
+ *
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The component to render if the user is authorized.
+ * @param {string[]} props.allowedRoles - The roles allowed to access the component.
+ * @param {React.ReactNode} [props.unauthorizedAuthenticatedComponent] - The component to render if the user is authenticated but not authorized.
+ * @param {React.ReactNode} [props.unauthorizedUnauthenticatedComponent] - The component to render if the user is unauthenticated.
+ * @param {React.ReactNode} [props.loadingComponent] - The component to render while the authorization status is being determined.
+ * @returns {React.ReactNode} The rendered component based on the user's authorization status.
  */
 const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   children,

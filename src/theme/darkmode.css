@@ -1,0 +1,24 @@
+.dark-mode {
+  --color-primary: #3184bb;
+  --color-secondary: #2ecc71;
+  --color-tertiary: #e74c3c;
+
+  --color-background: #121212;
+  --color-background-alt: #1d1d1d;
+  --color-surface: #242424;
+  --color-border: #444444;
+
+  --color-text: #f0f0f0;
+  --color-text-light: #cccccc;
+  --color-text-dark: #ffffff;
+  --color-text-inverse: #121212;
+
+  --color-accent: #f39c12;
+  --color-accent-light: #f7b731;
+  --color-accent-dark: #c87f0a;
+
+  --color-success: #2ecc71;
+  --color-warning: #f39c12;
+  --color-error: #e74c3c;
+  --color-info: #3498db;
+}

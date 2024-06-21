@@ -25,12 +25,24 @@ export class StorageService implements IStorageService {
     );
   }
 
-  async download(path: string): Promise<void> {
+  async download(path: string, filename?: string): Promise<void> {
     getDownloadURL(ref(storage, path))
       .then((url) => {
         const xhr = new XMLHttpRequest();
         xhr.responseType = 'blob';
         xhr.open('GET', url);
+        xhr.onload = () => {
+          const downloadFile = new Blob([xhr.response]);
+          const downloadUrl = URL.createObjectURL(downloadFile);
+
+          const a = document.createElement('a');
+          a.href = downloadUrl;
+          a.download = filename || path.split('/').pop() || 'unknown-download';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(downloadUrl);
+        };
         xhr.send();
       })
       .catch((error) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Grid, Link, Typography } from '@mui/material';
-import { Facebook, Twitter, Instagram } from '@mui/icons-material';
+import { Facebook, Twitter, Instagram, YouTube } from '@mui/icons-material';
 import './Footer.css';
 
 interface Link {
@@ -42,6 +42,7 @@ const Footer: React.FC<FooterProps> = ({ links, socialMedia, copyright }) => {
                   {social.platform === 'facebook' && <Facebook />}
                   {social.platform === 'twitter' && <Twitter />}
                   {social.platform === 'instagram' && <Instagram />}
+                  {social.platform === 'youtube' && <YouTube />}
                 </Link>
               ))}
             </div>

@@ -1,35 +1,46 @@
 import Card from 'react-bootstrap/Card';
-import StudyMaterials from './StudyMaterials';
+import MaterialCard from './MaterialCard';
 import { useState, useEffect, useContext } from 'react';
 import './StudyMaterialContainer.css';
-import { StudyMaterialContext } from './StudyMaterialContext';
+import { MaterialContext } from './repository/StudyMaterialContext';
 import { StudyMaterial } from './StudyMaterial';
 import { SearchBar } from './SearchBar';
 import UploadFileComponent from '../upload-file/UploadFile';
 import { Modal } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import { Fab } from '@mui/material';
+import NoResultFound from './NoResultFound';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import MoveList from './MoveList';
+import EmptyStudyMaterials from './EmptyStudyMaterials';
+import { Category } from '../upload-file/Category';
 
 function StudyMaterialContainer() {
-  const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
-  const studyMaterialRepository = useContext(StudyMaterialContext);
+  const materialManager = useContext(MaterialContext);
 
-  const [searchResults, setSearchResults] = useState<StudyMaterial[]>([]);
+  const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
+  const [categoryList, setCategoryList] = useState<Category[] | null>(null);
+
+  const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);
+  const [selectedMaterial, setSelectedMaterial] = useState<StudyMaterial | null>(null);
+  const [isMoveMode, setIsMoveMode] = useState(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     const getStudyMaterials = async () => {
-      setStudyMaterials(await studyMaterialRepository.find());
+      setStudyMaterials(await materialManager.studyMaterialRepository.find());
+    };
+    const getCategories = async () => {
+      setCategoryList(await materialManager.categoryRepository.find());
     };
 
     if (studyMaterials === null) getStudyMaterials();
-  }, [studyMaterials]);
-
-  const handleSearchResults = (results: StudyMaterial[]) => {
-    setSearchResults(results);
-  };
+    if (categoryList === null) getCategories();
+  }, [studyMaterials, categoryList]);
 
   const handleUpdate = (updatedMaterial: StudyMaterial) => {
     const updatedMaterials = (studyMaterials || []).map((material) =>
@@ -38,8 +49,8 @@ function StudyMaterialContainer() {
     setStudyMaterials(updatedMaterials);
   };
 
-  const handleDelete = (deletedItemId: string) => {
-    const updatedMaterials = (studyMaterials || []).filter((material) => material.id !== deletedItemId);
+  const handleDelete = (deletedStudy: StudyMaterial) => {
+    const updatedMaterials = (studyMaterials || []).filter((material) => material.id !== deletedStudy.id);
     setStudyMaterials(updatedMaterials);
   };
 
@@ -48,46 +59,86 @@ function StudyMaterialContainer() {
     setStudyMaterials(studyMaterials);
   };
 
-  const categories = (studyMaterials || [])
+  const handelDeleteAll = () => {
+    // studyMaterialManagement.categoryRepository.deleteAll();
+  };
+
+  const handleMoveClick = (studyMaterial: StudyMaterial) => {
+    setSelectedMaterial(studyMaterial);
+    setIsMoveMode(true);
+  };
+
+  const handleMove = (categorySelected: Category) => {};
+
+  if (studyMaterials === null) {
+    return <>loading</>;
+  }
+
+  if (studyMaterials.length === 0) {
+    return <EmptyStudyMaterials handleAdd={handleAdd} />;
+  }
+
+  const categories: string[] = (searchResults || studyMaterials || [])
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
+  console.log(studyMaterials);
+  console.log('categories', categories);
   return (
     <>
-      <button onClick={handleShow} className="add-button">
-        <FontAwesomeIcon icon={faPlus} />
-      </button>
-      <SearchBar studyMaterials={studyMaterials || []} onSearchResults={handleSearchResults} />
-      {(categories || []).map((category) => (
-        <Card className="primary">
-          <Card.Header className="Card-Header">
-            <div key={category}>
-              <h2>{category}</h2>
-            </div>
-            <button onClick={handleShow} className="add-button">
-              <FontAwesomeIcon icon={faPlus} />
-            </button>
-          </Card.Header>
-          <br></br>
-          <Card.Body className="body">
+      <MoveList categories={categoryList || []} onMove={handleMove} onCancel={() => setIsMoveMode(false)} />
+
+      <div className="btn-search">
+        <SearchBar
+          studyMaterials={studyMaterials || []}
+          onSearchResults={setSearchResults}
+          query={query}
+          setQuery={setQuery}
+        />
+        <div className="btns">
+          <Fab className="adde-btn" aria-label="add" onClick={handleShow}>
+            <AddIcon />
+          </Fab>
+          <Fab className="del-btn" aria-label="add" onClick={handelDeleteAll}>
+            <DeleteForeverIcon />
+          </Fab>
+        </div>
+      </div>
+      {searchResults?.length === 0 ? (
+        <NoResultFound />
+      ) : (
+        (categories || []).map((category, index) => (
+          <Card className="primary" key={index}>
+            <Card.Header className="Card-Header">
+              <div>
+                <h2>{category}</h2>
+              </div>
+              <Fab className="edit-button" aria-label="edit">
+                <EditIcon />
+              </Fab>
+            </Card.Header>
             <br></br>
-            <div className="study-materials-container">
-              {(searchResults.length > 0 ? searchResults : studyMaterials || [])
-                .filter((s) => s.category === category)
-                .map((studyMaterial) => (
-                  <StudyMaterials
-                    key={studyMaterial.id}
-                    studyMaterial={studyMaterial}
-                    onUpdate={handleUpdate}
-                    onDelete={handleDelete}
-                  />
-                ))}
-            </div>
-          </Card.Body>
-        </Card>
-      ))}
+            <Card.Body className="body">
+              <br></br>
+              <div className="study-materials-container">
+                {(searchResults || studyMaterials || [])
+                  .filter((s) => s.category === category)
+                  .map((studyMaterial) => (
+                    <MaterialCard
+                      key={studyMaterial.id}
+                      studyMaterial={studyMaterial}
+                      onUpdate={handleUpdate}
+                      onDelete={handleDelete}
+                      handleMoveClick={handleMoveClick}
+                    />
+                  ))}
+              </div>
+            </Card.Body>
+          </Card>
+        ))
+      )}
       <Modal show={show} onHide={handleClose}>
-        <UploadFileComponent handleClose={handleClose} handleAdd={handleAdd}></UploadFileComponent>
+        <UploadFileComponent handleClose={handleClose} handleAdd={handleAdd} />
       </Modal>
     </>
   );

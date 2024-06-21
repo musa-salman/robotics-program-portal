@@ -10,21 +10,73 @@
 }
 
 .Card {
-  width: 20rem;
-  border: 2px solid rgb(252, 251, 252);
-  background-color: #d1c8bf;
-  box-shadow: -3px 8px 13px 12px rgba(33, 32, 33, 0.69);
-  border-radius: 20px;
+  min-width: 20rem;
+  max-width: 20rem;
+  border: 3px solid rgb(252, 251, 252);
+  background-color: #d6ccc2;
+  box-shadow: 3px 3px 3px 4px rgba(53, 50, 53, 0.69);
+  border-radius: 10px;
+  margin: 0px;
+  padding: 6px;
+  display: inline-block;
 }
 
-.btns {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 15rem;
-}
-
-.button {
-  width: 10em;
+.bu-more {
+  /* width: fit-content; */
   background-color: transparent;
+  border: none;
+  border-radius: 20px;
+  padding: 4px;
+  margin: 0px;
+}
+
+.bu-more:hover {
+  background-color: #9b9a9a;
+  /* background-color: transparent; */
+}
+
+.Card .title-card {
+  max-height: 6vh;
+  min-height: 6vh;
+  font-size: 20px;
+}
+
+.Card .description {
+  max-height: 20vh;
+  min-height: 5vh;
+  font-size: 15px;
+  /* text-align: right; */
+}
+
+.Card .date {
+  min-height: 5vh;
+  font-size: 16px;
+  /* text-align: right; */
+}
+
+.Card .dow-button {
+  display: flex;
+  margin: auto;
+  padding: 10px 20px;
+  color: #060606;
+  background-color: #acc4ac;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.Card .dow-button:hover {
+  background-color: #9ed09e;
+}
+
+.Card .dow-icon {
+  margin-right: 50px;
+  color: whitesmoke;
+}
+
+.Card .whenedite {
+  padding: 5px;
+  border: 2px dashed rgb(231, 119, 39);
+  color: rgb(235, 143, 78);
+  margin-bottom: 2px;
 }

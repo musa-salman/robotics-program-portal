@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { CategoryRepository } from './CategoryRepository';
+import { CategoryRepository } from '../study-material/repository/CategoryRepository';
 
 export const CategoryContext = createContext<CategoryRepository>(new CategoryRepository());
 

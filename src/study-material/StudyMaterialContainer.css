@@ -1,6 +1,6 @@
 .primary {
-  border: 2px solid;
-  border-radius: 5px;
+  border: none;
+  border-radius: none;
   background-color: transparent;
   display: flex;
   margin: 20px;
@@ -11,7 +11,48 @@
   flex-wrap: wrap;
   align-content: space-between;
   justify-content: right;
-  gap: 10px;
+  gap: 20px;
+}
+
+.btn-search {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  flex-wrap: wrap;
+  column-gap: 10px;
+  justify-content: space-between;
+}
+
+.btns {
+  margin-left: 14px;
+}
+
+.btn-search .adde-btn {
+  background-color: rgb(236, 222, 66);
+  color: whitesmoke;
+  margin-left: 18px;
+}
+
+.btn-search .adde-btn:hover {
+  background-color: rgb(226, 211, 47);
+}
+
+.btn-search .del-btn {
+  color: whitesmoke;
+  background-color: rgb(222, 86, 86);
+}
+
+.btn-search .del-btn:hover {
+  background-color: rgb(195, 64, 64);
+}
+
+.Card-Header .edit-button {
+  background-color: #e0b1cb;
+  color: whitesmoke;
+}
+
+.Card-Header .edit-button:hover {
+  background-color: #ee9bc9;
 }
 
 .Card-Header {
@@ -20,26 +61,8 @@
   justify-content: space-between;
 }
 
-.add-button {
-  /* background: url('/plus.png') no-repeat center center; */
-  width: 30px;
-  height: 30px;
-  border: none;
-  cursor: pointer;
-  background-color: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
-}
-
-.add-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
 .header-text {
   text-align: right;
-  /* flex-grow: 1; */
   font-size: 20px;
   color: black;
   font-weight: bold;

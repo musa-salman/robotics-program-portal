@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  margin: 5px, auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container .text {
+  color: #333;
+  font-size: 12px;
+}
+
+.container .textt {
+  color: #b06464;
+}
+
+.container .add-btn {
+  display: flex;
+  margin: 20px auto;
+  padding: 10px 20px;
+  color: #060606;
+  background-color: #205996;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.container .button-add:hover {
+  background-color: #4f7195;
+}
+
+.container .addIcon {
+  color: crimson;
+  margin-right: 30px;
+}

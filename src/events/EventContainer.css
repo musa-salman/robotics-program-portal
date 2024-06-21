@@ -1,0 +1,51 @@
+.events-container-default-style {
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  justify-content: right;
+  margin: 10px;
+  gap: 10px;
+}
+
+.events-container-show-all-events-style {
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  justify-content: right;
+  margin: 10px;
+  gap: 10px;
+}
+
+/* Styling for the shift buttons*/
+.shift-buttons {
+  border: none;
+  color: white;
+  background-color: #606365;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.shift-buttons:hover {
+  background-color: #00b336;
+}
+
+.show-all {
+  margin-right: 5%;
+}
+
+.events-header-button {
+  display: flex;
+  margin-top: 10px;
+  margin-right: 10px;
+}

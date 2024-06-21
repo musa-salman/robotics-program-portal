@@ -1,16 +1,16 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Modal from 'react-bootstrap/Modal';
 import { useContext, useEffect, useState } from 'react';
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import './UploadFile.css';
-import { CategoryContext } from './CategoryContext';
 import { Category } from './Category';
-import { StudyMaterialContext } from '../study-material/StudyMaterialContext';
+import { MaterialContext } from '../study-material/repository/StudyMaterialContext';
 import { StudyMaterial } from '../study-material/StudyMaterial';
 import { AddEditCategories } from './addOrEditCategories';
 import { StorageServiceContext } from '../storage-service/StorageContext';
+import GPT from '../gpt-service/GPTComponent';
+import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
 
 type SelectedItem = string;
 interface UploadFileComponentProps {
@@ -21,15 +21,14 @@ interface UploadFileComponentProps {
 const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, handleAdd }) => {
   const [file, setFile] = useState<File | null>(null);
   const [, setUploadProgress] = useState(0);
-  const [selectedItem, setSelectedItems] = useState<SelectedItem>('מיקןם הפיל');
-  const [allStudyMaterial, setAllStudyMaterial] = useState<StudyMaterial[] | null>(null);
+  const [selectedItem, setSelectedItems] = useState<SelectedItem>('הכל');
   const [categories, setCategories] = useState<Category[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [showAddEdit, setShowAddEdit] = useState(false);
   const handleCloseAddEdit = () => setShowAddEdit(false);
   const handleShowAddEdit = () => setShowAddEdit(true);
-  const categoryRepository = useContext(CategoryContext);
-  const studyMaterialRepository = useContext(StudyMaterialContext);
+  const studyMaterialManagement = useContext(MaterialContext);
+  const [validated, setValidated] = useState(false);
 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
     filename: '',
@@ -41,23 +40,18 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   });
   const storageService = useContext(StorageServiceContext);
 
-  const getCategory = async () => {
-    try {
-      const data: Category[] = await categoryRepository.find();
-      setCategories(data);
-    } catch (error) {
-      console.error('Error fetching items:', error);
-    }
-  };
-  const getStudyMaterial = async () => {
-    setAllStudyMaterial(await studyMaterialRepository.find());
-  };
-
   useEffect(() => {
+    const getCategory = async () => {
+      try {
+        const data: Category[] = await studyMaterialManagement.categoryRepository.find();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      }
+    };
+
     if (loading && categories === null) {
       getCategory();
-      getStudyMaterial();
-      console.log('categories ' + categories);
       setLoading(false);
     }
   }, [categories]);
@@ -69,7 +63,6 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   const handleSelect = (eventKey: string | null) => {
     if (eventKey) {
       setSelectedItems(eventKey);
-      setStudyMaterial((prevData) => ({ ...prevData, category: eventKey }));
     }
   };
 
@@ -94,26 +87,47 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
     }
   };
 
-  const handleSubmit = async () => {
-    if (file) {
-      const docRef = await studyMaterialRepository.create(studyMaterial);
-      storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename, setUploadProgress);
-      handleAdd(studyMaterial);
+  const handleSubmit = async (event: any) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
     }
-    console.log(studyMaterial);
-    handleClose();
-    handleDate();
+
+    setValidated(true);
+
+    if (file !== null && studyMaterial.title !== '') {
+      // const docRef = await studyMaterialRepository.create(studyMaterial);
+      studyMaterial.category = selectedItem;
+      studyMaterialManagement.studyMaterialRepository.create(studyMaterial).then((docRef) => {
+        storageService.upload(
+          file,
+          '/study-material/' + docRef.id + '-' + studyMaterial.filename,
+          setUploadProgress,
+          () => {},
+          () => {}
+        );
+      });
+
+      handleAdd(studyMaterial);
+      handleClose();
+      handleDate();
+    }
   };
 
   return (
     <>
-      <Modal.Header closeButton className="bg mb-3 px-3" style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
+      <Modal.Header closeButton style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
         <h1 style={{ fontSize: '40px', color: 'black', border: 'none' }}>העלת קובץ</h1>
       </Modal.Header>
-      <Modal.Body style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
-        <Form className="px-3 mx-3">
+      <Modal.Body className="backgroundStyle">
+        <Form className="px-3 mx-3" noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group className="px-1">
-            <FloatingLabel controlId="floatingInput" label="כותרת">
+            <Form.Label>כותרת</Form.Label>
+            <GPT
+              initialValue=""
+              getData={() => suggestMaterialTitles(studyMaterial)}
+              options={{ simplify: false, improve: false, shorten: false }}>
               <Form.Control
                 type="text"
                 name="title"
@@ -122,8 +136,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
                 placeholder="כותרת"
                 onChange={(event) => handleInput(event)}
               />
-            </FloatingLabel>
-            <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
+            </GPT>
           </Form.Group>
 
           <Form.Group className="position-relative my-3 px-2" controlId="validationCustom02">
@@ -146,14 +159,16 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
                     menuVariant="dark"
                     onSelect={handleSelect}>
                     <div className="modal-footer-scroll2">
-                      {(categories || []).map((item, index) => (
-                        <NavDropdown.Item
-                          eventKey={item.category}
-                          onClick={() => handleSelect(item.category)}
-                          key={index}>
-                          {item.category}
-                        </NavDropdown.Item>
-                      ))}
+                      {(categories || [])
+                        .filter((item) => item.category !== 'הכל')
+                        .map((item, index) => (
+                          <NavDropdown.Item
+                            eventKey={item.category}
+                            onClick={() => handleSelect(item.category)}
+                            key={index}>
+                            {item.category}
+                          </NavDropdown.Item>
+                        ))}
 
                       <Button variant="link" onClick={handleShowAddEdit}>
                         הוספה/שינוי
@@ -166,15 +181,16 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
             </Container>
           </Navbar>
 
-          <FloatingLabel className="my-3" controlId="floatingTextarea1" label="תיאור">
+          <Form.Label>תיאור</Form.Label>
+          <GPT initialValue="" getData={() => generateMaterialDescription(studyMaterial)}>
             <Form.Control
               as="textarea"
               name="description"
-              placeholder="Leave a comment here"
+              placeholder="הכנס תיאור"
               onChange={(event) => handleInput(event)}
               style={{ height: '100px', backgroundColor: '#f5f4f3', color: 'black', border: 'none' }}
             />
-          </FloatingLabel>
+          </GPT>
 
           <Modal.Footer className="justify-content-center">
             <Button variant="primary" className="mx-3 px-5" onClick={handleSubmit}>
@@ -190,9 +206,9 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
       <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
         <AddEditCategories
           categories={categories}
-          studyMaterial={allStudyMaterial}
           handleCloseAddEdit={handleCloseAddEdit}
-          setCategories={setCategories}></AddEditCategories>
+          setCategories={setCategories}
+          handleSelect={handleSelect}></AddEditCategories>
       </Modal>
     </>
   );
