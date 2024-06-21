@@ -1,30 +1,26 @@
 import Card from 'react-bootstrap/Card';
-import StudyMaterials from './StudyMaterials';
+import MaterialCard from './MaterialCard';
 import { useState, useEffect, useContext } from 'react';
 import './StudyMaterialContainer.css';
-import { StudyMaterialContext } from './repository/StudyMaterialContext';
+import { MaterialContext } from './repository/StudyMaterialContext';
 import { StudyMaterial } from './StudyMaterial';
 import { SearchBar } from './SearchBar';
 import UploadFileComponent from '../upload-file/UploadFile';
 import { Modal } from 'react-bootstrap';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-import { Button, Fab, TextField } from '@mui/material';
+import { Fab } from '@mui/material';
 import NoResultFound from './NoResultFound';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import MoveList from './MoveList';
 import EmptyStudyMaterials from './EmptyStudyMaterials';
-import { StudyMaterialManagement } from './repository/StudyMaterialManagement';
 import { Category } from '../upload-file/Category';
 
 function StudyMaterialContainer() {
-  const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
-  const studyMaterialRepository = useContext(StudyMaterialContext);
-  const studyMaterialManagement = new StudyMaterialManagement();
-  const [categoryList, setCategoryList] = useState<Category[] | null>(null);
+  const materialManager = useContext(MaterialContext);
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState(String);
+  const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
+  const [categoryList, setCategoryList] = useState<Category[] | null>(null);
 
   const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);
   const [selectedMaterial, setSelectedMaterial] = useState<StudyMaterial | null>(null);
@@ -36,14 +32,14 @@ function StudyMaterialContainer() {
 
   useEffect(() => {
     const getStudyMaterials = async () => {
-      setStudyMaterials(await studyMaterialManagement.studyMaterialRepository.find());
+      setStudyMaterials(await materialManager.studyMaterialRepository.find());
     };
-    const getCategries = async () => {
-      setCategoryList(await studyMaterialManagement.categoryRepository.find());
+    const getCategories = async () => {
+      setCategoryList(await materialManager.categoryRepository.find());
     };
 
     if (studyMaterials === null) getStudyMaterials();
-    if (categoryList === null) getCategries();
+    if (categoryList === null) getCategories();
   }, [studyMaterials, categoryList]);
 
   const handleUpdate = (updatedMaterial: StudyMaterial) => {
@@ -63,19 +59,6 @@ function StudyMaterialContainer() {
     setStudyMaterials(studyMaterials);
   };
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
-  const handleSave = () => {
-    // studyMaterialManagement.renameCategory()
-    setIsEditing(false);
-  };
-
-  const handleCancel = () => {
-    setIsEditing(false);
-  };
-
   const handelDeleteAll = () => {
     // studyMaterialManagement.categoryRepository.deleteAll();
   };
@@ -85,13 +68,7 @@ function StudyMaterialContainer() {
     setIsMoveMode(true);
   };
 
-  const handleMove = (categorySelected: Category) => {
-    const updatedCategory = {
-      ...selectedMaterial,
-      category: categorySelected.category
-    };
-    // studyMaterialManagement.moveStudyMaterial(updatedCategory , categorySelected.category);
-  };
+  const handleMove = (categorySelected: Category) => {};
 
   if (studyMaterials === null) {
     return <>loading</>;
@@ -122,7 +99,7 @@ function StudyMaterialContainer() {
           <Fab className="adde-btn" aria-label="add" onClick={handleShow}>
             <AddIcon />
           </Fab>
-          <Fab className="del-btn" aria-label="add">
+          <Fab className="del-btn" aria-label="add" onClick={handelDeleteAll}>
             <DeleteForeverIcon />
           </Fab>
         </div>
@@ -132,22 +109,14 @@ function StudyMaterialContainer() {
       ) : (
         (categories || []).map((category, index) => (
           <Card className="primary" key={index}>
-            {isEditing ? (
-              <Card.Header className="Card-Header">
-                <TextField value={name} onChange={(e) => setName(e.target.value)} label="Edit Category" />
-                <div>
-                  <Button onClick={handleSave}>Save</Button>
-                  <Button onClick={handleCancel}>Cancel</Button>
-                </div>
-              </Card.Header>
-            ) : (
-              <Card.Header className="Card-Header">
+            <Card.Header className="Card-Header">
+              <div>
                 <h2>{category}</h2>
-                <Fab className="edit-button" aria-label="edit" onClick={handleEdit}>
-                  <EditIcon />
-                </Fab>
-              </Card.Header>
-            )}
+              </div>
+              <Fab className="edit-button" aria-label="edit">
+                <EditIcon />
+              </Fab>
+            </Card.Header>
             <br></br>
             <Card.Body className="body">
               <br></br>
@@ -155,7 +124,7 @@ function StudyMaterialContainer() {
                 {(searchResults || studyMaterials || [])
                   .filter((s) => s.category === category)
                   .map((studyMaterial) => (
-                    <StudyMaterials
+                    <MaterialCard
                       key={studyMaterial.id}
                       studyMaterial={studyMaterial}
                       onUpdate={handleUpdate}
