@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { StudyMaterialRepository } from './StudyMaterialRepository';
+import { StudyMaterialRepository } from '../repository/StudyMaterialRepository';
 
 export const StudyMaterialContext = createContext<StudyMaterialRepository>(new StudyMaterialRepository());
 
