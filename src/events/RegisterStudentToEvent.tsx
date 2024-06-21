@@ -42,19 +42,20 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
     handleShowRegister();
   }
 
-  const handleSaveRegister = async () => {
+  const handleSaveRegister = () => {
     setShowModalRegister(false);
     if (!student) return;
-    eventManager.registerStudentForEvent(
-      {
-        id: student.id,
-        name: student.firstName + ' ' + student.lastName,
-        email: student.studentEmail,
-        phone: student.studentPhoneNumber
-      } as BriefStudent,
-      eventId
-    );
-    setRegister(true);
+    eventManager
+      .registerStudentForEvent(
+        {
+          id: student.id,
+          name: student.firstName + ' ' + student.lastName,
+          email: student.studentEmail,
+          phone: student.studentPhoneNumber
+        } as BriefStudent,
+        eventId
+      )
+      .then(() => setRegister(true));
   };
 
   function RegisterWindow() {
