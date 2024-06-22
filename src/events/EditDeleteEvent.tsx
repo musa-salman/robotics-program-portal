@@ -108,7 +108,6 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
   function EditWindow() {
     return (
       <>
-        <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} />
         <Modal show={showModalEdit} onHide={handleCloseEdit} animation={false} style={{ display: 'center' }}>
           <Modal.Header closeButton>
             <Modal.Title>שינוי אירוע</Modal.Title>
@@ -160,6 +159,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
 
   return (
     <>
+      <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} />
       {EditWindow()}
       {DeleteWindow()}
     </>
