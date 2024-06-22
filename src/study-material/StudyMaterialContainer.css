@@ -28,22 +28,36 @@
 }
 
 .btn-search .adde-btn {
-  background-color: rgb(236, 222, 66);
+  background: linear-gradient(90deg, rgba(222, 67, 19, 1) 6%, rgba(254, 193, 99, 1) 94%);
   color: whitesmoke;
   margin-left: 18px;
+  transition: ease 0.5s;
 }
 
 .btn-search .adde-btn:hover {
-  background-color: rgb(226, 211, 47);
+  padding: 2rem;
 }
 
 .btn-search .del-btn {
+  transition: ease 0.5s;
   color: whitesmoke;
-  background-color: rgb(222, 86, 86);
+  background: radial-gradient(circle, rgba(218, 12, 12, 1) 32%, rgba(245, 187, 107, 1) 100%);
 }
 
 .btn-search .del-btn:hover {
-  background-color: rgb(195, 64, 64);
+  padding: 2rem;
+}
+
+.Card-Header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stg-nam {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .Card-Header .edit-button {
@@ -53,12 +67,6 @@
 
 .Card-Header .edit-button:hover {
   background-color: #ee9bc9;
-}
-
-.Card-Header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .header-text {

@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import './StudyMaterials.css';
+import './MaterialCard.css';
 import { useContext, useState } from 'react';
 import { StudyMaterial } from './StudyMaterial';
 import moment from 'moment';
