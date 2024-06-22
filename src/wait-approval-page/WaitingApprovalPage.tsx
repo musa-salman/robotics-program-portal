@@ -1,5 +1,5 @@
 import React from 'react';
-import './WaitApprovalPage.css';
+import './WaitingApprovalPage.css';
 
 const WaitApprovalPage: React.FC = () => {
   return (
