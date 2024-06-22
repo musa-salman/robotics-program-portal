@@ -24,7 +24,8 @@ function StudyMaterialContainer() {
   const [categoryList, setCategoryList] = useState<Category[] | null>(null);
 
   const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState(String);
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [name, setName] = useState('');
 
   const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);
   const [selectedMaterial, setSelectedMaterial] = useState<StudyMaterial | null>(null);
@@ -63,12 +64,16 @@ function StudyMaterialContainer() {
     setStudyMaterials(studyMaterials);
   };
 
-  const handleEdit = () => {
+  const handleEdit = (category: Category) => {
     setIsEditing(true);
+    setEditingCategory(category);
+    setName(category.category);
   };
 
   const handleSave = () => {
-    // studyMaterialManagement.renameCategory()
+    if (editingCategory) {
+      studyMaterialManagement.renameCategory(editingCategory.id, name);
+    }
     setIsEditing(false);
   };
 
@@ -143,7 +148,7 @@ function StudyMaterialContainer() {
             ) : (
               <Card.Header className="Card-Header">
                 <h2>{category}</h2>
-                <Fab className="edit-button" aria-label="edit" onClick={handleEdit}>
+                <Fab className="edit-button" aria-label="edit" onClick={() => handleEdit(category)}>
                   <EditIcon />
                 </Fab>
               </Card.Header>
