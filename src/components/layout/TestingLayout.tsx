@@ -34,6 +34,9 @@ const TestingLayout: React.FC = () => {
           <li>
             <Link to="/gpt">GPT Playground</Link>
           </li>
+          <li>
+            <Link to="/approvalPage">Approval Page</Link>
+          </li>
         </ul>
       </nav>
       <Outlet />

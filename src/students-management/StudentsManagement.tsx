@@ -1,13 +1,11 @@
-import { GridRowModesModel, GridRowModes, GridActionsCellItem, GridColDef } from '@mui/x-data-grid';
+import { GridActionsCellItem, GridColDef } from '@mui/x-data-grid';
 import CollectionTable, { MessageFormat } from '../collection-management/CollectionTable';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Cancel';
 import { Student } from './Student';
 import { StudentContext } from './StudentContext';
 import { useContext } from 'react';
-import AddStudentForm from './AddStudentForm';
+import StudentForm from './StudentForm';
 import './StudentsManagement.css';
 import { Typography } from '@mui/material';
 
@@ -15,10 +13,11 @@ const StudentsManagement = () => {
   const studentRepository = useContext(StudentContext);
 
   const generateColumns = (
+    /// show form, set initial values, save item
     rows: (Student & { isNew: boolean })[] | null,
     setRows: React.Dispatch<React.SetStateAction<(Student & { isNew: boolean })[] | null>>,
-    rowModesModel: GridRowModesModel,
-    setRowModesModel: React.Dispatch<React.SetStateAction<GridRowModesModel>>,
+    setShowItemForm: React.Dispatch<React.SetStateAction<boolean>>,
+    setInitialItem: React.Dispatch<React.SetStateAction<Student | null>>,
     setMessage: React.Dispatch<React.SetStateAction<string | null>>
   ): GridColDef[] => {
     return [
@@ -68,40 +67,13 @@ const StudentsManagement = () => {
         width: 150,
         cellClassName: 'actions',
         getActions: ({ id }) => {
-          const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-          if (isInEditMode) {
-            return [
-              <GridActionsCellItem
-                icon={<SaveIcon color="primary" />}
-                label="שמור"
-                onClick={(_) => {
-                  setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-                }}
-              />,
-              <GridActionsCellItem
-                icon={<CancelIcon color="action" />}
-                label="בטל"
-                onClick={(_) => {
-                  setRowModesModel((prevRowModesModel) => ({
-                    ...prevRowModesModel,
-                    [id]: { mode: GridRowModes.View, ignoreModifications: true }
-                  }));
-
-                  const editedRow = rows!.find((row) => row.id === id);
-                  if (editedRow?.isNew) {
-                    setRows((prevRows) => prevRows!.filter((row) => row.id !== id));
-                  }
-                }}
-              />
-            ];
-          }
-
           return [
             <GridActionsCellItem
               icon={<EditIcon color="action" />}
               label="ערוך"
               onClick={(_) => {
-                setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+                setInitialItem(rows!.find((student) => student.id === id) || null);
+                setShowItemForm(true);
               }}
             />,
             <GridActionsCellItem
@@ -123,10 +95,6 @@ const StudentsManagement = () => {
   };
 
   const messageFormat: MessageFormat<Student> = {
-    addManySuccess: (count) => `נוספו ${count} תלמידים בהצלחה`,
-    addManyError: (count) => `התרחשה שגיאה בהוספת ${count} תלמידים`,
-    addSuccess: (student) => `התלמיד ${student.firstName} ${student.lastName} נוסף בהצלחה`,
-    addError: (student) => `התרחשה שגיאה בהוספת התלמיד: ${student.firstName} ${student.lastName}`,
     deleteSuccess: () => 'התלמיד נמחק בהצלחה',
     deleteError: () => 'התרחשה שגיאה במחיקת התלמיד',
     updateSuccess: (item: Student) => `התלמיד ${item.firstName} ${item.lastName} עודכן בהצלחה`,
@@ -134,13 +102,15 @@ const StudentsManagement = () => {
   };
 
   return (
-    <CollectionTable<Student>
-      title="ניהול תלמידים"
-      generateColumns={generateColumns}
-      repository={studentRepository}
-      FormComponent={AddStudentForm}
-      messageFormat={messageFormat}
-    />
+    <>
+      <CollectionTable<Student>
+        title="ניהול תלמידים"
+        generateColumns={generateColumns}
+        repository={studentRepository}
+        FormComponent={StudentForm}
+        messageFormat={messageFormat}
+      />
+    </>
   );
 };
 

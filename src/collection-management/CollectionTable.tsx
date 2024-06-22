@@ -3,17 +3,12 @@ import { DataGrid, GridColDef, GridRowId, GridRowModel, GridRowModesModel, GridV
 import { Box, Button, Dialog, DialogActions, DialogTitle, Typography } from '@mui/material';
 import { heIL } from '@mui/x-data-grid/locales';
 import SimpleSnackbar from '../components/snackbar/SnackBar';
-import handleImportCSV from '../utils/csvUtils';
 import { BaseRepository } from '../repositories/BaseRepository';
 import CustomToolbar from './CustomToolbar';
-import { height } from '@fortawesome/free-brands-svg-icons/fa42Group';
-import { Margin } from '@mui/icons-material';
+import { CachingRepository } from '../repositories/caching/CachingRepository';
+import './CollectionTable.css';
 
 interface MessageFormat<T> {
-  addManySuccess: (count: number) => string;
-  addManyError: (count: number) => string;
-  addSuccess: (item: T) => string;
-  addError: (item: T) => string;
   deleteSuccess: () => string;
   deleteError: () => string;
   updateSuccess: (item: T) => string;
@@ -39,8 +34,8 @@ interface CollectionTableProps<T> {
         | null
       >
     >,
-    rowModesModel: GridRowModesModel,
-    setRowModesModel: React.Dispatch<React.SetStateAction<GridRowModesModel>>,
+    setShowAddItemForm: React.Dispatch<React.SetStateAction<boolean>>,
+    setInitialItem: React.Dispatch<React.SetStateAction<T | null>>,
     setMessage: React.Dispatch<React.SetStateAction<string | null>>
   ) => GridColDef[];
   repository: BaseRepository<T>;
@@ -59,45 +54,35 @@ const CollectionTable = <T extends { id: string }>({
   const [rows, setRows] = useState<(T & { isNew: boolean })[] | null>(null);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [message, setMessage] = useState<string | null>(null);
-  const [showAddItemForm, setShowAddItemForm] = useState(false);
+  const [showAddItemForm, setShowItemForm] = useState(false);
+  const [initialItem, setInitialItem] = useState<T | null>(null);
 
   useEffect(() => {
-    async function fetchItems() {
-      const items = await repository.find();
-      setRows(items.map((item: T) => ({ ...item, isNew: false })));
+    function fetchItems() {
+      repository.find().then((items) => setRows(items.map((item: T) => ({ ...item, isNew: false }))));
     }
 
     if (!rows) fetchItems();
   }, [rows, repository]);
 
-  const addItems = async (items: T[]) => {
+  const updateItem = (updatedItem: T) => {
+    const id = updatedItem.id;
     repository
-      .createMany(items)
-      .then((createdItems) => {
-        const newItems = createdItems.map((item, index) => ({ ...items[index], id: item.id, isNew: false }));
-        setRows((prevRows) => [...(prevRows || []), ...newItems]);
-        setMessage(messageFormat.addManySuccess(newItems.length));
+      .update(updatedItem.id, updatedItem)
+      .then(() => {
+        const extendedItem = { ...updatedItem, id: id, isNew: false };
+        const updatedRows = rows!.map((row) => (row.id === id ? extendedItem : row));
+        setRows(updatedRows);
+        setMessage(messageFormat.updateSuccess(updatedItem));
+        setShowItemForm(false);
       })
       .catch(() => {
-        setMessage(messageFormat.addError(items[0]));
-      });
-  };
-
-  const addItem = async (newItem: T) => {
-    repository
-      .create(newItem)
-      .then((item) => {
-        const extendedItem = { ...newItem, id: item.id, isNew: false };
-        setRows((prevRows) => [...(prevRows || []), extendedItem]);
-        setMessage(messageFormat.addSuccess(newItem));
-        setShowAddItemForm(false);
-      })
-      .catch(() => {
-        setMessage(messageFormat.addError(newItem));
+        setMessage(messageFormat.updateError(updatedItem));
       });
   };
 
   const handleRefresh = () => {
+    (repository as CachingRepository<T>).invalidateCache();
     setRows(null);
   };
 
@@ -120,23 +105,20 @@ const CollectionTable = <T extends { id: string }>({
     setRowModesModel(newRowModesModel);
   };
 
-  const columns = generateColumns(rows, setRows, rowModesModel, setRowModesModel, setMessage);
-  const columnsIds = columns.filter((column) => column.field !== 'actions').map((column) => column.field);
+  const columns = generateColumns(rows, setRows, setShowItemForm, setInitialItem, setMessage);
 
   return (
     <>
       <Dialog
         open={showAddItemForm}
-        onClose={() => setShowAddItemForm(false)}
+        onClose={() => setShowItemForm(false)}
         fullWidth
         maxWidth="sm"
         className="dialog-container">
-        <DialogTitle>הוספה</DialogTitle>
-        <div>
-          <FormComponent onAddItem={addItem} />
-        </div>
+        <DialogTitle>עריכת פריט</DialogTitle>
+        <FormComponent saveItem={updateItem} initialItem={initialItem} />
         <DialogActions>
-          <Button onClick={() => setShowAddItemForm(false)} color="secondary">
+          <Button onClick={() => setShowItemForm(false)} color="secondary">
             בטל
           </Button>
         </DialogActions>
@@ -145,7 +127,7 @@ const CollectionTable = <T extends { id: string }>({
         <Typography variant="h4" component="h2" gutterBottom className="table-title">
           {title}
         </Typography>
-        <div style={{ height: 500, width: '300' }}>
+        <div className="data-grid-container">
           <DataGrid
             rows={rows || []}
             columns={columns}
@@ -160,8 +142,6 @@ const CollectionTable = <T extends { id: string }>({
             }}
             slotProps={{
               toolbar: {
-                onAddClick: () => setShowAddItemForm(true),
-                onCSVImportClick: () => handleImportCSV(addItems, columnsIds),
                 onRefreshClick: handleRefresh,
                 showQuickFilter: true
               }
@@ -170,35 +150,14 @@ const CollectionTable = <T extends { id: string }>({
             onRowModesModelChange={handleRowModesModelChange}
             processRowUpdate={processRowUpdate}
             onProcessRowUpdateError={(error) => console.error(error)}
-            localeText={heIL.components.MuiDataGrid.defaultProps.localeText}
-            className="data-grid"
-            sx={{
-              '& .actions': {
-                display: 'flex',
-                justifyContent: 'center'
-              },
-              '& .MuiDataGrid-overlayWrapper': {
-                height: 500
-              },
-              '& .MuiDataGrid-columnsContainer': {
-                backgroundColor: '#f5f5f5'
-              },
-              '& .MuiTablePagination-root': {
-                direction: 'rtl',
-                width: '100%'
-              },
-              '& .MuiDataGrid-cell': {
-                display: 'flex',
-                alignItems: 'center'
-              },
-              '& .MuiDataGrid-colCellTitle': {
-                display: 'flex',
-                alignItems: 'center',
-                textAlign: 'center'
-              },
-              m: 10,
-              p: 1
+            localeText={{
+              ...heIL.components.MuiDataGrid.defaultProps.localeText,
+              noRowsLabel: 'אין רשומות להצגה',
+              columnsManagementReset: 'איפוס',
+              columnsManagementSearchTitle: 'חיפוש',
+              columnsManagementShowHideAllText: 'הצג/הסתר הכל'
             }}
+            className="data-grid"
           />
         </div>
       </Box>

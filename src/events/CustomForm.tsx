@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 
@@ -53,7 +54,7 @@ const CustomForm: React.FC<CustomFormProps> = ({
         type="date"
         placeholder="יום /חודש /שנה"
         onChange={handleDateChange}
-        defaultValue={formData.data}
+        defaultValue={moment(formData.date).format('YYYY-MM-DD')}
       />
     </Form.Group>
     <Form.Group controlId="formFile" className="mb-3">

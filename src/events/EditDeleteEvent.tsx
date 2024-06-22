@@ -1,11 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { EventProps } from './EventCard';
 import { IEvent } from './repository/Event';
 import { eventServiceContext } from './repository/EventContext';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
-import moment from 'moment';
 import AdminMenu from './AdminOptions';
 import CustomForm from './CustomForm';
 
@@ -16,7 +15,7 @@ interface EditDeleteEventProps {
 }
 
 const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, deleteEvent }) => {
-  const { id, title, details, date } = event;
+  const { id } = event;
   const [formData, setFormData] = useState<EventProps>(event);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -109,7 +108,6 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
   function EditWindow() {
     return (
       <>
-        <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} />
         <Modal show={showModalEdit} onHide={handleCloseEdit} animation={false} style={{ display: 'center' }}>
           <Modal.Header closeButton>
             <Modal.Title>שינוי אירוע</Modal.Title>
@@ -161,6 +159,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
 
   return (
     <>
+      <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} />
       {EditWindow()}
       {DeleteWindow()}
     </>

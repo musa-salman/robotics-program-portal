@@ -1,13 +1,10 @@
 .show-button {
   position: absolute;
-  top: 7px;
-  right: 78%;
-  border-radius: 50%;
+  right: 79%;
   background: transparent;
+  color: azure;
 }
 
 .show-button:hover {
-  background-color: #a1a4a7;
-  border-radius: 50%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
