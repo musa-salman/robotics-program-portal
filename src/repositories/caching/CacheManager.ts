@@ -26,7 +26,7 @@ class CacheManager<T> implements ICacheManager<T> {
   }
 
   flush(): void {
-    this._cache?.clear();
+    this._cache = null;
   }
 
   hasCache(): boolean {
