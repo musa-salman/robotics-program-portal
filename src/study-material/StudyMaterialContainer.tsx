@@ -20,7 +20,7 @@ function StudyMaterialContainer() {
   const materialManager = useContext(MaterialContext);
 
   const [isEditing, setIsEditing] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [editingCategory, setEditingCategory] = useState(String);
   const [name, setName] = useState('');
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
   const [categoryList, setCategoryList] = useState<Category[] | null>(null);
@@ -62,15 +62,14 @@ function StudyMaterialContainer() {
     setStudyMaterials(studyMaterials);
   };
 
-  const handleEdit = (category: Category) => {
+  const handleEdit = (category: string) => {
     setIsEditing(true);
     setEditingCategory(category);
-    setName(category.category);
   };
 
   const handleSave = () => {
     if (editingCategory) {
-      materialManager.renameCategory(editingCategory.id, name);
+      materialManager.renameCategory(editingCategory, name);
     }
     setIsEditing(false);
   };
@@ -88,7 +87,20 @@ function StudyMaterialContainer() {
     setIsMoveMode(true);
   };
 
-  const handleMove = (categorySelected: Category) => {};
+  const handleMove = (categorySelected: Category) => {
+    materialManager
+      .moveStudyMaterial(selectedMaterial!, categorySelected.category)
+      .then(() => {
+        setIsMoveMode(false);
+        const updatedStudyMaterials = studyMaterials!.map((material) =>
+          material.id === selectedMaterial!.id ? { ...material, category: categorySelected.category } : material
+        );
+        setStudyMaterials(updatedStudyMaterials);
+      })
+      .catch((error) => {
+        console.error('Error move study material:', error);
+      });
+  };
 
   if (studyMaterials === null) {
     return <>loading</>;

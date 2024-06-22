@@ -11,7 +11,7 @@ interface MoveListProps {
 
 const MoveList: React.FC<MoveListProps> = ({ categories, onMove, onCancel }) => {
   // const [selectedCategory, setSelectedCategory] = useState<Category[] | null>(null);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const moveHandler = (category: Category) => {
     // setSelectedCategory(category);
