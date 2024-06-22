@@ -1,10 +1,9 @@
 import React from 'react';
-import './waitApprovalPage.css'; // Import the CSS file for styles
+import './WaitApprovalPage.css';
 
 const WaitApprovalPage: React.FC = () => {
   return (
     <div className="wait-approval-page">
-      <div>.</div>
       <div className="robot-animation">🤖</div>
       <h1 className="animated-heading">אתה רשום! ✅</h1>
       <p className="animated-text">ההרשמה שלך התקבלה. אנא המתן לאישור מהמנהל. 📝</p>

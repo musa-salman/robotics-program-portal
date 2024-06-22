@@ -13,7 +13,7 @@ import StudentsManagement from './students-management/StudentsManagement';
 import NotFoundPage from './components/NotFoundPage';
 import RegisterComponent from './register/RegisterComponent';
 import GPTPlayGround from './gpt-service/GPTPlayGround';
-import WaitApprovalPage from './wait-approval-page/waitApprovalPage';
+import WaitApprovalPage from './wait-approval-page/WaitApprovalPage';
 
 function App() {
   const AuthRoutes = useAuthRoutes();

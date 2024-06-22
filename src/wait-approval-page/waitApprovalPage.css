@@ -30,7 +30,7 @@
 
 .animated-text {
   font-size: 50px;
-  animation: colorChange 5s infinite;
+  color: black;
 }
 
 @keyframes colorChange {
