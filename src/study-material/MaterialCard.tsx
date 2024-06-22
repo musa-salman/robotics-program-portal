@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import './StudyMaterials.css';
+import './MaterialCard.css';
 import { useContext, useState } from 'react';
 import { StudyMaterial } from './StudyMaterial';
 import moment from 'moment';
@@ -79,20 +79,19 @@ function MaterialCard({
       category: selectCategory.category
     };
 
-    studyMaterialManagement
-      .moveStudyMaterial(updatedCategory, selectCategory.category)
-      .then(() => {
-        onUpdate(updatedCategory);
-        setIsMove(false);
-      })
-      .catch((error) => {
-        console.error('Error move study material:', error);
-      });
+    // studyMaterialManagement._moveStudyMaterials();
+    // .moveMaterialToCategory(studyMaterial, studyMaterial.category.category, )
+    // .then(() => {
+    //   onMove(updatedCategory, studyMaterial.category);
+    //   setIsMove(false);
+    // })
+    // .catch((error) => {
+    //   console.error('Error move study material:', error);
+    // });
   };
 
   const handleMoveToggle = async () => {
     setIsMove(!isMove);
-    // handleMoveClick(studyMaterial);
   };
 
   const momentDate = moment(studyMaterial.date).format('DD / MM / YYYY');
