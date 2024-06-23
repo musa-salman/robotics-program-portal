@@ -8,15 +8,15 @@ import UserProvider from './users/UserContext.tsx';
 import CategoryProvider from './upload-file/CategoryContext.tsx';
 import MaterialProvider from './study-material/repository/StudyMaterialContext.tsx';
 import StorageServiceProvider from './storage-service/StorageContext.tsx';
-import EventManagerProvider from './events/repository/EventManagerContext.tsx';
+import EventProvider from './events/repository/EventContext.tsx';
 import { AuthProvider } from './authentication/AuthContext.tsx';
 import StudentProvider from './students-management/StudentContext.tsx';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import rtlPlugin from 'stylis-plugin-rtl';
 import createTheme from '@mui/material/styles/createTheme';
-import RegisterProvider from './register/RegisterContext.tsx';
 import GPTServiceProvider from './gpt-service/GPTContext.tsx';
+import RegisterProvider from './register/service/RegisterContext.tsx';
 
 const cacheRtl = createCache({
   key: 'muirtl',
@@ -44,7 +44,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <GPTServiceProvider>
                 <CategoryProvider>
                   <MaterialProvider>
-                    <EventManagerProvider>
+                    <EventProvider>
                       <StudentProvider>
                         <StorageServiceProvider>
                           <RegisterProvider>
@@ -54,7 +54,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                           </RegisterProvider>
                         </StorageServiceProvider>
                       </StudentProvider>
-                    </EventManagerProvider>
+                    </EventProvider>
                   </MaterialProvider>
                 </CategoryProvider>
               </GPTServiceProvider>

@@ -23,8 +23,8 @@ function StudyMaterialContainer() {
   const [categoryList, setCategoryList] = useState<Category[] | null>(null);
 
   const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);
-  const [selectedMaterial, setSelectedMaterial] = useState<StudyMaterial | null>(null);
-  const [isMoveMode, setIsMoveMode] = useState(false);
+  const [, setSelectedMaterial] = useState<StudyMaterial | null>(null);
+  const [, setIsMoveMode] = useState(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -68,7 +68,7 @@ function StudyMaterialContainer() {
     setIsMoveMode(true);
   };
 
-  const handleMove = (categorySelected: Category) => {};
+  const handleMove = () => {};
 
   if (studyMaterials === null) {
     return <>loading</>;

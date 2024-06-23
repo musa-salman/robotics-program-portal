@@ -73,12 +73,14 @@ export class MaterialManager implements IMaterialManager {
   async renameCategory(oldCategory: string, newCategory: string): Promise<void> {
     const batch = writeBatch(db);
 
-    const category = await this.categoryRepository.findOne(oldCategory);
+    const category = await this.categoryRepository
+      .find()
+      .then((categories) => categories.find((category) => category.category === oldCategory));
     if (!category) {
       return;
     }
     this._moveStudyMaterials(oldCategory, newCategory, batch);
-    batch.update(doc(this.categoryRepository._collection, oldCategory), { category: newCategory });
+    batch.update(doc(this.categoryRepository._collection, category.id), { category: newCategory });
     return batch.commit();
   }
 }

@@ -9,7 +9,7 @@ import { StudentEventRepository } from './StudentEventRepository';
 /**
  * Represents the interface for managing events.
  */
-export interface EventManagerInterface {
+export interface IEventService {
   /**
    * Registers a student for an event.
    * @param student - The student to register.
@@ -67,7 +67,7 @@ export interface EventManagerInterface {
   getEventRegistrationRepository(eventId: string): EventRegistrationRepository;
 }
 
-export class EventManager implements EventManagerInterface {
+export class EventService implements IEventService {
   readonly eventRepository: EventRepository;
 
   // Map of event registration repositories, keyed by event ID.
@@ -107,7 +107,13 @@ export class EventManager implements EventManagerInterface {
     };
 
     const batch = writeBatch(db);
-    return batch.set(studentEventDocRef, registered).set(eventRef, student).commit();
+    return batch
+      .set(studentEventDocRef, registered)
+      .set(eventRef, student)
+      .commit()
+      .then(() => {
+        this.getStudentEventRepository(student.id).findOne(eventId);
+      });
   }
 
   async cancelRegistration(studentId: string, eventId: string): Promise<void> {
@@ -126,11 +132,15 @@ export class EventManager implements EventManagerInterface {
     return this.getStudentEventRepository(studentId).find();
   }
 
-  async isStudentRegistered(studentId: string, eventId: string): Promise<boolean> {
-    const studentEventRepository = this.getStudentEventRepository(studentId);
-    const studentEventDoc = await studentEventRepository.findOne(eventId);
+  async isStudentRegistered(studentId: string | undefined, eventId: string): Promise<boolean> {
+    if (!studentId) {
+      return false;
+    }
 
-    return studentEventDoc !== null;
+    const studentEventRepository = this.getStudentEventRepository(studentId);
+    const studentEventDoc = await studentEventRepository.find();
+
+    return studentEventDoc.some((event) => event.id === eventId);
   }
 
   async deleteEvent(eventId: string): Promise<void> {

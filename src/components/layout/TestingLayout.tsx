@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import './TestingLayout.css';
 
 const TestingLayout: React.FC = () => {
   return (
-    <div className="ltr">
+    <div className="testing-layout">
       <h1>This is a Testing Layout</h1>
       <nav>
         <ul>
@@ -18,6 +19,11 @@ const TestingLayout: React.FC = () => {
             <Link to="/forget-password">Forget Password</Link>
           </li>
           <li>
+            <Link to="/register">Register</Link>
+          </li>
+        </ul>
+        <ul>
+          <li>
             <Link to="/study-material">Study Material</Link>
           </li>
           <li>
@@ -26,14 +32,19 @@ const TestingLayout: React.FC = () => {
           <li>
             <Link to="/students">Students Management</Link>
           </li>
+        </ul>
+        <ul>
           <li>
             <Link to="/events">Events</Link>
           </li>
           <li>
-            <Link to="/register">Register</Link>
+            <Link to="/gpt">GPT Playground</Link>
           </li>
           <li>
-            <Link to="/gpt">GPT Playground</Link>
+            <Link to="/approvalPage">Approval Page</Link>
+          </li>
+          <li>
+            <Link to="/registers">Registers Management</Link>
           </li>
         </ul>
       </nav>

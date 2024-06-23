@@ -1,58 +1,61 @@
 import { useContext, useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { eventManagerContext } from './repository/EventManagerContext';
+import { eventServiceContext } from './repository/EventContext';
 import { AuthContext } from '../authentication/AuthContext';
+import { StudentContext } from '../students-management/StudentContext';
+import { Student } from '../students-management/Student';
 
 interface RegisterStudentToEventProps {
   eventId: string;
 }
 
 const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId }) => {
-  const [isRegistered, setRegister] = useState(false);
-  const [registeredStudents, setRegisteredStudents] = useState<BriefStudent[] | null>(null);
+  const [isRegistered, setRegister] = useState<boolean | null>(null);
+  const [student, setStudent] = useState<Student | null>(null);
   const [showModalRegister, setShowModalRegister] = useState(false);
   const handleCloseRegister = () => setShowModalRegister(false);
   const handleShowRegister = () => setShowModalRegister(true);
 
-  const eventManager = useContext(eventManagerContext);
+  const eventManager = useContext(eventServiceContext);
+  const studentRepository = useContext(StudentContext);
   const { user } = useContext(AuthContext);
 
-  const student: BriefStudent = {
-    id: user?.id || '',
-    name: 'getName()',
-    email: 'getEmail()',
-    phone: 'getPhone()'
-  };
-
   useEffect(() => {
-    const getRegisteredStudents = async () => {
-      setRegister(await eventManager.isStudentRegistered(student.id, eventId));
+    const checkIfRegistered = () => {
+      eventManager.isStudentRegistered(user?.id, eventId).then((isRegistered) => {
+        setRegister(isRegistered);
+      });
     };
 
-    if (registeredStudents === null) getRegisteredStudents();
-    if (registeredStudents !== null) checkIfRegistered();
-  }, [registeredStudents]);
+    const fetchStudent = () => {
+      if (!user) return;
+      studentRepository.findOne(user.id).then((student) => {
+        setStudent(student);
+      });
+    };
+
+    if (user && student === null) fetchStudent();
+    if (student && isRegistered === null) checkIfRegistered();
+  }, [isRegistered, student]);
 
   function handleRegister() {
     handleShowRegister();
   }
 
-  ///FIXME: get user id
-  const checkIfRegistered = async () => {
-    if (registeredStudents?.some((registeredStudent) => registeredStudent.id === student.id)) {
-      setRegister(true);
-    }
-    //FIXME:
-    // setRegister(await eventManager.isStudentRegistered(student.id, eventId));
-  };
-
-  const handleSaveRegister = async () => {
+  const handleSaveRegister = () => {
     setShowModalRegister(false);
-    if (registeredStudents && !registeredStudents.find((user) => user.id === student.id) && eventId !== '') {
-      eventManager.registerStudentForEvent(student, eventId);
-      registeredStudents?.push(student);
-      setRegister(true);
-    }
+    if (!student) return;
+    eventManager
+      .registerStudentForEvent(
+        {
+          id: student.id,
+          name: student.firstName + ' ' + student.lastName,
+          email: student.studentEmail,
+          phone: student.studentPhoneNumber
+        } as BriefStudent,
+        eventId
+      )
+      .then(() => setRegister(true));
   };
 
   function RegisterWindow() {

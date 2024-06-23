@@ -1,0 +1,10 @@
+.show-button {
+  position: absolute;
+  right: 79%;
+  background: transparent;
+  color: azure;
+}
+
+.show-button:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

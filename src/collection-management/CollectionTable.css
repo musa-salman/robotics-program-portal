@@ -1,91 +1,55 @@
-.dialog-container .MuiDialog-paper {
-  padding: 20px;
-}
-
-.dialog-container .MuiDialogTitle-root {
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-.dialog-container .MuiDialogActions-root {
-  display: flex;
-  justify-content: flex-end;
-  padding: 20px 0 0;
-}
-
-.dialog-container .MuiFormControl-root {
-  width: 100%;
-  margin-bottom: 16px;
-}
-
-.dialog-container .MuiButton-root {
-  margin: 0 8px;
-}
-
-.dialog-container .MuiButton-secondary {
-  color: #f50057;
+.dialog-container {
+  padding: 16px;
 }
 
 .table-container {
-  margin: 20px;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 16px;
+  overflow: hidden;
 }
 
-.table-container .table-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin-bottom: 20px;
+.table-title {
+  margin-bottom: 16px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.data-grid-container {
+  height: 600px;
+  width: 100%;
 }
 
 .data-grid {
-  width: 100%;
-  height: 600px;
-  border: none;
-}
-
-.data-grid .MuiDataGrid-root {
-  border: 1px solid #e0e0e0;
-}
-
-.data-grid .MuiDataGrid-toolbar {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-}
-
-.data-grid .MuiDataGrid-columnsContainer {
-  background-color: #f5f5f5;
-}
-
-.data-grid .MuiDataGrid-columnHeader {
-  font-weight: 600;
-}
-
-.data-grid .MuiDataGrid-row {
-  &:nth-of-type(odd) {
-    background-color: #fafafa;
+  & .actions {
+    display: flex;
+    justify-content: center;
   }
-  &:hover {
-    background-color: #f0f0f0;
+
+  & .MuiDataGrid-overlayWrapper {
+    height: 500px;
   }
-}
 
-.data-grid .actions {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  & .MuiDataGrid-columnsContainer {
+    background-color: #f5f5f5;
+  }
 
-.MuiSnackbar-root {
-  bottom: 20px;
-}
+  & .MuiTablePagination-root {
+    direction: ltr;
+    width: 100%;
+  }
 
-.MuiSnackbarContent-root {
-  background-color: #323232;
-  color: #ffffff;
-  font-size: 1rem;
+  & .MuiDataGrid-cell {
+    display: flex;
+    align-items: center;
+  }
 }

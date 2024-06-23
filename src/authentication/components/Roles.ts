@@ -5,6 +5,8 @@ enum Role {
   Owner = 'owner',
   Admin = 'admin',
   Student = 'student',
+  Pending = 'pending',
+  PreEnrollment = 'pre-enrollment',
   Guest = 'guest'
 }
 

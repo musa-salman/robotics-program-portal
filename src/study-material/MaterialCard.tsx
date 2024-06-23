@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import './StudyMaterials.css';
+import './MaterialCard.css';
 import { useContext, useState } from 'react';
 import { StudyMaterial } from './StudyMaterial';
 import moment from 'moment';
@@ -9,7 +9,6 @@ import { MaterialContext } from './repository/StudyMaterialContext';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
 import { TextField } from '@mui/material';
-import { Category } from '../upload-file/Category';
 import GPT from '../gpt-service/GPTComponent';
 import { suggestMaterialTitles } from '../upload-file/StudyMaterialPrompts';
 
@@ -20,8 +19,7 @@ type MoveHandler = (studyMaterial: StudyMaterial) => void;
 function MaterialCard({
   studyMaterial,
   onUpdate,
-  onDelete,
-  handleMoveClick
+  onDelete
 }: {
   studyMaterial: StudyMaterial;
   onUpdate: UpdateHandler;
@@ -73,22 +71,23 @@ function MaterialCard({
       });
   };
 
-  const handleMove = (selectCategory: Category) => {
-    const updatedCategory = {
-      ...studyMaterial,
-      category: selectCategory.category
-    };
+  // Commenting this code for deploying only
+  // const handleMove = (selectCategory: Category) => {
+  //   const updatedCategory = {
+  //     ...studyMaterial,
+  //     category: selectCategory.category
+  //   };
 
-    // studyMaterialManagement._moveStudyMaterials();
-    // .moveMaterialToCategory(studyMaterial, studyMaterial.category.category, )
-    // .then(() => {
-    //   onMove(updatedCategory, studyMaterial.category);
-    //   setIsMove(false);
-    // })
-    // .catch((error) => {
-    //   console.error('Error move study material:', error);
-    // });
-  };
+  //   // studyMaterialManagement._moveStudyMaterials();
+  //   // .moveMaterialToCategory(studyMaterial, studyMaterial.category.category, )
+  //   // .then(() => {
+  //   //   onMove(updatedCategory, studyMaterial.category);
+  //   //   setIsMove(false);
+  //   // })
+  //   // .catch((error) => {
+  //   //   console.error('Error move study material:', error);
+  //   // });
+  // };
 
   const handleMoveToggle = async () => {
     setIsMove(!isMove);

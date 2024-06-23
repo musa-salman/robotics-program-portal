@@ -13,32 +13,34 @@ import { useState } from 'react';
 import { Register } from './Register';
 import { isHebrewOnly } from './InputValidator';
 import IntroComponent from './IntroComponent';
-import { RegisterContext } from './RegisterContext';
 import { isIdentityCard, isMobilePhone } from 'validator';
 import isEmail from 'validator/lib/isEmail';
+import { RegisterContext } from './service/RegisterContext';
+import { AuthContext } from '../authentication/AuthContext';
 
 const steps = ['על המתחם החדש', 'פרטים אישיים', 'פרטים בית הספר', 'שאלות אחרונות'];
 
 const RegisterComponent = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
-  const registerRepository = useContext(RegisterContext);
+  const registerService = useContext(RegisterContext);
+  const { user } = useContext(AuthContext);
 
   const [register, setRegister] = useState<Register>({
-    id:"",
-    firstName: "",
-    lastName: "",
-    studentPhoneNumber: "",
-    parentPhoneNumber: "",
-    studentId: "",
-    studentEmail: "",
-    parentEmail: "",
-    studentAddress: "",
-    studentSchool: "",
-    studyUnitsMajor: "",
-    numStudyUnitsMath:"",
-    hearAboutUs: "",
-    otherQuestions: ""
+    id: user!.id,
+    firstName: '',
+    lastName: '',
+    studentPhoneNumber: '',
+    parentPhoneNumber: '',
+    studentId: '',
+    studentEmail: '',
+    parentEmail: '',
+    studentAddress: '',
+    studentSchool: '',
+    studyUnitsMajor: '',
+    numStudyUnitsMath: '',
+    hearAboutUs: '',
+    otherQuestions: ''
   });
 
   const handleNext = (event: any) => {
@@ -76,15 +78,7 @@ const RegisterComponent = () => {
     }
 
     if (activeStep === steps.length - 1) {
-      if(register.id === ""){
-        const defID= registerRepository.create(register);
-        defID.then((id)=>{
-          setRegister((prevData) => ({ ...prevData, id:id.id }));
-        });
-      }
-      else{
-        registerRepository.update(register.id,register);
-      }
+      registerService.registerStudent(register);
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
     } else {
