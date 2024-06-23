@@ -5,6 +5,7 @@ import { auth } from '../firebase';
 import { AuthService } from './services/AuthService';
 import { User } from '../users/User';
 import { UserContext } from '../users/UserContext';
+import Role from './components/Roles';
 
 setPersistence(auth, browserLocalPersistence);
 
@@ -47,15 +48,27 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
   );
 
   useEffect(() => {
-    async function getUser() {
+    function getUser() {
       if (auth.currentUser === null) {
         setUser(null);
         setLoading(false);
         return;
       }
       userRepository.findOne(auth.currentUser.uid).then((user) => {
-        setUser(user);
-        setLoading(false);
+        if (!user) {
+          user = {
+            id: auth.currentUser!.uid,
+            role: Role.PreEnrollment
+          };
+
+          userRepository.createWithId(user.id, user).then(() => {
+            setUser(user);
+            setLoading(false);
+          });
+        } else {
+          setUser(user);
+          setLoading(false);
+        }
       });
     }
 

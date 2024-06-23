@@ -4,6 +4,18 @@
 
 .table-container {
   margin-top: 20px;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 16px;
+  overflow: hidden;
 }
 
 .table-title {
@@ -32,18 +44,12 @@
   }
 
   & .MuiTablePagination-root {
-    direction: rtl;
+    direction: ltr;
     width: 100%;
   }
 
   & .MuiDataGrid-cell {
     display: flex;
     align-items: center;
-  }
-
-  & .MuiDataGrid-colCellTitle {
-    display: flex;
-    align-items: center;
-    text-align: center;
   }
 }
