@@ -13,6 +13,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  setDoc,
   updateDoc
 } from 'firebase/firestore';
 import { IRead } from './interfaces/IRead';
@@ -46,6 +47,11 @@ export abstract class BaseRepository<T> implements IRepositoryBase<T> {
   async create(item: PartialWithFieldValue<T>): Promise<DocumentReference<T, DocumentData>> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return addDoc(this._collection, item as WithFieldValue<T> & AddPrefixToKeys<string, any>);
+  }
+
+  async createWithId(id: string, item: PartialWithFieldValue<T>): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return setDoc(doc(this._collection, id), item as WithFieldValue<T> & AddPrefixToKeys<string, any>);
   }
 
   async createMany(items: PartialWithFieldValue<T>[]): Promise<DocumentReference<T, DocumentData>[]> {
