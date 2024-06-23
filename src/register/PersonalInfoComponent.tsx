@@ -17,6 +17,7 @@ interface PersonalInfoProps {
 const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }) => {
   const handleChange = (event: any) => {
     const { name, value } = event.target;
+    console.log(name, value);
     setRegister((prevData) => ({ ...prevData, [name]: value }));
   };
 
@@ -28,7 +29,7 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
             <TextField
               fullWidth
               label="שם פרטי"
-              name="studentFirstName"
+              name="firstName"
               value={register.firstName}
               onChange={handleChange}
               required
@@ -48,7 +49,7 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
             <TextField
               fullWidth
               label="שם משפחה"
-              name="studentLastName"
+              name="lastName"
               value={register.lastName}
               onChange={handleChange}
               required
@@ -68,7 +69,7 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
             <TextField
               fullWidth
               label="טלפון הורה"
-              name="parentPhone"
+              name="parentPhoneNumber"
               value={register.parentPhoneNumber}
               onChange={handleChange}
               required
@@ -88,7 +89,7 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
             <TextField
               fullWidth
               label="פלאפון תלמיד\ה"
-              name="studentPhone"
+              name="studentPhoneNumber"
               value={register.studentPhoneNumber}
               onChange={handleChange}
               required
@@ -112,7 +113,7 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
               value={register.studentId}
               onChange={handleChange}
               required
-              error={!isIdentityCard(register.studentId || '', 'he-IL')} // FIXME:
+              error={!isIdentityCard(register.studentId || '', 'he-IL')}
               helperText={!isIdentityCard(register.studentId || '', 'he-IL') ? 'יש להזין ת.ז תקין' : ''}
               InputProps={{
                 startAdornment: (
@@ -153,7 +154,7 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
               onChange={handleChange}
               required
               error={!isEmail(register.studentEmail)}
-              helperText={!isEmail(register.studentEmail) ? 'יש להזין כתובת דואר אלקטרוני Gmail תקינה' : ''}
+              helperText={!isEmail(register.studentEmail) ? 'יש להזין כתובת דואר אלקטרוני תקינה' : ''}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
