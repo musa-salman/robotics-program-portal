@@ -14,6 +14,7 @@ import NotFoundPage from './components/NotFoundPage';
 import RegisterComponent from './register/RegisterComponent';
 import GPTPlayGround from './gpt-service/GPTPlayGround';
 
+
 function App() {
   const AuthRoutes = useAuthRoutes();
   const StudyMaterialRoutes = useStudyMaterialRoutes();

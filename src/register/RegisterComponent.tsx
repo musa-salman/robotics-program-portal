@@ -16,34 +16,29 @@ import IntroComponent from './IntroComponent';
 import { RegisterContext } from './RegisterContext';
 import { isIdentityCard, isMobilePhone } from 'validator';
 import isEmail from 'validator/lib/isEmail';
-import { Console } from 'console';
 
 const steps = ['על המתחם החדש', 'פרטים אישיים', 'פרטים בית הספר', 'שאלות אחרונות'];
-interface RegisterProps {
-  studentDetails: Register;
 
-}
-
-const RegisterComponent : React.FC<RegisterProps>= ({studentDetails}) => {
+const RegisterComponent = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
   const registerRepository = useContext(RegisterContext);
 
   const [register, setRegister] = useState<Register>({
-    id:studentDetails.id,
-    firstName: studentDetails.firstName,
-    lastName: studentDetails.lastName,
-    studentPhoneNumber: studentDetails.studentPhoneNumber,
-    parentPhoneNumber: studentDetails.parentPhoneNumber,
-    studentId: studentDetails.studentId,
-    studentEmail: studentDetails.studentEmail,
-    parentEmail: studentDetails.parentEmail,
-    studentAddress: studentDetails.studentAddress,
-    studentSchool: studentDetails.studentSchool,
-    studyUnitsMajor: studentDetails.studyUnitsMajor,
-    numStudyUnitsMath: studentDetails.numStudyUnitsMath,
-    hearAboutUs: studentDetails.hearAboutUs,
-    otherQuestions: studentDetails.otherQuestions
+    id:"",
+    firstName: "",
+    lastName: "",
+    studentPhoneNumber: "",
+    parentPhoneNumber: "",
+    studentId: "",
+    studentEmail: "",
+    parentEmail: "",
+    studentAddress: "",
+    studentSchool: "",
+    studyUnitsMajor: "",
+    numStudyUnitsMath:"",
+    hearAboutUs: "",
+    otherQuestions: ""
   });
 
   const handleNext = (event: any) => {
@@ -57,24 +52,24 @@ const RegisterComponent : React.FC<RegisterProps>= ({studentDetails}) => {
       setSkipped(newSkipped);
     }
     if (
-      activeStep === 1 
-      // isHebrewOnly(register.firstName) &&
-      // isHebrewOnly(register.lastName) &&
-      // isMobilePhone(register.studentPhoneNumber, 'he-IL') &&
-      // isMobilePhone(register.parentPhoneNumber, 'he-IL') &&
-      // isIdentityCard(register.studentId, 'he-IL') &&
-      // isEmail(register.studentEmail) &&
-      // isEmail(register.parentEmail) &&
-      // register.studentAddress !== ''
+      activeStep === 1 &&
+      isHebrewOnly(register.firstName) &&
+      isHebrewOnly(register.lastName) &&
+      isMobilePhone(register.studentPhoneNumber, 'he-IL') &&
+      isMobilePhone(register.parentPhoneNumber, 'he-IL') &&
+      isIdentityCard(register.studentId, 'he-IL') &&
+      isEmail(register.studentEmail) &&
+      isEmail(register.parentEmail) &&
+      register.studentAddress !== ''
     ) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
     }
     if (
-      activeStep === 2 
-      // register.studentSchool !== '' &&
-      // register.studyUnitsMajor !== '' &&
-      // register.numStudyUnitsMath !== ''
+      activeStep === 2 &&
+      register.studentSchool !== '' &&
+      register.studyUnitsMajor !== '' &&
+      register.numStudyUnitsMath !== ''
     ) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);

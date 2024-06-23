@@ -11,6 +11,7 @@ export const useAuthRoutes = () => {
     <>
       <Route path="/login" element={<LoginContainer />} />
       <Route path="/forget-password" element={<ForgetPasswordContainer />} />
+      
     </>
   );
 };
