@@ -80,7 +80,7 @@ export class MaterialManager implements IMaterialManager {
       return;
     }
     this._moveStudyMaterials(oldCategory, newCategory, batch);
-    batch.update(doc(this.categoryRepository._collection, oldCategory), { category: newCategory });
+    batch.update(doc(this.categoryRepository._collection, category.id), { category: newCategory });
     return batch.commit();
   }
 }
