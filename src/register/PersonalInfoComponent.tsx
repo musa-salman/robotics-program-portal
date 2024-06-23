@@ -17,7 +17,6 @@ interface PersonalInfoProps {
 const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }) => {
   const handleChange = (event: any) => {
     const { name, value } = event.target;
-    console.log(name, value);
     setRegister((prevData) => ({ ...prevData, [name]: value }));
   };
 
