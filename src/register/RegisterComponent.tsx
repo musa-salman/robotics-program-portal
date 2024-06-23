@@ -13,19 +13,21 @@ import { useState } from 'react';
 import { Register } from './Register';
 import { isHebrewOnly } from './InputValidator';
 import IntroComponent from './IntroComponent';
-import { RegisterContext } from './RegisterContext';
 import { isIdentityCard, isMobilePhone } from 'validator';
 import isEmail from 'validator/lib/isEmail';
+import { RegisterContext } from './service/RegisterContext';
+import { AuthContext } from '../authentication/AuthContext';
 
 const steps = ['על המתחם החדש', 'פרטים אישיים', 'פרטים בית הספר', 'שאלות אחרונות'];
 
 const RegisterComponent = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
-  const registerRepository = useContext(RegisterContext);
+  const registerService = useContext(RegisterContext);
+  const { user } = useContext(AuthContext);
 
   const [register, setRegister] = useState<Register>({
-    id: '',
+    id: user!.id,
     firstName: '',
     lastName: '',
     studentPhoneNumber: '',
@@ -76,7 +78,7 @@ const RegisterComponent = () => {
     }
 
     if (activeStep === steps.length - 1) {
-      registerRepository.create(register);
+      registerService.registerStudent(register);
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
     } else {
