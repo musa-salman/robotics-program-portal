@@ -28,7 +28,7 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
             <TextField
               fullWidth
               label="שם פרטי"
-              name="studentFirstName"
+              name="firstName"
               value={register.firstName}
               onChange={handleChange}
               required
@@ -48,7 +48,7 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
             <TextField
               fullWidth
               label="שם משפחה"
-              name="studentLastName"
+              name="lastName"
               value={register.lastName}
               onChange={handleChange}
               required
@@ -68,7 +68,7 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
             <TextField
               fullWidth
               label="טלפון הורה"
-              name="parentPhone"
+              name="parentPhoneNumber"
               value={register.parentPhoneNumber}
               onChange={handleChange}
               required
@@ -88,7 +88,7 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
             <TextField
               fullWidth
               label="פלאפון תלמיד\ה"
-              name="studentPhone"
+              name="studentPhoneNumber"
               value={register.studentPhoneNumber}
               onChange={handleChange}
               required
