@@ -15,8 +15,8 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import rtlPlugin from 'stylis-plugin-rtl';
 import createTheme from '@mui/material/styles/createTheme';
-import RegisterProvider from './register/RegisterContext.tsx';
 import GPTServiceProvider from './gpt-service/GPTContext.tsx';
+import RegisterProvider from './register/service/RegisterContext.tsx';
 
 const cacheRtl = createCache({
   key: 'muirtl',
