@@ -28,8 +28,9 @@
 }
 
 .btn-search .adde-btn {
-  background: linear-gradient(90deg, rgba(222, 67, 19, 1) 6%, rgba(254, 193, 99, 1) 94%);
+  /* background: linear-gradient(90deg, rgba(222, 67, 19, 1) 6%, rgba(254, 193, 99, 1) 94%); */
   color: whitesmoke;
+  background-color: #ee9bc9;
   margin-left: 18px;
   transition: ease 0.5s;
 }
@@ -41,7 +42,8 @@
 .btn-search .del-btn {
   transition: ease 0.5s;
   color: whitesmoke;
-  background: radial-gradient(circle, rgba(218, 12, 12, 1) 32%, rgba(245, 187, 107, 1) 100%);
+  /* background: radial-gradient(circle, rgba(218, 12, 12, 1) 32%, rgba(245, 187, 107, 1) 100%); */
+  background-color: rgb(233, 139, 139);
 }
 
 .btn-search .del-btn:hover {
@@ -60,12 +62,13 @@
   justify-content: space-around;
 }
 
-.Card-Header .edit-button {
+.btns .edit-button {
   background-color: #e0b1cb;
+  margin-left: 18px;
   color: whitesmoke;
 }
 
-.Card-Header .edit-button:hover {
+.btns .edit-button:hover {
   background-color: #ee9bc9;
 }
 

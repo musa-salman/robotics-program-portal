@@ -12,25 +12,31 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Fab } from '@mui/material';
 import NoResultFound from './NoResultFound';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import SettingsIcon from '@mui/icons-material/Settings';
 import MoveList from './MoveList';
 import EmptyStudyMaterials from './EmptyStudyMaterials';
 import { Category } from '../upload-file/Category';
+import { AddEditCategories } from '../upload-file/addOrEditCategories';
+import Test from './Test';
 
 function StudyMaterialContainer() {
   const materialManager = useContext(MaterialContext);
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingCategory, setEditingCategory] = useState(String);
-  const [name, setName] = useState('');
+  const [isDelete, setIsDelete] = useState(false);
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
   const [categoryList, setCategoryList] = useState<Category[] | null>(null);
 
   const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);
-  const [, setSelectedMaterial] = useState<StudyMaterial | null>(null);
-  const [, setIsMoveMode] = useState(false);
+  const [selectedMaterial, setSelectedMaterial] = useState<StudyMaterial | null>(null);
+  const [isMoveMode, setIsMoveMode] = useState(false);
   const [show, setShow] = useState(false);
+  const [showAddEdit, setShowAddEdit] = useState(false);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleCloseAddEdit = () => setShowAddEdit(false);
+  const handleShowEdit = () => setShowAddEdit(true);
+
   const [query, setQuery] = useState('');
 
   useEffect(() => {
@@ -43,7 +49,7 @@ function StudyMaterialContainer() {
 
     if (studyMaterials === null) getStudyMaterials();
     if (categoryList === null) getCategories();
-  }, [studyMaterials, categoryList]);
+  }, [materialManager, studyMaterials, categoryList]);
 
   const handleUpdate = (updatedMaterial: StudyMaterial) => {
     const updatedMaterials = (studyMaterials || []).map((material) =>
@@ -62,24 +68,10 @@ function StudyMaterialContainer() {
     setStudyMaterials(studyMaterials);
   };
 
-  const handleEdit = (category: string) => {
-    setIsEditing(true);
-    setEditingCategory(category);
-  };
-
-  const handleSave = () => {
-    if (editingCategory) {
-      materialManager.renameCategory(editingCategory, name);
-    }
-    setIsEditing(false);
-  };
-
-  const handleCancel = () => {
-    setIsEditing(false);
-  };
+  const handledoNothing = () => {};
 
   const handelDeleteAll = () => {
-    // studyMaterialManagement.categoryRepository.deleteAll();
+    // materialManager.categoryRepository.deleteAll();
   };
 
   const handleMoveClick = (studyMaterial: StudyMaterial) => {
@@ -118,8 +110,14 @@ function StudyMaterialContainer() {
   console.log('categories', categories);
   return (
     <>
-      <MoveList categories={categoryList || []} onMove={handleMove} onCancel={() => setIsMoveMode(false)} />
-
+      {isMoveMode && (
+        <MoveList
+          categories={categoryList || []}
+          onMove={handleMove}
+          onCancel={() => setIsMoveMode(false)}
+          // isMoveMode={isMoveMode}
+        />
+      )}
       <div className="btn-search">
         <SearchBar
           studyMaterials={studyMaterials || []}
@@ -128,6 +126,9 @@ function StudyMaterialContainer() {
           setQuery={setQuery}
         />
         <div className="btns">
+          <Fab className="edit-button" aria-label="edit" onClick={handleShowEdit}>
+            <SettingsIcon />
+          </Fab>
           <Fab className="adde-btn" aria-label="add" onClick={handleShow}>
             <AddIcon />
           </Fab>
@@ -143,9 +144,6 @@ function StudyMaterialContainer() {
           <Card className="primary" key={index}>
             <Card.Header className="Card-Header">
               <h2>{category}</h2>
-              <Fab className="edit-button" aria-label="edit" onClick={() => handleEdit(category)}>
-                <EditIcon />
-              </Fab>
             </Card.Header>
             <br></br>
             <Card.Body className="body">
@@ -159,7 +157,7 @@ function StudyMaterialContainer() {
                       studyMaterial={studyMaterial}
                       onUpdate={handleUpdate}
                       onDelete={handleDelete}
-                      handleMoveClick={handleMoveClick}
+                      onMove={handleMoveClick}
                     />
                   ))}
               </div>
@@ -169,6 +167,15 @@ function StudyMaterialContainer() {
       )}
       <Modal show={show} onHide={handleClose}>
         <UploadFileComponent handleClose={handleClose} handleAdd={handleAdd} />
+      </Modal>
+
+      <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
+        <AddEditCategories
+          categories={categoryList}
+          handleCloseAddEdit={handleCloseAddEdit}
+          setCategories={setCategoryList}
+          handleSelect={handledoNothing}
+        />
       </Modal>
     </>
   );

@@ -19,12 +19,13 @@ type MoveHandler = (studyMaterial: StudyMaterial) => void;
 function MaterialCard({
   studyMaterial,
   onUpdate,
-  onDelete
+  onDelete,
+  onMove
 }: {
   studyMaterial: StudyMaterial;
   onUpdate: UpdateHandler;
   onDelete: DeleteHandler;
-  handleMoveClick: MoveHandler;
+  onMove: MoveHandler;
 }) {
   const storageService = useContext(StorageServiceContext);
   const [isEditing, setIsEditing] = useState(false);
@@ -90,7 +91,8 @@ function MaterialCard({
   // };
 
   const handleMoveToggle = async () => {
-    setIsMove(!isMove);
+    setIsMove(true);
+    onMove(studyMaterial);
   };
 
   const momentDate = moment(studyMaterial.date).format('DD / MM / YYYY');

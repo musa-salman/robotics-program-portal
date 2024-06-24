@@ -2,7 +2,7 @@ import { Button, Snackbar } from '@mui/material';
 import { useState } from 'react';
 
 function Test() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const vertical = 'top';
   const horizontal = 'center';
 
@@ -10,19 +10,26 @@ function Test() {
     setOpen(false);
   };
 
+  const handleDelete = () => {};
+
   return (
     <div>
-      <Button onClick={() => setOpen(true)}>Show Snackbar</Button>
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
         open={open}
         onClose={handleClose}
-        message="Are you sure that you want to Delete ?"
+        message="אתה בטוח שברצונך למחוק ?"
         key={vertical + horizontal}
         action={
-          <Button color="secondary" size="small" onClick={handleClose}>
-            Close
-          </Button>
+          <>
+            <Button color="secondary" size="small" onClick={handleDelete}>
+              מחק
+            </Button>
+
+            <Button color="secondary" size="small" onClick={handleClose}>
+              סגור
+            </Button>
+          </>
         }
       />
     </div>
