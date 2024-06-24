@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { ReactNode, useEffect, useState } from 'react';
 import { useAuth } from '../services/useAuth';
-import { ALLOW_AUTHED_ROLES } from './Roles';
+import Role, { ALLOW_AUTHED_ROLES } from './Roles';
 
 /**
  * Represents the authorization status for a user.
@@ -20,20 +20,25 @@ type RoleBasedAccessControlProps = {
   unauthorizedUnauthenticatedComponent?: ReactNode;
   unauthorizedAuthenticatedComponent?: ReactNode;
   loadingComponent?: ReactNode;
-  allowedRoles: string[];
+  allowedRoles: Role[];
+  roleToComponentMap?: { [key: string]: ReactNode };
 };
 
 /**
- * RoleBasedAccessControl component is responsible for rendering different components based on user roles and authentication status.
+ * RoleBasedAccessControl component is responsible for rendering different components based on user roles and authorization status.
  *
  * @component
  * @example
  * ```tsx
  * <RoleBasedAccessControl
- *   allowedRoles={['admin', 'manager']}
+ *   allowedRoles={[Role.Admin, Role.Owner]}
  *   unauthorizedAuthenticatedComponent={<UnauthorizedAuthenticatedComponent />}
  *   unauthorizedUnauthenticatedComponent={<UnauthorizedUnauthenticatedComponent />}
  *   loadingComponent={<LoadingComponent />}
+ *   roleToComponentMap={{
+ *     admin: <AdminComponent />,
+ *     manager: <ManagerComponent />,
+ *   }}
  * >
  *   <AuthorizedComponent />
  * </RoleBasedAccessControl>
@@ -41,32 +46,33 @@ type RoleBasedAccessControlProps = {
  *
  * @param {Object} props - The component props.
  * @param {React.ReactNode} props.children - The component to render if the user is authorized.
- * @param {string[]} props.allowedRoles - The roles allowed to access the component.
+ * @param {string[]} props.allowedRoles - The roles that are allowed to access the component.
  * @param {React.ReactNode} [props.unauthorizedAuthenticatedComponent] - The component to render if the user is authenticated but not authorized.
  * @param {React.ReactNode} [props.unauthorizedUnauthenticatedComponent] - The component to render if the user is unauthenticated.
  * @param {React.ReactNode} [props.loadingComponent] - The component to render while the authorization status is being determined.
- * @returns {React.ReactNode} The rendered component based on the user's authorization status.
+ * @param {Object} [props.roleToComponentMap] - The mapping of roles to components to render for each role.
+ * @returns {React.ReactNode} The rendered component based on the user's role and authorization status.
  */
 const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   children,
   allowedRoles,
   unauthorizedAuthenticatedComponent,
   unauthorizedUnauthenticatedComponent,
-  loadingComponent
+  loadingComponent,
+  roleToComponentMap
 }) => {
   const [authorization, setAuthorization] = useState<AuthorizationStatus | null>(null);
 
   const { user, loading } = useAuth();
 
   useEffect(() => {
-    const checkUserAuthorization = async () => {
+    const checkUserAuthorization = () => {
       if (user !== null) {
         if (allowedRoles === ALLOW_AUTHED_ROLES) {
           setAuthorization(AuthorizationStatus.AuthorizedUser);
           return;
         }
-
-        if (allowedRoles.includes(user?.role || '')) {
+        if (allowedRoles.includes((user?.role as Role) || Role.Unauthenticated)) {
           setAuthorization(AuthorizationStatus.AuthorizedUser);
         } else {
           setAuthorization(AuthorizationStatus.UnauthorizedAuthenticatedUser);
@@ -89,9 +95,13 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   if (authorization === AuthorizationStatus.AuthorizedUser) {
     return children;
   } else if (authorization === AuthorizationStatus.UnauthorizeUnauthenticatedUser) {
-    return unauthorizedUnauthenticatedComponent ? unauthorizedUnauthenticatedComponent : <Navigate to="/" />;
+    return unauthorizedUnauthenticatedComponent ? unauthorizedUnauthenticatedComponent : <Navigate to="/login" />;
   } else if (authorization === AuthorizationStatus.UnauthorizedAuthenticatedUser) {
-    return unauthorizedAuthenticatedComponent ? unauthorizedAuthenticatedComponent : <Navigate to="/login" />;
+    if (roleToComponentMap && user?.role && roleToComponentMap[user.role]) {
+      return roleToComponentMap[user.role];
+    }
+
+    return unauthorizedAuthenticatedComponent ? unauthorizedAuthenticatedComponent : <Navigate to="/" />;
   }
 
   return <></>;
