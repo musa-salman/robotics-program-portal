@@ -21,12 +21,7 @@ interface AcademicFormProps {
 }
 
 const AcademicForm: React.FC<AcademicFormProps> = ({ setRegister, register ,isForward}) => {
-  // const options = [
-  //   'אני מתעניינת ב-5 יח"ל מכטרוניקה',
-  //   'אני מתעניינת ב-10 יח"ל מכטרוניקה',
-  //   'עדיין לא ידוע',
-  //   'אחרת'
-  // ];
+  
   const [isValid,setIsValid]  = useState({
     studentSchool: true,
     studyUnitsMajor: true,
@@ -97,10 +92,10 @@ const AcademicForm: React.FC<AcademicFormProps> = ({ setRegister, register ,isFo
           name="numStudyUnitsMath"
           value={register.numStudyUnitsMath}
           onChange={handleChange}>
-          <FormControlLabel value="0" control={<Radio />} label="3" />
-          <FormControlLabel value="1" control={<Radio />} label="4" />
-          <FormControlLabel value="2" control={<Radio />} label="5" />
-          <FormControlLabel value="3" control={<Radio />} label="אחרת" />
+          <FormControlLabel value="3" control={<Radio />} label="3" />
+          <FormControlLabel value="4" control={<Radio />} label="4" />
+          <FormControlLabel value="5" control={<Radio />} label="5" />
+          <FormControlLabel value="0" control={<Radio />} label="אחרת" />
         </RadioGroup>
 
         <FormHelperText>{register.numStudyUnitsMath === ''? 'נה לבחור' : ''}</FormHelperText>
