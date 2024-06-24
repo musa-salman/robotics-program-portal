@@ -25,9 +25,9 @@ const RegisterComponent = () => {
   const [skipped, setSkipped] = useState(new Set<number>());
   const registerService = useContext(RegisterContext);
   const { user } = useContext(AuthContext);
-
+  const [isForward,setIsForward] =useState(false);
   const [register, setRegister] = useState<Register>({
-    id: user!.id,
+    id: (user !==null? user!.id : "") ,
     firstName: '',
     lastName: '',
     studentPhoneNumber: '',
@@ -53,32 +53,42 @@ const RegisterComponent = () => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
     }
-    if (
-      activeStep === 1 &&
-      isHebrewOnly(register.firstName) &&
-      isHebrewOnly(register.lastName) &&
-      isMobilePhone(register.studentPhoneNumber, 'he-IL') &&
-      isMobilePhone(register.parentPhoneNumber, 'he-IL') &&
-      isIdentityCard(register.studentId, 'he-IL') &&
-      isEmail(register.studentEmail) &&
-      isEmail(register.parentEmail) &&
-      register.studentAddress !== ''
-    ) {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setSkipped(newSkipped);
+    if (activeStep === 1){
+      if(isHebrewOnly(register.firstName) 
+        && isHebrewOnly(register.lastName)
+        && isMobilePhone(register.studentPhoneNumber, 'he-IL')
+        && isMobilePhone(register.parentPhoneNumber, 'he-IL')
+        && isIdentityCard(register.studentId, 'he-IL')
+        && isEmail(register.studentEmail)
+        && isEmail(register.parentEmail)
+        && register.studentAddress !== ''
+      ){
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setSkipped(newSkipped);
+        setIsForward(false);
+      }  
+      else{
+        setIsForward(true);
+      }
     }
-    if (
-      activeStep === 2 &&
-      register.studentSchool !== '' &&
-      register.studyUnitsMajor !== '' &&
-      register.numStudyUnitsMath !== ''
-    ) {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setSkipped(newSkipped);
+    if (activeStep === 2 ){
+      if(register.studentSchool !== '' &&
+        register.studyUnitsMajor !== '' &&
+        register.numStudyUnitsMath !== ''
+      ) {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setSkipped(newSkipped);
+        setIsForward(false);
+      }
+      else{
+        setIsForward(true);
+      }
     }
 
-    if (activeStep === steps.length - 1) {
-      registerService.registerStudent(register);
+    if (activeStep === steps.length - 1 && user !== null) {
+      registerService.registerStudent(register).catch(()=>{
+        alert("error while save in firebase");
+      });
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
     } else {
@@ -93,10 +103,10 @@ const RegisterComponent = () => {
       page: <IntroComponent />
     },
     {
-      page: <PersonalInfoStep setRegister={setRegister} register={register} />
+      page: <PersonalInfoStep setRegister={setRegister} register={register} isForward={isForward} />
     },
     {
-      page: <AcademicForm setRegister={setRegister} register={register} />
+      page: <AcademicForm setRegister={setRegister} register={register} isForward={isForward}/>
     },
     {
       page: <SubmissionForm setRegister={setRegister} register={register} />
