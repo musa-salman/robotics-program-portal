@@ -59,12 +59,12 @@ function MaterialCard({
       title: editedTitle,
       description: editedDescription
     };
-    console.log(updatedStudyMaterial);
+
     materialManager.studyMaterialRepository
       .update(studyMaterial.id, updatedStudyMaterial)
       .then(() => {
+        const updatedStudyMaterial = { ...studyMaterial, title: editedTitle, description: editedDescription };
         onUpdate(updatedStudyMaterial);
-        console.log(updatedStudyMaterial);
         setIsEditing(false);
       })
       .catch((error) => {
