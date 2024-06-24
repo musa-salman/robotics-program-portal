@@ -1,24 +1,21 @@
-import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Button, Container, Typography, Box, Alert } from '@mui/material';
 import { useAuth } from '../../services/useAuth';
-import { Button, Snackbar } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
-/**
- * Renders the login component.
- * Allows users to log in to the system using Google.
- */
-export default function Login() {
-  const { user, authService } = useAuth();
+const Login: React.FC = () => {
+  const { authService } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleGoogleLogin = () => {
+  const handleLogin = () => {
     setError('');
     setLoading(true);
     authService
       .loginWithGoogle()
+      .then(() => {
+        const redirectTo = localStorage.getItem('redirectTo') || '/';
+        window.location.href = redirectTo;
+      })
       .catch(() => {
         setError('כניסה נכשלה, נסה שוב.');
       })
@@ -28,20 +25,25 @@ export default function Login() {
   };
 
   return (
-    <>
-      {user && <Navigate to="/" />}
-      <Button
-        variant="contained"
-        color="primary"
-        startIcon={<FontAwesomeIcon icon={faGoogle} />}
-        onClick={handleGoogleLogin}
-        disabled={loading}
-        style={{ marginTop: '1rem' }}>
-        התחבר/י באמצעות גוגל
-      </Button>
-      {error !== '' && (
-        <Snackbar open={true} message={error} color="red" autoHideDuration={6000} onClose={() => setError('')} />
-      )}
-    </>
+    <Container maxWidth="sm" style={{ marginTop: 40 }}>
+      <Box textAlign="center">
+        <Typography variant="h4" gutterBottom>
+          התחברות
+        </Typography>
+        <Typography variant="body1" paragraph>
+          אנא התחבר כדי לגשת לפורטל הרובוטיקה.
+        </Typography>
+        {error && (
+          <Alert severity="error" style={{ marginBottom: 20 }}>
+            {error}
+          </Alert>
+        )}
+        <Button variant="contained" color="primary" onClick={handleLogin}>
+          {loading ? 'מתחבר...' : 'התחברות'}
+        </Button>
+      </Box>
+    </Container>
   );
-}
+};
+
+export default Login;
