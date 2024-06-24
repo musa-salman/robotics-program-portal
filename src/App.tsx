@@ -28,23 +28,52 @@ function App() {
           <Route path="/" element={<Layout />}>
             {StudyMaterialRoutes}
             <Route path="/" element={<Banner />} />
+
             <Route path="/events" element={<EventContainer />} />
-            <Route path="/students" element={<StudentsManagement />} />
-            <Route path="/register" element={<RegisterComponent />} />
-            <Route path="/gpt" element={<GPTPlayGround />} />
-            <Route path="/approvalPage" element={<WaitApprovalPage />} />
-            <Route path="/registers" element={<RegisterManagement />} />
+
             <Route
-              path="/dashboard"
+              path="/register"
               element={
-                <>
-                  <RoleBasedAccessControl allowedRoles={[Role.Admin]}>
-                    <div>Dashboard</div>
-                  </RoleBasedAccessControl>
-                </>
+                <RoleBasedAccessControl
+                  allowedRoles={[Role.PreEnrollment]}
+                  roleToComponentMap={{
+                    [Role.Pending]: <WaitApprovalPage />
+                  }}>
+                  <RegisterComponent />
+                </RoleBasedAccessControl>
               }
             />
+
+            <Route
+              path="/approvalPage"
+              element={
+                <RoleBasedAccessControl
+                  allowedRoles={[Role.Pending]}
+                  roleToComponentMap={{
+                    [Role.PreEnrollment]: <RegisterComponent />
+                  }}>
+                  <WaitApprovalPage />
+                </RoleBasedAccessControl>
+              }
+            />
+
+            {/* 
+              Admin routes
+            */}
+            <Route
+              path="/students"
+              element={
+                <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]}>
+                  <StudentsManagement />
+                </RoleBasedAccessControl>
+              }
+            />
+            <Route path="/registers" element={<RegisterManagement />} />
+
             <Route path="*" element={<NotFoundPage />} />
+
+            {/* testing routes */}
+            <Route path="/gpt" element={<GPTPlayGround />} />
           </Route>
         </Route>
       </Routes>
