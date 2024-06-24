@@ -4,6 +4,6 @@ import { Register } from './Register';
 
 export class RegisterRepository extends BaseRepository<Register> {
   constructor() {
-    super(db, 'register');
+    super(db, 'registers');
   }
 }
