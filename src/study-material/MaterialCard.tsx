@@ -43,8 +43,7 @@ function MaterialCard({
 
   const handleDelete = async () => {
     storageService.delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename).then(() => {
-      materialManager.studyMaterialRepository.delete(studyMaterial.id);
-      onDelete(studyMaterial);
+      materialManager.studyMaterialRepository.delete(studyMaterial.id).then(() => onDelete(studyMaterial));
     });
     // TODO catch
   };
@@ -53,7 +52,7 @@ function MaterialCard({
     setIsEditing(!isEditing);
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     const updatedStudyMaterial = {
       ...studyMaterial,
       title: editedTitle,
