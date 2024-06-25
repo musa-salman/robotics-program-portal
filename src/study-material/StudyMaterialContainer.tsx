@@ -50,7 +50,6 @@ function StudyMaterialContainer() {
   }, [materialManager, studyMaterials, categoryList]);
 
   const handleUpdate = (updatedMaterial: StudyMaterial) => {
-    console.log('updatedMaterial', updatedMaterial);
     const updatedMaterials = (studyMaterials || []).map((material) =>
       material.id === updatedMaterial.id ? updatedMaterial : material
     );
