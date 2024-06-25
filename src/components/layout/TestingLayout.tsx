@@ -15,18 +15,21 @@ const TestingLayout: React.FC = () => {
     { name: 'GPT Playground', path: '/gpt' },
     { name: 'Approval Page', path: '/approvalPage' },
     { name: 'Registers Management', path: '/registers' },
-    { name: 'No Internet', path: '/unconnected-internet' }
+    { name: 'No Internet', path: '/unconnected-internet' },
+    { name: 'Unauthorized', path: '/401' }
   ].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <div className="testing-layout">
       <h1>This is a Testing Layout</h1>
       <nav>
-        {links.map((link) => (
-          <Link key={link.name} to={link.path}>
-            {link.name}
-          </Link>
-        ))}
+        <ul className="links-list">
+          {links.map((link) => (
+            <li key={link.name} className="link-item">
+              <Link to={link.path}>{link.name}</Link>
+            </li>
+          ))}
+        </ul>
       </nav>
       <Outlet />
     </div>

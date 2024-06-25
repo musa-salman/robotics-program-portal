@@ -1,42 +1,38 @@
 .testing-layout {
-  font-family: Arial, sans-serif;
-  margin: 20px;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #f9f9f9;
 }
 
 .testing-layout h1 {
-  color: #333;
-  display: flex;
-  justify-content: center;
-  font-size: 24px;
   margin-bottom: 20px;
+  display: flex;
+  align-items: stretch;
 }
 
-.testing-layout nav {
+.links-list {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.testing-layout ul {
+  flex-wrap: wrap;
   list-style-type: none;
+  direction: ltr;
   padding: 0;
-  margin-bottom: 10px;
+  margin: 0;
 }
 
-.testing-layout ul li {
-  margin-bottom: 5px;
+.link-item {
+  margin: 5px;
+  width: calc(20% - 10px); /* Adjust the width for 5 items per row, accounting for margins */
+  box-sizing: border-box;
 }
 
-.testing-layout ul li a {
+.link-item a {
+  display: block;
+  padding: 10px;
+  background-color: #f0f0f0;
+  text-align: center;
   text-decoration: none;
-  color: #007bff;
-  transition: color 0.3s;
+  color: #000;
+  border-radius: 5px;
 }
 
-.testing-layout ul li a:hover {
-  color: #0056b3;
+.link-item a:hover {
+  background-color: #ddd;
 }
