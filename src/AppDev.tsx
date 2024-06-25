@@ -14,6 +14,7 @@ import GPTPlayGround from './gpt-service/GPTPlayGround';
 import WaitApprovalPage from './wait-approval-page/WaitingApprovalPage';
 import RegisterManagement from './registers-management/RegistersManagement';
 import UnauthorizedPage from './components/UnauthorizedPage';
+import NoInternet from './components/NoInternet';
 
 function AppDev() {
   const AuthRoutes = useAuthRoutes();
@@ -38,6 +39,8 @@ function AppDev() {
             <Route path="/registers" element={<RegisterManagement />} />
 
             <Route path="/gpt" element={<GPTPlayGround />} />
+
+            <Route path="unconnected-internet" element={<NoInternet />} />
 
             <Route path="/401" element={<UnauthorizedPage />} />
             <Route path="*" element={<NotFoundPage />} />
