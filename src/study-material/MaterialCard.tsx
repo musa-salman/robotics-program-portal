@@ -53,7 +53,7 @@ function MaterialCard({
     setIsEditing(!isEditing);
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     const updatedStudyMaterial = {
       ...studyMaterial,
       title: editedTitle,
@@ -71,24 +71,6 @@ function MaterialCard({
         console.error('Error updating study material:', error);
       });
   };
-
-  // Commenting this code for deploying only
-  // const handleMove = (selectCategory: Category) => {
-  //   const updatedCategory = {
-  //     ...studyMaterial,
-  //     category: selectCategory.category
-  //   };
-
-  //   // studyMaterialManagement._moveStudyMaterials();
-  //   // .moveMaterialToCategory(studyMaterial, studyMaterial.category.category, )
-  //   // .then(() => {
-  //   //   onMove(updatedCategory, studyMaterial.category);
-  //   //   setIsMove(false);
-  //   // })
-  //   // .catch((error) => {
-  //   //   console.error('Error move study material:', error);
-  //   // });
-  // };
 
   const handleMoveToggle = async () => {
     setIsMove(true);
@@ -123,7 +105,7 @@ function MaterialCard({
         <hr className="custom-hr" />
         <div>
           {isEditing ? (
-            <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>
+            <GPT initialValue={editedDescription} getData={() => suggestMaterialTitles(studyMaterial)}>
               <TextField
                 value={editedDescription}
                 onChange={(e) => setEditedDescription(e.target.value)}
