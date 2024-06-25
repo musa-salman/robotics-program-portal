@@ -1,7 +1,10 @@
 import React from 'react';
-import { AppBar, Toolbar, Container, Box, Link } from '@mui/material';
+import { AppBar, Toolbar, Container, Box, Link, Avatar } from '@mui/material';
 import AvatarMenu from './AvatarMenu';
 import './Header.css';
+import { auth } from '../../firebase';
+import LoginButton from '../../authentication/components/Login/Login';
+import { useAuth } from '../../authentication/services/useAuth';
 
 interface HeaderProps {
   logo: string;
@@ -9,12 +12,14 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ logo, links }) => {
+  const { user } = useAuth();
+
   return (
     <header>
       <AppBar position="static" color="primary">
         <Container>
           <Toolbar>
-            <img src={logo} height="40" alt="Logo" className="logo" />
+            <Avatar alt="Logo" src={logo} sx={{ width: 40, height: 40 }} />
             <nav className="nav-links">
               {links.map((link) => (
                 <Link key={link.name} href={link.path}>
@@ -23,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ logo, links }) => {
               ))}
             </nav>
             <Box flexGrow={1} />
-            <AvatarMenu />
+            {user === null ? <LoginButton /> : <AvatarMenu />}
           </Toolbar>
         </Container>
       </AppBar>

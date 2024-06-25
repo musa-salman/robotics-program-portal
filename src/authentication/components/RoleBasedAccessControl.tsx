@@ -95,13 +95,13 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   if (authorization === AuthorizationStatus.AuthorizedUser) {
     return children;
   } else if (authorization === AuthorizationStatus.UnauthorizeUnauthenticatedUser) {
-    return unauthorizedUnauthenticatedComponent ? unauthorizedUnauthenticatedComponent : <Navigate to="/login" />;
+    return unauthorizedUnauthenticatedComponent ? unauthorizedUnauthenticatedComponent : <Navigate to="/401" />;
   } else if (authorization === AuthorizationStatus.UnauthorizedAuthenticatedUser) {
     if (roleToComponentMap && user?.role && roleToComponentMap[user.role]) {
       return roleToComponentMap[user.role];
     }
 
-    return unauthorizedAuthenticatedComponent ? unauthorizedAuthenticatedComponent : <Navigate to="/" />;
+    return unauthorizedAuthenticatedComponent ? unauthorizedAuthenticatedComponent : <Navigate to="/401" />;
   }
 
   return <></>;

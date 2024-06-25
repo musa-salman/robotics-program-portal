@@ -13,8 +13,9 @@ import RegisterComponent from './register/RegisterComponent';
 import GPTPlayGround from './gpt-service/GPTPlayGround';
 import WaitApprovalPage from './wait-approval-page/WaitingApprovalPage';
 import RegisterManagement from './registers-management/RegistersManagement';
+import UnauthorizedPage from './components/UnauthorizedPage';
 
-function App() {
+function AppDev() {
   const AuthRoutes = useAuthRoutes();
   const StudyMaterialRoutes = useStudyMaterialRoutes();
 
@@ -36,9 +37,10 @@ function App() {
             <Route path="/students" element={<StudentsManagement />} />
             <Route path="/registers" element={<RegisterManagement />} />
 
-            <Route path="*" element={<NotFoundPage />} />
-
             <Route path="/gpt" element={<GPTPlayGround />} />
+
+            <Route path="/401" element={<UnauthorizedPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Route>
       </Routes>
@@ -46,4 +48,4 @@ function App() {
   );
 }
 
-export default App;
+export default AppDev;

@@ -17,16 +17,14 @@ const Layout = () => {
   const socialMedia = [
     {
       platform: 'facebook',
-      url: 'https://www.facebook.com/people/PICO-Kids-%D7%A4%D7%99%D7%A7%D7%95-%D7%A7%D7%99%D7%93%D7%A1/100063724223613/'
-    },
-    { platform: 'instagram', url: 'https://www.instagram.com/pico_mkrspce/' },
-    { platform: 'youtube', url: 'https://www.youtube.com/channel/UCjQ7fK8eW4qJN8J2Qw1zvXw' }
+      url: 'https://www.facebook.com/teamstreak7067/'
+    }
   ];
 
   return (
     <div className="d-flex flex-column min-vh-100 w-100">
       <Header logo="/logo.jpg" links={headerLinks} />
-      <main className="flex-grow-1 w-100 body-content">
+      <main className="flex-grow-1 w-100">
         <Outlet />
       </main>
       <Footer links={footerLinks} socialMedia={socialMedia} copyright="© 2024 פיקו קידס" />

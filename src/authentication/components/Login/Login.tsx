@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Container, Typography, Box, Alert } from '@mui/material';
 import { useAuth } from '../../services/useAuth';
+import { Login } from '@mui/icons-material';
 
-const Login: React.FC = () => {
+const LoginButton: React.FC = () => {
   const { authService } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -25,25 +26,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="sm" style={{ marginTop: 40 }}>
-      <Box textAlign="center">
-        <Typography variant="h4" gutterBottom>
-          התחברות
-        </Typography>
-        <Typography variant="body1" paragraph>
-          אנא התחבר כדי לגשת לפורטל הרובוטיקה.
-        </Typography>
-        {error && (
-          <Alert severity="error" style={{ marginBottom: 20 }}>
-            {error}
-          </Alert>
-        )}
-        <Button variant="contained" color="primary" onClick={handleLogin}>
-          {loading ? 'מתחבר...' : 'התחברות'}
-        </Button>
-      </Box>
-    </Container>
+    <Button variant="contained" color="primary" onClick={handleLogin} startIcon={<Login />} disabled={loading}>
+      {loading ? 'מתחבר...' : 'התחברות'}
+    </Button>
   );
 };
 
-export default Login;
+export default LoginButton;

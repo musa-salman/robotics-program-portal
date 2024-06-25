@@ -12,6 +12,7 @@ import RegisterComponent from './register/RegisterComponent';
 import WaitApprovalPage from './wait-approval-page/WaitingApprovalPage';
 import RegisterManagement from './registers-management/RegistersManagement';
 import StudyMaterialContainer from './study-material/StudyMaterialContainer';
+import UnauthorizedPage from './components/UnauthorizedPage';
 
 function App() {
   return (
@@ -26,7 +27,14 @@ function App() {
             </RoleBasedAccessControl>
           }
         />
-        <Route path="/events" element={<EventContainer />} />
+        <Route
+          path="/events"
+          element={
+            <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner, Role.Student]}>
+              <EventContainer />
+            </RoleBasedAccessControl>
+          }
+        />
 
         <Route
           path="/register"
@@ -72,6 +80,7 @@ function App() {
           }
         />
 
+        <Route path="/401" element={<UnauthorizedPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
