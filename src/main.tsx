@@ -50,8 +50,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                         <StorageServiceProvider>
                           <RegisterProvider>
                             <AuthProvider>
-                              <App />
-                              {/* <AppDev /> */}
+                              {/* <App /> */}
+                              <AppDev />
                             </AuthProvider>
                           </RegisterProvider>
                         </StorageServiceProvider>

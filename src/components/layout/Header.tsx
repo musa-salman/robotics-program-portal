@@ -2,7 +2,6 @@ import React from 'react';
 import { AppBar, Toolbar, Container, Box, Link, Avatar } from '@mui/material';
 import AvatarMenu from './AvatarMenu';
 import './Header.css';
-import { auth } from '../../firebase';
 import LoginButton from '../../authentication/components/Login/Login';
 import { useAuth } from '../../authentication/services/useAuth';
 
