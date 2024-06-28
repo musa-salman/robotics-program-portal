@@ -37,6 +37,9 @@ const TestingLayout: React.FC = () => {
           <li>
             <Link to="/approvalPage">Approval Page</Link>
           </li>
+          <li>
+            <Link to="/SplashScreen">screen</Link>
+          </li>
         </ul>
       </nav>
       <Outlet />

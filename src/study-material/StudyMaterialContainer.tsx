@@ -8,16 +8,13 @@ import { SearchBar } from './SearchBar';
 import UploadFileComponent from '../upload-file/UploadFile';
 import { Modal } from 'react-bootstrap';
 import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
 import { Fab } from '@mui/material';
 import NoResultFound from './NoResultFound';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MoveList from './MoveList';
 import EmptyStudyMaterials from './EmptyStudyMaterials';
 import { Category } from '../upload-file/Category';
 import { AddEditCategories } from '../upload-file/addOrEditCategories';
-import Test from './Test';
 
 function StudyMaterialContainer() {
   const materialManager = useContext(MaterialContext);
