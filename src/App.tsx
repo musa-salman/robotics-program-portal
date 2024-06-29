@@ -15,73 +15,74 @@ import StudyMaterialContainer from './study-material/StudyMaterialContainer';
 import UnauthorizedPage from './components/UnauthorizedPage';
 
 function App() {
+  const routeConfigurations = {
+    authorizedRoutes: [
+      {
+        path: '/study-materials',
+        element: <StudyMaterialContainer />,
+        allowedRoles: [Role.Admin, Role.Owner, Role.Student]
+      },
+      {
+        path: '/events',
+        element: <EventContainer />,
+        allowedRoles: [Role.Admin, Role.Owner, Role.Student]
+      },
+      {
+        path: '/students',
+        element: <StudentsManagement />,
+        allowedRoles: [Role.Admin, Role.Owner]
+      },
+      {
+        path: '/registers',
+        element: <RegisterManagement />,
+        allowedRoles: [Role.PreEnrollment]
+      },
+      {
+        path: '/register',
+        element: <RegisterComponent />,
+        allowedRoles: [Role.PreEnrollment],
+        roleToComponentMap: {
+          [Role.Pending]: <WaitApprovalPage />
+        }
+      },
+      {
+        path: '/approvalPage',
+        element: <WaitApprovalPage />,
+        allowedRoles: [Role.Pending],
+        roleToComponentMap: {
+          [Role.PreEnrollment]: <RegisterComponent />
+        }
+      }
+    ],
+    publicRoutes: [
+      {
+        path: '/401',
+        element: <UnauthorizedPage />
+      },
+      {
+        path: '*',
+        element: <NotFoundPage />
+      }
+    ]
+  };
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route path="/" element={<Banner />} />
-        <Route
-          path="/study-materials/"
-          element={
-            <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner, Role.Student]}>
-              <StudyMaterialContainer />
-            </RoleBasedAccessControl>
-          }
-        />
-        <Route
-          path="/events"
-          element={
-            <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner, Role.Student]}>
-              <EventContainer />
-            </RoleBasedAccessControl>
-          }
-        />
-
-        <Route
-          path="/register"
-          element={
+        {routeConfigurations.authorizedRoutes.map((route, index) => {
+          return (
             <RoleBasedAccessControl
-              allowedRoles={[Role.PreEnrollment]}
-              roleToComponentMap={{
-                [Role.Pending]: <WaitApprovalPage />
-              }}>
-              <RegisterComponent />
+              key={index}
+              allowedRoles={route.allowedRoles}
+              roleToComponentMap={route.roleToComponentMap}>
+              <Route path={route.path} element={route.element} />
             </RoleBasedAccessControl>
-          }
-        />
-
-        <Route
-          path="/approvalPage"
-          element={
-            <RoleBasedAccessControl
-              allowedRoles={[Role.Pending]}
-              roleToComponentMap={{
-                [Role.PreEnrollment]: <RegisterComponent />
-              }}>
-              <WaitApprovalPage />
-            </RoleBasedAccessControl>
-          }
-        />
-
-        <Route
-          path="/students"
-          element={
-            <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]}>
-              <StudentsManagement />
-            </RoleBasedAccessControl>
-          }
-        />
-
-        <Route
-          path="/registers"
-          element={
-            <RoleBasedAccessControl allowedRoles={[Role.PreEnrollment]}>
-              <RegisterManagement />
-            </RoleBasedAccessControl>
-          }
-        />
-
-        <Route path="/401" element={<UnauthorizedPage />} />
-        <Route path="*" element={<NotFoundPage />} />
+          );
+        })}
+        {routeConfigurations.publicRoutes.map((route, index) => {
+          return <Route key={index} path={route.path} element={route.element} />;
+        })}
       </Route>
     </Routes>
   );

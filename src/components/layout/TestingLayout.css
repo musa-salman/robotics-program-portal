@@ -2,12 +2,6 @@
   padding: 20px;
 }
 
-.testing-layout h1 {
-  margin-bottom: 20px;
-  display: flex;
-  align-items: stretch;
-}
-
 .links-list {
   display: flex;
   flex-wrap: wrap;

@@ -21,7 +21,6 @@ const TestingLayout: React.FC = () => {
 
   return (
     <div className="testing-layout">
-      <h1>This is a Testing Layout</h1>
       <nav>
         <ul className="links-list">
           {links.map((link) => (
