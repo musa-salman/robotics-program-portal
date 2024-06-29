@@ -71,24 +71,6 @@ function MaterialCard({
       });
   };
 
-  // Commenting this code for deploying only
-  // const handleMove = (selectCategory: Category) => {
-  //   const updatedCategory = {
-  //     ...studyMaterial,
-  //     category: selectCategory.category
-  //   };
-
-  //   // studyMaterialManagement._moveStudyMaterials();
-  //   // .moveMaterialToCategory(studyMaterial, studyMaterial.category.category, )
-  //   // .then(() => {
-  //   //   onMove(updatedCategory, studyMaterial.category);
-  //   //   setIsMove(false);
-  //   // })
-  //   // .catch((error) => {
-  //   //   console.error('Error move study material:', error);
-  //   // });
-  // };
-
   const handleMoveToggle = async () => {
     setIsMove(true);
     onMove(studyMaterial);
@@ -122,7 +104,7 @@ function MaterialCard({
         <hr className="custom-hr" />
         <div>
           {isEditing ? (
-            <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>
+            <GPT initialValue={editedDescription} getData={() => suggestMaterialTitles(studyMaterial)}>
               <TextField
                 value={editedDescription}
                 onChange={(e) => setEditedDescription(e.target.value)}

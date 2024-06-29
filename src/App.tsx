@@ -13,6 +13,7 @@ import WaitApprovalPage from './wait-approval-page/WaitingApprovalPage';
 import RegisterManagement from './registers-management/RegistersManagement';
 import StudyMaterialContainer from './study-material/StudyMaterialContainer';
 import UnauthorizedPage from './components/UnauthorizedPage';
+import SplashScreen from './components/SplashScreen';
 
 function App() {
   const routeConfigurations = {
@@ -55,6 +56,10 @@ function App() {
       }
     ],
     publicRoutes: [
+      {
+        path: '/splash',
+        element: <SplashScreen />
+      },
       {
         path: '/401',
         element: <UnauthorizedPage />

@@ -10,7 +10,6 @@ import { Modal } from 'react-bootstrap';
 import AddIcon from '@mui/icons-material/Add';
 import { Fab } from '@mui/material';
 import NoResultFound from './NoResultFound';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MoveList from './MoveList';
 import EmptyStudyMaterials from './EmptyStudyMaterials';
@@ -20,7 +19,6 @@ import { AddEditCategories } from '../upload-file/addOrEditCategories';
 function StudyMaterialContainer() {
   const materialManager = useContext(MaterialContext);
 
-  const [isDelete, setIsDelete] = useState(false);
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
   const [categoryList, setCategoryList] = useState<Category[] | null>(null);
 
@@ -49,12 +47,26 @@ function StudyMaterialContainer() {
     if (categoryList === null) getCategories();
   }, [materialManager, studyMaterials, categoryList]);
 
-  const handleUpdate = (updatedMaterial: StudyMaterial) => {
-    const updatedMaterials = (studyMaterials || []).map((material) =>
-      material.id === updatedMaterial.id ? updatedMaterial : material
-    );
-    setStudyMaterials(updatedMaterials);
-  };
+  function handleUpdate(updatedMaterial: StudyMaterial) {
+    // const updatedMaterials = (studyMaterials || []).map((material) =>
+    //   material.id === updatedMaterial.id ? updatedMaterial : material
+    // );
+    // setStudyMaterials(updatedMaterials);
+    // console.log(updatedMaterials == studyMaterials );
+
+    setStudyMaterials((prevMaterials) => {
+      if (!prevMaterials) return [];
+      const index = prevMaterials.findIndex((material) => material.id === updatedMaterial.id);
+      if (index !== -1) {
+        // Create a new array with the updated event
+        const newMaterials = [...prevMaterials];
+        newMaterials[index] = updatedMaterial;
+        return newMaterials;
+      }
+      // If the event was not found, return the previous state
+      return prevMaterials;
+    });
+  }
 
   const handleDelete = (deletedStudy: StudyMaterial) => {
     const updatedMaterials = (studyMaterials || []).filter((material) => material.id !== deletedStudy.id);
@@ -67,10 +79,6 @@ function StudyMaterialContainer() {
   };
 
   const handledoNothing = () => {};
-
-  const handelDeleteAll = () => {
-    // materialManager.categoryRepository.deleteAll();
-  };
 
   const handleMoveClick = (studyMaterial: StudyMaterial) => {
     setSelectedMaterial(studyMaterial);
@@ -104,8 +112,8 @@ function StudyMaterialContainer() {
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
-  console.log(studyMaterials);
-  console.log('categories', categories);
+  // console.log(studyMaterials);
+  // console.log('categories', categories);
   return (
     <>
       {isMoveMode && (
@@ -130,16 +138,13 @@ function StudyMaterialContainer() {
           <Fab className="adde-btn" aria-label="add" onClick={handleShow}>
             <AddIcon />
           </Fab>
-          <Fab className="del-btn" aria-label="add" onClick={handelDeleteAll}>
-            <DeleteForeverIcon />
-          </Fab>
         </div>
       </div>
       {searchResults?.length === 0 ? (
         <NoResultFound />
       ) : (
-        (categories || []).map((category, index) => (
-          <Card className="primary" key={index}>
+        (categories || []).map((category) => (
+          <Card className="primary" key={category}>
             <Card.Header className="Card-Header">
               <h2>{category}</h2>
             </Card.Header>
