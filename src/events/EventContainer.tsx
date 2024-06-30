@@ -7,6 +7,8 @@ import { CircularProgress, Box } from '@mui/material';
 import './EventContainer.css';
 import EmptyEventCard from './EmptyEventCard';
 import AddEvent from './AddEvent';
+import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
+import Role from '../authentication/components/Roles';
 
 type EventContainer = {
   eventsProps: EventProps[];
@@ -95,7 +97,9 @@ const EventContainer = () => {
   return (
     <div className="events">
       <div className="events-header-button">
-        <AddEvent addEvent={addEvent} />
+        <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
+          <AddEvent addEvent={addEvent} />
+        </RoleBasedAccessControl>
         <Button className="show-all" onClick={handleAllEvents}>
           {showModalAllEvents ? <div>הצג הכול</div> : <div>הראי פחות</div>}
         </Button>

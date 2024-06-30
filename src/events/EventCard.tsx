@@ -42,7 +42,9 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
           <br />
           <strong>פרטים:</strong> {details}
         </Card.Text>
-        <RegisterStudentToEvent eventId={id} />
+        <RoleBasedAccessControl allowedRoles={[Role.Student]} unauthorizedAuthenticatedComponent={<></>}>
+          <RegisterStudentToEvent eventId={id} />
+        </RoleBasedAccessControl>
       </Card.Body>
       <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
         <EditDeleteEvent
