@@ -4,36 +4,37 @@ import { Category } from './Category';
 import { MaterialContext } from '../study-material/repository/StudyMaterialContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import './addorEditCategories.css';
-interface YourComponentProps {
+import './CategoryManagement.css';
+
+interface CategoryManagementProps {
   categories: Category[] | null;
   handleCloseAddEdit: () => void;
   handleSelect: (eventKey: string | null) => void;
   setCategories: React.Dispatch<React.SetStateAction<Category[] | null>>;
 }
 
-const AddEditCategories: React.FC<YourComponentProps> = ({
+const CategoryManagement: React.FC<CategoryManagementProps> = ({
   categories,
   handleCloseAddEdit,
   setCategories,
   handleSelect
 }) => {
-  const [category, setCategory] = useState('');
-  const [editcategory, setEditCategory] = useState('');
-  const [editingItem, setEditingItem] = useState<Category | null>(null);
-  const studyMaterialManagement = useContext(MaterialContext);
+  const [newCategory, setNewCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [updatedCategory, setUpdatedCategory] = useState<Category | null>(null);
   const [showFirstButton, setShowFirstButton] = useState(true);
 
-  const handleEditItem = (item: Category) => {
+  const studyMaterialManagement = useContext(MaterialContext);
+
+  const handleEditItem = (editedCategory: Category) => {
     if (showFirstButton) {
-      setShowFirstButton(!showFirstButton);
       setShowFirstButton(false);
-      setEditingItem(item);
+      setUpdatedCategory(editedCategory);
     }
   };
 
   const handleInputCategories = (event: any) => {
-    setCategory(event.target.value);
+    setNewCategory(event.target.value);
   };
 
   const checkRepeat = (input: string): boolean => {
@@ -47,10 +48,10 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
   };
 
   const addCategories = async () => {
-    if (checkRepeat(category)) {
-      const docRef = await studyMaterialManagement.categoryRepository.create({ category: category });
+    if (checkRepeat(newCategory)) {
+      const docRef = await studyMaterialManagement.categoryRepository.create({ category: newCategory });
       const add: Category = {
-        category: category,
+        category: newCategory,
         id: docRef.id
       };
       handleSelect(add.category);
@@ -66,34 +67,34 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
   };
 
   const handleSaveItem = (item: Category) => {
-    if (!checkRepeat(editcategory) && editcategory !== item.category) {
+    if (!checkRepeat(selectedCategory) && selectedCategory !== item.category) {
       console.log('this action dose not exist');
-    } else if (item.category === editingItem?.category && editcategory !== '') {
+    } else if (item.category === updatedCategory?.category && selectedCategory !== '') {
       const edit: Category = {
-        category: editcategory,
-        id: editingItem.id
+        category: selectedCategory,
+        id: updatedCategory.id
       };
-      studyMaterialManagement.categoryRepository.update(editingItem.id, edit);
+      studyMaterialManagement.categoryRepository.update(updatedCategory.id, edit);
 
       setCategories((prevCategories) => {
         if (prevCategories === null) {
           return null;
         }
-        return prevCategories.map((category) => (category.id === editingItem.id ? edit : category));
+        return prevCategories.map((category) => (category.id === updatedCategory.id ? edit : category));
       });
       setShowFirstButton(true);
-      setEditingItem(null);
-      setEditCategory('');
+      setUpdatedCategory(null);
+      setSelectedCategory('');
     } else {
       console.log('this action dose not exist');
       setShowFirstButton(true);
-      setEditingItem(null);
-      setEditCategory('');
+      setUpdatedCategory(null);
+      setSelectedCategory('');
     }
   };
 
   const handleEditInput = (event: any) => {
-    setEditCategory(event.target.value);
+    setSelectedCategory(event.target.value);
   };
 
   const handleDeleteCategory = (item: Category) => {
@@ -146,13 +147,13 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
                     name="title"
                     defaultValue={item.category}
                     required
-                    disabled={editingItem?.category !== item.category}
+                    disabled={updatedCategory?.category !== item.category}
                     onChange={(event) => handleEditInput(event)}
                   />
                 </Form.Group>
 
                 <Form.Group as={Col} md="2" className=" mt-2" controlId="validationCustom02">
-                  {item.category !== editingItem?.category ? (
+                  {item.category !== updatedCategory?.category ? (
                     <Button onClick={() => handleEditItem(item)}>
                       <FontAwesomeIcon icon={faPenToSquare} />
                     </Button>
@@ -180,4 +181,4 @@ const AddEditCategories: React.FC<YourComponentProps> = ({
   );
 };
 
-export { AddEditCategories };
+export { CategoryManagement };

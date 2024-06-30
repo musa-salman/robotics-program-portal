@@ -7,7 +7,7 @@ import './UploadFile.css';
 import { Category } from './Category';
 import { MaterialContext } from '../study-material/repository/StudyMaterialContext';
 import { StudyMaterial } from '../study-material/StudyMaterial';
-import { AddEditCategories } from './addOrEditCategories';
+import { CategoryManagement } from './CategoryManagement';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import GPT from '../gpt-service/GPTComponent';
 import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
@@ -204,11 +204,11 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
       </Modal.Body>
 
       <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
-        <AddEditCategories
+        <CategoryManagement
           categories={categories}
           handleCloseAddEdit={handleCloseAddEdit}
           setCategories={setCategories}
-          handleSelect={handleSelect}></AddEditCategories>
+          handleSelect={handleSelect}></CategoryManagement>
       </Modal>
     </>
   );

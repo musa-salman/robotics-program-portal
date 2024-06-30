@@ -14,7 +14,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import MoveList from './MoveList';
 import EmptyStudyMaterials from './EmptyStudyMaterials';
 import { Category } from '../upload-file/Category';
-import { AddEditCategories } from '../upload-file/addOrEditCategories';
+import { CategoryManagement } from '../upload-file/CategoryManagement';
 
 function StudyMaterialContainer() {
   const materialManager = useContext(MaterialContext);
@@ -173,7 +173,7 @@ function StudyMaterialContainer() {
       </Modal>
 
       <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
-        <AddEditCategories
+        <CategoryManagement
           categories={categoryList}
           handleCloseAddEdit={handleCloseAddEdit}
           setCategories={setCategoryList}
