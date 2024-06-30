@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   TextField,
@@ -17,15 +17,15 @@ import { Register } from './Register';
 interface AcademicFormProps {
   setRegister: React.Dispatch<React.SetStateAction<Register>>;
   register: Register;
+  isForward: boolean;
 }
 
-const AcademicForm: React.FC<AcademicFormProps> = ({ setRegister, register }) => {
-  // const options = [
-  //   'אני מתעניינת ב-5 יח"ל מכטרוניקה',
-  //   'אני מתעניינת ב-10 יח"ל מכטרוניקה',
-  //   'עדיין לא ידוע',
-  //   'אחרת'
-  // ];
+const AcademicForm: React.FC<AcademicFormProps> = ({ setRegister, register, isForward }) => {
+  const [isValid, setIsValid] = useState({
+    studentSchool: true,
+    studyUnitsMajor: true,
+    numStudyUnitsMath: true
+  });
 
   const handleChange = (event: any) => {
     const { name, value } = event.target;
@@ -44,7 +44,11 @@ const AcademicForm: React.FC<AcademicFormProps> = ({ setRegister, register }) =>
           value={register.studentSchool}
           onChange={handleChange}
           required
-          error={register.studentSchool === ''}
+          error={!isValid.studentSchool || (isForward && register.studentSchool === '')}
+          onBlur={() => {
+            setIsValid((prevData) => ({ ...prevData, studentSchool: register.studentSchool !== '' }));
+          }}
+          helperText={!isValid.studentSchool || (isForward && register.studentSchool === '') ? 'יש למלה' : ''}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -55,8 +59,8 @@ const AcademicForm: React.FC<AcademicFormProps> = ({ setRegister, register }) =>
         />
       </Grid>
 
+      <FormLabel sx={{ fontSize: '30px' }}>התעניינות בהיקף יחידות לימוד במגמה</FormLabel>
       <FormControl error={register.studyUnitsMajor === ''}>
-        <FormLabel sx={{ fontSize: '30px' }}>התעניינות בהיקף יחידות לימוד במגמה</FormLabel>
         <RadioGroup
           aria-labelledby="demo-controlled-radio-buttons-group"
           name="studyUnitsMajor"
@@ -70,18 +74,17 @@ const AcademicForm: React.FC<AcademicFormProps> = ({ setRegister, register }) =>
         <FormHelperText>{register.studyUnitsMajor === '' ? 'נה לבחור' : ''}</FormHelperText>
       </FormControl>
 
+      <FormLabel sx={{ fontSize: '30px' }}>מספר יחידות לימוד במתמטיקה</FormLabel>
       <FormControl error={register.numStudyUnitsMath === ''}>
-        <FormLabel sx={{ fontSize: '30px' }}>מספר יחידות לימוד במתמטיקה</FormLabel>
-
         <RadioGroup
           aria-labelledby="demo-controlled-radio-buttons-group"
           name="numStudyUnitsMath"
           value={register.numStudyUnitsMath}
           onChange={handleChange}>
-          <FormControlLabel value="0" control={<Radio />} label="3" />
-          <FormControlLabel value="1" control={<Radio />} label="4" />
-          <FormControlLabel value="2" control={<Radio />} label="5" />
-          <FormControlLabel value="3" control={<Radio />} label="אחרת" />
+          <FormControlLabel value="3" control={<Radio />} label="3" />
+          <FormControlLabel value="4" control={<Radio />} label="4" />
+          <FormControlLabel value="5" control={<Radio />} label="5" />
+          <FormControlLabel value="0" control={<Radio />} label="אחרת" />
         </RadioGroup>
 
         <FormHelperText>{register.numStudyUnitsMath === '' ? 'נה לבחור' : ''}</FormHelperText>
