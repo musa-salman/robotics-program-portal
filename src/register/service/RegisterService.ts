@@ -5,6 +5,7 @@ import { RegisterRepository } from '../RegisterRepository';
 import { Register } from '../Register';
 import { db } from '../../firebase';
 import Role from '../../authentication/components/Roles';
+import { write } from 'fs';
 
 /**
  * Represents a service for registering students.
@@ -60,7 +61,13 @@ export class RegisterService implements IRegisterService {
   }
 
   rejectRegister(registerId: string): Promise<void> {
-    return this.registerRepository.delete(registerId);
+    return writeBatch(db)
+      .delete(doc(this.registerRepository._collection, registerId))
+      .set(doc(this.userRepository._collection, registerId), {
+        id: registerId,
+        role: Role.Rejected
+      })
+      .commit();
   }
 
   approveRegister(register: Register): Promise<void> {

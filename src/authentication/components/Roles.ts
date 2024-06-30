@@ -7,6 +7,7 @@ enum Role {
   Student = 'student',
   Pending = 'pending',
   PreEnrollment = 'pre-enrollment',
+  Rejected = 'rejected',
   Unauthenticated = 'unauthenticated'
 }
 

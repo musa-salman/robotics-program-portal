@@ -18,6 +18,7 @@ import StudyMaterialContainer from './study-material/StudyMaterialContainer';
 import UnauthorizedPage from './components/UnauthorizedPage';
 import NoInternet from './components/NoInternet';
 import SplashScreen from './components/SplashScreen';
+import RejectionPage from './rejection-page/RejectionPage';
 
 function App() {
   const isDev = process.env.NODE_ENV === 'developments';
@@ -66,7 +67,8 @@ function App() {
         element: <RegisterComponent />,
         allowedRoles: [Role.PreEnrollment],
         roleToComponentMap: {
-          [Role.Pending]: <WaitApprovalPage />
+          [Role.Pending]: <WaitApprovalPage />,
+          [Role.Rejected]: <RejectionPage />
         }
       },
       {
@@ -74,7 +76,8 @@ function App() {
         element: <WaitApprovalPage />,
         allowedRoles: [Role.Pending],
         roleToComponentMap: {
-          [Role.PreEnrollment]: <RegisterComponent />
+          [Role.PreEnrollment]: <RegisterComponent />,
+          [Role.Rejected]: <RejectionPage />
         }
       },
       {
@@ -83,7 +86,8 @@ function App() {
         allowedRoles: [Role.Admin, Role.Owner, Role.Student],
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />,
-          [Role.Pending]: <WaitApprovalPage />
+          [Role.Pending]: <WaitApprovalPage />,
+          [Role.Rejected]: <RejectionPage />
         }
       }
     ],

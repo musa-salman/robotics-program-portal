@@ -17,6 +17,7 @@ import { isIdentityCard, isMobilePhone } from 'validator';
 import isEmail from 'validator/lib/isEmail';
 import { RegisterContext } from './service/RegisterContext';
 import { AuthContext } from '../authentication/AuthContext';
+import { Navigate } from 'react-router-dom';
 
 const steps = ['על המתחם החדש', 'פרטים אישיים', 'פרטים בית הספר', 'שאלות אחרונות'];
 
@@ -82,9 +83,14 @@ const RegisterComponent = () => {
     }
 
     if (activeStep === steps.length - 1 && user !== null) {
-      registerService.registerStudent(register).catch(() => {
-        alert('error while save in firebase');
-      });
+      registerService
+        .registerStudent(register)
+        .then(() => {
+          window.location.href = '/approvalPage';
+        })
+        .catch(() => {
+          alert('error while save in firebase');
+        });
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
     } else {
@@ -159,7 +165,7 @@ const RegisterComponent = () => {
               <Box sx={{ flex: '1 1 auto' }} />
 
               <Button type="submit" onClick={handleNext}>
-                {activeStep < steps.length - 1 ? 'הבא' : register.id === '' ? 'סיום' : 'שיניוי'}
+                {activeStep < steps.length - 1 ? 'הבא' : 'סיום'}
               </Button>
             </Box>
           </React.Fragment>

@@ -3,11 +3,7 @@ import Footer from './Footer';
 import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
-  const headerLinks = [
-    { name: 'בית', path: '/' },
-    { name: 'אודות', path: '/about' },
-    { name: 'צור קשר', path: '/contact' }
-  ];
+  const headerLinks = [{ name: 'בית', path: '/' }];
 
   const footerLinks = [
     { name: 'מדיניות פרטיות', path: '/privacy' },
