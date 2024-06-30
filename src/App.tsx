@@ -28,22 +28,38 @@ function App() {
       {
         path: '/study-materials',
         element: <StudyMaterialContainer />,
-        allowedRoles: [Role.Admin, Role.Owner, Role.Student]
+        allowedRoles: [Role.Admin, Role.Owner, Role.Student],
+        roleToComponentMap: {
+          [Role.PreEnrollment]: <RegisterComponent />,
+          [Role.Pending]: <WaitApprovalPage />
+        }
       },
       {
         path: '/events',
         element: <EventContainer />,
-        allowedRoles: [Role.Admin, Role.Owner, Role.Student]
+        allowedRoles: [Role.Admin, Role.Owner, Role.Student],
+        roleToComponentMap: {
+          [Role.PreEnrollment]: <RegisterComponent />,
+          [Role.Pending]: <WaitApprovalPage />
+        }
       },
       {
         path: '/students-management',
         element: <StudentsManagement />,
-        allowedRoles: [Role.Admin, Role.Owner]
+        allowedRoles: [Role.Admin, Role.Owner],
+        roleToComponentMap: {
+          [Role.PreEnrollment]: <RegisterComponent />,
+          [Role.Pending]: <WaitApprovalPage />
+        }
       },
       {
         path: '/registers-management',
         element: <RegisterManagement />,
-        allowedRoles: [Role.Admin, Role.Owner]
+        allowedRoles: [Role.Admin, Role.Owner],
+        roleToComponentMap: {
+          [Role.PreEnrollment]: <RegisterComponent />,
+          [Role.Pending]: <WaitApprovalPage />
+        }
       },
       {
         path: '/register',
@@ -64,7 +80,11 @@ function App() {
       {
         path: '/',
         element: <Banner />,
-        allowedRoles: [Role.Admin, Role.Owner, Role.Student]
+        allowedRoles: [Role.Admin, Role.Owner, Role.Student],
+        roleToComponentMap: {
+          [Role.PreEnrollment]: <RegisterComponent />,
+          [Role.Pending]: <WaitApprovalPage />
+        }
       }
     ],
     publicRoutes: [
