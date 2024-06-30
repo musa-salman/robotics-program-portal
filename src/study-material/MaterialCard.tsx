@@ -11,6 +11,7 @@ import MySpeedDial from './MySpeedDial';
 import { TextField } from '@mui/material';
 import GPT from '../gpt-service/GPTComponent';
 import { suggestMaterialTitles } from '../upload-file/StudyMaterialPrompts';
+import SimpleSnackbar from '../components/snackbar/SnackBar';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -39,13 +40,16 @@ function MaterialCard({
       '/study-material/' + studyMaterial.id + '-' + studyMaterial.filename,
       studyMaterial.filename
     );
+    <SimpleSnackbar message="DOWNLOAD success" />;
   };
 
   const handleDelete = async () => {
-    storageService.delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename).then(() => {
-      materialManager.studyMaterialRepository.delete(studyMaterial.id);
-      onDelete(studyMaterial);
-    });
+    if (window.confirm('Are you sure you want to delete this item?')) {
+      storageService.delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename).then(() => {
+        materialManager.studyMaterialRepository.delete(studyMaterial.id);
+        onDelete(studyMaterial);
+      });
+    }
     // TODO catch
   };
 

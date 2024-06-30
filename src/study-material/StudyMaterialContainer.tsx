@@ -112,17 +112,12 @@ function StudyMaterialContainer() {
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
-  // console.log(studyMaterials);
-  // console.log('categories', categories);
+  console.log(categories);
+  console.log('categories', categoryList);
   return (
     <>
       {isMoveMode && (
-        <MoveList
-          categories={categoryList || []}
-          onMove={handleMove}
-          onCancel={() => setIsMoveMode(false)}
-          // isMoveMode={isMoveMode}
-        />
+        <MoveList categories={categoryList || []} onMove={handleMove} onCancel={() => setIsMoveMode(false)} />
       )}
       <div className="btn-search">
         <SearchBar

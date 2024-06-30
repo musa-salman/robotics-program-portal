@@ -2,6 +2,7 @@ import { Box, Button, List, ListItemButton, ListItemText, Modal } from '@mui/mat
 import './MoveList.css';
 import { useState } from 'react';
 import { Category } from '../upload-file/Category';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface MoveListProps {
   categories: Category[];
@@ -18,13 +19,9 @@ const MoveList: React.FC<MoveListProps> = ({ categories, onMove, onCancel }) => 
     onMove(category);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   return (
     <>
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={onCancel}>
         <Box className="move-list-container">
           <List className="move-list">
             {categories.map((category, index) => (
@@ -33,27 +30,13 @@ const MoveList: React.FC<MoveListProps> = ({ categories, onMove, onCancel }) => 
               </ListItemButton>
             ))}
           </List>
-          <Button onClick={onCancel}>Cancel</Button>
+          <Button className="clo-btn" onClick={onCancel}>
+            <CloseIcon className="close-icn" />
+          </Button>
         </Box>
       </Modal>
     </>
   );
 };
-
-// return (
-//   <Autocomplete
-//     disablePortal
-//     id="combo-box-demo"
-//     options={categories}
-//     sx={{ width: 300 }}
-//     renderInput={(params) => <TextField {...params} label="choose category" />}
-//     onChange={(event, newValue) => {
-//       if (newValue) {
-//         moveHandler(newValue as string);
-//       }
-//     }}
-//   />
-//   );
-// };
 
 export default MoveList;

@@ -12,10 +12,11 @@
 .Card {
   min-width: 20rem;
   max-width: 20rem;
-  border: 3px solid rgb(252, 251, 252);
-  background-color: #d6ccc2;
+  border: 3px solid #65272a;
+  background-color: #d6d0cc;
   /* rgb(39, 40, 43); */
-  box-shadow: 3px 3px 3px 4px rgba(53, 50, 53, 0.69);
+  /* box-shadow: 3px 3px 3px 4px rgba(53, 50, 53, 0.69); */
+  box-shadow: 0 0 10px 4px rgba(37, 37, 37, 0.3);
   border-radius: 10px;
   margin: 0px;
   padding: 6px;
@@ -62,7 +63,7 @@
   padding: 12px 42px;
   color: #faf6f6;
   background-color: transparent;
-  border: 3px solid rgb(229, 147, 75);
+  border: 3px solid #da8888;
   border-radius: 50px;
   cursor: pointer;
   transform: translateY(-6px);
