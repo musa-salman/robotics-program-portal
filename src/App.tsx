@@ -1,21 +1,28 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.rtl.min.css';
 import { Route, Routes } from 'react-router-dom';
+import { useStudyMaterialRoutes } from './study-material/StudyMaterialRoutes';
 import RoleBasedAccessControl from './authentication/components/RoleBasedAccessControl';
 import EventContainer from './events/EventContainer';
 import Layout from './components/layout/Layout';
+import TestingLayout from './components/layout/TestingLayout';
 import Role from './authentication/components/Roles';
 import Banner from './components/Banner';
 import StudentsManagement from './students-management/StudentsManagement';
 import NotFoundPage from './components/NotFoundPage';
 import RegisterComponent from './register/RegisterComponent';
+import GPTPlayGround from './gpt-service/GPTPlayGround';
 import WaitApprovalPage from './wait-approval-page/WaitingApprovalPage';
 import RegisterManagement from './registers-management/RegistersManagement';
 import StudyMaterialContainer from './study-material/StudyMaterialContainer';
 import UnauthorizedPage from './components/UnauthorizedPage';
+import NoInternet from './components/NoInternet';
 import SplashScreen from './components/SplashScreen';
 
 function App() {
+  const isDev = process.env.NODE_ENV === 'developments';
+  const StudyMaterialRoutes = useStudyMaterialRoutes();
+
   const routeConfigurations = {
     authorizedRoutes: [
       {
@@ -29,14 +36,14 @@ function App() {
         allowedRoles: [Role.Admin, Role.Owner, Role.Student]
       },
       {
-        path: '/students',
+        path: '/students-management',
         element: <StudentsManagement />,
         allowedRoles: [Role.Admin, Role.Owner]
       },
       {
-        path: '/registers',
+        path: '/registers-management',
         element: <RegisterManagement />,
-        allowedRoles: [Role.PreEnrollment]
+        allowedRoles: [Role.Admin, Role.Owner]
       },
       {
         path: '/register',
@@ -53,6 +60,11 @@ function App() {
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />
         }
+      },
+      {
+        path: '/',
+        element: <Banner />,
+        allowedRoles: [Role.Admin, Role.Owner, Role.Student]
       }
     ],
     publicRoutes: [
@@ -67,27 +79,42 @@ function App() {
       {
         path: '*',
         element: <NotFoundPage />
+      },
+      {
+        path: '/unconnected-internet',
+        element: <NoInternet />
+      }
+    ],
+    devRoutes: [
+      {
+        path: '/gpt',
+        element: <GPTPlayGround />
       }
     ]
   };
 
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route path="/" element={<Banner />} />
-        {routeConfigurations.authorizedRoutes.map((route, index) => {
-          return (
-            <RoleBasedAccessControl
-              key={index}
-              allowedRoles={route.allowedRoles}
-              roleToComponentMap={route.roleToComponentMap}>
-              <Route path={route.path} element={route.element} />
-            </RoleBasedAccessControl>
-          );
-        })}
-        {routeConfigurations.publicRoutes.map((route, index) => {
-          return <Route key={index} path={route.path} element={route.element} />;
-        })}
+      <Route path="/" element={isDev ? <TestingLayout /> : <Layout />}>
+        {isDev &&
+          routeConfigurations.devRoutes.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element} />
+          ))}
+        {StudyMaterialRoutes}
+        {routeConfigurations.authorizedRoutes.map((route, index) => (
+          <Route
+            key={index}
+            path={route.path}
+            element={
+              <RoleBasedAccessControl allowedRoles={route.allowedRoles} roleToComponentMap={route.roleToComponentMap}>
+                {route.element}
+              </RoleBasedAccessControl>
+            }
+          />
+        ))}
+        {routeConfigurations.publicRoutes.map((route, index) => (
+          <Route key={index} path={route.path} element={route.element} />
+        ))}
       </Route>
     </Routes>
   );

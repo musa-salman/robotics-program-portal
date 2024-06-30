@@ -17,7 +17,6 @@ import rtlPlugin from 'stylis-plugin-rtl';
 import createTheme from '@mui/material/styles/createTheme';
 import GPTServiceProvider from './gpt-service/GPTContext.tsx';
 import RegisterProvider from './register/service/RegisterContext.tsx';
-import AppDev from './AppDev.tsx';
 
 const cacheRtl = createCache({
   key: 'muirtl',
@@ -50,8 +49,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                         <StorageServiceProvider>
                           <RegisterProvider>
                             <AuthProvider>
-                              {/* <App /> */}
-                              <AppDev />
+                              <App />
                             </AuthProvider>
                           </RegisterProvider>
                         </StorageServiceProvider>

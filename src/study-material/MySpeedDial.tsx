@@ -6,7 +6,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import './MySpeedDial.css';
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler, useState } from 'react';
 
 interface MySpeedDialProps {
   handleEditToggle: MouseEventHandler<HTMLDivElement> | undefined;
@@ -18,6 +18,10 @@ interface MySpeedDialProps {
 }
 
 function MySpeedDial({ handleEditToggle, handleMoveToggle, handleSave, handleDelete, isEditing }: MySpeedDialProps) {
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(!open);
+
   let actions = [];
 
   if (!isEditing) {
@@ -38,14 +42,19 @@ function MySpeedDial({ handleEditToggle, handleMoveToggle, handleSave, handleDel
       ariaLabel="SpeedDial basic example"
       className="speedDial"
       icon={<MoreVertIcon sx={{ color: 'white', fontSize: '2rem' }} />}
-      direction="down">
+      direction="down"
+      open={open}
+      onClick={handleOpen}>
       {actions.map((action) => (
         <SpeedDialAction
           // className="speedDialAction"
           key={action.name}
           icon={action.icon}
           tooltipTitle={action.name}
-          onClick={action.action}
+          onClick={(e) => {
+            action.action!(e);
+            handleOpen();
+          }}
           className={action.className}
         />
       ))}

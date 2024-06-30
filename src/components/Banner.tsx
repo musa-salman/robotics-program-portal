@@ -7,11 +7,14 @@ import PeopleIcon from '@mui/icons-material/People';
 import './Banner.css';
 
 const USER_LINKS = [
-  { icon: <BookIcon />, label: 'חומרי לימוד', path: '/study-material' },
+  { icon: <BookIcon />, label: 'חומרי לימוד', path: '/study-materials' },
   { icon: <EventIcon />, label: 'אירועים', path: '/events' }
 ];
 
-const ADMIN_LINKS = [{ icon: <PeopleIcon />, label: 'ניהול תלמדים', path: '/students' }];
+const ADMIN_LINKS = [
+  { icon: <PeopleIcon />, label: 'ניהול תלמדים', path: '/students-management' },
+  { icon: <PeopleIcon />, label: 'ניהול רישומים', path: '/registers-management' }
+];
 
 const Banner: React.FC = () => {
   return (

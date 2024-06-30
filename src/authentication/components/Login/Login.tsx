@@ -14,7 +14,7 @@ const LoginButton: React.FC = () => {
     authService
       .loginWithGoogle()
       .then(() => {
-        const redirectTo = localStorage.getItem('redirectTo') || '/';
+        const redirectTo = '/';
         window.location.href = redirectTo;
       })
       .catch(() => {

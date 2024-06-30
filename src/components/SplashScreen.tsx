@@ -10,7 +10,6 @@ function SplashScreen() {
         <div className="nav">
           <Toolbar>
             <Button color="inherit">Login</Button>
-            <Button color="inherit">sign in</Button>
           </Toolbar>
         </div>
         <div>
