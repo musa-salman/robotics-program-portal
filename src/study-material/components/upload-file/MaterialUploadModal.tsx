@@ -3,22 +3,22 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { useContext, useEffect, useState } from 'react';
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
-import './UploadFile.css';
-import { Category } from './Category';
-import { MaterialContext } from '../study-material/repository/StudyMaterialContext';
-import { StudyMaterial } from '../study-material/StudyMaterial';
+import './MaterialUploadModal.css';
+import { Category } from '../../repository/Category';
+import { MaterialContext } from '../../repository/StudyMaterialContext';
+import { StudyMaterial } from '../../repository/StudyMaterial';
 import { CategoryManagement } from './CategoryManagement';
-import { StorageServiceContext } from '../storage-service/StorageContext';
-import GPT from '../gpt-service/GPTComponent';
+import { StorageServiceContext } from '../../../storage-service/StorageContext';
+import GPT from '../../../gpt-service/GPTComponent';
 import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
 
 type SelectedItem = string;
-interface UploadFileComponentProps {
+interface MaterialUploadModalProps {
   handleClose: () => void;
   handleAdd: (studyMaterial: StudyMaterial) => void;
 }
 
-const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, handleAdd }) => {
+const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, handleAdd }) => {
   const [file, setFile] = useState<File | null>(null);
   const [, setUploadProgress] = useState(0);
   const [selectedItem, setSelectedItems] = useState<SelectedItem>('הכל');
@@ -114,6 +114,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
       handleDate();
     }
   };
+  console.log('studyMaterial', studyMaterial);
 
   return (
     <>
@@ -214,4 +215,4 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ handleClose, 
   );
 };
 
-export default UploadFileComponent;
+export default MaterialUploadModal;

@@ -105,6 +105,8 @@ const GPT: React.FC<GPTProps> = ({
 
   const handleSaveChanges = () => {
     setTextValue(suggestedValue);
+    const name = (children! as any).props.name;
+    (children! as any).props.onChange({ target: { value: suggestedValue, name } });
     setSuggestedValue('');
     handleMenuClose();
   };
@@ -184,9 +186,6 @@ const GPT: React.FC<GPTProps> = ({
       {React.cloneElement(children as React.ReactElement<any>, {
         value: textValue,
         onChange: handleTextChange,
-        fullWidth: true,
-        multiline: true,
-        rows: 5,
         variant: 'outlined',
         autoFocus: true,
         margin: 'normal'

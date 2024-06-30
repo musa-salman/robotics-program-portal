@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import './SearchBar.css';
-import { StudyMaterial } from './StudyMaterial';
+import { StudyMaterial } from '../repository/StudyMaterial';
 
 interface SearchBarProps {
   studyMaterials: StudyMaterial[];

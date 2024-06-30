@@ -7,8 +7,6 @@
 
 .speedDial .MuiSpeedDial-fab {
   background-color: transparent;
-  width: fit-content;
-  height: fit-content;
   box-shadow: none;
 }
 

@@ -1,4 +1,4 @@
-import { StudyMaterial } from '../study-material/StudyMaterial';
+import { StudyMaterial } from '../../repository/StudyMaterial';
 
 const generateMaterialDescription = (studyMaterial: StudyMaterial): string => {
   let text: string = '';

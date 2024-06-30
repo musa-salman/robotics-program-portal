@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { Button, Col, FloatingLabel, Form, Modal, Row } from 'react-bootstrap';
-import { Category } from './Category';
-import { MaterialContext } from '../study-material/repository/StudyMaterialContext';
+import { Category } from '../../repository/Category';
+import { MaterialContext } from '../../repository/StudyMaterialContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import './CategoryManagement.css';

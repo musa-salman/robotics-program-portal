@@ -1,16 +1,16 @@
 import { Box, Button, List, ListItemButton, ListItemText, Modal } from '@mui/material';
-import './MoveList.css';
+import './CategorySelector.css';
 import { useState } from 'react';
-import { Category } from '../upload-file/Category';
 import CloseIcon from '@mui/icons-material/Close';
+import { Category } from '../repository/Category';
 
-interface MoveListProps {
+interface CategorySelectorProps {
   categories: Category[];
   onMove: (categorySelected: Category) => void;
   onCancel: () => void;
 }
 
-const MoveList: React.FC<MoveListProps> = ({ categories, onMove, onCancel }) => {
+const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, onMove, onCancel }) => {
   // const [selectedCategory, setSelectedCategory] = useState<Category[] | null>(null);
   const [open, setOpen] = useState(true);
 
@@ -39,4 +39,4 @@ const MoveList: React.FC<MoveListProps> = ({ categories, onMove, onCancel }) => 
   );
 };
 
-export default MoveList;
+export default CategorySelector;

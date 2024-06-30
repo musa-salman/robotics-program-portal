@@ -3,9 +3,9 @@ import { StudyMaterialRepository } from './StudyMaterialRepository';
 import { CachingRepository } from '../../repositories/caching/CachingRepository';
 import { WriteBatch, doc, writeBatch } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { StudyMaterial } from '../StudyMaterial';
+import { StudyMaterial } from './StudyMaterial';
 
-export interface IMaterialManager {
+export interface IMaterialService {
   /**
    * Deletes a category.
    * @param categoryId - The ID of the category to delete.
@@ -33,7 +33,7 @@ export interface IMaterialManager {
 /**
  * Represents a study material management service.
  */
-export class MaterialManager implements IMaterialManager {
+export class MaterialService implements IMaterialService {
   readonly categoryRepository: CategoryRepository;
   readonly studyMaterialRepository: StudyMaterialRepository;
 

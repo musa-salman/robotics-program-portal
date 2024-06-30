@@ -1,6 +1,7 @@
 // import Header from './Header';
 import Footer from './Footer';
 import { Outlet } from 'react-router-dom';
+import Header from './Header';
 
 const Layout = () => {
   const headerLinks = [{ name: 'בית', path: '/' }];
@@ -19,7 +20,7 @@ const Layout = () => {
 
   return (
     <div className="d-flex flex-column min-vh-100 w-100">
-      {/* <Header logo="/pico_logo.png" links={headerLinks} /> */}
+      <Header logo="/pico_logo.png" links={headerLinks} />
       <main className="flex-grow-1 w-100">
         <Outlet />
       </main>

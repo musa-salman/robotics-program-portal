@@ -5,7 +5,6 @@ import './index.css';
 import ThemeProvider from 'react-bootstrap/esm/ThemeProvider';
 import { BrowserRouter } from 'react-router-dom';
 import UserProvider from './users/UserContext.tsx';
-import CategoryProvider from './upload-file/CategoryContext.tsx';
 import MaterialProvider from './study-material/repository/StudyMaterialContext.tsx';
 import StorageServiceProvider from './storage-service/StorageContext.tsx';
 import EventProvider from './events/repository/EventContext.tsx';
@@ -17,6 +16,7 @@ import rtlPlugin from 'stylis-plugin-rtl';
 import createTheme from '@mui/material/styles/createTheme';
 import GPTServiceProvider from './gpt-service/GPTContext.tsx';
 import RegisterProvider from './register/service/RegisterContext.tsx';
+import CategoryProvider from './study-material/repository/CategoryContext.tsx';
 
 const cacheRtl = createCache({
   key: 'muirtl',
