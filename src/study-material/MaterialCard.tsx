@@ -11,6 +11,7 @@ import MySpeedDial from './MySpeedDial';
 import { TextField } from '@mui/material';
 import GPT from '../gpt-service/GPTComponent';
 import { suggestMaterialTitles } from '../upload-file/StudyMaterialPrompts';
+import SimpleSnackbar from '../components/snackbar/SnackBar';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -39,6 +40,7 @@ function MaterialCard({
       '/study-material/' + studyMaterial.id + '-' + studyMaterial.filename,
       studyMaterial.filename
     );
+    <SimpleSnackbar message="DOWNLOAD success" />;
   };
 
   const handleDelete = async () => {
