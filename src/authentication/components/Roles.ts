@@ -2,13 +2,32 @@
  * Represents the different roles available for access control.
  */
 enum Role {
-  Owner = 'owner',
-  Admin = 'admin',
-  Student = 'student',
-  Pending = 'pending',
-  PreEnrollment = 'pre-enrollment',
-  Rejected = 'rejected',
-  Unauthenticated = 'unauthenticated'
+  Owner = 1,
+  Admin,
+  Student,
+  Pending,
+  PreEnrollment,
+  Rejected,
+  Unauthenticated
+}
+
+const RoleNames = {
+  [Role.Owner]: 'בעלים',
+  [Role.Admin]: 'מנהל',
+  [Role.Student]: 'תלמיד',
+  [Role.Pending]: 'ממתין לאישור',
+  [Role.PreEnrollment]: 'מועמד',
+  [Role.Rejected]: 'נדחה',
+  [Role.Unauthenticated]: 'לא מאומת'
+};
+
+/**
+ * Represents the authorization status for a user.
+ */
+enum AuthorizationStatus {
+  UnauthorizedAuthenticatedUser = 1,
+  UnauthorizeUnauthenticatedUser,
+  AuthorizedUser
 }
 
 /**
@@ -17,4 +36,4 @@ enum Role {
 const ALLOW_AUTHED_ROLES = [Role.Owner, Role.Admin, Role.Student];
 
 export default Role;
-export { ALLOW_AUTHED_ROLES };
+export { ALLOW_AUTHED_ROLES, RoleNames, AuthorizationStatus };
