@@ -1,10 +1,11 @@
 import { doc, writeBatch } from 'firebase/firestore';
-import { CachingRepository } from '../../repositories/caching/CachingRepository';
 import { BriefEvent } from './BriefEvent';
 import { EventRegistrationRepository } from './EventRegistrationRepository';
 import { EventRepository } from './EventRepository';
 import { db } from '../../firebase';
 import { StudentEventRepository } from './StudentEventRepository';
+import { EventRegistrationRepositories } from './EventRegistrationRepositories';
+import { StudentEventRepositories } from './StudentEventRepositories';
 
 /**
  * Represents the interface for managing events.
@@ -71,31 +72,27 @@ export class EventService implements IEventService {
   readonly eventRepository: EventRepository;
 
   // Map of event registration repositories, keyed by event ID.
-  readonly eventRegistrationRepositories: Map<string, EventRegistrationRepository>;
+  readonly eventRegistrationRepositories: EventRegistrationRepositories;
 
   // Map of student event repositories, keyed by student ID.
-  readonly studentEventRepositories: Map<string, StudentEventRepository>;
+  readonly studentEventRepositories: StudentEventRepositories;
 
-  constructor() {
-    this.eventRepository = new CachingRepository(new EventRepository());
-    this.eventRegistrationRepositories = new Map<string, EventRegistrationRepository>();
-    this.studentEventRepositories = new Map<string, StudentEventRepository>();
+  constructor(
+    eventRepository: EventRepository,
+    eventRegistrationRepositories: EventRegistrationRepositories,
+    studentEventRepositories: StudentEventRepositories
+  ) {
+    this.eventRepository = eventRepository;
+    this.eventRegistrationRepositories = eventRegistrationRepositories;
+    this.studentEventRepositories = studentEventRepositories;
   }
 
   getStudentEventRepository(studentId: string): StudentEventRepository {
-    if (!this.studentEventRepositories.has(studentId)) {
-      this.studentEventRepositories.set(studentId, new CachingRepository(new StudentEventRepository(studentId)));
-    }
-
-    return this.studentEventRepositories.get(studentId)!;
+    return this.studentEventRepositories.getStudentEventRepository(studentId);
   }
 
   getEventRegistrationRepository(eventId: string): EventRegistrationRepository {
-    if (!this.eventRegistrationRepositories.has(eventId)) {
-      this.eventRegistrationRepositories.set(eventId, new CachingRepository(new EventRegistrationRepository(eventId)));
-    }
-
-    return this.eventRegistrationRepositories.get(eventId)!;
+    return this.eventRegistrationRepositories.getEventRegistrationRepository(eventId);
   }
 
   async registerStudentForEvent(student: BriefStudent, eventId: string): Promise<void> {
@@ -150,6 +147,7 @@ export class EventService implements IEventService {
     const batch = writeBatch(db);
 
     batch.delete(eventRef);
+    batch.delete(doc(this.eventRegistrationRepositories.getEventRegistrationRepository(eventId)._collection));
     registeredStudents.forEach((student) => {
       batch.delete(doc(this.getStudentEventRepository(student.id)._collection, eventId));
     });
