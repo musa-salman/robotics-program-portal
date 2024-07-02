@@ -1,6 +1,5 @@
 import { CategoryRepository } from './CategoryRepository';
 import { StudyMaterialRepository } from './StudyMaterialRepository';
-import { CachingRepository } from '../../repositories/caching/CachingRepository';
 import { WriteBatch, doc, writeBatch } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { StudyMaterial } from './StudyMaterial';
@@ -37,9 +36,9 @@ export class MaterialService implements IMaterialService {
   readonly categoryRepository: CategoryRepository;
   readonly studyMaterialRepository: StudyMaterialRepository;
 
-  constructor() {
-    this.categoryRepository = new CachingRepository(new CategoryRepository());
-    this.studyMaterialRepository = new CachingRepository(new StudyMaterialRepository());
+  constructor(categoryRepository: CategoryRepository, studyMaterialRepository: StudyMaterialRepository) {
+    this.categoryRepository = categoryRepository;
+    this.studyMaterialRepository = studyMaterialRepository;
   }
 
   _moveStudyMaterials(oldCategory: string, newCategory: string, batch: WriteBatch): void {

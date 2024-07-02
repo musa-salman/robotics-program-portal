@@ -140,7 +140,7 @@ const RegisterManagement = () => {
   return (
     <>
       <CollectionTable<Register>
-        title="ניהול רישומים"
+        title="ניהול נרשמים"
         generateColumns={generateColumns}
         repository={registerService.registerRepository}
         FormComponent={StudentForm}

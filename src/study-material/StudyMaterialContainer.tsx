@@ -110,8 +110,6 @@ function StudyMaterialContainer() {
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
-  console.log(categories);
-  console.log('categories', categoryList);
   return (
     <>
       {isMoveMode && (
