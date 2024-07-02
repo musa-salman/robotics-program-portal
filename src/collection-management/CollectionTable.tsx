@@ -38,9 +38,10 @@ interface CollectionTableProps<T> {
     setInitialItem: React.Dispatch<React.SetStateAction<T | null>>,
     setMessage: React.Dispatch<React.SetStateAction<string | null>>
   ) => GridColDef[];
-  repository: BaseRepository<T>;
+  repository?: BaseRepository<T>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  FormComponent: React.FC<any>;
+  FormComponent?: React.FC<any>;
+  getItems?: () => Promise<T[]>;
   messageFormat: MessageFormat<T>;
 }
 
@@ -49,6 +50,7 @@ const CollectionTable = <T extends { id: string }>({
   generateColumns,
   repository,
   FormComponent,
+  getItems,
   messageFormat
 }: CollectionTableProps<T>) => {
   const [rows, setRows] = useState<(T & { isNew: boolean })[] | null>(null);
@@ -59,7 +61,9 @@ const CollectionTable = <T extends { id: string }>({
 
   useEffect(() => {
     function fetchItems() {
-      repository.find().then((items) => setRows(items.map((item: T) => ({ ...item, isNew: false }))));
+      (getItems !== undefined ? getItems() : repository!.find()).then((items) =>
+        setRows(items.map((item: T) => ({ ...item, isNew: false })))
+      );
     }
 
     if (!rows) fetchItems();
@@ -67,7 +71,7 @@ const CollectionTable = <T extends { id: string }>({
 
   const updateItem = (updatedItem: T) => {
     const id = updatedItem.id;
-    repository
+    repository!
       .update(updatedItem.id, updatedItem)
       .then(() => {
         const extendedItem = { ...updatedItem, id: id, isNew: false };
@@ -89,7 +93,7 @@ const CollectionTable = <T extends { id: string }>({
   const processRowUpdate = (newRow: GridRowModel): GridValidRowModel => {
     const { _, ...updatedRow } = newRow as any;
 
-    repository
+    repository!
       .update(updatedRow.id, updatedRow as T)
       .then(() => {
         setMessage(messageFormat.updateSuccess(updatedRow));
@@ -116,7 +120,7 @@ const CollectionTable = <T extends { id: string }>({
         maxWidth="sm"
         className="dialog-container">
         <DialogTitle>עריכת פריט</DialogTitle>
-        <FormComponent saveItem={updateItem} initialItem={initialItem} />
+        {FormComponent && initialItem && <FormComponent saveItem={updateItem} initialItem={initialItem} />}
         <DialogActions>
           <Button onClick={() => setShowItemForm(false)} color="secondary">
             בטל
