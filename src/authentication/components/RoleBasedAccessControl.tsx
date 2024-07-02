@@ -2,15 +2,7 @@ import { Navigate } from 'react-router-dom';
 import { ReactNode, useEffect, useState } from 'react';
 import { useAuth } from '../services/useAuth';
 import Role, { ALLOW_AUTHED_ROLES } from './Roles';
-
-/**
- * Represents the authorization status for a user.
- */
-enum AuthorizationStatus {
-  UnauthorizedAuthenticatedUser = 1,
-  UnauthorizeUnauthenticatedUser,
-  AuthorizedUser
-}
+import { AuthorizationStatus } from './Roles';
 
 /**
  * Props for the RoleBasedAccessControl component.
@@ -72,7 +64,7 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
           setAuthorization(AuthorizationStatus.AuthorizedUser);
           return;
         }
-        if (allowedRoles.includes((user?.role as Role) || Role.Unauthenticated)) {
+        if (allowedRoles.some((role) => user.roles.includes(role))) {
           setAuthorization(AuthorizationStatus.AuthorizedUser);
         } else {
           setAuthorization(AuthorizationStatus.UnauthorizedAuthenticatedUser);
@@ -97,8 +89,8 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
   } else if (authorization === AuthorizationStatus.UnauthorizeUnauthenticatedUser) {
     return unauthorizedUnauthenticatedComponent ? unauthorizedUnauthenticatedComponent : <Navigate to="/401" />;
   } else if (authorization === AuthorizationStatus.UnauthorizedAuthenticatedUser) {
-    if (roleToComponentMap && user?.role && roleToComponentMap[user.role]) {
-      return roleToComponentMap[user.role];
+    if (roleToComponentMap && user?.roles && roleToComponentMap[user.roles[0]]) {
+      return roleToComponentMap[user.roles[0]];
     }
 
     return unauthorizedAuthenticatedComponent ? unauthorizedAuthenticatedComponent : <Navigate to="/401" />;

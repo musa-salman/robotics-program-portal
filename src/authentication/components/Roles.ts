@@ -8,8 +8,12 @@ enum Role {
   Pending,
   PreEnrollment,
   Rejected,
-  Unauthenticated
+  deleted,
+  Unauthenticated,
+  default = Unauthenticated
 }
+
+const selectableRoles = [Role.Owner, Role.Admin];
 
 const roleNames = {
   [Role.Owner]: 'בעלים',
@@ -18,6 +22,7 @@ const roleNames = {
   [Role.Pending]: 'ממתין לאישור',
   [Role.PreEnrollment]: 'מועמד',
   [Role.Rejected]: 'נדחה',
+  [Role.deleted]: 'נמחק',
   [Role.Unauthenticated]: 'לא מאומת'
 };
 
@@ -46,6 +51,10 @@ const roleColors = {
     main: '#D32F2F', // Red
     contrastText: '#FFFFFF' // White
   },
+  [Role.deleted]: {
+    main: '#616161', // Gray
+    contrastText: '#FFFFFF' // White
+  },
   [Role.Unauthenticated]: {
     main: '#9E9E9E', // Gray
     contrastText: '#000000' // Black
@@ -67,4 +76,4 @@ enum AuthorizationStatus {
 const ALLOW_AUTHED_ROLES = [Role.Owner, Role.Admin, Role.Student];
 
 export default Role;
-export { ALLOW_AUTHED_ROLES, roleNames as RoleNames, roleColors as RoleColors, AuthorizationStatus };
+export { ALLOW_AUTHED_ROLES, roleNames, roleColors, selectableRoles, AuthorizationStatus };
