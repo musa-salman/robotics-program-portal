@@ -1,11 +1,10 @@
 import { doc, writeBatch } from 'firebase/firestore';
 import { StudentRepository } from '../../students-management/StudentRepository';
 import { UserRepository } from '../../users/UserRepository';
-import { RegisterRepository } from '../RegisterRepository';
 import { Register } from '../Register';
 import { db } from '../../firebase';
 import Role from '../../authentication/components/Roles';
-import { write } from 'fs';
+import { RegisterRepository } from './RegisterRepository';
 
 /**
  * Represents a service for registering students.
@@ -44,10 +43,14 @@ export class RegisterService implements IRegisterService {
   private readonly studentRepository: StudentRepository;
   private readonly userRepository: UserRepository;
 
-  constructor() {
-    this.registerRepository = new RegisterRepository();
-    this.studentRepository = new StudentRepository();
-    this.userRepository = new UserRepository();
+  constructor(
+    registerRepository: RegisterRepository,
+    studentRepository: StudentRepository,
+    userRepository: UserRepository
+  ) {
+    this.registerRepository = registerRepository;
+    this.studentRepository = studentRepository;
+    this.userRepository = userRepository;
   }
 
   registerStudent(register: Register): Promise<void> {
@@ -55,18 +58,17 @@ export class RegisterService implements IRegisterService {
       .set(doc(this.registerRepository._collection, register.id), register)
       .update(doc(this.userRepository._collection, register.id), {
         id: register.id,
-        role: Role.Pending
+        roles: [Role.Pending]
       })
       .commit();
   }
 
   rejectRegister(registerId: string): Promise<void> {
     return writeBatch(db)
-      .delete(doc(this.registerRepository._collection, registerId))
-      .set(doc(this.userRepository._collection, registerId), {
-        id: registerId,
-        role: Role.Rejected
+      .update(doc(this.userRepository._collection, registerId), {
+        roles: [Role.Rejected]
       })
+      .delete(doc(this.registerRepository._collection, registerId))
       .commit();
   }
 
@@ -85,7 +87,7 @@ export class RegisterService implements IRegisterService {
         studentAddress: register.studentAddress
       })
       .update(doc(this.userRepository._collection, register.id), {
-        role: Role.Student
+        roles: [Role.Student]
       })
       .commit();
   }
