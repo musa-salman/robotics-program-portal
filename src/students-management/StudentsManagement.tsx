@@ -3,14 +3,13 @@ import CollectionTable, { MessageFormat } from '../collection-management/Collect
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Student } from './Student';
-import { StudentContext } from './StudentContext';
-import { useContext } from 'react';
 import StudentForm from './StudentForm';
 import './StudentsManagement.css';
 import { Typography } from '@mui/material';
+import { useUserService } from '../users/UserContext';
 
 const StudentsManagement = () => {
-  const studentRepository = useContext(StudentContext);
+  const userService = useUserService();
 
   const generateColumns = (
     /// show form, set initial values, save item
@@ -80,8 +79,8 @@ const StudentsManagement = () => {
               icon={<DeleteIcon color="action" />}
               label="מחק"
               onClick={(_) => {
-                studentRepository
-                  .delete(id.toString())
+                userService
+                  .deleteUser(id.toString())
                   .then(() => setRows(rows!.filter((student) => student.id !== id)))
                   .catch((_) => {
                     setMessage('התרחשה שגיאה במחיקת התלמיד');
@@ -106,7 +105,7 @@ const StudentsManagement = () => {
       <CollectionTable<Student>
         title="ניהול תלמידים"
         generateColumns={generateColumns}
-        repository={studentRepository}
+        repository={userService.getStudentRepository()}
         FormComponent={StudentForm}
         messageFormat={messageFormat}
       />
