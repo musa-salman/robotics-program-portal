@@ -7,7 +7,6 @@ import { User } from '../users/User';
 import Role, { roleColors, roleNames } from '../authentication/components/Roles';
 import { useState } from 'react';
 import RoleSelector from './RoleSelector';
-import { set } from 'firebase/database';
 
 const UsersManagement = () => {
   const [showAddRoleDialog, setShowAddRoleDialog] = useState(false);

@@ -1,11 +1,14 @@
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 import { RegisterService } from './RegisterService';
 
-export const RegisterContext = createContext<RegisterService>(new RegisterService());
+export const RegisterContext = createContext<RegisterService>(undefined as unknown as RegisterService);
 
-function RegisterProvider({ children }: { children: React.ReactNode }) {
-  const registerService = useContext(RegisterContext);
+interface RegisterProviderProps {
+  children: React.ReactNode;
+  registerService: RegisterService;
+}
 
+function RegisterProvider({ children, registerService }: RegisterProviderProps): JSX.Element {
   return <RegisterContext.Provider value={registerService}>{children}</RegisterContext.Provider>;
 }
 
