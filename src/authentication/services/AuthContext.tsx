@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { IAuthService } from './services/IAuthService';
+import { IAuthService } from './IAuthService';
 import { browserLocalPersistence, onAuthStateChanged, setPersistence } from 'firebase/auth';
-import { auth } from '../firebase';
-import { AuthService } from './services/AuthService';
-import { User } from '../users/User';
-import { UserContext } from '../users/UserContext';
-import Role from './components/Roles';
+import { auth } from '../../firebase';
+import { AuthService } from './AuthService';
+import { User } from '../../users/User';
+import { useUserService } from '../../users/UserContext';
+import Role from '../components/Roles';
 
 setPersistence(auth, browserLocalPersistence);
 
@@ -35,7 +35,7 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
   const [user, setUser] = useState<User | null>(null);
 
   const authService = useContext(AuthContext);
-  const userRepository = useContext(UserContext);
+  const userRepository = useUserService().getUserRepository();
 
   const authContextValue: AuthContextType = useMemo(
     () => ({
@@ -58,7 +58,8 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
         if (!user) {
           user = {
             id: auth.currentUser!.uid,
-            role: Role.PreEnrollment
+            roles: [Role.PreEnrollment],
+            email: auth.currentUser!.email!
           };
 
           userRepository.createWithId(user.id, user).then(() => {
@@ -66,6 +67,7 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
             setLoading(false);
           });
         } else {
+          user.roles = user.roles.sort((a, b) => a - b);
           setUser(user);
           setLoading(false);
         }
