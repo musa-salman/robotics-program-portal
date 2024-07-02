@@ -13,7 +13,8 @@ const USER_LINKS = [
 
 const ADMIN_LINKS = [
   { icon: <PeopleIcon />, label: 'ניהול תלמדים', path: '/students-management' },
-  { icon: <PeopleIcon />, label: 'ניהול רישומים', path: '/registers-management' }
+  { icon: <PeopleIcon />, label: 'ניהול נרשמים', path: '/registers-management' },
+  { icon: <PeopleIcon />, label: 'ניהול משתמשים', path: '/users-management' }
 ];
 
 const Banner: React.FC = () => {

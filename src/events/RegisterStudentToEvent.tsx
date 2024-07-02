@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { eventServiceContext } from './repository/EventContext';
-import { AuthContext } from '../authentication/AuthContext';
+import { useEventService } from './repository/EventContext';
+import { AuthContext } from '../authentication/services/AuthContext';
 import { StudentContext } from '../students-management/StudentContext';
 import { Student } from '../students-management/Student';
 
@@ -16,13 +16,13 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
   const handleCloseRegister = () => setShowModalRegister(false);
   const handleShowRegister = () => setShowModalRegister(true);
 
-  const eventManager = useContext(eventServiceContext);
+  const eventService = useEventService();
   const studentRepository = useContext(StudentContext);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const checkIfRegistered = () => {
-      eventManager.isStudentRegistered(user?.id, eventId).then((isRegistered) => {
+      eventService.isStudentRegistered(user?.id, eventId).then((isRegistered) => {
         setRegister(isRegistered);
       });
     };
@@ -45,7 +45,7 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
   const handleSaveRegister = () => {
     setShowModalRegister(false);
     if (!student) return;
-    eventManager
+    eventService
       .registerStudentForEvent(
         {
           id: student.id,

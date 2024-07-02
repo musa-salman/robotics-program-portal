@@ -16,15 +16,13 @@ import IntroComponent from './IntroComponent';
 import { isIdentityCard, isMobilePhone } from 'validator';
 import isEmail from 'validator/lib/isEmail';
 import { RegisterContext } from './service/RegisterContext';
-import { AuthContext } from '../authentication/AuthContext';
-import { Navigate } from 'react-router-dom';
+import { AuthContext } from '../authentication/services/AuthContext';
 
 const steps = ['על המתחם החדש', 'פרטים אישיים', 'פרטים בית הספר', 'שאלות אחרונות'];
 
 const RegisterComponent = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
-  const registerService = useContext(RegisterContext);
   const { user } = useContext(AuthContext);
   const [isForward, setIsForward] = useState(false);
   const [register, setRegister] = useState<Register>({
@@ -43,6 +41,8 @@ const RegisterComponent = () => {
     hearAboutUs: '',
     otherQuestions: ''
   });
+
+  const registerService = useContext(RegisterContext);
 
   const handleNext = (event: any) => {
     let newSkipped = skipped;

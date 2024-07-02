@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-import { eventServiceContext } from './repository/EventContext';
+import { useEffect, useState } from 'react';
+import { useEventService } from './repository/EventContext';
 import GroupsIcon from '@mui/icons-material/Groups';
 import './ShowRegisteredStudents.css';
 import {
@@ -24,11 +24,13 @@ const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId
   const [registeredStudents, setRegisteredStudents] = useState<BriefStudent[] | null>(null);
   const [showDetails, setShowDetails] = useState(false);
 
-  const eventManager = useContext(eventServiceContext);
+  const eventService = useEventService();
 
   useEffect(() => {
-    const getRegisteredStudents = async () => {
-      setRegisteredStudents(await eventManager.getRegisteredStudents(eventId));
+    const getRegisteredStudents = () => {
+      eventService.getRegisteredStudents(eventId).then((students) => {
+        setRegisteredStudents(students);
+      });
     };
 
     if (registeredStudents === null) getRegisteredStudents();
@@ -40,7 +42,7 @@ const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId
 
   const handleRemoveRegistration = (studentId: string) => {
     // Add your code to remove the student registration here
-    eventManager.cancelRegistration(studentId, eventId);
+    eventService.cancelRegistration(studentId, eventId);
     setRegisteredStudents((registeredStudents || []).filter((student) => student.id !== studentId));
   };
 

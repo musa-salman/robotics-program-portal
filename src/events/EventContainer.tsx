@@ -1,7 +1,7 @@
 import EventCard, { EventProps } from './EventCard';
 import { Button } from 'react-bootstrap';
-import { useState, useEffect, useContext } from 'react';
-import { eventServiceContext } from './repository/EventContext';
+import { useState, useEffect } from 'react';
+import { useEventService } from './repository/EventContext';
 import { IEvent } from './repository/Event';
 import { CircularProgress, Box } from '@mui/material';
 import './EventContainer.css';
@@ -19,8 +19,7 @@ const EventContainer = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showModalAllEvents, setShowModalAllEvents] = useState(true);
 
-  const eventManager = useContext(eventServiceContext);
-  const eventRepository = eventManager.eventRepository;
+  const eventRepository = useEventService().eventRepository;
 
   const handleAllEvents = () => {
     setShowModalAllEvents(!showModalAllEvents);

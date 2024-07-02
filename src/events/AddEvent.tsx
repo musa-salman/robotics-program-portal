@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { EventProps } from './EventCard';
 import { IEvent } from './repository/Event';
-import { eventServiceContext } from './repository/EventContext';
+import { useEventService } from './repository/EventContext';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import AddIcon from '@mui/icons-material/Add';
@@ -20,8 +20,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
   const handleCloseAddEvent = () => setShowModalAddEvent(false);
   const handleShowAddEvent = () => setShowModalAddEvent(true);
 
-  const eventManager = useContext(eventServiceContext);
-  const eventRepository = eventManager.eventRepository;
+  const eventRepository = useEventService().eventRepository;
   const storageService = useContext(StorageServiceContext);
 
   const [formData, setFormData] = useState<EventProps>({

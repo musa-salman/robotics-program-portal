@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@mui/material';
 import './BannerButton.css';
-import { Navigate } from 'react-router-dom';
 
 interface ButtonIconProps {
   icon: React.ReactElement;
@@ -10,20 +9,13 @@ interface ButtonIconProps {
 }
 
 const ButtonIcon: React.FC<ButtonIconProps> = ({ icon, label, path }) => {
-  // TODO: Implement navigation
-  const [nav, setNav] = useState(false);
+  const goToPath = () => {
+    window.location.href = path;
+  };
 
   return (
     <>
-      {nav && <Navigate to={path} />}
-      <Button
-        className="button-icon"
-        startIcon={icon}
-        variant="contained"
-        color="inherit"
-        onClick={() => {
-          setNav(true);
-        }}>
+      <Button className="button-icon" startIcon={icon} variant="contained" color="inherit" onClick={goToPath}>
         {label}
       </Button>
     </>
