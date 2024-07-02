@@ -12,13 +12,14 @@ import StudentsManagement from './students-management/StudentsManagement';
 import NotFoundPage from './components/NotFoundPage';
 import RegisterComponent from './register/RegisterComponent';
 import GPTPlayGround from './gpt-service/GPTPlayGround';
-import WaitApprovalPage from './wait-approval-page/WaitingApprovalPage';
+import WaitApprovalPage from './authentication/components/wait-approval-page/WaitingApprovalPage';
 import RegisterManagement from './registers-management/RegistersManagement';
 import StudyMaterialContainer from './study-material/StudyMaterialContainer';
 import UnauthorizedPage from './components/UnauthorizedPage';
 import NoInternet from './components/NoInternet';
 import SplashScreen from './components/SplashScreen';
-import RejectionPage from './rejection-page/RejectionPage';
+import RejectionPage from './authentication/components/rejection-page/RejectionPage';
+import UsersManagement from './users-management/UsersManagement';
 
 function App() {
   const isDev = process.env.NODE_ENV === 'developments';
@@ -61,6 +62,11 @@ function App() {
           [Role.PreEnrollment]: <RegisterComponent />,
           [Role.Pending]: <WaitApprovalPage />
         }
+      },
+      {
+        path: '/users-management',
+        element: <UsersManagement />,
+        allowedRoles: [Role.Owner]
       },
       {
         path: '/register',
