@@ -18,7 +18,10 @@ const TestingLayout: React.FC = () => {
     { name: 'No Internet', path: '/unconnected-internet' },
     { name: 'Unauthorized', path: '/401' },
     { name: 'Not Found', path: '*' },
-    { name: 'Splash', path: '/splash' }
+    { name: 'Splash', path: '/splash' },
+    { name: 'Rejection', path: '/rejection' },
+    { name: 'Users Management', path: '/users' },
+    { name: 'Documents', path: '/documents' }
   ].sort((a, b) => a.name.localeCompare(b.name));
 
   return (

@@ -20,9 +20,10 @@ import NoInternet from './components/NoInternet';
 import SplashScreen from './components/SplashScreen';
 import RejectionPage from './authentication/components/rejection-page/RejectionPage';
 import UsersManagement from './users-management/UsersManagement';
+import DocumentPage from './docs-handling/DocumentPage';
 
 function App() {
-  const isDev = process.env.NODE_ENV === 'developments';
+  const isDev = process.env.NODE_ENV === 'development';
   const StudyMaterialRoutes = useStudyMaterialRoutes();
 
   const routeConfigurations = {
@@ -64,7 +65,7 @@ function App() {
         }
       },
       {
-        path: '/users-management',
+        path: '/users',
         element: <UsersManagement />,
         allowedRoles: [Role.Owner]
       },
@@ -94,6 +95,25 @@ function App() {
           [Role.PreEnrollment]: <RegisterComponent />,
           [Role.Pending]: <WaitApprovalPage />,
           [Role.Rejected]: <RejectionPage />
+        }
+      },
+      {
+        path: '/documents',
+        element: <DocumentPage />,
+        allowedRoles: [Role.Admin, Role.Owner, Role.Student],
+        roleToComponentMap: {
+          [Role.PreEnrollment]: <RegisterComponent />,
+          [Role.Pending]: <WaitApprovalPage />,
+          [Role.Rejected]: <RejectionPage />
+        }
+      },
+      {
+        path: '/rejection',
+        element: <RejectionPage />,
+        allowedRoles: [Role.Rejected],
+        roleToComponentMap: {
+          [Role.PreEnrollment]: <RegisterComponent />,
+          [Role.Pending]: <WaitApprovalPage />
         }
       }
     ],
