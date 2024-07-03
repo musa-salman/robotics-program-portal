@@ -5,12 +5,12 @@ import { useContext, useEffect, useState } from 'react';
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import './MaterialUploadModal.css';
 import { Category } from '../../repository/Category';
-import { MaterialContext } from '../../repository/StudyMaterialContext';
 import { StudyMaterial } from '../../repository/StudyMaterial';
 import { CategoryManagement } from './CategoryManagement';
 import { StorageServiceContext } from '../../../storage-service/StorageContext';
 import GPT from '../../../gpt-service/GPTComponent';
 import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
+import { useMaterialService } from '../../repository/StudyMaterialContext';
 
 type SelectedItem = string;
 interface MaterialUploadModalProps {
@@ -27,7 +27,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
   const [showAddEdit, setShowAddEdit] = useState(false);
   const handleCloseAddEdit = () => setShowAddEdit(false);
   const handleShowAddEdit = () => setShowAddEdit(true);
-  const studyMaterialManagement = useContext(MaterialContext);
+  const studyMaterialManagement = useMaterialService();
   const [validated, setValidated] = useState(false);
 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({

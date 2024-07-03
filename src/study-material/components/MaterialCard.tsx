@@ -7,11 +7,11 @@ import MySpeedDial from './MySpeedDial';
 import { TextField } from '@mui/material';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import { StorageServiceContext } from '../../storage-service/StorageContext';
-import { MaterialContext } from '../repository/StudyMaterialContext';
 import SimpleSnackbar from '../../components/snackbar/SnackBar';
 import GPT from '../../gpt-service/GPTComponent';
 import { suggestMaterialTitles } from './upload-file/StudyMaterialPrompts';
 import formatDate from '../../utils/dateFormatter';
+import { useMaterialService } from '../repository/StudyMaterialContext';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -33,7 +33,7 @@ function MaterialCard({
   const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
 
   const storageService = useContext(StorageServiceContext);
-  const materialService = useContext(MaterialContext);
+  const materialService = useMaterialService();
 
   const handleDownload = async () => {
     storageService.download(

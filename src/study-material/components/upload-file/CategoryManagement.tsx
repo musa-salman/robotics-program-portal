@@ -1,10 +1,10 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Button, Col, FloatingLabel, Form, Modal, Row } from 'react-bootstrap';
 import { Category } from '../../repository/Category';
-import { MaterialContext } from '../../repository/StudyMaterialContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import './CategoryManagement.css';
+import { useMaterialService } from '../../repository/StudyMaterialContext';
 
 interface CategoryManagementProps {
   categories: Category[] | null;
@@ -24,7 +24,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
   const [updatedCategory, setUpdatedCategory] = useState<Category | null>(null);
   const [showFirstButton, setShowFirstButton] = useState(true);
 
-  const studyMaterialManagement = useContext(MaterialContext);
+  const studyMaterialManagement = useMaterialService();
 
   const handleEditItem = (editedCategory: Category) => {
     if (showFirstButton) {

@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import './StudyMaterialContainer.css';
-import { MaterialContext } from './repository/StudyMaterialContext';
+import { useMaterialService } from './repository/StudyMaterialContext';
 import { StudyMaterial } from './repository/StudyMaterial';
 import MaterialUploadModal from './components/upload-file/MaterialUploadModal';
 import { Modal } from 'react-bootstrap';
@@ -17,7 +17,7 @@ import MaterialCard from './components/MaterialCard';
 import CategorySelector from './components/CategorySelector';
 
 function StudyMaterialContainer() {
-  const materialManager = useContext(MaterialContext);
+  const materialService = useMaterialService();
 
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
   const [categoryList, setCategoryList] = useState<Category[] | null>(null);
@@ -37,15 +37,15 @@ function StudyMaterialContainer() {
 
   useEffect(() => {
     const getStudyMaterials = async () => {
-      setStudyMaterials(await materialManager.studyMaterialRepository.find());
+      setStudyMaterials(await materialService.studyMaterialRepository.find());
     };
     const getCategories = async () => {
-      setCategoryList(await materialManager.categoryRepository.find());
+      setCategoryList(await materialService.categoryRepository.find());
     };
 
     if (studyMaterials === null) getStudyMaterials();
     if (categoryList === null) getCategories();
-  }, [materialManager, studyMaterials, categoryList]);
+  }, [materialService, studyMaterials, categoryList]);
 
   function handleUpdate(updatedMaterial: StudyMaterial) {
     // const updatedMaterials = (studyMaterials || []).map((material) =>
@@ -84,7 +84,7 @@ function StudyMaterialContainer() {
   };
 
   const handleMove = (categorySelected: Category) => {
-    materialManager
+    materialService
       .moveStudyMaterial(selectedMaterial!, categorySelected.category)
       .then(() => {
         setIsMoveMode(false);
