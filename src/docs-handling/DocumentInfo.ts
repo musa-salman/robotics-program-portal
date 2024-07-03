@@ -1,6 +1,6 @@
-interface DocumentInfo {
+export interface DocumentInfo {
   id: string;
   name: string;
-  downloadLink: string;
+  filename: string;
   description: string;
 }
