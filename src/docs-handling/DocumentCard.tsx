@@ -4,16 +4,22 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { Delete, Edit } from '@mui/icons-material';
 import { StorageServiceContext } from '../storage-service/StorageContext';
-import { DocumentInfo } from './DocumentInfo';
+import { DocumentInfo } from './service/DocumentInfo';
 import DocumentFormModal from './DocumentForm';
 
 interface DocumentCardProps {
   documentInfo: DocumentInfo;
   onDocumentDelete: (documentId: string) => void;
   onDocumentUpdate: (document: DocumentInfo, file?: File) => Promise<void>;
+  onStudentUpload: (documentId: string, file: File) => Promise<void>;
 }
 
-const DocumentCard: React.FC<DocumentCardProps> = ({ documentInfo, onDocumentDelete, onDocumentUpdate }) => {
+const DocumentCard: React.FC<DocumentCardProps> = ({
+  documentInfo,
+  onDocumentDelete,
+  onDocumentUpdate,
+  onStudentUpload
+}) => {
   const [show, setShow] = useState(false);
   const [file, setFile] = useState<File | null>(null);
 
@@ -26,7 +32,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ documentInfo, onDocumentDel
   };
 
   const handleUpload = () => {
-    onDocumentUpdate(documentInfo, file!);
+    onStudentUpload(documentInfo.id, file!);
   };
 
   const handleDelete = () => {
