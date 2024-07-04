@@ -1,13 +1,11 @@
-export interface IStorageService {
-  upload(
-    file: File,
-    path: string,
-    setUploadProgress: React.Dispatch<React.SetStateAction<number>>,
-    onError: (error: any) => void,
-    onComplete: () => void
-  ): Promise<void>;
+import { UploadResult } from 'firebase/storage';
+
+interface IStorageService {
+  upload(file: File, path: string): Promise<UploadResult>;
 
   download(path: string, filename?: string): Promise<void>;
 
   delete(path: string): Promise<void>;
 }
+
+export type { IStorageService };
