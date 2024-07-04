@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Box, TextField, Button, Typography, Input, InputLabel } from '@mui/material';
-import { DocumentInfo } from './DocumentInfo';
+import { DocumentInfo } from './service/DocumentInfo';
 
 interface DocumentFormProps {
   initialDocument?: DocumentInfo;
