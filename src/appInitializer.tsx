@@ -24,6 +24,12 @@ import { StudentEventRepositories } from './events/repository/StudentEventReposi
 import { EventRegistrationRepositories } from './events/repository/EventRegistrationRepositories';
 import { EventRepository } from './events/repository/EventRepository';
 import { EventService } from './events/repository/EventService';
+import { DocumentProvider } from './docs-handling/service/DocumentInfoContext';
+import { DocumentInfoService } from './docs-handling/service/DocumentService';
+import { IStorageService } from './storage-service/IStorageService';
+import { StorageService } from './storage-service/StorageService';
+import { DocumentStudentRepositories } from './docs-handling/service/DocumentStudentRepositories';
+import { DocumentRepository } from './docs-handling/service/DocumentRepository';
 
 interface IProps {
   theme: Theme;
@@ -31,6 +37,8 @@ interface IProps {
 }
 
 function bootstrap({ theme, cacheRtl }: IProps) {
+  const storage: IStorageService = new StorageService();
+
   const categoryRepository = new CachingRepository(new CategoryRepository());
   const studyMaterialRepository = new CachingRepository(new StudyMaterialRepository());
   const materialService = new MaterialService(categoryRepository, studyMaterialRepository);
@@ -52,27 +60,32 @@ function bootstrap({ theme, cacheRtl }: IProps) {
   const registerRepository = new CachingRepository(new RegisterRepository());
   const registerService = new RegisterService(registerRepository, studentRepository, userRepository);
 
+  const documentRepository = new CachingRepository(new DocumentRepository());
+  const documentStudentRepositories = new DocumentStudentRepositories();
+  const documentService = new DocumentInfoService(documentRepository, documentStudentRepositories, storage);
   return (
     <React.StrictMode>
       <ThemeProvider dir="rtl">
         <CacheProvider value={cacheRtl}>
           <ThemeProvider theme={theme}>
             <BrowserRouter>
-              <UserProvider userService={userService}>
-                <GPTServiceProvider>
-                  <MaterialProvider materialService={materialService}>
-                    <EventProvider eventService={eventService}>
-                      <StorageProvider>
-                        <RegisterProvider registerService={registerService}>
-                          <AuthProvider>
-                            <App />
-                          </AuthProvider>
-                        </RegisterProvider>
-                      </StorageProvider>
-                    </EventProvider>
-                  </MaterialProvider>
-                </GPTServiceProvider>
-              </UserProvider>
+              <DocumentProvider documentService={documentService}>
+                <UserProvider userService={userService}>
+                  <GPTServiceProvider>
+                    <MaterialProvider materialService={materialService}>
+                      <EventProvider eventService={eventService}>
+                        <StorageProvider>
+                          <RegisterProvider registerService={registerService}>
+                            <AuthProvider>
+                              <App />
+                            </AuthProvider>
+                          </RegisterProvider>
+                        </StorageProvider>
+                      </EventProvider>
+                    </MaterialProvider>
+                  </GPTServiceProvider>
+                </UserProvider>
+              </DocumentProvider>
             </BrowserRouter>
           </ThemeProvider>
         </CacheProvider>
