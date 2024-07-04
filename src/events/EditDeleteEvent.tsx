@@ -19,7 +19,6 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
   const [formData, setFormData] = useState<EventProps>(event);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [_uploadProgress, setUploadProgress] = useState(0);
   const [showModalDelete, setShowModalDelete] = useState(false);
 
   const handleCloseEdit = () => setShowModalEdit(false);
@@ -65,22 +64,16 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
 
     setShowModalEdit(false);
     if (file) {
-      await storageService.upload(
-        file,
-        '/event-img/' + id,
-        setUploadProgress,
-        () => {},
-        () => {
-          const storage = getStorage();
-          const filePath = '/event-img/' + id;
-          getDownloadURL(ref(storage, filePath)).then((url) => {
-            event.imageURL = url;
-            formData.image = url;
-            editEvent(formData);
-            eventRepository.update(id, event);
-          });
-        }
-      );
+      await storageService.upload(file, '/event-img/' + id).then(() => {
+        const storage = getStorage();
+        const filePath = '/event-img/' + id;
+        getDownloadURL(ref(storage, filePath)).then((url) => {
+          event.imageURL = url;
+          formData.image = url;
+          editEvent(formData);
+          eventRepository.update(id, event);
+        });
+      });
     } else {
       editEvent(formData);
       eventRepository.update(id, event);
