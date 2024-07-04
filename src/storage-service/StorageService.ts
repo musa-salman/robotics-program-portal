@@ -35,4 +35,10 @@ export class StorageService implements IStorageService {
   delete(path: string): Promise<void> {
     return deleteObject(ref(storage, path));
   }
+
+  exists(path: string): Promise<boolean> {
+    return getDownloadURL(ref(storage, path))
+      .then(() => true)
+      .catch(() => false);
+  }
 }
