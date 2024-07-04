@@ -40,6 +40,11 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
 
   const handleSubmit = () => {
     onSaveDocument(documentInfo, file).then(() => {
+      if (initialDocument) {
+        handleClose();
+        return;
+      }
+
       setDocumentInfo({
         id: '',
         name: '',
@@ -48,6 +53,19 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
       });
       handleClose();
     });
+  };
+
+  const handleFileCancel = () => {
+    setFile(undefined);
+    setDocumentInfo((prevState) => ({
+      ...prevState,
+      filename: ''
+    }));
+
+    const fileInput = document.getElementById('upload-file') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
   };
 
   return (
@@ -73,13 +91,29 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
             קובץ
           </Typography>
         </InputLabel>
-        <Input
-          id="upload-file"
-          type="file"
-          inputProps={{ accept: 'application/pdf' }}
-          onChange={handleFileChange}
-          fullWidth
-        />
+        <Button variant="contained" component="label" color="secondary">
+          העלה קובץ
+          <Input
+            id="upload-file"
+            type="file"
+            hidden
+            inputProps={{ accept: 'application/pdf' }}
+            onChange={handleFileChange}
+            fullWidth
+          />
+        </Button>
+        {file && (
+          <Box sx={{ p: 2 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Typography variant="body2" color="textSecondary">
+                קובץ נבחר: {file.name}
+              </Typography>
+              <Button color="error" onClick={handleFileCancel}>
+                בטל
+              </Button>
+            </Box>
+          </Box>
+        )}
 
         <TextField
           label="תיאור"
