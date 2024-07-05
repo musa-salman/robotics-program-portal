@@ -6,7 +6,10 @@ export class StorageService implements IStorageService {
   private readonly existingPaths: Map<string, boolean> = new Map();
 
   upload(file: File, path: string): Promise<UploadResult> {
-    return uploadBytes(ref(storage, path), file);
+    return uploadBytes(ref(storage, path), file).then((uploadResult) => {
+      this.existingPaths.set(path, true);
+      return uploadResult;
+    });
   }
 
   download(path: string, filename?: string): Promise<void> {
@@ -35,7 +38,9 @@ export class StorageService implements IStorageService {
   }
 
   delete(path: string): Promise<void> {
-    return deleteObject(ref(storage, path));
+    return deleteObject(ref(storage, path)).then(() => {
+      this.existingPaths.delete(path);
+    });
   }
 
   exists(path: string): Promise<boolean> {
