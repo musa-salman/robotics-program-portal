@@ -40,6 +40,8 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
 
   const handleSubmit = () => {
     onSaveDocument(documentInfo, file).then(() => {
+      handleFileCancel();
+
       if (initialDocument) {
         handleClose();
         return;
@@ -97,7 +99,10 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
             id="upload-file"
             type="file"
             hidden
-            inputProps={{ accept: 'application/pdf' }}
+            inputProps={{
+              accept:
+                'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            }}
             onChange={handleFileChange}
             fullWidth
           />
