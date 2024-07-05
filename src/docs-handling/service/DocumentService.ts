@@ -10,11 +10,13 @@ interface IDocumentInfoService {
   getDocumentRepository(): DocumentRepository;
   getDocumentStudentRepository(documentId: string): DocumentStudentRepository;
 
-  uploadStudentDocument(studentId: string, documentId: string, file: File): Promise<UploadResult>;
-
   addDocument(document: DocumentInfo, file: File): Promise<DocumentReference<DocumentInfo, DocumentData>>;
   updateDocument(document: DocumentInfo, file?: File): Promise<void>;
   deleteDocument(documentId: string): Promise<void>;
+
+  uploadStudentDocument(studentId: string, documentId: string, file: File): Promise<UploadResult>;
+  deleteStudentDocument(studentId: string, documentId: string): Promise<void>;
+  isStudentDocumentUploaded(documentId: string, studentId: string): Promise<boolean>;
 }
 
 class DocumentInfoService implements IDocumentInfoService {
@@ -42,6 +44,10 @@ class DocumentInfoService implements IDocumentInfoService {
 
   uploadStudentDocument(studentId: string, documentId: string, file: File): Promise<UploadResult> {
     return this.storage.upload(file, `documents/${documentId}/${studentId}`);
+  }
+
+  deleteStudentDocument(studentId: string, documentId: string): Promise<void> {
+    return this.storage.delete(`documents/${documentId}/${studentId}`);
   }
 
   addDocument(document: DocumentInfo, file: File): Promise<DocumentReference<DocumentInfo, DocumentData>> {
@@ -76,6 +82,10 @@ class DocumentInfoService implements IDocumentInfoService {
         throw error;
       });
     // TODO: delete all uploaded files for this document by students
+  }
+
+  isStudentDocumentUploaded(documentId: string, studentId: string): Promise<boolean> {
+    return this.storage.exists(`documents/${documentId}/${studentId}`);
   }
 }
 
