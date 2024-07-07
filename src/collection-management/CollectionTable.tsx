@@ -1,5 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { DataGrid, GridColDef, GridRowId, GridRowModel, GridRowModesModel, GridValidRowModel } from '@mui/x-data-grid';
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+  DataGrid,
+  GridColDef,
+  GridRowId,
+  GridRowModel,
+  GridRowModesModel,
+  GridValidRowModel,
+  GridRowSelectionModel
+} from '@mui/x-data-grid';
 import { Box, Button, Dialog, DialogActions, DialogTitle, Typography } from '@mui/material';
 import { heIL } from '@mui/x-data-grid/locales';
 import SimpleSnackbar from '../components/snackbar/SnackBar';
@@ -43,6 +51,7 @@ interface CollectionTableProps<T> {
   FormComponent?: React.FC<any>;
   getItems?: () => Promise<T[]>;
   messageFormat: MessageFormat<T>;
+  onRowSelected?: (row: GridRowModel) => void;
 }
 
 const CollectionTable = <T extends { id: string }>({
@@ -51,13 +60,15 @@ const CollectionTable = <T extends { id: string }>({
   repository,
   FormComponent,
   getItems,
-  messageFormat
+  messageFormat,
+  onRowSelected
 }: CollectionTableProps<T>) => {
   const [rows, setRows] = useState<(T & { isNew: boolean })[] | null>(null);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [message, setMessage] = useState<string | null>(null);
   const [showAddItemForm, setShowItemForm] = useState(false);
   const [initialItem, setInitialItem] = useState<T | null>(null);
+  const [selectionModel, setSelectionModel] = useState<GridRowId[]>([]);
 
   useEffect(() => {
     function fetchItems() {
@@ -68,6 +79,17 @@ const CollectionTable = <T extends { id: string }>({
 
     if (!rows) fetchItems();
   }, [rows, repository]);
+
+  const handleRowSelection = useCallback(
+    (selection: GridRowSelectionModel) => {
+      const selectedId = selection[0];
+      const selected = rows?.find((register) => register.id === selectedId) || null;
+      // remove newRow field from selection
+      const { isNew, ...selectedRow } = selected as any;
+      onRowSelected!(selectedRow);
+    },
+    [rows]
+  );
 
   const updateItem = (updatedItem: T) => {
     const id = updatedItem.id;
@@ -153,6 +175,8 @@ const CollectionTable = <T extends { id: string }>({
             rowModesModel={rowModesModel}
             onRowModesModelChange={handleRowModesModelChange}
             processRowUpdate={processRowUpdate}
+            onRowSelectionModelChange={onRowSelected}
+            selectionModel={selectionModel}
             onProcessRowUpdateError={(error) => console.error(error)}
             localeText={{
               ...heIL.components.MuiDataGrid.defaultProps.localeText,
