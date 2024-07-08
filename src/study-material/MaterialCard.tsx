@@ -33,6 +33,8 @@ function MaterialCard({
   const [isMove, setIsMove] = useState(false);
   const [editedTitle, setEditedTitle] = useState(studyMaterial.title);
   const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarShow, setsnackbarShow] = useState(false);
   const materialManager = useContext(MaterialContext);
 
   const handleDownload = async () => {
@@ -40,7 +42,6 @@ function MaterialCard({
       '/study-material/' + studyMaterial.id + '-' + studyMaterial.filename,
       studyMaterial.filename
     );
-    <SimpleSnackbar message="DOWNLOAD success" />;
   };
 
   const handleDelete = async () => {
@@ -70,6 +71,8 @@ function MaterialCard({
         onUpdate(updatedStudyMaterial);
         console.log(updatedStudyMaterial);
         setIsEditing(false);
+        setSnackbarMessage('The changes have been saved.');
+        setsnackbarShow(true);
       })
       .catch((error) => {
         console.error('Error updating study material:', error);
@@ -84,53 +87,57 @@ function MaterialCard({
   const momentDate = moment(studyMaterial.date).format('DD / MM / YYYY');
 
   return (
-    <Card className="Card">
-      <MySpeedDial
-        handleEditToggle={handleEditToggle}
-        handleMoveToggle={handleMoveToggle}
-        handleSave={handleSave}
-        handleDelete={handleDelete}
-        isEditing={isEditing}
-      />
-      <br />
-      <Card.Body className="bodycard">
-        {isEditing ? (
-          <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>
-            <TextField
-              value={editedTitle}
-              onChange={(e) => setEditedTitle(e.target.value)}
-              variant="outlined"
-              fullWidth
-            />
-          </GPT>
-        ) : (
-          <Card.Title className="title-card">{studyMaterial.title}</Card.Title>
-        )}
-        <hr className="custom-hr" />
-        <div>
+    <>
+      {snackbarShow && <SimpleSnackbar message={snackbarMessage} />}
+
+      <SimpleSnackbar message={snackbarMessage} />
+      <Card className="Card">
+        <MySpeedDial
+          handleEditToggle={handleEditToggle}
+          handleMoveToggle={handleMoveToggle}
+          handleSave={handleSave}
+          handleDelete={handleDelete}
+          isEditing={isEditing}
+        />
+        <br />
+        <Card.Body className="bodycard">
           {isEditing ? (
-            <GPT initialValue={editedDescription} getData={() => suggestMaterialTitles(studyMaterial)}>
+            <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>
               <TextField
-                value={editedDescription}
-                onChange={(e) => setEditedDescription(e.target.value)}
-                multiline
-                rows={4}
+                value={editedTitle}
+                onChange={(e) => setEditedTitle(e.target.value)}
                 variant="outlined"
                 fullWidth
               />
             </GPT>
           ) : (
-            <Card.Text className="description">{studyMaterial.description}</Card.Text>
+            <Card.Title className="title-card">{studyMaterial.title}</Card.Title>
           )}
-        </div>
-        <p className="date"> תאריך : {momentDate} </p>
-        <Button className="dow-button" onClick={handleDownload}>
-          הורדה
-          <DownloadIcon className="dow-icon" />
-        </Button>
-      </Card.Body>
-      {/* {isMove && <MoveList categories={categories} onMove={handleMove} />} */}
-    </Card>
+          <hr className="custom-hr" />
+          <div>
+            {isEditing ? (
+              <GPT initialValue={editedDescription} getData={() => suggestMaterialTitles(studyMaterial)}>
+                <TextField
+                  value={editedDescription}
+                  onChange={(e) => setEditedDescription(e.target.value)}
+                  multiline
+                  rows={4}
+                  variant="outlined"
+                  fullWidth
+                />
+              </GPT>
+            ) : (
+              <Card.Text className="description">{studyMaterial.description}</Card.Text>
+            )}
+          </div>
+          <p className="date"> תאריך : {momentDate} </p>
+          <Button className="dow-button" onClick={handleDownload}>
+            הורדה
+            <DownloadIcon className="dow-icon" />
+          </Button>
+        </Card.Body>
+      </Card>
+    </>
   );
 }
 export default MaterialCard;

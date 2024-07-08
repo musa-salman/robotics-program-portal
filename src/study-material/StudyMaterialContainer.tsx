@@ -32,7 +32,6 @@ function StudyMaterialContainer() {
   const handleShow = () => setShow(true);
   const handleCloseAddEdit = () => setShowAddEdit(false);
   const handleShowEdit = () => setShowAddEdit(true);
-
   const [query, setQuery] = useState('');
 
   useEffect(() => {
