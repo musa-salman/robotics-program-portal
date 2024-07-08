@@ -1,24 +1,22 @@
-import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Button } from '@mui/material';
 import { useAuth } from '../../services/useAuth';
-import { Button, Snackbar } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { Login } from '@mui/icons-material';
 
-/**
- * Renders the login component.
- * Allows users to log in to the system using Google.
- */
-export default function Login() {
-  const { user, authService } = useAuth();
+const LoginButton: React.FC = () => {
+  const { authService } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleGoogleLogin = () => {
+  const handleLogin = () => {
     setError('');
     setLoading(true);
     authService
       .loginWithGoogle()
+      .then(() => {
+        const redirectTo = '/';
+        window.location.href = redirectTo;
+      })
       .catch(() => {
         setError('כניסה נכשלה, נסה שוב.');
       })
@@ -28,20 +26,10 @@ export default function Login() {
   };
 
   return (
-    <>
-      {user && <Navigate to="/" />}
-      <Button
-        variant="contained"
-        color="primary"
-        startIcon={<FontAwesomeIcon icon={faGoogle} />}
-        onClick={handleGoogleLogin}
-        disabled={loading}
-        style={{ marginTop: '1rem' }}>
-        התחבר/י באמצעות גוגל
-      </Button>
-      {error !== '' && (
-        <Snackbar open={true} message={error} color="red" autoHideDuration={6000} onClose={() => setError('')} />
-      )}
-    </>
+    <Button variant="contained" color="primary" onClick={handleLogin} startIcon={<Login />} disabled={loading}>
+      {loading ? 'מתחבר...' : 'התחברות'}
+    </Button>
   );
-}
+};
+
+export default LoginButton;

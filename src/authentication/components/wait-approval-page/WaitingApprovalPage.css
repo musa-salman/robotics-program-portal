@@ -1,0 +1,55 @@
+.wait-approval-page {
+  color: white;
+  text-align: center;
+}
+
+.robot-animation {
+  font-size: 100px;
+  animation: moveRobot 5s infinite alternate;
+}
+
+@keyframes moveRobot {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateX(20px) rotate(20deg);
+  }
+  100% {
+    transform: translateY(-20px) rotate(-20deg);
+  }
+}
+
+.animated-heading {
+  font-size: 70px;
+  animation:
+    colorChange 3s infinite,
+    moveUpDown 5s infinite;
+}
+
+.animated-text {
+  font-size: 50px;
+  color: black;
+}
+
+@keyframes colorChange {
+  0% {
+    color: red;
+  }
+  50% {
+    color: blue;
+  }
+  100% {
+    color: rgb(0, 0, 0);
+  }
+}
+
+@keyframes moveUpDown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}

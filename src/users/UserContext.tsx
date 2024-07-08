@@ -1,14 +1,16 @@
 import { createContext, useContext } from 'react';
-import { UserRepository } from './UserRepository';
-import { CachingRepository } from '../repositories/caching/CachingRepository';
+import { IUserService } from './UserService';
 
 /**
- * Context object for managing user data.
- * @type {React.Context<UserRepository>}
+ * Context object for managing user-related data and services.
+ * @type {React.Context<IUserService | undefined>}
  */
-export const UserContext: React.Context<UserRepository> = createContext<UserRepository>(
-  new CachingRepository(new UserRepository())
-);
+const UserContext: React.Context<IUserService | undefined> = createContext<IUserService | undefined>(undefined);
+
+interface IUserProviderProps {
+  children: React.ReactNode;
+  userService: IUserService;
+}
 
 /**
  * Provides the user repository to the component tree.
@@ -16,10 +18,16 @@ export const UserContext: React.Context<UserRepository> = createContext<UserRepo
  * @param children - The child components to be wrapped by the UserProvider.
  * @returns The UserProvider component.
  */
-function UserProvider({ children }: { children: React.ReactNode }) {
-  const userRepository = useContext(UserContext);
+function UserProvider({ children, userService }: IUserProviderProps): JSX.Element {
+  return <UserContext.Provider value={userService}>{children}</UserContext.Provider>;
+}
 
-  return <UserContext.Provider value={userRepository}>{children}</UserContext.Provider>;
+export function useUserService(): IUserService {
+  const userService = useContext(UserContext);
+  if (!userService) {
+    throw new Error('useUserService must be used within a UserProvider');
+  }
+  return userService;
 }
 
 export default UserProvider;

@@ -4,10 +4,10 @@ import { IStorageService } from './IStorageService';
 
 export const StorageServiceContext = createContext<IStorageService>(new StorageService());
 
-function StorageServiceProvider({ children }: { children: React.ReactNode }) {
+function StorageProvider({ children }: { children: React.ReactNode }) {
   const storageService = useContext(StorageServiceContext);
 
   return <StorageServiceContext.Provider value={storageService}>{children}</StorageServiceContext.Provider>;
 }
 
-export default StorageServiceProvider;
+export default StorageProvider;

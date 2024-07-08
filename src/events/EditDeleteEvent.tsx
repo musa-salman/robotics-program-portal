@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { EventProps } from './EventCard';
 import { IEvent } from './repository/Event';
-import { eventServiceContext } from './repository/EventContext';
+import { useEventService } from './repository/EventContext';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import AdminMenu from './AdminOptions';
@@ -25,8 +25,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
   const handleCloseEdit = () => setShowModalEdit(false);
   const handleCloseDelete = () => setShowModalDelete(false);
 
-  const eventManager = useContext(eventServiceContext);
-  const eventRepository = eventManager.eventRepository;
+  const eventRepository = useEventService().eventRepository;
   const storageService = useContext(StorageServiceContext);
 
   const MAX_CHARS_Details = 100;

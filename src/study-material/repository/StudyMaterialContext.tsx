@@ -1,12 +1,17 @@
 import { createContext, useContext } from 'react';
-import { MaterialManager } from './MaterialManager';
+import { MaterialService } from './MaterialService';
 
-export const MaterialContext = createContext<MaterialManager>(new MaterialManager());
+export const MaterialContext = createContext<MaterialService>(undefined as unknown as MaterialService);
 
-function MaterialProvider({ children }: { children: React.ReactNode }) {
-  const materialRepository = useContext(MaterialContext);
+interface MaterialProviderProps {
+  children: React.ReactNode;
+  materialService: MaterialService;
+}
 
-  return <MaterialContext.Provider value={materialRepository}>{children}</MaterialContext.Provider>;
+function MaterialProvider({ children }: MaterialProviderProps): JSX.Element {
+  const materialService = useContext(MaterialContext);
+
+  return <MaterialContext.Provider value={materialService}>{children}</MaterialContext.Provider>;
 }
 
 export default MaterialProvider;

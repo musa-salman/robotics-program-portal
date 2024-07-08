@@ -1,20 +1,20 @@
 import Card from 'react-bootstrap/Card';
-import MaterialCard from './MaterialCard';
 import { useState, useEffect, useContext } from 'react';
 import './StudyMaterialContainer.css';
 import { MaterialContext } from './repository/StudyMaterialContext';
-import { StudyMaterial } from './StudyMaterial';
-import { SearchBar } from './SearchBar';
-import UploadFileComponent from '../upload-file/UploadFile';
+import { StudyMaterial } from './repository/StudyMaterial';
+import MaterialUploadModal from './components/upload-file/MaterialUploadModal';
 import { Modal } from 'react-bootstrap';
 import AddIcon from '@mui/icons-material/Add';
 import { Fab } from '@mui/material';
-import NoResultFound from './NoResultFound';
+import NoResultFound from './components/NoResultFound';
 import SettingsIcon from '@mui/icons-material/Settings';
-import MoveList from './MoveList';
-import EmptyStudyMaterials from './EmptyStudyMaterials';
-import { Category } from '../upload-file/Category';
-import { AddEditCategories } from '../upload-file/addOrEditCategories';
+import { Category } from './repository/Category';
+import { CategoryManagement } from './components/upload-file/CategoryManagement';
+import EmptyStudyMaterials from './components/EmptyStudyMaterials';
+import { SearchBar } from './components/SearchBar';
+import MaterialCard from './components/MaterialCard';
+import CategorySelector from './components/CategorySelector';
 
 function StudyMaterialContainer() {
   const materialManager = useContext(MaterialContext);
@@ -77,8 +77,6 @@ function StudyMaterialContainer() {
     setStudyMaterials(studyMaterials);
   };
 
-  const handledoNothing = () => {};
-
   const handleMoveClick = (studyMaterial: StudyMaterial) => {
     setSelectedMaterial(studyMaterial);
     setIsMoveMode(true);
@@ -111,12 +109,10 @@ function StudyMaterialContainer() {
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
-  console.log(categories);
-  console.log('categories', categoryList);
   return (
     <>
       {isMoveMode && (
-        <MoveList categories={categoryList || []} onMove={handleMove} onCancel={() => setIsMoveMode(false)} />
+        <CategorySelector categories={categoryList || []} onMove={handleMove} onCancel={() => setIsMoveMode(false)} />
       )}
       <div className="btn-search">
         <SearchBar
@@ -163,15 +159,15 @@ function StudyMaterialContainer() {
         ))
       )}
       <Modal show={show} onHide={handleClose}>
-        <UploadFileComponent handleClose={handleClose} handleAdd={handleAdd} />
+        <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} />
       </Modal>
 
       <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
-        <AddEditCategories
+        <CategoryManagement
           categories={categoryList}
           handleCloseAddEdit={handleCloseAddEdit}
           setCategories={setCategoryList}
-          handleSelect={handledoNothing}
+          handleSelect={() => {}}
         />
       </Modal>
     </>

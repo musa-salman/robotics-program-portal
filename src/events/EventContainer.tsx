@@ -1,12 +1,14 @@
 import EventCard, { EventProps } from './EventCard';
 import { Button } from 'react-bootstrap';
-import { useState, useEffect, useContext } from 'react';
-import { eventServiceContext } from './repository/EventContext';
+import { useState, useEffect } from 'react';
+import { useEventService } from './repository/EventContext';
 import { IEvent } from './repository/Event';
 import { CircularProgress, Box } from '@mui/material';
 import './EventContainer.css';
 import EmptyEventCard from './EmptyEventCard';
 import AddEvent from './AddEvent';
+import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
+import Role from '../authentication/components/Roles';
 
 type EventContainer = {
   eventsProps: EventProps[];
@@ -17,8 +19,7 @@ const EventContainer = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showModalAllEvents, setShowModalAllEvents] = useState(true);
 
-  const eventManager = useContext(eventServiceContext);
-  const eventRepository = eventManager.eventRepository;
+  const eventRepository = useEventService().eventRepository;
 
   const handleAllEvents = () => {
     setShowModalAllEvents(!showModalAllEvents);
@@ -95,7 +96,9 @@ const EventContainer = () => {
   return (
     <div className="events">
       <div className="events-header-button">
-        <AddEvent addEvent={addEvent} />
+        <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
+          <AddEvent addEvent={addEvent} />
+        </RoleBasedAccessControl>
         <Button className="show-all" onClick={handleAllEvents}>
           {showModalAllEvents ? <div>הצג הכול</div> : <div>הראי פחות</div>}
         </Button>

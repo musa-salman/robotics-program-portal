@@ -2,6 +2,7 @@ import { Box, Button, Grid, Link, Toolbar, Typography } from '@mui/material';
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import './SplashScreen.css';
+import LoginButton from '../authentication/components/Login/Login';
 function SplashScreen() {
   // const navItems = ['Home', 'About', 'Contact'];
   return (
