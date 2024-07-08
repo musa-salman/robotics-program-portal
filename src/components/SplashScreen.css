@@ -17,6 +17,7 @@
   align-items: center;
   /* justify-content: center; */
   height: 80%;
+  min-height: fit-content;
   width: 80%;
   padding: 20px;
   background-color: transparent;
@@ -43,10 +44,12 @@
 
 .contant {
   position: absolute;
-  max-width: 50%;
-  min-height: 50%;
+  max-width: 60%;
+  width: 50%;
+  min-width: fit-content;
+  min-height: 80%;
   right: 10%;
-  border: 2px solid;
+  /* border: 2px solid; */
   color: aliceblue;
 }
 
@@ -70,4 +73,11 @@
 .socialIcon {
   margin: 5px;
   color: aliceblue;
+}
+
+.name {
+  color: rgb(249, 112, 1);
+  display: flex;
+  justify-content: left;
+  justify-items: right;
 }
