@@ -4,7 +4,7 @@ import { Chip } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { useUserService } from '../users/UserContext';
 import { User } from '../users/User';
-import Role, { roleColors, roleNames } from '../authentication/components/Roles';
+import Role, { roleColors, roleColorsLevel, roleNames } from '../authentication/components/Roles';
 import { useState } from 'react';
 import RoleSelector from './RoleSelector';
 
@@ -42,7 +42,7 @@ const UsersManagement = () => {
               <Chip
                 key={role}
                 label={roleNames[role]}
-                style={{ backgroundColor: roleColors[role].main, color: roleColors[role].contrastText }}
+                color={roleColorsLevel[role]}
                 onDelete={
                   role === Role.Student
                     ? undefined
@@ -59,7 +59,6 @@ const UsersManagement = () => {
             ))}
             <Chip
               label="+"
-              style={{ backgroundColor: 'green', color: 'white', fontSize: '29px' }}
               onClick={() => {
                 setShowAddRoleDialog(true);
                 setUserToAddRole(row);

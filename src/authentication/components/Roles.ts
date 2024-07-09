@@ -26,6 +26,19 @@ const roleNames = {
   [Role.Unauthenticated]: 'לא מאומת'
 };
 
+const roleColorsLevel: {
+  [key: number]: 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
+} = {
+  [Role.Owner]: 'primary',
+  [Role.Admin]: 'secondary',
+  [Role.Student]: 'success',
+  [Role.Pending]: 'info',
+  [Role.PreEnrollment]: 'warning',
+  [Role.Rejected]: 'error',
+  [Role.deleted]: 'default',
+  [Role.Unauthenticated]: 'default'
+};
+
 const roleColors = {
   [Role.Owner]: {
     main: '#1B5E20', // Dark Green
@@ -76,4 +89,4 @@ enum AuthorizationStatus {
 const ALLOW_AUTHED_ROLES = [Role.Owner, Role.Admin, Role.Student];
 
 export default Role;
-export { ALLOW_AUTHED_ROLES, roleNames, roleColors, selectableRoles, AuthorizationStatus };
+export { ALLOW_AUTHED_ROLES, roleNames, roleColors, selectableRoles, AuthorizationStatus, roleColorsLevel };
