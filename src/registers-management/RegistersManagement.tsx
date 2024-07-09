@@ -1,14 +1,16 @@
-import { GridActionsCellItem, GridColDef } from '@mui/x-data-grid';
+import { GridActionsCellItem, GridColDef, GridRowModel } from '@mui/x-data-grid';
 import CollectionTable, { MessageFormat } from '../collection-management/CollectionTable';
 import EditIcon from '@mui/icons-material/Edit';
-import { useContext } from 'react';
-import { Typography } from '@mui/material';
+import { useCallback, useContext, useState } from 'react';
+import { Grid, Paper, Typography } from '@mui/material';
 import { Register } from '../register/Register';
 import { RegisterContext } from '../register/service/RegisterContext';
 import StudentForm from '../students-management/StudentForm';
 import { Close, Done } from '@mui/icons-material';
+import RegisterDetails from './RegisterDetails';
 
 const RegisterManagement = () => {
+  const [selectedRegister, setSelectedRegister] = useState<Register | null>(null);
   const registerService = useContext(RegisterContext);
 
   const generateColumns = (
@@ -32,55 +34,6 @@ const RegisterManagement = () => {
             <Typography>
               {row.firstName} {row.lastName}
             </Typography>
-          </div>
-        )
-      },
-      {
-        field: 'studentContact',
-        type: 'custom',
-        headerName: 'פרטי תלמיד',
-        flex: 1,
-        renderCell: ({ row }) => (
-          <div className="multiline-cell">
-            <Typography>{row.studentPhoneNumber}</Typography>
-            <Typography>{row.studentEmail}</Typography>
-          </div>
-        )
-      },
-      {
-        field: 'parentContact',
-        type: 'custom',
-        headerName: 'פרטי הורה',
-        flex: 1,
-        renderCell: ({ row }) => (
-          <div className="multiline-cell">
-            <Typography>{row.parentPhoneNumber}</Typography>
-            <Typography>{row.parentEmail}</Typography>
-          </div>
-        )
-      },
-      {
-        field: 'academicDetails',
-        type: 'custom',
-        headerName: 'פרטי לימודים',
-        flex: 1,
-        renderCell: ({ row }) => (
-          <div className="multiline-cell">
-            <Typography>{row.studentSchool}</Typography>
-            <Typography>{row.studyUnitsMajor}</Typography>
-            <Typography>{row.numStudyUnitsMath}</Typography>
-          </div>
-        )
-      },
-      {
-        field: 'otherDetails',
-        type: 'custom',
-        headerName: 'פרטים נוספים',
-        flex: 1,
-        renderCell: ({ row }) => (
-          <div className="multiline-cell">
-            <Typography>{row.hearAboutUs}</Typography>
-            <Typography>{row.otherQuestions}</Typography>
           </div>
         )
       },
@@ -137,16 +90,29 @@ const RegisterManagement = () => {
     updateSuccess: () => 'הרישום עודכן בהצלחה'
   };
 
+  const handleRowSelected = useCallback((row: GridRowModel) => {
+    console.log(row);
+    setSelectedRegister(row as Register);
+  }, []);
+
   return (
-    <>
-      <CollectionTable<Register>
-        title="ניהול נרשמים"
-        generateColumns={generateColumns}
-        repository={registerService.registerRepository}
-        FormComponent={StudentForm}
-        messageFormat={messageFormat}
-      />
-    </>
+    <Grid container spacing={2}>
+      <Grid item xs={selectedRegister ? 8 : 12}>
+        <CollectionTable<Register>
+          title="ניהול נרשמים"
+          generateColumns={generateColumns}
+          repository={registerService.registerRepository}
+          FormComponent={StudentForm}
+          messageFormat={messageFormat}
+          onRowSelected={handleRowSelected}
+        />
+      </Grid>
+      <Grid item xs={4}>
+        <Paper elevation={3} style={{ padding: '16px' }}>
+          {selectedRegister && <RegisterDetails register={selectedRegister} />}
+        </Paper>
+      </Grid>
+    </Grid>
   );
 };
 
