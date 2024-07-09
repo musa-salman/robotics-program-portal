@@ -1,11 +1,11 @@
 .Container {
   display: flex;
   align-items: center;
-  background-color: #edd2d2;
+  background-color: #e2cece;
   border-radius: 10px;
   height: 3rem;
   padding: 0px;
-  border: 3px solid #615f5f;
+  border: 3px solid #65272a;
   margin: 20px;
   box-shadow: 0px 2px 3px 3px #bcbbbb;
   width: 20%;

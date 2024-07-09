@@ -3,17 +3,33 @@ import AlertTitle from '@mui/material/AlertTitle';
 import CloseIcon from '@mui/icons-material/Close';
 import './SuccessAlerts.css';
 import { Button } from '@mui/material';
+import { useState } from 'react';
 
-function SuccessAlerts() {
-  return (
-    <Alert icon={false} severity="success" className="alert">
-      <Button className="close">
-        <CloseIcon className="close-icn" />
-      </Button>
-      <AlertTitle>!Success</AlertTitle>
-      Your download was successful
-    </Alert>
-  );
+interface SimpleAlertProp {
+  message: string;
+  severity: 'error' | 'warning' | 'info' | 'success';
+  title: string;
 }
 
-export default SuccessAlerts;
+const Alerts: React.FC<SimpleAlertProp> = ({ message, severity, title }) => {
+  const [open, setOpen] = useState(true);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <Alert severity={severity} className="alert">
+      <Button className="close" onClick={handleClose}>
+        <CloseIcon className="close-icn" />
+      </Button>
+      <AlertTitle>{title}</AlertTitle>
+      <div>
+        {message}
+        <Button>Delete</Button>
+      </div>
+    </Alert>
+  );
+};
+
+export default Alerts;

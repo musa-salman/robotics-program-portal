@@ -4,23 +4,25 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: url(12.jpg);
+  background: url(2.png);
   /* border: 2px; */
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
 }
 
 .in-box {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: row-reverse; */
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   height: 80%;
+  min-height: fit-content;
   width: 80%;
   padding: 20px;
   background-color: transparent;
   backdrop-filter: blur(20px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 8px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   box-shadow: 0 0px 1px rgba(0, 0, 0, 0.2);
 }
@@ -31,21 +33,35 @@
   top: 0%;
   color: aliceblue;
   left: 0;
+  margin: 5px;
 }
 
-.toolbar {
+/* .toolbar {
   display: flex;
   justify-content: center;
   color: azure;
+} */
+
+.contant {
+  position: absolute;
+  max-width: 60%;
+  width: 50%;
+  min-width: fit-content;
+  min-height: 80%;
+  right: 10%;
+  /* border: 2px solid; */
+  color: aliceblue;
 }
 
 .imge {
   position: absolute;
   left: 10%;
   bottom: 0%;
+  width: fit-content;
 }
 
 .foo {
+  width: fit-content;
   position: absolute;
   bottom: 2%;
   right: 5px;
@@ -57,4 +73,11 @@
 .socialIcon {
   margin: 5px;
   color: aliceblue;
+}
+
+.name {
+  color: rgb(249, 112, 1);
+  display: flex;
+  justify-content: left;
+  justify-items: right;
 }
