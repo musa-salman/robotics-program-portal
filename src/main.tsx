@@ -11,6 +11,9 @@ const cacheRtl = createCache({
 });
 
 const theme = createTheme({
+  palette: {
+    mode: 'dark'
+  },
   components: {
     MuiPagination: {
       defaultProps: {

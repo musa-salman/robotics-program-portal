@@ -23,7 +23,7 @@ import UsersManagement from './users-management/UsersManagement';
 import DocumentPage from './docs-handling/DocumentPage';
 
 function App() {
-  const isDev = process.env.NODE_ENV === 'development';
+  const isDev = process.env.NODE_ENV === '';
   const StudyMaterialRoutes = useStudyMaterialRoutes();
 
   const routeConfigurations = {
