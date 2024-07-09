@@ -3,9 +3,9 @@ import { StudentRepository } from './students-management/StudentRepository';
 import { UserRepository } from './users/UserRepository';
 import { UserService } from './users/UserService';
 import React from 'react';
-import { ThemeProvider } from 'react-bootstrap';
+import { ThemeProvider as BootstrapThemeProvider } from 'react-bootstrap';
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import { Theme } from '@mui/material';
+import { CssBaseline, Theme, ThemeProvider } from '@mui/material';
 import { BrowserRouter } from 'react-router-dom';
 import UserProvider from './users/UserContext';
 import GPTServiceProvider from './gpt-service/GPTContext';
@@ -63,11 +63,12 @@ function bootstrap({ theme, cacheRtl }: IProps) {
   const documentRepository = new CachingRepository(new DocumentRepository());
   const documentStudentRepositories = new DocumentStudentRepositories();
   const documentService = new DocumentInfoService(documentRepository, documentStudentRepositories, storage);
+  console.log(theme);
   return (
     <React.StrictMode>
-      <ThemeProvider dir="rtl">
-        <CacheProvider value={cacheRtl}>
-          <ThemeProvider theme={theme}>
+      <BootstrapThemeProvider dir="rtl">
+        <ThemeProvider theme={theme}>
+          <CacheProvider value={cacheRtl}>
             <BrowserRouter>
               <DocumentProvider documentService={documentService}>
                 <UserProvider userService={userService}>
@@ -77,6 +78,7 @@ function bootstrap({ theme, cacheRtl }: IProps) {
                         <StorageProvider>
                           <RegisterProvider registerService={registerService}>
                             <AuthProvider>
+                              <CssBaseline />
                               <App />
                             </AuthProvider>
                           </RegisterProvider>
@@ -87,9 +89,9 @@ function bootstrap({ theme, cacheRtl }: IProps) {
                 </UserProvider>
               </DocumentProvider>
             </BrowserRouter>
-          </ThemeProvider>
-        </CacheProvider>
-      </ThemeProvider>
+          </CacheProvider>
+        </ThemeProvider>
+      </BootstrapThemeProvider>
     </React.StrictMode>
   );
 }
