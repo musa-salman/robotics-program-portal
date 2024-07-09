@@ -33,7 +33,6 @@ function MaterialCard({
   const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarShow, setsnackbarShow] = useState(false);
-  const materialManager = useContext(MaterialContext);
 
   const storageService = useContext(StorageServiceContext);
   const materialService = useMaterialService();
