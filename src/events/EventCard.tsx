@@ -26,7 +26,7 @@ export interface EventProps {
 
 const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventDelete, onEventEdit, id }) => {
   return (
-    <Card sx={{ maxWidth: 345, minWidth: 345 }}>
+    <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345 }}>
       <CardHeader
         action={
           <IconButton aria-label="settings">
