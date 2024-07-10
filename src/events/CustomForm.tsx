@@ -2,6 +2,8 @@ import moment from 'moment';
 import React from 'react';
 import { Button, TextField, FormControl, Box, InputAdornment } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import GPT from '../gpt-service/GPTComponent';
+import { suggestEventTitles } from './EventPrompts';
 
 type CustomFormProps = {
   handleSaveAdd: () => void;
@@ -32,17 +34,22 @@ const CustomForm: React.FC<CustomFormProps> = ({
 }) => (
   <form>
     <FormControl fullWidth margin="normal">
-      <TextField
-        required={true}
-        label="כותרת"
-        type="text"
-        placeholder="שם אירוע"
-        onChange={handleTitleChange}
-        inputProps={{ maxLength: MAX_CHARS_Title }}
-        defaultValue={formData.title}
-        variant="outlined"
-        helperText={`${formData.title.length}/${MAX_CHARS_Title} אותיות`}
-      />
+      <GPT
+        initialValue={formData.title}
+        getData={() => suggestEventTitles(formData)}
+        options={{ simplify: false, improve: false, shorten: false }}>
+        <TextField
+          required={true}
+          label="כותרת"
+          type="text"
+          placeholder="שם אירוע"
+          onChange={handleTitleChange}
+          inputProps={{ maxLength: MAX_CHARS_Title }}
+          defaultValue={formData.title}
+          variant="outlined"
+          helperText={`${formData.title.length}/${MAX_CHARS_Title} אותיות`}
+        />
+      </GPT>
     </FormControl>
 
     <FormControl fullWidth margin="normal">
@@ -57,6 +64,7 @@ const CustomForm: React.FC<CustomFormProps> = ({
         InputLabelProps={{ shrink: true }}
       />
     </FormControl>
+
     <FormControl fullWidth margin="normal">
       <InputAdornment position="start">
         <input accept="image/*" style={{ display: 'none' }} id="file" type="file" onChange={handleImageChange} />
@@ -68,19 +76,25 @@ const CustomForm: React.FC<CustomFormProps> = ({
         </label>
       </InputAdornment>
     </FormControl>
+
     <FormControl fullWidth margin="normal">
-      <TextField
-        required={true}
-        label="פרטים"
-        multiline
-        rows={3}
-        placeholder="פרטי האירוע"
-        onChange={handleDetailsChange}
-        inputProps={{ maxLength: MAX_CHARS_Details }}
-        defaultValue={formData.details}
-        variant="outlined"
-        helperText={`${formData.details.length}/${MAX_CHARS_Details} אותיות`}
-      />
+      <GPT
+        initialValue={formData.details}
+        getData={() => generateEventDescription(formData)}
+        options={{ simplify: true, improve: true, shorten: true }}>
+        <TextField
+          required={true}
+          label="פרטים"
+          multiline
+          rows={3}
+          placeholder="פרטי האירוע"
+          onChange={handleDetailsChange}
+          inputProps={{ maxLength: MAX_CHARS_Details }}
+          defaultValue={formData.details}
+          variant="outlined"
+          helperText={`${formData.details.length}/${MAX_CHARS_Details} אותיות`}
+        />
+      </GPT>
     </FormControl>
     <Box sx={{ display: 'flex', gap: '10px', mt: 2 }}>
       <Button variant="contained" color="secondary" onClick={handleCloseAddEvent}>
