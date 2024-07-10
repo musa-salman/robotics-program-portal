@@ -131,6 +131,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
           transform: 'translate(-50%, -50%)',
           width: '45rem',
           boxShadow: 24,
+          backgroundColor:'black',
           p: 4,
           borderRadius: 1,
           outline: 'none'
@@ -239,21 +240,31 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                 />
               </GPT>
             </Grid>
-          </form>
-          <Modal
-            
-            open={showCategoryManagement}
-            onClose={handleCloseCategoryManagement}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <CategoryManagement
-              categories={categories}
-              handleCloseCategoryManagement={handleCloseCategoryManagement}
-              setCategories={setCategories}
-              handleSelect={() => {}}
-            />
-          </Modal>
+
+            <Grid xs={7} className='px-5 mt-3' >
+                <Button variant="contained" className='px-5 mx-5' onClick={handleSubmit}>העלה</Button>
+            </Grid>
+
+            <Grid xs={5} className='px-5 mt-3'>
+                <Button variant="contained" className='px-5' onClick={handleClose}>סגירה</Button>
+            </Grid>
+
+          </Grid>
+        </form>
+        <Modal
+          
+          open={showCategoryManagement}
+          onClose={handleCloseCategoryManagement}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <CategoryManagement
+            categories={categories}
+            handleCloseCategoryManagement={handleCloseCategoryManagement}
+            setCategories={setCategories}
+            handleSelect={() => {}}
+          />
+        </Modal>
         
       </Box>
     </>
