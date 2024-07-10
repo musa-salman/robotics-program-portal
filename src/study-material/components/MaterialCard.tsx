@@ -4,15 +4,13 @@ import './MaterialCard.css';
 import { useContext, useState } from 'react';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
-import { CardActions, CardContent, CardHeader, Divider, TextField, Typography } from '@mui/material';
+import { CardContent, CardHeader, Divider, TextField, Typography } from '@mui/material';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import { StorageServiceContext } from '../../storage-service/StorageContext';
-import SimpleSnackbar from '../../components/snackbar/SnackBar';
 import GPT from '../../gpt-service/GPTComponent';
 import { suggestMaterialTitles } from './upload-file/StudyMaterialPrompts';
 import formatDate from '../../utils/dateFormatter';
 import { useMaterialService } from '../repository/StudyMaterialContext';
-import Success from '../Success';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;

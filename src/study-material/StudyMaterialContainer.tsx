@@ -4,13 +4,11 @@ import './StudyMaterialContainer.css';
 import { useMaterialService } from './repository/StudyMaterialContext';
 import { StudyMaterial } from './repository/StudyMaterial';
 import MaterialUploadModal from './components/upload-file/MaterialUploadModal';
-// import { Modal } from 'react-bootstrap';
 import AddIcon from '@mui/icons-material/Add';
 import { Fab, Modal } from '@mui/material';
 import NoResultFound from './components/NoResultFound';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Category } from './repository/Category';
-import { CategoryManagement } from './components/upload-file/CategoryManagement';
 import EmptyStudyMaterials from './components/EmptyStudyMaterials';
 import { SearchBar } from './components/SearchBar';
 import MaterialCard from './components/MaterialCard';
@@ -158,17 +156,14 @@ function StudyMaterialContainer() {
           </Card>
         ))
       )}
-   
+
       <Modal
-        
         open={show}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} />
       </Modal>
-
 
       {/* <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
         <CategoryManagement
