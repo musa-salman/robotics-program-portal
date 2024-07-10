@@ -20,7 +20,6 @@ interface AddEventProps {
 const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
   const [file, setFile] = useState<File | null>(null);
   const [showModalAddEvent, setShowModalAddEvent] = useState(false);
-  const [_uploadProgress, setUploadProgress] = useState(0);
 
   const handleCloseAddEvent = () => setShowModalAddEvent(false);
   const handleShowAddEvent = () => setShowModalAddEvent(true);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './EventCard.css';
 import EditDeleteEvent from './EditDeleteEvent';
 import RegisterStudentToEvent from './RegisterStudentToEvent';
