@@ -6,7 +6,7 @@
 /* Base styling for the card */
 .event-card {
   width: min-content;
-  background-color: #edecf3;
+  /* background-color: #edecf3; */
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
@@ -20,7 +20,7 @@
 /* Hover effect to make the card grow and add shadow */
 .event-card:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); */
 }
 
 .card-title {
@@ -56,19 +56,15 @@
 
 /* Optional: Button styling */
 .event-card .btn-primary {
-  background-color: #007bff;
   border: none;
-}
-
-.event-card .btn-primary:hover {
-  background-color: #0056b3;
 }
 
 .event-card .btn-secondary {
-  background-color: #6c757d;
+  /* background-color: #6c757d; */
   border: none;
 }
 
-.event-card .btn-secondary:disabled {
-  background-color: #adb5bd;
+.register-button {
+  display: flex;
+  justify-content: center;
 }
