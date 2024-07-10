@@ -62,23 +62,17 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
     event.id = docRef.id;
     formData.id = docRef.id;
     if (file) {
-      await storageService.upload(
-        file,
-        '/event-img/' + docRef.id,
-        setUploadProgress,
-        (_error) => {},
-        () => {
-          const storage = getStorage();
-          const filePath = '/event-img/' + docRef.id;
-          // Get the download URL
-          getDownloadURL(ref(storage, filePath)).then((url) => {
-            event.imageURL = url;
-            formData.image = url;
-            eventRepository.update(docRef.id, event);
-            addEvent(formData);
-          });
-        }
-      );
+      await storageService.upload(file, '/event-img/' + docRef.id).then(() => {
+        const storage = getStorage();
+        const filePath = '/event-img/' + docRef.id;
+        // Get the download URL
+        getDownloadURL(ref(storage, filePath)).then((url) => {
+          event.imageURL = url;
+          formData.image = url;
+          eventRepository.update(docRef.id, event);
+          addEvent(formData);
+        });
+      });
     } else {
       formData.image = event.imageURL;
       addEvent(formData);
