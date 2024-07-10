@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-// import { Button, Modal } from 'react-bootstrap';
 import { EventProps } from './EventCard';
 import { IEvent } from './repository/Event';
 import { useEventService } from './repository/EventContext';
