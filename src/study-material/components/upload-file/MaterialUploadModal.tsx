@@ -23,6 +23,8 @@ import GPT from '../../../gpt-service/GPTComponent';
 import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
 import { useMaterialService } from '../../repository/StudyMaterialContext';
 
+
+
 interface MaterialUploadModalProps {
   handleClose: () => void;
   handleAdd: (studyMaterial: StudyMaterial) => void;
@@ -60,6 +62,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
       try {
         const data: Category[] = await studyMaterialManagement.categoryRepository.find();
         setCategories(data);
+        
       } catch (error) {
         console.error('Error fetching items:', error);
       }
@@ -91,8 +94,9 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
     }
   };
 
-  const handleSubmit = async (event: any) => {
-    if (studyMaterial.title !== '' && studyMaterial.filename !== '' && studyMaterial.category !== '' && file !== null) {
+  const handleSubmit = async () => {
+    
+    if(studyMaterial.title !== "" && studyMaterial.filename !== "" && studyMaterial.category !== "" && file !== null){
       studyMaterialManagement.studyMaterialRepository.create(studyMaterial).then((docRef) => {
         storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename);
       });
@@ -230,35 +234,27 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                   fullWidth
                   onChange={handleInput}
                   margin="normal"
+                  multiline
+                  rows={5}
                 />
               </GPT>
             </Grid>
-
-            <Grid xs={7} className="px-5 mt-3">
-              <Button variant="contained" className="px-5 mx-5" onClick={handleSubmit}>
-                העלה
-              </Button>
-            </Grid>
-
-            <Grid xs={5} className="px-5 mt-3">
-              <Button variant="contained" className="px-5" onClick={handleClose}>
-                סגירה
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-        <Modal
-          open={showCategoryManagement}
-          onClose={handleCloseCategoryManagement}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description">
-          <CategoryManagement
-            categories={categories}
-            handleCloseAddEdit={handleCloseCategoryManagement}
-            setCategories={setCategories}
-            handleSelect={() => {}}
-          />
-        </Modal>
+          </form>
+          <Modal
+            
+            open={showCategoryManagement}
+            onClose={handleCloseCategoryManagement}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <CategoryManagement
+              categories={categories}
+              handleCloseCategoryManagement={handleCloseCategoryManagement}
+              setCategories={setCategories}
+              handleSelect={() => {}}
+            />
+          </Modal>
+        
       </Box>
     </>
   );
