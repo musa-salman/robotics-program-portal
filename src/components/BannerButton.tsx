@@ -16,7 +16,7 @@ const ButtonIcon: React.FC<ButtonIconProps> = ({ icon, label, path, className })
 
   return (
     <>
-      <Button className={className} startIcon={icon} variant="contained" color="inherit" onClick={goToPath}>
+      <Button className={className} startIcon={icon} variant="outlined" color="primary" onClick={goToPath}>
         {label}
       </Button>
     </>

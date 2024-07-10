@@ -26,9 +26,9 @@ function MySpeedDial({ handleEditToggle, handleMoveToggle, handleSave, handleDel
 
   if (!isEditing) {
     actions = [
-      { icon: <EditIcon />, name: 'Edit', action: handleEditToggle, className: '' },
-      { icon: <DeleteIcon />, name: 'Delete', action: handleDelete, className: 'delete-action' },
-      { icon: <DriveFileMoveIcon />, name: 'Move', action: handleMoveToggle, className: '' }
+      { icon: <EditIcon />, name: 'לַעֲרוֹך', action: handleEditToggle, className: '' },
+      { icon: <DeleteIcon />, name: 'לִמְחוֹק', action: handleDelete, className: 'delete-action' },
+      { icon: <DriveFileMoveIcon />, name: 'לעבור', action: handleMoveToggle, className: '' }
     ];
   } else {
     actions = [

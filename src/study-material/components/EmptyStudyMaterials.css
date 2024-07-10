@@ -16,7 +16,9 @@
 }
 
 .container .add-btn {
-  display: flex;
+  /* display: flex; */
+  position: absolute;
+  top: 0%;
   margin: 20px auto;
   padding: 10px 20px;
   color: #060606;
