@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.rtl.min.css';
 import { Route, Routes } from 'react-router-dom';
 import { useStudyMaterialRoutes } from './study-material/StudyMaterialRoutes';
 import RoleBasedAccessControl from './authentication/components/RoleBasedAccessControl';
-import EventContainer from './events/EventContainer';
+import EventContainer from './events/EventContainerShowALL';
 import Layout from './components/layout/Layout';
 import TestingLayout from './components/layout/TestingLayout';
 import Role from './authentication/components/Roles';

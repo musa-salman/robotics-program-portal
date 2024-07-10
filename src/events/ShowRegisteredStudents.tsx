@@ -11,10 +11,9 @@ import {
   Paper,
   IconButton,
   Dialog,
-  DialogTitle,
-  DialogContent
+  DialogContent,
+  DialogTitle
 } from '@mui/material';
-import { Modal } from 'react-bootstrap';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface RegisterStudentToEventProps {
@@ -48,7 +47,6 @@ const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId
   };
 
   const ShowDetails = () => {
-    const text = 'סך הסטודנטים הרשומים ';
     return (
       <div>
         <GroupsIcon onClick={handleDetails} />

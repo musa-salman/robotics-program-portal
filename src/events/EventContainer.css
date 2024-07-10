@@ -24,7 +24,7 @@
 .shift-buttons {
   border: none;
   color: white;
-  background-color: #606365;
+  background-color: #e43232;
   cursor: pointer;
   transition: background-color 0.3s ease;
   height: 50px;
@@ -37,7 +37,7 @@
 }
 
 .shift-buttons:hover {
-  background-color: #00b336;
+  background-color: #ff0000;
 }
 
 .show-all {
