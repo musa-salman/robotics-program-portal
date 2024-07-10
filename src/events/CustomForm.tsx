@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, TextField, FormControl, Box, InputAdornment } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import GPT from '../gpt-service/GPTComponent';
-import { suggestEventTitles } from './EventPrompts';
+import { generateEventDescription, suggestEventTitles } from './EventPrompts';
 
 type CustomFormProps = {
   handleSaveAdd: () => void;
