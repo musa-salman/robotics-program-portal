@@ -30,7 +30,7 @@ const CustomForm: React.FC<CustomFormProps> = ({
   MAX_CHARS_Details,
   requiredFields
 }) => (
-  <form onSubmit={handleSaveAdd}>
+  <form>
     <FormControl fullWidth margin="normal">
       <TextField
         required={true}
@@ -59,9 +59,9 @@ const CustomForm: React.FC<CustomFormProps> = ({
     </FormControl>
     <FormControl fullWidth margin="normal">
       <InputAdornment position="start">
-        <input accept="image/*" style={{ display: 'none' }} id="upload-file" type="file" onChange={handleImageChange} />
-        <label htmlFor="upload-file">
-          <Button variant="contained" component="label" htmlFor="upload-file">
+        <input accept="image/*" style={{ display: 'none' }} id="file" type="file" onChange={handleImageChange} />
+        <label htmlFor="file">
+          <Button variant="contained" component="label" htmlFor="file">
             <CloudUploadIcon />
             העלאת תמונה
           </Button>
@@ -86,7 +86,7 @@ const CustomForm: React.FC<CustomFormProps> = ({
       <Button variant="contained" color="secondary" onClick={handleCloseAddEvent}>
         סגור
       </Button>
-      <Button variant="contained" color="primary" type="submit">
+      <Button variant="contained" color="primary" onClick={handleSaveAdd}>
         {requiredFields.add ? 'הוסף' : 'שמור שינויים'}
       </Button>
     </Box>
