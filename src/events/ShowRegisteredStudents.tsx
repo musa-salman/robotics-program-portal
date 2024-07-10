@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useEventService } from './repository/EventContext';
 import GroupsIcon from '@mui/icons-material/Groups';
-import './ShowRegisteredStudents.css';
 import {
   Table,
   TableBody,
@@ -11,7 +10,9 @@ import {
   TableRow,
   Paper,
   IconButton,
-  Button
+  Dialog,
+  DialogTitle,
+  DialogContent
 } from '@mui/material';
 import { Modal } from 'react-bootstrap';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -47,39 +48,43 @@ const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId
   };
 
   const ShowDetails = () => {
+    const text = 'סך הסטודנטים הרשומים ';
     return (
       <div>
-        <Button className="show-button" variant="contained" onClick={handleDetails}>
-          <GroupsIcon />
-        </Button>
-        <Modal show={showDetails} onHide={handleDetails} animation={false} style={{ display: 'center' }}>
-          <Modal.Header closeButton>
-            <Modal.Title>רשומים לאירוע</Modal.Title>
-          </Modal.Header>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>סך הסטודנטים הרשומים : {registeredStudents?.length}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {registeredStudents?.map((student, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{student.name}</TableCell>
-                    <TableCell>{student.phone}</TableCell>
-                    <TableCell>{student.email}</TableCell>
-                    <TableCell>
-                      <IconButton onClick={() => handleRemoveRegistration(student.id)} aria-label="delete" size="small">
-                        <DeleteIcon fontSize="inherit" />
-                      </IconButton>
-                    </TableCell>
+        <GroupsIcon onClick={handleDetails} />
+        <Dialog open={showDetails} onClose={handleDetails} aria-labelledby="customized-dialog-title">
+          <DialogTitle id="customized-dialog-title" onClose={handleDetails}>
+            רשומים לאירוע
+          </DialogTitle>
+          <DialogContent dividers>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>סך הסטודנטים הרשומים : {registeredStudents?.length}</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Modal>
+                </TableHead>
+                <TableBody>
+                  {registeredStudents?.map((student, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{student.name}</TableCell>
+                      <TableCell>{student.phone}</TableCell>
+                      <TableCell>{student.email}</TableCell>
+                      <TableCell>
+                        <IconButton
+                          onClick={() => handleRemoveRegistration(student.id)}
+                          aria-label="delete"
+                          size="small">
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   };
