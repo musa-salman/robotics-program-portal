@@ -1,4 +1,4 @@
-import { Box, Button, List, ListItemButton, ListItemText, Modal } from '@mui/material';
+import { Box, Button, List, ListItemButton, ListItemText, Modal, Typography } from '@mui/material';
 import './CategorySelector.css';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -24,6 +24,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, onMove,
       <Modal open={open} onClose={onCancel}>
         <Box className="move-list-container">
           <List className="move-list">
+            <Typography variant="h4">עבור לקטגוריה</Typography>
             {categories.map((category, index) => (
               <ListItemButton key={index} className="move-list-item-button" onClick={() => moveHandler(category)}>
                 <ListItemText primary={category.category} className="move-list-item-text" />

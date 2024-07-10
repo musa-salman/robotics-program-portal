@@ -5,14 +5,15 @@
   background-attachment: fixed;
   background-blend-mode: overlay;
   background-position: inherit;
-  background-color: rgb(165, 159, 159);
+  /* background-color: rgb(165, 159, 159); */
   background-repeat: no-repeat;
 }
 
 .Card {
-  min-width: 20rem;
-  max-width: 20rem;
-  border: 3px solid #65272a;
+  min-width: 25rem;
+  max-width: 25rem;
+  min-height: fit-content;
+  /* border: 3px solid #65272a; */
   background-color: #d6d0cc;
   /* rgb(39, 40, 43); */
   /* box-shadow: 3px 3px 3px 4px rgba(53, 50, 53, 0.69); */
@@ -20,7 +21,7 @@
   border-radius: 10px;
   margin: 0px;
   padding: 6px;
-  display: inline-block;
+  text-align: center;
 }
 
 .bu-more {
@@ -33,7 +34,7 @@
 }
 
 .bu-more:hover {
-  background-color: #9b9a9a;
+  /* background-color: #9b9a9a; */
   /* background-color: transparent; */
 }
 
@@ -48,7 +49,7 @@
   max-height: 20vh;
   min-height: 5vh;
   font-size: 15px;
-  /* text-align: right; */
+  margin: 10px;
 }
 
 .Card .date {
@@ -61,7 +62,7 @@
   display: block;
   margin: auto;
   padding: 12px 42px;
-  color: #faf6f6;
+  color: #151414;
   background-color: transparent;
   border: 3px solid #da8888;
   border-radius: 50px;
@@ -84,6 +85,6 @@
 .Card .whenedite {
   padding: 5px;
   border: 2px dashed rgb(231, 119, 39);
-  color: rgb(235, 143, 78);
+  /* color: rgb(235, 143, 78); */
   margin-bottom: 2px;
 }

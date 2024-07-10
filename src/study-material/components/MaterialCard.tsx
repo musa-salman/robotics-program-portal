@@ -4,7 +4,7 @@ import './MaterialCard.css';
 import { useContext, useState } from 'react';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
-import { TextField } from '@mui/material';
+import { CardActions, CardContent, CardHeader, Divider, TextField, Typography } from '@mui/material';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import { StorageServiceContext } from '../../storage-service/StorageContext';
 import SimpleSnackbar from '../../components/snackbar/SnackBar';
@@ -12,6 +12,7 @@ import GPT from '../../gpt-service/GPTComponent';
 import { suggestMaterialTitles } from './upload-file/StudyMaterialPrompts';
 import formatDate from '../../utils/dateFormatter';
 import { useMaterialService } from '../repository/StudyMaterialContext';
+import Success from '../Success';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -82,9 +83,7 @@ function MaterialCard({
 
   return (
     <>
-      {snackbarShow && <SimpleSnackbar message={snackbarMessage} />}
-
-      <SimpleSnackbar message={snackbarMessage} />
+      <br></br>
       <Card className="Card">
         <MySpeedDial
           handleEditToggle={handleEditToggle}
@@ -94,7 +93,7 @@ function MaterialCard({
           isEditing={isEditing}
         />
         <br />
-        <Card.Body className="bodycard">
+        <CardContent className="bodycard">
           {isEditing ? (
             <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>
               <TextField
@@ -105,9 +104,9 @@ function MaterialCard({
               />
             </GPT>
           ) : (
-            <Card.Title className="title-card">{studyMaterial.title}</Card.Title>
+            <CardHeader title={studyMaterial.title} className="title-card" />
           )}
-          <hr className="custom-hr" />
+          <Divider className="custom-hr" />
           <div>
             {isEditing ? (
               <GPT initialValue={editedDescription} getData={() => suggestMaterialTitles(studyMaterial)}>
@@ -121,16 +120,15 @@ function MaterialCard({
                 />
               </GPT>
             ) : (
-              <Card.Text className="description">{studyMaterial.description}</Card.Text>
+              <Typography className="description">{studyMaterial.description}</Typography>
             )}
           </div>
-          {/* <p className="date"> תאריך : {momentDate} </p> */}
           <p className="date"> תאריך : {formatDate(studyMaterial.date)}</p>
           <Button className="dow-button" onClick={handleDownload}>
             הורדה
             <DownloadIcon className="dow-icon" />
           </Button>
-        </Card.Body>
+        </CardContent>
       </Card>
     </>
   );
