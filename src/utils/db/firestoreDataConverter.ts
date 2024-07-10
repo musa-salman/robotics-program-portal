@@ -5,9 +5,8 @@ export function createConverter<T>(): FirestoreDataConverter<T, DocumentData> {
     toFirestore(data: T): DocumentData {
       // remove id from data
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const temp = { ...data } as any;
-      delete temp.id;
-      return { ...temp } as DocumentData;
+      const { id, ...rest } = data as any;
+      return { ...rest } as DocumentData;
     },
 
     fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): T {
