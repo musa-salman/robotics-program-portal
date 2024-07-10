@@ -13,7 +13,7 @@ import {
   Modal,
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Close as CloseIcon } from '@mui/icons-material';
+
 import { useContext, useEffect, useState } from 'react';
 import './MaterialUploadModal.css';
 import { Category } from '../../repository/Category';
@@ -23,7 +23,7 @@ import { StorageServiceContext } from '../../../storage-service/StorageContext';
 import GPT from '../../../gpt-service/GPTComponent';
 import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
 import { useMaterialService } from '../../repository/StudyMaterialContext';
-import { title } from 'process';
+
 
 
 interface MaterialUploadModalProps {
@@ -64,6 +64,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
       try {
         const data: Category[] = await studyMaterialManagement.categoryRepository.find();
         setCategories(data);
+        
       } catch (error) {
         console.error('Error fetching items:', error);
       }
@@ -95,7 +96,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
     }
   };
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async () => {
     
     if(studyMaterial.title !== "" && studyMaterial.filename !== "" && studyMaterial.category !== "" && file !== null){
       studyMaterialManagement.studyMaterialRepository.create(studyMaterial).then((docRef) => {
@@ -265,6 +266,8 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                   fullWidth
                   onChange={handleInput}
                   margin="normal"
+                  multiline
+                  rows={5}
                 />
                   
                 </GPT>
@@ -289,7 +292,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
           >
             <CategoryManagement
               categories={categories}
-              handleCloseAddEdit={handleCloseCategoryManagement}
+              handleCloseCategoryManagement={handleCloseCategoryManagement}
               setCategories={setCategories}
               handleSelect={() => {}}
             />
