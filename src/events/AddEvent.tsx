@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
 import { EventProps } from './EventCard';
 import { IEvent } from './repository/Event';
 import { useEventService } from './repository/EventContext';
@@ -7,6 +6,12 @@ import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import AddIcon from '@mui/icons-material/Add';
 import CustomForm from './CustomForm';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Button from '@mui/material/Button';
 
 interface AddEventProps {
   addEvent: (event: EventProps) => void;
@@ -15,7 +20,6 @@ interface AddEventProps {
 const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
   const [file, setFile] = useState<File | null>(null);
   const [showModalAddEvent, setShowModalAddEvent] = useState(false);
-  const [_uploadProgress, setUploadProgress] = useState(0);
 
   const handleCloseAddEvent = () => setShowModalAddEvent(false);
   const handleShowAddEvent = () => setShowModalAddEvent(true);
@@ -57,23 +61,17 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
     event.id = docRef.id;
     formData.id = docRef.id;
     if (file) {
-      await storageService.upload(
-        file,
-        '/event-img/' + docRef.id,
-        setUploadProgress,
-        (_error) => {},
-        () => {
-          const storage = getStorage();
-          const filePath = '/event-img/' + docRef.id;
-          // Get the download URL
-          getDownloadURL(ref(storage, filePath)).then((url) => {
-            event.imageURL = url;
-            formData.image = url;
-            eventRepository.update(docRef.id, event);
-            addEvent(formData);
-          });
-        }
-      );
+      await storageService.upload(file, '/event-img/' + docRef.id).then(() => {
+        const storage = getStorage();
+        const filePath = '/event-img/' + docRef.id;
+        // Get the download URL
+        getDownloadURL(ref(storage, filePath)).then((url) => {
+          event.imageURL = url;
+          formData.image = url;
+          eventRepository.update(docRef.id, event);
+          addEvent(formData);
+        });
+      });
     } else {
       formData.image = event.imageURL;
       addEvent(formData);
@@ -82,15 +80,19 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
 
   function AddWindow() {
     return (
-      <>
-        <Modal show={showModalAddEvent} onHide={handleCloseAddEvent} animation={false} style={{ display: 'center' }}>
-          <Modal.Header closeButton>
-            <Modal.Title>הוסף אירוע</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{addForm()}</Modal.Body>
-          <Modal.Footer></Modal.Footer>
-        </Modal>
-      </>
+      <Dialog open={showModalAddEvent} onClose={handleCloseAddEvent} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">
+          הוסף אירוע
+          <IconButton
+            aria-label="close"
+            onClick={handleCloseAddEvent}
+            style={{ position: 'absolute', right: 8, top: 8 }}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>{addForm()}</DialogContent>
+        {/* DialogActions can be used here if you have any actions like 'Save' or 'Cancel' */}
+      </Dialog>
     );
   }
 
@@ -132,7 +134,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
         formData={formData}
         MAX_CHARS_Title={MAX_CHARS_Title}
         MAX_CHARS_Details={MAX_CHARS_Details}
-        requiredFields={{ title: true, date: true, image: true, details: true }}
+        requiredFields={{ add: true }}
       />
     );
   }

@@ -1,11 +1,9 @@
 .study-material-container {
-  background-image: url('/robor.webp');
   height: 100%;
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: overlay;
   background-position: inherit;
-  /* background-color: rgb(165, 159, 159); */
   background-repeat: no-repeat;
 }
 
@@ -14,7 +12,6 @@
   max-width: 25rem;
   min-height: fit-content;
   /* border: 3px solid #65272a; */
-  background-color: #d6d0cc;
   /* rgb(39, 40, 43); */
   /* box-shadow: 3px 3px 3px 4px rgba(53, 50, 53, 0.69); */
   box-shadow: 0 0 10px 4px rgba(37, 37, 37, 0.3);
@@ -26,7 +23,6 @@
 
 .bu-more {
   /* width: fit-content; */
-  background-color: transparent;
   border: none;
   border-radius: 20px;
   padding: 4px;
@@ -63,8 +59,6 @@
   margin: auto;
   padding: 12px 42px;
   color: #151414;
-  background-color: transparent;
-  border: 3px solid #da8888;
   border-radius: 50px;
   cursor: pointer;
   transform: translateY(-6px);
@@ -79,12 +73,10 @@
 
 .Card .dow-icon {
   margin-right: 50px;
-  color: whitesmoke;
 }
 
 .Card .whenedite {
   padding: 5px;
-  border: 2px dashed rgb(231, 119, 39);
-  /* color: rgb(235, 143, 78); */
+  border: 2px dashed;
   margin-bottom: 2px;
 }

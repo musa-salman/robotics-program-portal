@@ -1,9 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
 import { useEventService } from './repository/EventContext';
 import { AuthContext } from '../authentication/services/AuthContext';
 import { StudentContext } from '../students-management/StudentContext';
 import { Student } from '../students-management/Student';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import DialogContent from '@mui/material/DialogContent';
+import FormGroup from '@mui/material/FormGroup';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
 
 interface RegisterStudentToEventProps {
   eventId: string;
@@ -65,40 +71,35 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
     };
 
     return (
-      <>
-        <Modal show={showModalRegister} onHide={handleCloseRegister} style={{ display: 'center' }}>
-          <Form onSubmit={handleSubmitRegister}>
-            <Modal.Header closeButton>
-              <Modal.Title>האם אתה בטוח שאתה רוצה להירשם לאירוע</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <Form.Check required aria-label="option 1" feedback="You must agree before submitting." />
-                אני מאשר שאני רוצה להירשם לאירוע
-              </div>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseRegister}>
-                  סגור
-                </Button>
-                <Button variant="primary" type="submit">
-                  מאשר
-                </Button>
-              </Modal.Footer>
-            </Modal.Body>
-          </Form>
-        </Modal>
-      </>
+      <Dialog open={showModalRegister} onClose={handleCloseRegister} aria-labelledby="form-dialog-title">
+        <form onSubmit={handleSubmitRegister}>
+          <DialogTitle id="form-dialog-title">האם אתה בטוח שאתה רוצה להירשם לאירוע</DialogTitle>
+          <DialogContent>
+            <FormGroup style={{ display: 'flex', gap: '10px' }}>
+              <FormControlLabel control={<></>} label="אני מאשר שאני רוצה להירשם לאירוע" />
+            </FormGroup>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseRegister} color="secondary">
+              סגור
+            </Button>
+            <Button type="submit" color="primary">
+              מאשר
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     );
   }
 
   return (
     <>
       {isRegistered ? (
-        <Button variant="secondary" disabled>
+        <Button variant="contained" color="secondary" disabled>
           רשום
         </Button>
       ) : (
-        <Button variant="primary" onClick={handleRegister}>
+        <Button variant="contained" color="primary" onClick={handleRegister}>
           הירשם
         </Button>
       )}
