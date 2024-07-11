@@ -16,7 +16,7 @@ function SplashScreen() {
             <Button color="inherit">הירשם</Button>
           </Toolbar>
         </div>
-        <div>{/* <Typography variant="h5" sx={{ mt: 2 }}>nnnnnn</Typography> */}</div>
+
         <div className="imge">
           <img src="rr.png" style={{ width: '15rem' }} />
         </div>

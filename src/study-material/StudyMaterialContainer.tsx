@@ -13,6 +13,7 @@ import EmptyStudyMaterials from './components/EmptyStudyMaterials';
 import { SearchBar } from './components/SearchBar';
 import MaterialCard from './components/MaterialCard';
 import CategorySelector from './components/CategorySelector';
+import DeleteModal from './DeleteModal';
 
 function StudyMaterialContainer() {
   const materialService = useMaterialService();

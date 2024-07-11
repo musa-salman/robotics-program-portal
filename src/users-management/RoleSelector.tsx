@@ -1,37 +1,41 @@
-import { Box, Button, List, ListItemButton, ListItemText, Modal } from '@mui/material';
+import { FormControl, MenuItem, Select } from '@mui/material';
 import './RoleSelector.css';
-import { useState } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
 import Role, { roleNames, selectableRoles } from '../authentication/components/Roles';
 
 interface RoleSelectorProps {
-  userId: string;
   onSelect: (roleSelected: Role) => void;
   onCancel: () => void;
 }
 
-const RoleSelector: React.FC<RoleSelectorProps> = ({ userId, onSelect, onCancel }) => {
+const RoleSelector: React.FC<RoleSelectorProps> = ({ onSelect, onCancel }) => {
   const selectHandler = (role: Role) => {
     onSelect(role);
   };
 
+  const handleChange = (event: any) => {
+    event.preventDefault();
+    event.stopPropagation();
+    selectHandler(event.target.value as Role);
+  };
+
   return (
-    <>
-      <Modal open={true} onClose={onCancel}>
-        <Box className="role-list-container">
-          <List className="role-list">
-            {selectableRoles.map((role) => (
-              <ListItemButton key={role} className="role-list-item-button" onClick={() => selectHandler(role as Role)}>
-                <ListItemText primary={roleNames[role as Role]} className="role-list-item-text" />
-              </ListItemButton>
-            ))}
-          </List>
-          <Button className="clo-btn" onClick={onCancel}>
-            <CloseIcon className="close-icn" />
-          </Button>
-        </Box>
-      </Modal>
-    </>
+    <FormControl>
+      <Select
+        sx={{ minWidth: 120 }}
+        autoWidth
+        open
+        labelId="role-selector-label"
+        id="role-selector"
+        label="Role"
+        onChange={handleChange}
+        onClose={onCancel}>
+        {selectableRoles.map((role) => (
+          <MenuItem key={role} value={role}>
+            {roleNames[role as Role]}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 };
 

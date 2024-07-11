@@ -1,7 +1,9 @@
 .speedDial {
   display: flex;
+  justify-items: right;
+  align-self: start;
+  top: 2;
   position: absolute;
-  right: 3px;
   background-color: transparent;
 }
 

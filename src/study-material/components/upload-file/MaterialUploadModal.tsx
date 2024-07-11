@@ -23,8 +23,6 @@ import GPT from '../../../gpt-service/GPTComponent';
 import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
 import { useMaterialService } from '../../repository/StudyMaterialContext';
 
-
-
 interface MaterialUploadModalProps {
   handleClose: () => void;
   handleAdd: (studyMaterial: StudyMaterial) => void;
@@ -62,7 +60,6 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
       try {
         const data: Category[] = await studyMaterialManagement.categoryRepository.find();
         setCategories(data);
-        
       } catch (error) {
         console.error('Error fetching items:', error);
       }
@@ -95,8 +92,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
   };
 
   const handleSubmit = async () => {
-    
-    if(studyMaterial.title !== "" && studyMaterial.filename !== "" && studyMaterial.category !== "" && file !== null){
+    if (studyMaterial.title !== '' && studyMaterial.filename !== '' && studyMaterial.category !== '' && file !== null) {
       studyMaterialManagement.studyMaterialRepository.create(studyMaterial).then((docRef) => {
         storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename);
       });
@@ -241,23 +237,24 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
               </GPT>
             </Grid>
 
-            <Grid xs={7} className='px-5 mt-3' >
-                <Button variant="contained" className='px-5 mx-5' onClick={handleSubmit}>העלה</Button>
+            <Grid xs={7} className="px-5 mt-3">
+              <Button variant="contained" className="px-5 mx-5" onClick={handleSubmit}>
+                העלה
+              </Button>
             </Grid>
 
-            <Grid xs={5} className='px-5 mt-3'>
-                <Button variant="contained" className='px-5' onClick={handleClose}>סגירה</Button>
+            <Grid xs={5} className="px-5 mt-3">
+              <Button variant="contained" className="px-5" onClick={handleClose}>
+                סגירה
+              </Button>
             </Grid>
-
           </Grid>
         </form>
         <Modal
-          
           open={showCategoryManagement}
           onClose={handleCloseCategoryManagement}
           aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
+          aria-describedby="modal-modal-description">
           <CategoryManagement
             categories={categories}
             handleCloseCategoryManagement={handleCloseCategoryManagement}
@@ -265,7 +262,6 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
             handleSelect={() => {}}
           />
         </Modal>
-        
       </Box>
     </>
   );
