@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { Button, Modal } from 'react-bootstrap';
 import { EventProps } from './EventCard';
 import { IEvent } from './repository/Event';
 import { useEventService } from './repository/EventContext';
@@ -7,6 +6,14 @@ import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import AdminMenu from './AdminOptions';
 import CustomForm from './CustomForm';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface EditDeleteEventProps {
   event: EventProps;
@@ -99,15 +106,16 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
 
   function EditWindow() {
     return (
-      <>
-        <Modal show={showModalEdit} onHide={handleCloseEdit} animation={false} style={{ display: 'center' }}>
-          <Modal.Header closeButton>
-            <Modal.Title>שינוי אירוע</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{editForm()}</Modal.Body>
-          <Modal.Footer></Modal.Footer>
-        </Modal>
-      </>
+      <Dialog open={showModalEdit} onClose={handleCloseEdit} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">
+          שינוי אירוע
+          <IconButton aria-label="close" onClick={handleCloseEdit} style={{ position: 'absolute', right: 8, top: 8 }}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>{editForm()}</DialogContent>
+        {/* DialogActions can be used here if you have any actions like 'Save' or 'Cancel' */}
+      </Dialog>
     );
   }
 
@@ -123,29 +131,31 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
         formData={event}
         MAX_CHARS_Title={MAX_CHARS_Title}
         MAX_CHARS_Details={MAX_CHARS_Details}
-        requiredFields={{ title: false, date: false, image: false, details: false }}
+        requiredFields={{ add: false }}
       />
     );
   }
 
   function DeleteWindow() {
     return (
-      <>
-        <Modal show={showModalDelete} onHide={handleCloseDelete} style={{ display: 'center' }}>
-          <Modal.Header closeButton>
-            <Modal.Title>האם אתה בטוח שברצונך למחוק את האירוע הזה</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>אתה לא יכול לחזור אחורה לאחר מחיקת האירוע</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseDelete}>
-              סגור
-            </Button>
-            <Button variant="danger" onClick={handleSaveDelete}>
-              לִמְחוֹק
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </>
+      <Dialog
+        open={showModalDelete}
+        onClose={handleCloseDelete}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description">
+        <DialogTitle id="alert-dialog-title">האם אתה בטוח שברצונך למחוק את האירוע הזה</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">אתה לא יכול לחזור אחורה לאחר מחיקת האירוע</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDelete} color="secondary">
+            סגור
+          </Button>
+          <Button onClick={handleSaveDelete} color="error">
+            לִמְחוֹק
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   }
 

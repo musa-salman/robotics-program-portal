@@ -5,8 +5,9 @@ import { IEvent } from './repository/Event';
 import { CircularProgress, Box } from '@mui/material';
 import './EventContainer.css';
 import EmptyEventCard from './EmptyEventCard';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import AddEvent from './AddEvent';
+import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
+import Role from '../authentication/components/Roles';
 
 type EventContainer = {
   eventsProps: EventProps[];
@@ -14,16 +15,8 @@ type EventContainer = {
 
 const EventContainer = () => {
   const [events, setEvents] = useState<EventProps[] | null>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
+
   const eventRepository = useEventService().eventRepository;
-
-  const handleShiftEventsRight = () => {
-    if (events !== null) setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-  };
-
-  const handleShiftEventsLeft = () => {
-    if (events !== null) setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, events.length - 3));
-  };
 
   useEffect(() => {
     const getEvents = async () => {
@@ -87,28 +80,24 @@ const EventContainer = () => {
 
   return (
     <div className="events">
-      <div className="events-container-default-style">
-        <div className="shift-buttons">
-          <ArrowForwardIosIcon onClick={handleShiftEventsRight} />
-        </div>
-        {events
-          .sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
-          .slice(currentIndex, currentIndex + 3)
-          .map((event) => (
-            <EventCard
-              key={event.id}
-              id={event.id}
-              date={event.date}
-              title={event.title}
-              details={event.details}
-              image={event.image}
-              onEventDelete={onEventDelete}
-              onEventEdit={onEventEdit}
-            />
-          ))}
-        <div className="shift-buttons">
-          <ArrowBackIosIcon onClick={handleShiftEventsLeft} />
-        </div>
+      <div className="events-header-button">
+        <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
+          <AddEvent addEvent={addEvent} />
+        </RoleBasedAccessControl>
+      </div>
+      <div className="events-container-show-all-events-style">
+        {events?.map((event) => (
+          <EventCard
+            key={event.id}
+            id={event.id}
+            date={event.date}
+            title={event.title}
+            details={event.details}
+            image={event.image}
+            onEventDelete={onEventDelete}
+            onEventEdit={onEventEdit}
+          />
+        ))}
       </div>
     </div>
   );

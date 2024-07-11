@@ -10,8 +10,8 @@ import EventContainer from '../events/EventContainer';
 import BannerButton from './BannerButton';
 
 const USER_LINKS = [
-  { icon: <BookIcon />, label: 'חומרי לימוד', path: '/study-materials' },
   { icon: <EventIcon />, label: 'אירועים', path: '/events' },
+  { icon: <BookIcon />, label: 'חומרי לימוד', path: '/study-materials' },
   { icon: <PictureAsPdfIcon />, label: 'מסמכים', path: '/documents' }
 ];
 
@@ -31,20 +31,12 @@ const Banner: React.FC = () => {
           <EventContainer />
         </div>
         <div className="button-group">
-          <BannerButton
-            className="button-icon"
-            icon={<PeopleIcon />}
-            label="ניהול תלמדים"
-            path="/students-management"
-          />
-          <BannerButton
-            className="button-icon"
-            icon={<PeopleIcon />}
-            label="ניהול נרשמים"
-            path="/registers-management"
-          />
-          <BannerButton className="button-icon" icon={<PeopleIcon />} label="ניהול משתמשים" path="/users" />
-          <BannerButton className="button-icon" icon={<PictureAsPdfIcon />} label="מסמכים" path="/documents" />
+          {USER_LINKS.map((link, index) => (
+            <BannerButton key={index} icon={link.icon} label={link.label} path={link.path} className={'button-icon'} />
+          ))}
+          {ADMIN_LINKS.map((link, index) => (
+            <BannerButton key={index} icon={link.icon} label={link.label} path={link.path} className={'button-icon'} />
+          ))}
         </div>
       </div>
     </>

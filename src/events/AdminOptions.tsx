@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import './AdminOptions.css';
-
 interface AdminMenuProps {
   handleEdit: () => void;
   handleDelete: () => void;

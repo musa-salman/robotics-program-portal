@@ -1,8 +1,19 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
+import {
+  Box,
+  Typography,
+  Button,
+  TextField,
+  MenuItem,
+  InputLabel,
+  Select,
+  FormControl,
+  Grid,
+  InputAdornment,
+  FormHelperText,
+  Modal
+} from '@mui/material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useContext, useEffect, useState } from 'react';
-import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import './MaterialUploadModal.css';
 import { Category } from '../../repository/Category';
 import { StudyMaterial } from '../../repository/StudyMaterial';
@@ -12,23 +23,27 @@ import GPT from '../../../gpt-service/GPTComponent';
 import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
 import { useMaterialService } from '../../repository/StudyMaterialContext';
 
-type SelectedItem = string;
 interface MaterialUploadModalProps {
   handleClose: () => void;
   handleAdd: (studyMaterial: StudyMaterial) => void;
 }
 
 const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, handleAdd }) => {
+  const [isForward, setIsForward] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [, setUploadProgress] = useState(0);
-  const [selectedItem, setSelectedItems] = useState<SelectedItem>('הכל');
   const [categories, setCategories] = useState<Category[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [showAddEdit, setShowAddEdit] = useState(false);
-  const handleCloseAddEdit = () => setShowAddEdit(false);
-  const handleShowAddEdit = () => setShowAddEdit(true);
+  const [showCategoryManagement, setShowCategoryManagement] = useState(false);
+  const handleCloseCategoryManagement = () => setShowCategoryManagement(false);
+  const handleShowCategoryManagement = () => setShowCategoryManagement(true);
   const studyMaterialManagement = useMaterialService();
-  const [validated, setValidated] = useState(false);
+  const [isValid, setIsValid] = useState({
+    filename: true,
+    id: true,
+    category: true,
+    title: true,
+    description: true
+  });
 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
     filename: '',
@@ -60,20 +75,9 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
     return <div>Loading...</div>;
   }
 
-  const handleSelect = (eventKey: string | null) => {
-    if (eventKey) {
-      setSelectedItems(eventKey);
-    }
-  };
-
   const handleInput = (event: any) => {
     const { name, value } = event.target;
     setStudyMaterial((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleDate = () => {
-    const currentTime = new Date();
-    setStudyMaterial((prevData) => ({ ...prevData, date: currentTime }));
   };
 
   const handleFileChange = (event: any) => {
@@ -87,130 +91,178 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
     }
   };
 
-  const handleSubmit = async (event: any) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
-    setValidated(true);
-
-    if (file !== null && studyMaterial.title !== '') {
-      // const docRef = await studyMaterialRepository.create(studyMaterial);
-      studyMaterial.category = selectedItem;
+  const handleSubmit = async () => {
+    if (studyMaterial.title !== '' && studyMaterial.filename !== '' && studyMaterial.category !== '' && file !== null) {
       studyMaterialManagement.studyMaterialRepository.create(studyMaterial).then((docRef) => {
-        storageService.upload(
-          file,
-          '/study-material/' + docRef.id + '-' + studyMaterial.filename,
-          setUploadProgress,
-          () => {},
-          () => {}
-        );
+        storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename);
       });
-
       handleAdd(studyMaterial);
       handleClose();
-      handleDate();
+    } else {
+      setIsForward(true);
     }
+
+    // const form = event.currentTarget;
+    // if (form.checkValidity() === false) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    // }
+
+    // setValidated(true);
+
+    // if (file !== null && studyMaterial.title !== '') {
+    //   studyMaterial.category = selectedItem;
+
+    // }
+    console.log('studyMaterial', studyMaterial);
   };
-  console.log('studyMaterial', studyMaterial);
 
   return (
     <>
-      <Modal.Header closeButton style={{ backgroundColor: '#d1c8bf', width: '45rem' }}>
-        <h1 style={{ fontSize: '40px', color: 'black', border: 'none' }}>העלת קובץ</h1>
-      </Modal.Header>
-      <Modal.Body className="backgroundStyle">
-        <Form className="px-3 mx-3" noValidate validated={validated} onSubmit={handleSubmit}>
-          <Form.Group className="px-1">
-            <Form.Label>כותרת</Form.Label>
-            <GPT
-              initialValue=""
-              getData={() => suggestMaterialTitles(studyMaterial)}
-              options={{ simplify: false, improve: false, shorten: false }}>
-              <Form.Control
-                type="text"
-                name="title"
-                required
-                style={{ backgroundColor: '#f5f4f3', color: 'black', border: 'none' }}
-                placeholder="כותרת"
-                onChange={(event) => handleInput(event)}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '45rem',
+          boxShadow: 24,
+          backgroundColor: 'black',
+          p: 4,
+          borderRadius: 1,
+          outline: 'none'
+        }}>
+        <Typography id="modal-modal-title" variant="h1" sx={{ fontSize: '40px', border: 'none', textAlign: 'center' }}>
+          העלת קובץ
+        </Typography>
+        <form className="mt-4">
+          <Grid container spacing={3}>
+            <Grid item xs={11.6}>
+              <GPT
+                initialValue=""
+                getData={() => suggestMaterialTitles(studyMaterial)}
+                options={{ simplify: false, improve: false, shorten: false }}>
+                <TextField
+                  fullWidth
+                  label="כותרת"
+                  name="title"
+                  value={studyMaterial.title}
+                  onChange={handleInput}
+                  required
+                  error={!isValid.title || isForward}
+                  onBlur={() => {
+                    setIsValid((prevData) => ({ ...prevData, title: studyMaterial.title !== '' }));
+                  }}
+                  helperText={!isValid.title ? 'יש למלה' : ''}
+                />
+              </GPT>
+            </Grid>
+
+            <Grid item xs={5.2}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">בחר מיקום</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={studyMaterial.category}
+                  name="category"
+                  label="בחר מיקום"
+                  onChange={handleInput}
+                  required
+                  error={!isValid.category || isForward}
+                  onBlur={() => {
+                    setIsValid((prevData) => ({ ...prevData, title: studyMaterial.category !== '' }));
+                  }}>
+                  {(categories || [])
+                    .filter((item) => item.category !== 'הכל')
+                    .map((item) => (
+                      <MenuItem value={item.category}>{item.category}</MenuItem>
+                    ))}
+                  <Button onClick={handleShowCategoryManagement} className="px-5 mx-5">
+                    {' '}
+                    הוספה/שינוי
+                  </Button>
+                </Select>
+                <FormHelperText>{studyMaterial.category === '' || isForward ? 'נה לבחור' : ''}</FormHelperText>
+              </FormControl>
+            </Grid>
+
+            <Grid xs={6.8}>
+              <TextField
+                className="mt-4 px-4"
+                fullWidth
+                disabled
+                value={studyMaterial.filename}
+                placeholder="שם קובץ"
+                error={!isValid.filename || isForward}
+                onBlur={() => {
+                  setIsValid((prevData) => ({ ...prevData, title: studyMaterial.filename !== '' }));
+                }}
+                helperText={!isValid.filename ? 'יש למלה' : ''}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <input
+                        accept="*"
+                        style={{ display: 'none' }}
+                        id="upload-file"
+                        type="file"
+                        onChange={handleFileChange}
+                      />
+                      <label htmlFor="upload-file">
+                        <Button variant="contained" component="label" htmlFor="upload-file">
+                          <CloudUploadIcon />
+                          לעלות קובץ
+                        </Button>
+                      </label>
+                    </InputAdornment>
+                  )
+                }}
               />
-            </GPT>
-          </Form.Group>
+            </Grid>
 
-          <Form.Group className="position-relative my-3 px-2" controlId="validationCustom02">
-            <Form.Control
-              type="file"
-              required
-              name="filename"
-              className="position-relative my-4 "
-              onChange={(event) => handleFileChange(event)}
-            />
-          </Form.Group>
+            <Grid xs={12} className=" px-4">
+              <GPT initialValue="" getData={() => generateMaterialDescription(studyMaterial)}>
+                <TextField
+                  name="description"
+                  label="תיאור"
+                  placeholder="הכנס תיאור כאן"
+                  variant="outlined"
+                  fullWidth
+                  onChange={handleInput}
+                  margin="normal"
+                  multiline
+                  rows={5}
+                />
+              </GPT>
+            </Grid>
 
-          <Navbar expand="lg">
-            <Container fluid>
-              <Navbar.Collapse id="navbar-dark-example">
-                <Nav>
-                  <NavDropdown
-                    id="nav-dropdown-dark-example"
-                    title="בחר מיקום"
-                    menuVariant="dark"
-                    onSelect={handleSelect}>
-                    <div className="modal-footer-scroll2">
-                      {(categories || [])
-                        .filter((item) => item.category !== 'הכל')
-                        .map((item, index) => (
-                          <NavDropdown.Item
-                            eventKey={item.category}
-                            onClick={() => handleSelect(item.category)}
-                            key={index}>
-                            {item.category}
-                          </NavDropdown.Item>
-                        ))}
+            <Grid xs={7} className="px-5 mt-3">
+              <Button variant="contained" className="px-5 mx-5" onClick={handleSubmit}>
+                העלה
+              </Button>
+            </Grid>
 
-                      <Button variant="link" onClick={handleShowAddEdit}>
-                        הוספה/שינוי
-                      </Button>
-                    </div>
-                  </NavDropdown>
-                </Nav>
-                <span className="px-4">{selectedItem}</span>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
-
-          <Form.Label>תיאור</Form.Label>
-          <GPT initialValue="" getData={() => generateMaterialDescription(studyMaterial)}>
-            <Form.Control
-              as="textarea"
-              name="description"
-              placeholder="הכנס תיאור"
-              onChange={(event) => handleInput(event)}
-              style={{ height: '100px', backgroundColor: '#f5f4f3', color: 'black', border: 'none' }}
-            />
-          </GPT>
-
-          <Modal.Footer className="justify-content-center">
-            <Button variant="primary" className="mx-3 px-5" onClick={handleSubmit}>
-              העלה
-            </Button>
-            <Button variant="secondary" className="mx-5 px-5" onClick={handleClose}>
-              סגירה
-            </Button>
-          </Modal.Footer>
-        </Form>
-      </Modal.Body>
-
-      <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
-        <CategoryManagement
-          categories={categories}
-          handleCloseAddEdit={handleCloseAddEdit}
-          setCategories={setCategories}
-          handleSelect={handleSelect}></CategoryManagement>
-      </Modal>
+            <Grid xs={5} className="px-5 mt-3">
+              <Button variant="contained" className="px-5" onClick={handleClose}>
+                סגירה
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+        <Modal
+          open={showCategoryManagement}
+          onClose={handleCloseCategoryManagement}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description">
+          <CategoryManagement
+            categories={categories}
+            handleCloseCategoryManagement={handleCloseCategoryManagement}
+            setCategories={setCategories}
+            handleSelect={() => {}}
+          />
+        </Modal>
+      </Box>
     </>
   );
 };
