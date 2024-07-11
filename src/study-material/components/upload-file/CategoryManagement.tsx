@@ -80,7 +80,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
 
   const handleSaveItem = (item: Category) => {
     console.log("1",categories);
-    console.log("save c ",item.category," id ",item.id);
+    console.log("save c ",updatedCategory?.category," id ",updatedCategory?.id);
     console.log("select",selectedCategory);
     if (!checkRepeat(selectedCategory) && selectedCategory !== item.category) {
       console.log('this action dose not exist');

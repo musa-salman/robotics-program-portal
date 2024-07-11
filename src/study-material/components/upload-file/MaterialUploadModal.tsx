@@ -131,7 +131,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
           transform: 'translate(-50%, -50%)',
           width: '45rem',
           boxShadow: 24,
-          backgroundColor:'black',
+          backgroundColor:'black', //FIXME:,
           p: 4,
           borderRadius: 1,
           outline: 'none'
