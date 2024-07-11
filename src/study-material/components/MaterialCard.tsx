@@ -1,18 +1,16 @@
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import './MaterialCard.css';
 import { useContext, useState } from 'react';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
-import { CardActions, CardContent, CardHeader, Divider, TextField, Typography } from '@mui/material';
+import { Button, Card, CardContent, CardHeader, Divider, TextField, Typography } from '@mui/material';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import { StorageServiceContext } from '../../storage-service/StorageContext';
-import SimpleSnackbar from '../../components/snackbar/SnackBar';
+
 import GPT from '../../gpt-service/GPTComponent';
 import { suggestMaterialTitles } from './upload-file/StudyMaterialPrompts';
 import formatDate from '../../utils/dateFormatter';
 import { useMaterialService } from '../repository/StudyMaterialContext';
-import Success from '../Success';
+import DeleteModal from '../DeleteModal';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -32,8 +30,8 @@ function MaterialCard({
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(studyMaterial.title);
   const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarShow, setsnackbarShow] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedMaterial, setSelectedMaterial] = useState<StudyMaterial | null>(null);
 
   const storageService = useContext(StorageServiceContext);
   const materialService = useMaterialService();
@@ -45,11 +43,20 @@ function MaterialCard({
     );
   };
 
+  const isDelete = () => {
+    setShowDeleteModal(true);
+  };
+
   const handleDelete = async () => {
-    storageService.delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename).then(() => {
-      materialService.studyMaterialRepository.delete(studyMaterial.id).then(() => onDelete(studyMaterial));
-    });
-    // TODO catch
+    storageService
+      .delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename)
+      .then(() => {
+        materialService.studyMaterialRepository.delete(studyMaterial.id).then(() => onDelete(studyMaterial));
+        onDelete(studyMaterial);
+      })
+      .catch((error) => {
+        console.error('Error Delete study material:', error);
+      });
   };
 
   const handleEditToggle = () => {
@@ -69,8 +76,6 @@ function MaterialCard({
         const updatedStudyMaterial = { ...studyMaterial, title: editedTitle, description: editedDescription };
         onUpdate(updatedStudyMaterial);
         setIsEditing(false);
-        setSnackbarMessage('The changes have been saved.');
-        setsnackbarShow(true);
       })
       .catch((error) => {
         console.error('Error updating study material:', error);
@@ -83,13 +88,13 @@ function MaterialCard({
 
   return (
     <>
-      <br></br>
+      {showDeleteModal && <DeleteModal onDelete={handleDelete} onCancel={() => setShowDeleteModal(false)} />}
       <Card className="Card">
         <MySpeedDial
           handleEditToggle={handleEditToggle}
           handleMoveToggle={handleMoveToggle}
           handleSave={handleSave}
-          handleDelete={handleDelete}
+          handleDelete={isDelete}
           isEditing={isEditing}
         />
         <br />
@@ -106,7 +111,7 @@ function MaterialCard({
           ) : (
             <CardHeader title={studyMaterial.title} className="title-card" />
           )}
-          <Divider className="custom-hr" />
+          <Divider component="div" role="presentation" />
           <div>
             {isEditing ? (
               <GPT initialValue={editedDescription} getData={() => suggestMaterialTitles(studyMaterial)}>
@@ -123,10 +128,11 @@ function MaterialCard({
               <Typography className="description">{studyMaterial.description}</Typography>
             )}
           </div>
-          <p className="date"> תאריך : {formatDate(studyMaterial.date)}</p>
-          <Button className="dow-button" onClick={handleDownload}>
+          <Typography className="date"> תאריך : {formatDate(studyMaterial.date)}</Typography>
+
+          <Button onClick={handleDownload}>
             הורדה
-            <DownloadIcon className="dow-icon" />
+            <DownloadIcon />
           </Button>
         </CardContent>
       </Card>

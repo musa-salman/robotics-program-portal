@@ -12,7 +12,7 @@ interface MySpeedDialProps {
   handleEditToggle: MouseEventHandler<HTMLDivElement> | undefined;
   handleMoveToggle: MouseEventHandler<HTMLDivElement> | undefined;
   handleSave: () => void;
-  handleDelete: () => void;
+  handleDelete: MouseEventHandler<HTMLDivElement> | undefined;
   // handleMove: (selectCategory: string) => void;
   isEditing: boolean;
 }
