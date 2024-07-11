@@ -1,18 +1,5 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  IconButton,
-  InputLabel,
-  List,
-  ListItemButton,
-  ListItemText,
-  MenuItem,
-  Modal,
-  Select
-} from '@mui/material';
+import { FormControl, MenuItem, Select } from '@mui/material';
 import './RoleSelector.css';
-import CloseIcon from '@mui/icons-material/Close';
 import Role, { roleNames, selectableRoles } from '../authentication/components/Roles';
 
 interface RoleSelectorProps {
