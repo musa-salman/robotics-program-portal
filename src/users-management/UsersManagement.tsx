@@ -4,7 +4,7 @@ import { Chip } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { useUserService } from '../users/UserContext';
 import { User } from '../users/User';
-import Role, { roleColors, roleColorsLevel, roleNames } from '../authentication/components/Roles';
+import Role, { roleColorsLevel, roleNames } from '../authentication/components/Roles';
 import { useState } from 'react';
 import RoleSelector from './RoleSelector';
 
@@ -57,16 +57,18 @@ const UsersManagement = () => {
                 }
               />
             ))}
-            <Chip
-              label="+"
-              onClick={() => {
-                setShowAddRoleDialog(true);
-                setUserToAddRole(row);
-              }}
-            />
-            {showAddRoleDialog && (
+            {userToAddRole !== row && (
+              <Chip
+                disabled={showAddRoleDialog}
+                label="+"
+                onClick={() => {
+                  setShowAddRoleDialog(true);
+                  setUserToAddRole(row);
+                }}
+              />
+            )}
+            {showAddRoleDialog && userToAddRole === row && (
               <RoleSelector
-                userId={userToAddRole!.id}
                 onSelect={(role) => {
                   userService.addRoleToUser(userToAddRole!.id, role).then(() => {
                     setShowAddRoleDialog(false);
@@ -82,7 +84,10 @@ const UsersManagement = () => {
                     );
                   });
                 }}
-                onCancel={() => setShowAddRoleDialog(false)}
+                onCancel={() => {
+                  setShowAddRoleDialog(false);
+                  setUserToAddRole(null);
+                }}
               />
             )}
           </>
