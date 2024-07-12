@@ -26,8 +26,14 @@ const EventContainer = () => {
   };
 
   useEffect(() => {
-    const getEvents = async () => {
-      setEvents(convertIEventsToEventProps(await eventRepository.find()));
+    const getEvents = () => {
+      eventRepository
+        .find()
+        .then((events) =>
+          setEvents(
+            convertIEventsToEventProps(events).sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
+          )
+        );
     };
     if (events === null) getEvents();
   }, [events]);
@@ -91,21 +97,18 @@ const EventContainer = () => {
         <div className="shift-buttons">
           <ArrowForwardIosIcon onClick={handleShiftEventsRight} />
         </div>
-        {events
-          .sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
-          .slice(currentIndex, currentIndex + 3)
-          .map((event) => (
-            <EventCard
-              key={event.id}
-              id={event.id}
-              date={event.date}
-              title={event.title}
-              details={event.details}
-              image={event.image}
-              onEventDelete={onEventDelete}
-              onEventEdit={onEventEdit}
-            />
-          ))}
+        {events.slice(currentIndex, currentIndex + 3).map((event) => (
+          <EventCard
+            key={event.id}
+            id={event.id}
+            date={event.date}
+            title={event.title}
+            details={event.details}
+            image={event.image}
+            onEventDelete={onEventDelete}
+            onEventEdit={onEventEdit}
+          />
+        ))}
         <div className="shift-buttons">
           <ArrowBackIosIcon onClick={handleShiftEventsLeft} />
         </div>
