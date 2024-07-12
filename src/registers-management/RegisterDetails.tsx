@@ -1,28 +1,90 @@
-import { Typography } from '@mui/material';
+import { Card, CardContent, CardHeader, Grid, IconButton, Typography } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { Register } from '../register/Register';
+import { hearAboutUsOptions, studyUnitsMajorOptions } from '../register/info';
 
 interface RegisterDetailsProps {
   register: Register;
+  onClose: () => void;
 }
 
-const RegisterDetails: React.FC<RegisterDetailsProps> = ({ register }) => {
+const RegisterDetails: React.FC<RegisterDetailsProps> = ({ register, onClose }) => {
   return (
-    <div>
-      <Typography>תעודת זהות: {register.studentId}</Typography>
-      <Typography>כתובת: {register.studentAddress}</Typography>
-      <Typography>
-        שם תלמיד: {register.firstName} {register.lastName}
-      </Typography>
-      <Typography>טלפון תלמיד: {register.studentPhoneNumber}</Typography>
-      <Typography>אימייל תלמיד: {register.studentEmail}</Typography>
-      <Typography>טלפון הורה: {register.parentPhoneNumber}</Typography>
-      <Typography>אימייל הורה: {register.parentEmail}</Typography>
-      <Typography>בית ספר: {register.studentSchool}</Typography>
-      <Typography>מגמת לימודים: {register.studyUnitsMajor}</Typography>
-      <Typography>מספר יחידות במתמטיקה: {register.numStudyUnitsMath}</Typography>
-      <Typography>איך שמעת עלינו: {register.hearAboutUs}</Typography>
-      <Typography>שאלות נוספות: {register.otherQuestions}</Typography>
-    </div>
+    <Card sx={{ margin: 2, padding: 2 }}>
+      <CardHeader
+        action={
+          <IconButton onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        }
+        title="פרטי הרשמה"
+        titleTypographyProps={{ variant: 'h5', color: 'primary' }}
+      />
+      <CardContent>
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <Typography variant="h6" color="textPrimary">
+              שם תלמיד: {register.firstName} {register.lastName}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondary">
+              תעודת זהות: {register.studentId}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondary">
+              כתובת: {register.studentAddress}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondary">
+              טלפון תלמיד: {register.studentPhoneNumber}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondary">
+              אימייל תלמיד: {register.studentEmail}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondary">
+              טלפון הורה: {register.parentPhoneNumber}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondary">
+              אימייל הורה: {register.parentEmail}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondary">
+              בית ספר: {register.studentSchool}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondary">
+              מגמת לימודים: {studyUnitsMajorOptions[Number(register.studyUnitsMajor)]}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondary">
+              מספר יחידות במתמטיקה: {register.numStudyUnitsMath}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondary">
+              איך שמעת עלינו: {hearAboutUsOptions[Number(register.hearAboutUs)]}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondary">
+              שאלות נוספות: {register.otherQuestions}
+            </Typography>
+          </Grid>
+        </Grid>
+      </CardContent>
+    </Card>
   );
 };
 

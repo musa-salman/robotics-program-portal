@@ -1,7 +1,5 @@
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.rtl.min.css';
 import { Route, Routes } from 'react-router-dom';
-import { useStudyMaterialRoutes } from './study-material/StudyMaterialRoutes';
 import RoleBasedAccessControl from './authentication/components/RoleBasedAccessControl';
 import EventContainer from './events/EventContainerShowALL';
 import Layout from './components/layout/Layout';
@@ -11,7 +9,6 @@ import Banner from './components/Banner';
 import StudentsManagement from './students-management/StudentsManagement';
 import NotFoundPage from './components/NotFoundPage';
 import RegisterComponent from './register/RegisterComponent';
-import GPTPlayGround from './gpt-service/GPTPlayGround';
 import WaitApprovalPage from './authentication/components/wait-approval-page/WaitingApprovalPage';
 import RegisterManagement from './registers-management/RegistersManagement';
 import StudyMaterialContainer from './study-material/StudyMaterialContainer';
@@ -21,10 +18,10 @@ import SplashScreen from './components/SplashScreen';
 import RejectionPage from './authentication/components/rejection-page/RejectionPage';
 import UsersManagement from './users-management/UsersManagement';
 import DocumentPage from './docs-handling/DocumentPage';
+import PageContainer from './components/PageContainer';
 
 function App() {
   const isDev = process.env.NODE_ENV === '';
-  const StudyMaterialRoutes = useStudyMaterialRoutes();
 
   const routeConfigurations = {
     authorizedRoutes: [
@@ -32,6 +29,7 @@ function App() {
         path: '/study-materials',
         element: <StudyMaterialContainer />,
         allowedRoles: [Role.Admin, Role.Owner, Role.Student],
+        title: 'חומרי לימוד',
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />,
           [Role.Pending]: <WaitApprovalPage />
@@ -41,6 +39,7 @@ function App() {
         path: '/events',
         element: <EventContainer />,
         allowedRoles: [Role.Admin, Role.Owner, Role.Student],
+        title: 'אירועים',
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />,
           [Role.Pending]: <WaitApprovalPage />
@@ -50,6 +49,7 @@ function App() {
         path: '/students-management',
         element: <StudentsManagement />,
         allowedRoles: [Role.Admin, Role.Owner],
+        title: 'ניהול סטודנטים',
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />,
           [Role.Pending]: <WaitApprovalPage />
@@ -59,6 +59,7 @@ function App() {
         path: '/registers-management',
         element: <RegisterManagement />,
         allowedRoles: [Role.Admin, Role.Owner],
+        title: 'ניהול נרשמים',
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />,
           [Role.Pending]: <WaitApprovalPage />
@@ -67,12 +68,14 @@ function App() {
       {
         path: '/users',
         element: <UsersManagement />,
-        allowedRoles: [Role.Owner]
+        allowedRoles: [Role.Owner],
+        title: 'ניהול משתמשים'
       },
       {
         path: '/register',
         element: <RegisterComponent />,
         allowedRoles: [Role.PreEnrollment],
+        title: 'הרשמה מגמה העל איזורית ברובוטיקה מכטרוניקה',
         roleToComponentMap: {
           [Role.Pending]: <WaitApprovalPage />,
           [Role.Rejected]: <RejectionPage />
@@ -82,6 +85,7 @@ function App() {
         path: '/approvalPage',
         element: <WaitApprovalPage />,
         allowedRoles: [Role.Pending],
+        title: 'ממתין לאישור',
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />,
           [Role.Rejected]: <RejectionPage />
@@ -94,13 +98,15 @@ function App() {
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />,
           [Role.Pending]: <WaitApprovalPage />,
-          [Role.Rejected]: <RejectionPage />
+          [Role.Rejected]: <RejectionPage />,
+          [Role.Unauthenticated]: <SplashScreen />
         }
       },
       {
         path: '/documents',
         element: <DocumentPage />,
         allowedRoles: [Role.Admin, Role.Owner, Role.Student],
+        title: 'מסמכים',
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />,
           [Role.Pending]: <WaitApprovalPage />,
@@ -111,6 +117,7 @@ function App() {
         path: '/rejection',
         element: <RejectionPage />,
         allowedRoles: [Role.Rejected],
+        title: 'הרשמה נדחתה',
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />,
           [Role.Pending]: <WaitApprovalPage />
@@ -134,36 +141,25 @@ function App() {
         path: '/unconnected-internet',
         element: <NoInternet />
       }
-    ],
-    devRoutes: [
-      {
-        path: '/gpt',
-        element: <GPTPlayGround />
-      }
     ]
   };
 
   return (
     <Routes>
       <Route path="/" element={isDev ? <TestingLayout /> : <Layout />}>
-        {isDev &&
-          routeConfigurations.devRoutes.map((route, index) => (
-            <Route key={index} path={route.path} element={route.element} />
-          ))}
-        {StudyMaterialRoutes}
-        {routeConfigurations.authorizedRoutes.map((route, index) => (
+        {routeConfigurations.authorizedRoutes.map((route) => (
           <Route
-            key={index}
+            key={route.path}
             path={route.path}
             element={
               <RoleBasedAccessControl allowedRoles={route.allowedRoles} roleToComponentMap={route.roleToComponentMap}>
-                {route.element}
+                {route.title ? <PageContainer title={route.title}> {route.element} </PageContainer> : route.element}
               </RoleBasedAccessControl>
             }
           />
         ))}
-        {routeConfigurations.publicRoutes.map((route, index) => (
-          <Route key={index} path={route.path} element={route.element} />
+        {routeConfigurations.publicRoutes.map((route) => (
+          <Route key={route.path} path={route.path} element={route.element} />
         ))}
       </Route>
     </Routes>

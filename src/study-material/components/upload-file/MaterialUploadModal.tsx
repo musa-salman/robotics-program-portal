@@ -44,6 +44,16 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
     title: true,
     description: true
   });
+  const ITEM_HEIGHT = 40;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250
+      }
+    }
+  };
 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
     filename: '',
@@ -101,19 +111,6 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
     } else {
       setIsForward(true);
     }
-
-    // const form = event.currentTarget;
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    // }
-
-    // setValidated(true);
-
-    // if (file !== null && studyMaterial.title !== '') {
-    //   studyMaterial.category = selectedItem;
-
-    // }
     console.log('studyMaterial', studyMaterial);
   };
 
@@ -127,7 +124,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
           transform: 'translate(-50%, -50%)',
           width: '45rem',
           boxShadow: 24,
-          backgroundColor: 'black',
+          backgroundColor: 'background.paper',
           p: 4,
           borderRadius: 1,
           outline: 'none'
@@ -135,7 +132,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
         <Typography id="modal-modal-title" variant="h1" sx={{ fontSize: '40px', border: 'none', textAlign: 'center' }}>
           העלת קובץ
         </Typography>
-        <form className="mt-4">
+        <form style={{ marginTop: '0.25rem' }}>
           <Grid container spacing={3}>
             <Grid item xs={11.6}>
               <GPT
@@ -160,15 +157,16 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
 
             <Grid item xs={5.2}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">בחר מיקום</InputLabel>
+                <InputLabel id="demo-simple-select-autowidth-label">בחר מיקום</InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
+                  labelId="demo-simple-select-autowidth-label"
+                  id="demo-simple-select-autowidth"
                   value={studyMaterial.category}
                   name="category"
                   label="בחר מיקום"
                   onChange={handleInput}
                   required
+                  MenuProps={MenuProps}
                   error={!isValid.category || isForward}
                   onBlur={() => {
                     setIsValid((prevData) => ({ ...prevData, title: studyMaterial.category !== '' }));
@@ -178,7 +176,9 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                     .map((item) => (
                       <MenuItem value={item.category}>{item.category}</MenuItem>
                     ))}
-                  <Button onClick={handleShowCategoryManagement} className="px-5 mx-5">
+                  <Button
+                    onClick={handleShowCategoryManagement}
+                    style={{ paddingLeft: '1.25rem', paddingRight: '1.25rem', fontSize: '1.1rem' }}>
                     {' '}
                     הוספה/שינוי
                   </Button>
@@ -189,7 +189,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
 
             <Grid xs={6.8}>
               <TextField
-                className="mt-4 px-4"
+                style={{ marginTop: '1.50rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
                 fullWidth
                 disabled
                 value={studyMaterial.filename}
@@ -221,7 +221,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
               />
             </Grid>
 
-            <Grid xs={12} className=" px-4">
+            <Grid xs={12} style={{ paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
               <GPT initialValue="" getData={() => generateMaterialDescription(studyMaterial)}>
                 <TextField
                   name="description"
@@ -237,14 +237,20 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
               </GPT>
             </Grid>
 
-            <Grid xs={7} className="px-5 mt-3">
-              <Button variant="contained" className="px-5 mx-5" onClick={handleSubmit}>
+            <Grid xs={7} style={{ marginTop: '0.75rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
+              <Button
+                variant="contained"
+                style={{ marginRight: '8rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
+                onClick={handleSubmit}>
                 העלה
               </Button>
             </Grid>
 
-            <Grid xs={5} className="px-5 mt-3">
-              <Button variant="contained" className="px-5" onClick={handleClose}>
+            <Grid xs={5} style={{ marginTop: '0.75rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
+              <Button
+                variant="contained"
+                style={{ marginRight: '2rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
+                onClick={handleClose}>
                 סגירה
               </Button>
             </Grid>

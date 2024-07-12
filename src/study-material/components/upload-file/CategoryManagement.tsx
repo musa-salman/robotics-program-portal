@@ -79,7 +79,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
 
   const handleSaveItem = (item: Category) => {
     console.log('1', categories);
-    console.log('save c ', item.category, ' id ', item.id);
+    console.log('save c ', updatedCategory?.category, ' id ', updatedCategory?.id);
     console.log('select', selectedCategory);
     if (!checkRepeat(selectedCategory) && selectedCategory !== item.category) {
       console.log('this action dose not exist');
@@ -135,7 +135,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
           transform: 'translate(-50%, -50%)',
           width: '35rem',
           boxShadow: 24,
-          backgroundColor: 'black', //FIXME:
+          backgroundColor: 'background.paper',
           p: 4,
           borderRadius: 1,
           outline: 'none'
@@ -143,12 +143,12 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
         <Typography id="modal-modal-title" variant="h1" sx={{ fontSize: '40px', border: 'none', textAlign: 'center' }}>
           הוספה/שינוי
         </Typography>
-        <form className="my-3">
+        <form style={{ marginTop: '2rem' }}>
           <Grid container spacing={3} sx={{ justifyContent: 'center' }}>
             <Grid xs={10}>
               <TextField
                 fullWidth
-                className="mt-4"
+                style={{ marginTop: '1rem' }}
                 label="קטגוריה"
                 value={newCategory}
                 onChange={handleInputCategories}
@@ -169,50 +169,56 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
                 }}
               />
             </Grid>
-
-            {(categories || [])
-              .filter((item) => item.category !== 'הכל')
-              .map((item) => (
-                <>
-                  <Grid xs={8} key={item.id} className="mt-4 pt-3 mx-5 modal-footer-scroll">
-                    <TextField
-                      fullWidth
-                      label="קטגוריה"
-                      defaultValue={item.category}
-                      // value={updatedCategory?.category === item.category ? updatedCategory.category : ''}
-                      onChange={handleEditInput}
-                      disabled={updatedCategory?.category !== item.category}
-                      error={(!isValid.category || isForward) && updatedCategory?.category === item.category}
-                      onBlur={() => {
-                        setIsValid((prevData) => ({ ...prevData, category: updatedCategory?.category !== '' }));
-                      }}
-                      helperText={
-                        (!isValid.category || isForward) && updatedCategory?.category === item.category ? 'יש למלה' : ''
-                      }
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            {item.category !== updatedCategory?.category ? (
-                              <Button onClick={() => handleEditItem(item)}>
-                                <FontAwesomeIcon icon={faPenToSquare} />
+            <Grid xs={8} style={{ height: '18rem', overflow: 'auto', marginTop: '1rem' }}>
+              {(categories || [])
+                .filter((item) => item.category !== 'הכל')
+                .map((item) => (
+                  <>
+                    <Grid xs={11.6} key={item.category} style={{ paddingTop: '1rem' }}>
+                      <TextField
+                        fullWidth
+                        label="קטגוריה"
+                        defaultValue={item.category}
+                        // value={updatedCategory?.category === item.category ? updatedCategory.category : ''}
+                        onChange={handleEditInput}
+                        disabled={updatedCategory?.category !== item.category}
+                        error={(!isValid.category || isForward) && updatedCategory?.category === item.category}
+                        onBlur={() => {
+                          setIsValid((prevData) => ({ ...prevData, category: updatedCategory?.category !== '' }));
+                        }}
+                        helperText={
+                          (!isValid.category || isForward) && updatedCategory?.category === item.category
+                            ? 'יש למלה'
+                            : ''
+                        }
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              {item.category !== updatedCategory?.category ? (
+                                <Button onClick={() => handleEditItem(item)}>
+                                  <FontAwesomeIcon icon={faPenToSquare} />
+                                </Button>
+                              ) : (
+                                <Button onClick={() => handleSaveItem(item)}>
+                                  <FontAwesomeIcon icon={faFloppyDisk} />
+                                </Button>
+                              )}
+                              <Button onClick={() => handleDeleteCategory(item)}>
+                                <FontAwesomeIcon icon={faTrashCan} />
                               </Button>
-                            ) : (
-                              <Button onClick={() => handleSaveItem(item)}>
-                                <FontAwesomeIcon icon={faFloppyDisk} />
-                              </Button>
-                            )}
-                            <Button onClick={() => handleDeleteCategory(item)}>
-                              <FontAwesomeIcon icon={faTrashCan} />
-                            </Button>
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  </Grid>
-                </>
-              ))}
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+                    </Grid>
+                  </>
+                ))}
+            </Grid>
             <Grid xs={5}>
-              <Button variant="contained" className="px-5 mt-3 mx-5" onClick={handleCloseCategoryManagement}>
+              <Button
+                variant="contained"
+                style={{ marginTop: '0.75rem', marginRight: '4rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
+                onClick={handleCloseCategoryManagement}>
                 סגירה
               </Button>
             </Grid>

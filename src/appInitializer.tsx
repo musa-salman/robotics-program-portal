@@ -3,7 +3,6 @@ import { StudentRepository } from './students-management/StudentRepository';
 import { UserRepository } from './users/UserRepository';
 import { UserService } from './users/UserService';
 import React from 'react';
-import { ThemeProvider as BootstrapThemeProvider } from 'react-bootstrap';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { CssBaseline, Theme, ThemeProvider } from '@mui/material';
 import { BrowserRouter } from 'react-router-dom';
@@ -66,32 +65,30 @@ function bootstrap({ theme, cacheRtl }: IProps) {
   console.log(theme);
   return (
     <React.StrictMode>
-      <BootstrapThemeProvider dir="rtl">
-        <ThemeProvider theme={theme}>
-          <CacheProvider value={cacheRtl}>
-            <BrowserRouter>
-              <DocumentProvider documentService={documentService}>
-                <UserProvider userService={userService}>
-                  <GPTServiceProvider>
-                    <MaterialProvider materialService={materialService}>
-                      <EventProvider eventService={eventService}>
-                        <StorageProvider>
-                          <RegisterProvider registerService={registerService}>
-                            <AuthProvider>
-                              <CssBaseline />
-                              <App />
-                            </AuthProvider>
-                          </RegisterProvider>
-                        </StorageProvider>
-                      </EventProvider>
-                    </MaterialProvider>
-                  </GPTServiceProvider>
-                </UserProvider>
-              </DocumentProvider>
-            </BrowserRouter>
-          </CacheProvider>
-        </ThemeProvider>
-      </BootstrapThemeProvider>
+      <ThemeProvider theme={theme}>
+        <CacheProvider value={cacheRtl}>
+          <BrowserRouter>
+            <DocumentProvider documentService={documentService}>
+              <UserProvider userService={userService}>
+                <GPTServiceProvider>
+                  <MaterialProvider materialService={materialService}>
+                    <EventProvider eventService={eventService}>
+                      <StorageProvider>
+                        <RegisterProvider registerService={registerService}>
+                          <AuthProvider>
+                            <CssBaseline />
+                            <App />
+                          </AuthProvider>
+                        </RegisterProvider>
+                      </StorageProvider>
+                    </EventProvider>
+                  </MaterialProvider>
+                </GPTServiceProvider>
+              </UserProvider>
+            </DocumentProvider>
+          </BrowserRouter>
+        </CacheProvider>
+      </ThemeProvider>
     </React.StrictMode>
   );
 }

@@ -14,6 +14,7 @@ import MaterialCard from './components/MaterialCard';
 import CategorySelector from './components/CategorySelector';
 import DeleteModal from './DeleteModal';
 import CategoryButtons from './components/CaregoryButtons';
+import { CategoryManagement } from './components/upload-file/CategoryManagement';
 
 function StudyMaterialContainer() {
   const materialService = useMaterialService();
@@ -159,11 +160,6 @@ function StudyMaterialContainer() {
               .filter((category) => selectedCategories.includes(category))
               .map((category) => (
                 <Box className="primary" key={category}>
-                  {/* <CardHeader
-            className="Card-Header"
-            title={<Typography variant="h5">{category}</Typography>}
-          /> */}
-
                   <CardContent className="body">
                     <div className="study-materials-container">
                       {(searchResults || studyMaterials || [])
@@ -191,14 +187,18 @@ function StudyMaterialContainer() {
         <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} />
       </Modal> */}
 
-          {/* <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
-        <CategoryManagement
-          categories={categoryList}
-          handleCloseAddEdit={handleCloseAddEdit}
-          setCategories={setCategoryList}
-          handleSelect={() => {}}
-        />
-      </Modal> */}
+          <Modal
+            open={showAddEdit}
+            onClose={handleCloseAddEdit}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description">
+            <CategoryManagement
+              categories={categoryList}
+              handleCloseCategoryManagement={handleCloseAddEdit}
+              setCategories={setCategoryList}
+              handleSelect={() => {}}
+            />
+          </Modal>
         </Box>
       </Box>
     </>

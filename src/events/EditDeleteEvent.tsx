@@ -5,15 +5,14 @@ import { useEventService } from './repository/EventContext';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import AdminMenu from './AdminOptions';
-import CustomForm from './CustomForm';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import EventForm from './EventForm';
+import { Modal } from '@mui/material';
 
 interface EditDeleteEventProps {
   event: EventProps;
@@ -106,33 +105,24 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
 
   function EditWindow() {
     return (
-      <Dialog open={showModalEdit} onClose={handleCloseEdit} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">
-          שינוי אירוע
-          <IconButton aria-label="close" onClick={handleCloseEdit} style={{ position: 'absolute', right: 8, top: 8 }}>
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>{editForm()}</DialogContent>
-        {/* DialogActions can be used here if you have any actions like 'Save' or 'Cancel' */}
-      </Dialog>
-    );
-  }
-
-  function editForm() {
-    return (
-      <CustomForm
-        handleSaveAdd={handleSaveEdit} // make sure this function exists in your code
-        handleTitleChange={handleTitleChange}
-        handleDateChange={handleDateChange}
-        handleImageChange={handleImageChange}
-        handleDetailsChange={handleDetailsChange}
-        handleCloseAddEvent={handleCloseEdit} // make sure this function exists in your code
-        formData={event}
-        MAX_CHARS_Title={MAX_CHARS_Title}
-        MAX_CHARS_Details={MAX_CHARS_Details}
-        requiredFields={{ add: false }}
-      />
+      <Modal
+        open={showModalEdit}
+        onClose={handleCloseEdit}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <EventForm
+          handleSaveAdd={handleSaveEdit} // make sure this function exists in your code
+          handleTitleChange={handleTitleChange}
+          handleDateChange={handleDateChange}
+          handleImageChange={handleImageChange}
+          handleDetailsChange={handleDetailsChange}
+          handleCloseAddEvent={handleCloseEdit} // make sure this function exists in your code
+          formData={event}
+          MAX_CHARS_Title={MAX_CHARS_Title}
+          MAX_CHARS_Details={MAX_CHARS_Details}
+          requiredFields={{ add: false }}
+        />
+      </Modal>
     );
   }
 

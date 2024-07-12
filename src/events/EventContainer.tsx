@@ -2,7 +2,7 @@ import EventCard, { EventProps } from './EventCard';
 import { useState, useEffect } from 'react';
 import { useEventService } from './repository/EventContext';
 import { IEvent } from './repository/Event';
-import { CircularProgress, Box } from '@mui/material';
+import { CircularProgress, Box, IconButton, Grid } from '@mui/material';
 import './EventContainer.css';
 import EmptyEventCard from './EmptyEventCard';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -26,8 +26,14 @@ const EventContainer = () => {
   };
 
   useEffect(() => {
-    const getEvents = async () => {
-      setEvents(convertIEventsToEventProps(await eventRepository.find()));
+    const getEvents = () => {
+      eventRepository
+        .find()
+        .then((events) =>
+          setEvents(
+            convertIEventsToEventProps(events).sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
+          )
+        );
     };
     if (events === null) getEvents();
   }, [events]);
@@ -88,27 +94,40 @@ const EventContainer = () => {
   return (
     <div className="events">
       <div className="events-container-default-style">
-        <div className="shift-buttons">
-          <ArrowForwardIosIcon onClick={handleShiftEventsRight} />
-        </div>
-        {events
-          .sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
-          .slice(currentIndex, currentIndex + 3)
-          .map((event) => (
-            <EventCard
-              key={event.id}
-              id={event.id}
-              date={event.date}
-              title={event.title}
-              details={event.details}
-              image={event.image}
-              onEventDelete={onEventDelete}
-              onEventEdit={onEventEdit}
-            />
-          ))}
-        <div className="shift-buttons">
-          <ArrowBackIosIcon onClick={handleShiftEventsLeft} />
-        </div>
+        <Grid container spacing={2}>
+          <Grid item xs={1} style={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton
+              onClick={handleShiftEventsRight}
+              disabled={currentIndex + 3 >= events.length}
+              style={{ marginRight: 'auto' }}>
+              <ArrowForwardIosIcon />
+            </IconButton>
+          </Grid>
+
+          <Grid item xs={10}>
+            <Grid container spacing={2}>
+              {events.slice(currentIndex, currentIndex + 3).map((event) => (
+                <Grid item key={event.id} xs={12} sm={6} md={4}>
+                  <EventCard
+                    id={event.id}
+                    date={event.date}
+                    title={event.title}
+                    details={event.details}
+                    image={event.image}
+                    onEventDelete={() => onEventDelete(event.id)}
+                    onEventEdit={() => onEventEdit(event)}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+
+          <Grid item xs={1} style={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton onClick={handleShiftEventsLeft} disabled={currentIndex === 0} style={{ marginLeft: 'auto' }}>
+              <ArrowBackIosIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
       </div>
     </div>
   );

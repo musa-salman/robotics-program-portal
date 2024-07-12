@@ -129,7 +129,7 @@ const RegisterComponent = () => {
 
   return (
     <form className="my-form">
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: '75%', backgroundColor: 'background.paper', alignItems: 'center', margin: 'auto', p: 3 }}>
         <Stepper activeStep={activeStep}>
           {steps.map((label, index) => {
             const stepProps: { completed?: boolean } = {};
