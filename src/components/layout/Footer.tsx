@@ -14,42 +14,28 @@ interface SocialMedia {
 }
 
 interface FooterProps {
-  links: Link[];
   socialMedia: SocialMedia[];
   copyright: string;
 }
 
-const Footer: React.FC<FooterProps> = ({ links, socialMedia, copyright }) => {
+const Footer: React.FC<FooterProps> = ({ socialMedia, copyright }) => {
   return (
     <footer className="footer">
       <Container>
-        <Grid container spacing={2}>
-          <Grid item md={6}>
-            <ul>
-              {links.map((link) => (
-                <li key={link.name}>
-                  <Link href={link.path} style={{ color: 'white', textDecoration: 'none' }}>
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </Grid>
-          <Grid item md={6} sx={{ textAlign: 'right' }}>
-            <div className="social-links">
-              {socialMedia.map((social) => (
-                <Link key={social.platform} href={social.url}>
-                  {social.platform === 'facebook' && <Facebook />}
-                  {social.platform === 'twitter' && <Twitter />}
-                  {social.platform === 'instagram' && <Instagram />}
-                  {social.platform === 'youtube' && <YouTube />}
-                </Link>
-              ))}
-            </div>
-            <Typography variant="body2" style={{ marginTop: '10px' }}>
-              {copyright}
-            </Typography>
-          </Grid>
+        <Grid container justifyContent="normal" alignItems="center" className="footer-grid">
+          <div className="social-links">
+            {socialMedia.map((social) => (
+              <Link key={social.platform} href={social.url} style={{ marginLeft: '15px' }}>
+                {social.platform === 'facebook' && <Facebook style={{ color: 'white' }} />}
+                {social.platform === 'twitter' && <Twitter style={{ color: 'white' }} />}
+                {social.platform === 'instagram' && <Instagram style={{ color: 'white' }} />}
+                {social.platform === 'youtube' && <YouTube style={{ color: 'white' }} />}
+              </Link>
+            ))}
+          </div>
+          <Typography variant="body2" style={{ marginTop: '10px', color: 'white' }}>
+            {copyright}
+          </Typography>
         </Grid>
       </Container>
     </footer>

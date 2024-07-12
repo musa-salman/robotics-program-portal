@@ -127,7 +127,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
           transform: 'translate(-50%, -50%)',
           width: '45rem',
           boxShadow: 24,
-          backgroundColor:'black', //FIXME:,
+          backgroundColor: 'black', //FIXME:,
           p: 4,
           borderRadius: 1,
           outline: 'none'
@@ -244,7 +244,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
             </Grid>
 
             <Grid xs={5} className="px-5 mt-3">
-              <Button variant="contained" className="px-5" onClick={handleClose}>
+              <Button variant="outlined" className="px-5" onClick={handleClose}>
                 סגירה
               </Button>
             </Grid>
