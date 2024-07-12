@@ -2,7 +2,6 @@
   display: flex;
   justify-items: right;
   align-self: start;
-  top: 2;
   position: absolute;
   background-color: transparent;
 }
@@ -14,7 +13,6 @@
 
 .speedDial .MuiSpeedDial-fab:hover {
   background-color: #da8888;
-  padding: 5px;
   border-radius: 30px;
 }
 

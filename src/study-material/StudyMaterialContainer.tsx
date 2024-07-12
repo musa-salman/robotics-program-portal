@@ -1,11 +1,10 @@
-import Card from 'react-bootstrap/Card';
 import { useState, useEffect } from 'react';
 import './StudyMaterialContainer.css';
 import { useMaterialService } from './repository/StudyMaterialContext';
 import { StudyMaterial } from './repository/StudyMaterial';
 import MaterialUploadModal from './components/upload-file/MaterialUploadModal';
 import AddIcon from '@mui/icons-material/Add';
-import { Fab, Modal } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, Container, Divider, Fab, Grid, Modal, Typography } from '@mui/material';
 import NoResultFound from './components/NoResultFound';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Category } from './repository/Category';
@@ -14,6 +13,7 @@ import { SearchBar } from './components/SearchBar';
 import MaterialCard from './components/MaterialCard';
 import CategorySelector from './components/CategorySelector';
 import DeleteModal from './DeleteModal';
+import CategoryButtons from './components/CaregoryButtons';
 
 function StudyMaterialContainer() {
   const materialService = useMaterialService();
@@ -26,6 +26,7 @@ function StudyMaterialContainer() {
   const [isMoveMode, setIsMoveMode] = useState(false);
   const [show, setShow] = useState(false);
   const [showAddEdit, setShowAddEdit] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -76,6 +77,13 @@ function StudyMaterialContainer() {
     setStudyMaterials(studyMaterials);
   };
 
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategories([]);
+    setSelectedCategories((prev) =>
+      prev.includes(category) ? prev.filter((cat) => cat !== category) : [...prev, category]
+    );
+  };
+
   const handleMoveClick = (studyMaterial: StudyMaterial) => {
     setSelectedMaterial(studyMaterial);
     setIsMoveMode(true);
@@ -107,66 +115,83 @@ function StudyMaterialContainer() {
   const categories: string[] = (searchResults || studyMaterials || [])
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
+  console.log('category', categories);
+  console.log('categoryList', categoryList);
 
   return (
     <>
-      {isMoveMode && (
-        <CategorySelector categories={categoryList || []} onMove={handleMove} onCancel={() => setIsMoveMode(false)} />
-      )}
-      <div className="btn-search">
-        <SearchBar
-          studyMaterials={studyMaterials || []}
-          onSearchResults={setSearchResults}
-          query={query}
-          setQuery={setQuery}
-        />
-        <div className="btns">
-          <Fab className="edit-button" aria-label="edit" onClick={handleShowEdit}>
-            <SettingsIcon />
-          </Fab>
-          <Fab className="adde-btn" aria-label="add" onClick={handleShow}>
-            <AddIcon />
-          </Fab>
-        </div>
-      </div>
-      {searchResults?.length === 0 ? (
-        <NoResultFound />
-      ) : (
-        (categories || []).map((category) => (
-          <Card className="primary" key={category}>
-            <Card.Header className="Card-Header">
-              <h2>{category}</h2>
-            </Card.Header>
-            <br></br>
-            <Card.Body className="body">
-              <br></br>
-              <div className="study-materials-container">
-                {(searchResults || studyMaterials || [])
-                  .filter((s) => s.category === category)
-                  .map((studyMaterial) => (
-                    <MaterialCard
-                      key={studyMaterial.id}
-                      studyMaterial={studyMaterial}
-                      onUpdate={handleUpdate}
-                      onDelete={handleDelete}
-                      onMove={handleMoveClick}
-                    />
-                  ))}
-              </div>
-            </Card.Body>
-          </Card>
-        ))
-      )}
+      <Box className="mat-out-box">
+        <Box className="mat-in-box">
+          {isMoveMode && (
+            <CategorySelector
+              categories={categoryList || []}
+              onMove={handleMove}
+              onCancel={() => setIsMoveMode(false)}
+            />
+          )}
+          <div className="btn-search">
+            <div className="search">
+              <SearchBar
+                studyMaterials={studyMaterials || []}
+                onSearchResults={setSearchResults}
+                query={query}
+                setQuery={setQuery}
+              />
+            </div>
+            <div className="btns">
+              <Fab className="edit-button" aria-label="edit" onClick={handleShowEdit}>
+                <SettingsIcon />
+              </Fab>
+              <Fab className="adde-btn" aria-label="add" onClick={handleShow}>
+                <AddIcon />
+              </Fab>
+            </div>
+          </div>
 
-      <Modal
+          <div className="con-taf">
+            <CategoryButtons categories={categories || []} onCategorySelect={handleCategorySelect} />
+          </div>
+
+          {searchResults?.length === 0 ? (
+            <NoResultFound />
+          ) : (
+            (categories || [])
+              .filter((category) => selectedCategories.includes(category))
+              .map((category) => (
+                <Box className="primary" key={category}>
+                  {/* <CardHeader
+            className="Card-Header"
+            title={<Typography variant="h5">{category}</Typography>}
+          /> */}
+
+                  <CardContent className="body">
+                    <div className="study-materials-container">
+                      {(searchResults || studyMaterials || [])
+                        .filter((s) => s.category === category)
+                        .map((studyMaterial) => (
+                          <MaterialCard
+                            key={studyMaterial.id}
+                            studyMaterial={studyMaterial}
+                            onUpdate={handleUpdate}
+                            onDelete={handleDelete}
+                            onMove={handleMoveClick}
+                          />
+                        ))}
+                    </div>
+                  </CardContent>
+                </Box>
+              ))
+          )}
+
+          {/* <Modal
         open={show}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
         <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} />
-      </Modal>
+      </Modal> */}
 
-      {/* <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
+          {/* <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
         <CategoryManagement
           categories={categoryList}
           handleCloseAddEdit={handleCloseAddEdit}
@@ -174,6 +199,8 @@ function StudyMaterialContainer() {
           handleSelect={() => {}}
         />
       </Modal> */}
+        </Box>
+      </Box>
     </>
   );
 }
