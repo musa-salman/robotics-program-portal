@@ -4,7 +4,7 @@ import { Chip } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { useUserService } from '../users/UserContext';
 import { User } from '../users/User';
-import Role, { roleColorsLevel, roleNames } from '../authentication/components/Roles';
+import { Role, roleColorsLevel, roleNames } from '../authentication/components/Roles';
 import { useState } from 'react';
 import RoleSelector from './RoleSelector';
 
