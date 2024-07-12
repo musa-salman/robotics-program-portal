@@ -4,7 +4,7 @@ import { Chip } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { useUserService } from '../users/UserContext';
 import { User } from '../users/User';
-import { Role, roleColorsLevel, roleNames } from '../authentication/components/Roles';
+import Role, { roleColorsLevel, roleNames, SKIP_TO_ADMIN_ROLES } from '../authentication/components/Roles';
 import { useState } from 'react';
 import RoleSelector from './RoleSelector';
 
@@ -59,16 +59,25 @@ const UsersManagement = () => {
                 }
               />
             ))}
-            {userToAddRole !== row && (
-              <Chip
-                disabled={showAddRoleDialog}
-                label="+"
-                onClick={() => {
-                  setShowAddRoleDialog(true);
-                  setUserToAddRole(row);
-                }}
-              />
-            )}
+            {userToAddRole !== row &&
+              (SKIP_TO_ADMIN_ROLES.some((role) => row.roles.includes(role)) ? (
+                <Chip
+                  disabled={showAddRoleDialog}
+                  label="הגדר כמנהל"
+                  onClick={() => {
+                    setShowAddRoleDialog(true);
+                    setUserToAddRole(row);
+                  }}
+                />
+              ) : (
+                <Chip
+                  label="+"
+                  onClick={() => {
+                    setShowAddRoleDialog(true);
+                    setUserToAddRole(row);
+                  }}
+                />
+              ))}
             {showAddRoleDialog && userToAddRole === row && (
               <RoleSelector
                 onSelect={(role) => {
