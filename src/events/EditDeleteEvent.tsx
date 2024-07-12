@@ -105,24 +105,23 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
 
   function EditWindow() {
     return (
-
       <Modal
         open={showModalEdit}
         onClose={handleCloseEdit}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
         <EventForm
-        handleSaveAdd={handleSaveEdit} // make sure this function exists in your code
-        handleTitleChange={handleTitleChange}
-        handleDateChange={handleDateChange}
-        handleImageChange={handleImageChange}
-        handleDetailsChange={handleDetailsChange}
-        handleCloseAddEvent={handleCloseEdit} // make sure this function exists in your code
-        formData={event}
-        MAX_CHARS_Title={MAX_CHARS_Title}
-        MAX_CHARS_Details={MAX_CHARS_Details}
-        requiredFields={{ add: false }}
-      />
+          handleSaveAdd={handleSaveEdit} // make sure this function exists in your code
+          handleTitleChange={handleTitleChange}
+          handleDateChange={handleDateChange}
+          handleImageChange={handleImageChange}
+          handleDetailsChange={handleDetailsChange}
+          handleCloseAddEvent={handleCloseEdit} // make sure this function exists in your code
+          formData={event}
+          MAX_CHARS_Title={MAX_CHARS_Title}
+          MAX_CHARS_Details={MAX_CHARS_Details}
+          requiredFields={{ add: false }}
+        />
       </Modal>
     );
   }
