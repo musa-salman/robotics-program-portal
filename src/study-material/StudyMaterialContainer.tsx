@@ -14,6 +14,7 @@ import { SearchBar } from './components/SearchBar';
 import MaterialCard from './components/MaterialCard';
 import CategorySelector from './components/CategorySelector';
 import DeleteModal from './DeleteModal';
+import { CategoryManagement } from './components/upload-file/CategoryManagement';
 
 function StudyMaterialContainer() {
   const materialService = useMaterialService();
@@ -166,14 +167,19 @@ function StudyMaterialContainer() {
         <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} />
       </Modal>
 
-      {/* <Modal show={showAddEdit} onHide={handleCloseAddEdit}>
+      <Modal
+        open={showAddEdit}
+        onClose={handleCloseAddEdit}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
         <CategoryManagement
           categories={categoryList}
-          handleCloseAddEdit={handleCloseAddEdit}
+          handleCloseCategoryManagement={handleCloseAddEdit}
           setCategories={setCategoryList}
           handleSelect={() => {}}
         />
-      </Modal> */}
+      </Modal>
+
     </>
   );
 }

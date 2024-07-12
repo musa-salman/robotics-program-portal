@@ -52,7 +52,7 @@ return(
           transform: 'translate(-50%, -50%)',
           width: '45rem',
           boxShadow: 24,
-          backgroundColor:'black', //FIXME:,
+          backgroundColor:'background.paper',
           p: 4,
           borderRadius: 1,
         }}
@@ -85,7 +85,7 @@ return(
             <Grid xs={4}  >
             <TextField
                 className='mt-3'
-                style={{backgroundColor:"gray"}}//FIXME:
+               
                 required={true}
                 fullWidth
                 label="תאריך"
