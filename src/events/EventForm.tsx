@@ -3,7 +3,6 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import GPT from '../gpt-service/GPTComponent';
 import { generateEventDescription, suggestEventTitles } from './EventPrompts';
 import moment from 'moment';
-import { Margin } from '@mui/icons-material';
 
 interface EventFormProps {
   handleSaveAdd: () => void;
