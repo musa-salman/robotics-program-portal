@@ -8,7 +8,7 @@ import {
   GridValidRowModel,
   GridRowSelectionModel
 } from '@mui/x-data-grid';
-import { Box, Button, Dialog, DialogActions, DialogTitle, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
 import { heIL } from '@mui/x-data-grid/locales';
 import SimpleSnackbar from '../components/snackbar/SnackBar';
 import { BaseRepository } from '../repositories/BaseRepository';
@@ -31,7 +31,6 @@ interface Actions {
 }
 
 interface CollectionTableProps<T> {
-  title: string;
   generateColumns: (
     rows: (T & { isNew: boolean })[] | null,
     setRows: React.Dispatch<
@@ -51,11 +50,10 @@ interface CollectionTableProps<T> {
   FormComponent?: React.FC<any>;
   getItems?: () => Promise<T[]>;
   messageFormat: MessageFormat<T>;
-  onRowSelected?: (row: GridRowModel) => void;
+  onRowSelected?: (row: GridRowModel | null) => void;
 }
 
 const CollectionTable = <T extends { id: string }>({
-  title,
   generateColumns,
   repository,
   FormComponent,
@@ -82,10 +80,17 @@ const CollectionTable = <T extends { id: string }>({
 
   const handleRowSelection = useCallback(
     (selection: GridRowSelectionModel) => {
+      if (selection.length === 0) {
+        setSelectionModel([]);
+        if (onRowSelected) onRowSelected(null);
+        return;
+      }
+
       const selectedId = selection[0];
       const selected = rows?.find((register) => register.id === selectedId) || null;
-      // remove newRow field from selection
+
       const { isNew, ...selectedRow } = selected as any;
+      setSelectionModel([selectedId]);
       onRowSelected!(selectedRow);
     },
     [rows]
@@ -150,9 +155,6 @@ const CollectionTable = <T extends { id: string }>({
         </DialogActions>
       </Dialog>
       <Box className="table-container">
-        <Typography variant="h4" component="h2" gutterBottom className="table-title">
-          {title}
-        </Typography>
         <div className="data-grid-container">
           <DataGrid
             rows={rows || []}
@@ -175,8 +177,8 @@ const CollectionTable = <T extends { id: string }>({
             rowModesModel={rowModesModel}
             onRowModesModelChange={handleRowModesModelChange}
             processRowUpdate={processRowUpdate}
-            onRowSelectionModelChange={onRowSelected}
-            selectionModel={selectionModel}
+            onRowSelectionModelChange={handleRowSelection}
+            rowSelectionModel={selectionModel}
             onProcessRowUpdateError={(error) => console.error(error)}
             localeText={{
               ...heIL.components.MuiDataGrid.defaultProps.localeText,

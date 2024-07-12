@@ -13,16 +13,13 @@ const PRIMARY_STUDENT_LINKS = [
   { icon: <EventIcon />, label: 'אירועים', path: '/events' }
 ];
 
-const PRIMARY_ADMIN_LINKS = [
-  { icon: <PeopleIcon />, label: 'ניהול תלמידים', path: '/students-management' },
-  { icon: <PeopleIcon />, label: 'ניהול משתמשים', path: '/users' }
-];
+const PRIMARY_ADMIN_LINKS = [{ icon: <PeopleIcon />, label: 'ניהול תלמידים', path: '/students-management' }];
 
 const STUDENT_LINKS = [{ icon: <PictureAsPdfIcon />, label: 'מסמכים', path: '/documents' }];
 
 const ADMIN_LINKS = [
-  { icon: <PeopleIcon />, label: 'ניהול נרשמים', path: '/registers-management' },
-  { icon: <PeopleIcon />, label: 'ניהול משתמשים', path: '/users' }
+  { icon: <PeopleIcon />, label: 'ניהול משתמשים', path: '/users' },
+  { icon: <PeopleIcon />, label: 'ניהול נרשמים', path: '/registers-management' }
 ];
 
 const Banner: React.FC = () => {
@@ -37,7 +34,7 @@ const Banner: React.FC = () => {
               label={link.label}
               type="primary"
               path={link.path}
-              className={'std-btn'}
+              className={'primary-btn'}
             />
           ))}
 
@@ -48,13 +45,9 @@ const Banner: React.FC = () => {
               label={link.label}
               type="primary"
               path={link.path}
-              className={'std-btn'}
+              className={'primary-btn'}
             />
           ))}
-        </div>
-
-        <div className="event">
-          <EventContainer />
         </div>
         <div className="button-group">
           {STUDENT_LINKS.map((link, index) => (
@@ -62,9 +55,9 @@ const Banner: React.FC = () => {
               key={index}
               icon={link.icon}
               label={link.label}
-              type="primary"
+              type="secondary"
               path={link.path}
-              className={'button-icon'}
+              className={'std-btn'}
             />
           ))}
           {ADMIN_LINKS.map((link, index) => (
@@ -72,11 +65,14 @@ const Banner: React.FC = () => {
               key={index}
               icon={link.icon}
               label={link.label}
-              type="primary"
+              type="secondary"
               path={link.path}
-              className={'button-icon'}
+              className={'std-btn'}
             />
           ))}
+        </div>
+        <div className="event">
+          <EventContainer />
         </div>
       </div>
     </>
