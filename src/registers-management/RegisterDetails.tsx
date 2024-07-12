@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, Grid, IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Register } from '../register/Register';
+import { hearAboutUsOptions, studyUnitsMajorOptions } from '../register/info';
 
 interface RegisterDetailsProps {
   register: Register;
@@ -63,7 +64,7 @@ const RegisterDetails: React.FC<RegisterDetailsProps> = ({ register, onClose }) 
           </Grid>
           <Grid item xs={12}>
             <Typography variant="body1" color="textSecondary">
-              מגמת לימודים: {register.studyUnitsMajor}
+              מגמת לימודים: {studyUnitsMajorOptions[Number(register.studyUnitsMajor)]}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -73,7 +74,7 @@ const RegisterDetails: React.FC<RegisterDetailsProps> = ({ register, onClose }) 
           </Grid>
           <Grid item xs={12}>
             <Typography variant="body1" color="textSecondary">
-              איך שמעת עלינו: {register.hearAboutUs}
+              איך שמעת עלינו: {hearAboutUsOptions[Number(register.hearAboutUs)]}
             </Typography>
           </Grid>
           <Grid item xs={12}>
