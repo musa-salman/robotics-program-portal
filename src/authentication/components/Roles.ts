@@ -55,6 +55,5 @@ const ALLOW_AUTHED_ROLES = [Role.Owner, Role.Admin, Role.Student];
 
 const SKIP_TO_ADMIN_ROLES = [Role.Pending, Role.PreEnrollment, Role.Rejected];
 
-export { Role };
-export type { AuthorizationStatus };
-export { ALLOW_AUTHED_ROLES, SKIP_TO_ADMIN_ROLES, roleNames, selectableRoles, roleColorsLevel };
+export default Role;
+export { ALLOW_AUTHED_ROLES, SKIP_TO_ADMIN_ROLES, roleNames, selectableRoles, roleColorsLevel, AuthorizationStatus };
