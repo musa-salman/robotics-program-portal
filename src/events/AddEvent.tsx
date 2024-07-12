@@ -5,19 +5,41 @@ import { useEventService } from './repository/EventContext';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import AddIcon from '@mui/icons-material/Add';
-import CustomForm from './CustomForm';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
+import EventForm from './EventForm';
+import { Modal } from '@mui/material';
 
 interface AddEventProps {
   addEvent: (event: EventProps) => void;
 }
 
 const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
+  const MAX_CHARS_Title = 17;
+  const MAX_CHARS_Details = 100;
+
+  const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    if (value.length <= MAX_CHARS_Details) {
+      setFormData((prevState) => ({ ...prevState, details: value }));
+    }
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    if (value.length <= MAX_CHARS_Title) {
+      setFormData((prevState) => ({ ...prevState, title: value }));
+    }
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevState) => ({ ...prevState, date: e.target.valueAsDate! }));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevState) => ({ ...prevState, image: formData.image }));
+    setFile(e.target.files?.[0] || null); // Provide a default value of null for the file state variable
+  };
+
   const [file, setFile] = useState<File | null>(null);
   const [showModalAddEvent, setShowModalAddEvent] = useState(false);
 
@@ -80,62 +102,24 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
 
   function AddWindow() {
     return (
-      <Dialog open={showModalAddEvent} onClose={handleCloseAddEvent} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">
-          הוסף אירוע
-          <IconButton
-            aria-label="close"
-            onClick={handleCloseAddEvent}
-            style={{ position: 'absolute', right: 8, top: 8 }}>
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>{addForm()}</DialogContent>
-        {/* DialogActions can be used here if you have any actions like 'Save' or 'Cancel' */}
-      </Dialog>
-    );
-  }
-
-  function addForm() {
-    const MAX_CHARS_Title = 17; // Set the maximum number of characters allowed
-    const MAX_CHARS_Details = 100; // Set the maximum number of characters allowed
-
-    const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      const value = e.target.value;
-      if (value.length <= MAX_CHARS_Details) {
-        setFormData((prevState) => ({ ...prevState, details: value }));
-      }
-    };
-
-    const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      const value = e.target.value;
-      if (value.length <= MAX_CHARS_Title) {
-        setFormData((prevState) => ({ ...prevState, title: value }));
-      }
-    };
-
-    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData((prevState) => ({ ...prevState, date: e.target.valueAsDate! }));
-    };
-
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData((prevState) => ({ ...prevState, image: formData.image }));
-      setFile(e.target.files?.[0] || null); // Provide a default value of null for the file state variable
-    };
-
-    return (
-      <CustomForm
-        handleSaveAdd={handleSaveAdd}
-        handleTitleChange={handleTitleChange}
-        handleDateChange={handleDateChange}
-        handleImageChange={handleImageChange}
-        handleDetailsChange={handleDetailsChange}
-        handleCloseAddEvent={handleCloseAddEvent}
-        formData={formData}
-        MAX_CHARS_Title={MAX_CHARS_Title}
-        MAX_CHARS_Details={MAX_CHARS_Details}
-        requiredFields={{ add: true }}
-      />
+      <Modal
+        open={showModalAddEvent}
+        onClose={handleCloseAddEvent}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <EventForm
+          handleSaveAdd={handleSaveAdd}
+          handleTitleChange={handleTitleChange}
+          handleDateChange={handleDateChange}
+          handleImageChange={handleImageChange}
+          handleDetailsChange={handleDetailsChange}
+          handleCloseAddEvent={handleCloseAddEvent}
+          formData={event}
+          MAX_CHARS_Title={MAX_CHARS_Title}
+          MAX_CHARS_Details={MAX_CHARS_Details}
+          requiredFields={{ add: false }}
+        />
+      </Modal>
     );
   }
 
