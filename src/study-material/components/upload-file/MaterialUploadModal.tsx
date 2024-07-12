@@ -101,19 +101,6 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
     } else {
       setIsForward(true);
     }
-
-    // const form = event.currentTarget;
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    // }
-
-    // setValidated(true);
-
-    // if (file !== null && studyMaterial.title !== '') {
-    //   studyMaterial.category = selectedItem;
-
-    // }
     console.log('studyMaterial', studyMaterial);
   };
 
