@@ -2,7 +2,7 @@ import { GridActionsCellItem, GridColDef, GridRowModel } from '@mui/x-data-grid'
 import CollectionTable, { MessageFormat } from '../collection-management/CollectionTable';
 import EditIcon from '@mui/icons-material/Edit';
 import { useCallback, useContext, useState } from 'react';
-import { Grid, Paper, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { Register } from '../register/Register';
 import { RegisterContext } from '../register/service/RegisterContext';
 import StudentForm from '../students-management/StudentForm';
@@ -90,7 +90,7 @@ const RegisterManagement = () => {
     updateSuccess: () => 'הרישום עודכן בהצלחה'
   };
 
-  const handleRowSelected = useCallback((row: GridRowModel) => {
+  const handleRowSelected = useCallback((row: GridRowModel | null) => {
     console.log(row);
     setSelectedRegister(row as Register);
   }, []);
@@ -99,7 +99,6 @@ const RegisterManagement = () => {
     <Grid container spacing={2}>
       <Grid item xs={selectedRegister ? 8 : 12}>
         <CollectionTable<Register>
-          title="ניהול נרשמים"
           generateColumns={generateColumns}
           repository={registerService.registerRepository}
           FormComponent={StudentForm}
@@ -108,9 +107,7 @@ const RegisterManagement = () => {
         />
       </Grid>
       <Grid item xs={4}>
-        <Paper elevation={3} style={{ padding: '16px' }}>
-          {selectedRegister && <RegisterDetails register={selectedRegister} />}
-        </Paper>
+        {selectedRegister && <RegisterDetails register={selectedRegister} onClose={() => setSelectedRegister(null)} />}
       </Grid>
     </Grid>
   );

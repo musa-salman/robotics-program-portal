@@ -103,7 +103,6 @@ const StudentsManagement = () => {
   return (
     <>
       <CollectionTable<Student>
-        title="ניהול תלמידים"
         generateColumns={generateColumns}
         repository={userService.getStudentRepository()}
         FormComponent={StudentForm}
