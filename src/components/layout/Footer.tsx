@@ -21,8 +21,13 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({ socialMedia, copyright }) => {
   return (
     <footer className="footer">
-      <Container>
-        <Grid container justifyContent="normal" alignItems="center" className="footer-grid">
+      <Container style={{ backgroundColor: 'background.paper' }}>
+        <Grid
+          container
+          justifyContent="normal"
+          alignItems="center"
+          className="footer-grid"
+          style={{ backgroundColor: 'background.paper' }}>
           <div className="social-links">
             {socialMedia.map((social) => (
               <Link key={social.platform} href={social.url} style={{ marginLeft: '15px' }}>
