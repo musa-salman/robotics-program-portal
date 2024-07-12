@@ -55,7 +55,16 @@ export class UserService implements IUserService {
     });
   }
 
-  deleteRoleFromUser(userId: string, role: Role): Promise<void> {
+  async deleteRoleFromUser(userId: string, role: Role): Promise<void> {
+    if (
+      role === Role.Owner &&
+      (await this.userRepository.find().then((users) => {
+        return users.filter((user) => user.roles.includes(Role.Owner)).length <= 1;
+      }))
+    ) {
+      throw new Error('אי אפשר למחוק את התפקיד האחרון של בעל המערכת');
+    }
+
     return this.userRepository.findOne(userId).then((user) => {
       if (user && user.roles.includes(role)) {
         user.roles = user.roles.filter((r) => r !== role);

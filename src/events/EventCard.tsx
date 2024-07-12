@@ -42,10 +42,10 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
         title={title}
         subheader={formatDate(date)}
       />
-      <CardMedia component="img" height="194" image={image} alt="Paella dish" />
+      <CardMedia component="img" height="150" image={image} alt={title} />
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          <h5>{details}</h5>
+        <Typography variant="body1" color="text.secondary">
+          {details}
         </Typography>
       </CardContent>
 
@@ -55,7 +55,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
         </RoleBasedAccessControl>
       </div>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <IconButton aria-label="show-registered-students">
           <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
             <ShowRegisteredStudents eventId={id} />
           </RoleBasedAccessControl>

@@ -179,7 +179,6 @@ function StudyMaterialContainer() {
           handleSelect={() => {}}
         />
       </Modal>
-
     </>
   );
 }

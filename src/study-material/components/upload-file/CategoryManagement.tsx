@@ -78,9 +78,9 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
   };
 
   const handleSaveItem = (item: Category) => {
-    console.log("1",categories);
-    console.log("save c ",updatedCategory?.category," id ",updatedCategory?.id);
-    console.log("select",selectedCategory);
+    console.log('1', categories);
+    console.log('save c ', updatedCategory?.category, ' id ', updatedCategory?.id);
+    console.log('select', selectedCategory);
     if (!checkRepeat(selectedCategory) && selectedCategory !== item.category) {
       console.log('this action dose not exist');
     } else if (item.category === updatedCategory?.category && selectedCategory !== '') {
@@ -135,7 +135,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
           transform: 'translate(-50%, -50%)',
           width: '35rem',
           boxShadow: 24,
-          backgroundColor:'background.paper',
+          backgroundColor: 'background.paper',
           p: 4,
           borderRadius: 1,
           outline: 'none'

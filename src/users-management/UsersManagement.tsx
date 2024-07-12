@@ -13,11 +13,11 @@ const UsersManagement = () => {
   const [userToAddRole, setUserToAddRole] = useState<User | null>(null);
   const userService = useUserService();
 
+  const [error, setError] = useState<string | null>(null);
+
   const handleDelete = (event: React.MouseEvent<HTMLButtonElement>, row: User, role: Role) => {
     event.stopPropagation();
 
-    if (role === Role.Student) {
-    }
     return userService.deleteRoleFromUser(row.id, role);
   };
 
@@ -47,13 +47,15 @@ const UsersManagement = () => {
                   role === Role.Student
                     ? undefined
                     : (event) =>
-                        handleDelete(event, row, role).then(() => {
-                          setRows(
-                            rows!.map((r) =>
-                              r.id === row.id ? { ...row, roles: row.roles.filter((r: Role) => r !== role) } : r
-                            )
-                          );
-                        })
+                        handleDelete(event, row, role)
+                          .then(() => {
+                            setRows(
+                              rows!.map((r) =>
+                                r.id === row.id ? { ...row, roles: row.roles.filter((r: Role) => r !== role) } : r
+                              )
+                            );
+                          })
+                          .catch((e) => setError(e.message))
                 }
               />
             ))}
@@ -125,10 +127,12 @@ const UsersManagement = () => {
 
   return (
     <>
+      {error && <div>{error}</div>}
       <CollectionTable<User>
-        title="ניהול משתמשים"
         generateColumns={generateColumns}
-        getItems={() => userService.getUsers()}
+        getItems={() => {
+          return userService.getUsers();
+        }}
         messageFormat={messageFormat}
       />
     </>

@@ -1,15 +1,10 @@
-// import Header from './Header';
+import { Box } from '@mui/material';
 import Footer from './Footer';
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
 
 const Layout = () => {
   const headerLinks = [{ name: 'בית', path: '/' }];
-
-  const footerLinks = [
-    { name: 'מדיניות פרטיות', path: '/privacy' },
-    { name: 'תנאי השירות', path: '/terms' }
-  ];
 
   const socialMedia = [
     {
@@ -19,13 +14,27 @@ const Layout = () => {
   ];
 
   return (
-    <div className="d-flex flex-column min-vh-100 w-100">
-      <Header logo="/pico_logo.png" links={headerLinks} />
-      <main className="flex-grow-1 w-100">
-        <Outlet />
-      </main>
-      <Footer links={footerLinks} socialMedia={socialMedia} copyright="© 2024 פיקו קידס" />
-    </div>
+    <>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100vh',
+          width: '100%',
+          overflow: 'hidden'
+        }}>
+        <Header logo="/pico_logo.png" links={headerLinks} />
+        <Box
+          component="main"
+          sx={{
+            flex: 1,
+            overflow: 'auto'
+          }}>
+          <Outlet />
+        </Box>
+        <Footer socialMedia={socialMedia} copyright="© 2024 פיקו קידס" />
+      </Box>
+    </>
   );
 };
 
