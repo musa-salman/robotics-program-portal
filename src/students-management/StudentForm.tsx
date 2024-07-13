@@ -9,6 +9,7 @@ import './StudentForm.css';
 import { isEmpty, isIdentityCard, isMobilePhone } from 'validator';
 import isEmail from 'validator/lib/isEmail';
 import { isHebrewOnly } from '../register/InputValidator';
+import { School } from '@mui/icons-material';
 
 interface AddStudentFormProps {
   initialItem?: Student;
@@ -26,7 +27,8 @@ const StudentForm: React.FC<AddStudentFormProps> = ({ initialItem: initialStuden
       parentPhoneNumber: '',
       studentEmail: '',
       parentEmail: '',
-      studentAddress: ''
+      studentAddress: '',
+      studentSchool: ''
     }
   );
 
@@ -163,7 +165,20 @@ const StudentForm: React.FC<AddStudentFormProps> = ({ initialItem: initialStuden
               }}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="בית ספר"
+              value={student.studentSchool}
+              onChange={(e) => setStudent({ ...student, studentSchool: e.target.value })}
+              fullWidth
+              required
+              margin="normal"
+              InputProps={{
+                startAdornment: <School />
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <TextField
               label="כתובת תלמיד"
               value={student.studentAddress}

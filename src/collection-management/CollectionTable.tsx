@@ -10,7 +10,7 @@ import {
 } from '@mui/x-data-grid';
 import { Box, Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
 import { heIL } from '@mui/x-data-grid/locales';
-import SimpleSnackbar from '../components/snackbar/SnackBar';
+import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 import { BaseRepository } from '../repositories/BaseRepository';
 import CustomToolbar from './CustomToolbar';
 import { CachingRepository } from '../repositories/caching/CachingRepository';
@@ -43,7 +43,7 @@ interface CollectionTableProps<T> {
     >,
     setShowAddItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     setInitialItem: React.Dispatch<React.SetStateAction<T | null>>,
-    setMessage: React.Dispatch<React.SetStateAction<string | null>>
+    setMessage: React.Dispatch<React.SetStateAction<FeedbackMessage | undefined>>
   ) => GridColDef[];
   repository?: BaseRepository<T>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,16 +63,21 @@ const CollectionTable = <T extends { id: string }>({
 }: CollectionTableProps<T>) => {
   const [rows, setRows] = useState<(T & { isNew: boolean })[] | null>(null);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<FeedbackMessage>();
   const [showAddItemForm, setShowItemForm] = useState(false);
   const [initialItem, setInitialItem] = useState<T | null>(null);
   const [selectionModel, setSelectionModel] = useState<GridRowId[]>([]);
 
   useEffect(() => {
     function fetchItems() {
-      (getItems !== undefined ? getItems() : repository!.find()).then((items) =>
-        setRows(items.map((item: T) => ({ ...item, isNew: false })))
-      );
+      (getItems !== undefined ? getItems() : repository!.find())
+        .then((items) => setRows(items.map((item: T) => ({ ...item, isNew: false }))))
+        .catch(() => {
+          setMessage({
+            message: 'התרחשה שגיאה בטעינת הנתונים',
+            variant: 'error'
+          });
+        });
     }
 
     if (!rows) fetchItems();
@@ -104,11 +109,17 @@ const CollectionTable = <T extends { id: string }>({
         const extendedItem = { ...updatedItem, id: id, isNew: false };
         const updatedRows = rows!.map((row) => (row.id === id ? extendedItem : row));
         setRows(updatedRows);
-        setMessage(messageFormat.updateSuccess(updatedItem));
+        setMessage({
+          message: messageFormat.updateSuccess(updatedItem),
+          variant: 'success'
+        });
         setShowItemForm(false);
       })
       .catch(() => {
-        setMessage(messageFormat.updateError(updatedItem));
+        setMessage({
+          message: messageFormat.updateError(updatedItem),
+          variant: 'error'
+        });
       });
   };
 
@@ -123,10 +134,16 @@ const CollectionTable = <T extends { id: string }>({
     repository!
       .update(updatedRow.id, updatedRow as T)
       .then(() => {
-        setMessage(messageFormat.updateSuccess(updatedRow));
+        setMessage({
+          message: messageFormat.updateSuccess(updatedRow),
+          variant: 'success'
+        });
       })
       .catch(() => {
-        setMessage(messageFormat.updateError(updatedRow));
+        setMessage({
+          message: messageFormat.updateError(updatedRow),
+          variant: 'error'
+        });
       });
 
     return newRow;
@@ -160,7 +177,6 @@ const CollectionTable = <T extends { id: string }>({
             rows={rows || []}
             columns={columns}
             pageSizeOptions={[5, 10, 20, 50]}
-            checkboxSelection
             editMode="row"
             initialState={{
               density: 'comfortable'
@@ -182,7 +198,7 @@ const CollectionTable = <T extends { id: string }>({
             onProcessRowUpdateError={(error) => console.error(error)}
             localeText={{
               ...heIL.components.MuiDataGrid.defaultProps.localeText,
-              noRowsLabel: 'אין רשומות להצגה',
+              noRowsLabel: 'אין ניתונים להצגה',
               columnsManagementReset: 'איפוס',
               columnsManagementSearchTitle: 'חיפוש',
               columnsManagementShowHideAllText: 'הצג/הסתר הכל'
@@ -191,7 +207,7 @@ const CollectionTable = <T extends { id: string }>({
           />
         </div>
       </Box>
-      {message && <SimpleSnackbar message={message} />}
+      {message && <FeedbackSnackbar {...message} />}
     </>
   );
 };

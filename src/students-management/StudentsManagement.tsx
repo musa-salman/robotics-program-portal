@@ -9,6 +9,7 @@ import { Grid, Typography } from '@mui/material';
 import { useUserService } from '../users/UserContext';
 import StudentDetails from '../registers-management/RegisterDetails';
 import { useCallback, useState } from 'react';
+import { FeedbackMessage } from '../components/snackbar/SnackBar';
 
 const StudentsManagement = () => {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
@@ -20,7 +21,7 @@ const StudentsManagement = () => {
     setRows: React.Dispatch<React.SetStateAction<(Student & { isNew: boolean })[] | null>>,
     setShowItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     setInitialItem: React.Dispatch<React.SetStateAction<Student | null>>,
-    setMessage: React.Dispatch<React.SetStateAction<string | null>>
+    setMessage: React.Dispatch<React.SetStateAction<FeedbackMessage | undefined>>
   ): GridColDef[] => {
     return [
       { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1, editable: true },
@@ -60,9 +61,12 @@ const StudentsManagement = () => {
               onClick={(_) => {
                 userService
                   .deleteUser(id.toString())
-                  .then(() => setRows(rows!.filter((student) => student.id !== id)))
+                  .then(() => {
+                    setRows(rows!.filter((student) => student.id !== id));
+                    setMessage({ message: 'התלמיד נמחק בהצלחה', variant: 'success' });
+                  })
                   .catch((_) => {
-                    setMessage('התרחשה שגיאה במחיקת התלמיד');
+                    setMessage({ message: 'התרחשה שגיאה במחיקת התלמיד', variant: 'error' });
                   });
               }}
             />
