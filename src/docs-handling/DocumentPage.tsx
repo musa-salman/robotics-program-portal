@@ -13,7 +13,7 @@ const DocumentsPage: React.FC = () => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
-  const [messageBuild, setMessageBuild] = useState<number>(0);
+  const [buildNumber, setBuildNumber] = useState<number>(0);
 
   const documentInfoService = useDocumentInfoService();
   const { user } = useContext(AuthContext);
@@ -36,7 +36,7 @@ const DocumentsPage: React.FC = () => {
 
   const showMessage = (message: FeedbackMessage) => {
     setMessage(message);
-    setMessageBuild(messageBuild + 1);
+    setBuildNumber(buildNumber + 1);
   };
 
   const handleDocumentAdd = (document: DocumentInfo, file?: File | undefined): Promise<void> => {
@@ -132,7 +132,7 @@ const DocumentsPage: React.FC = () => {
 
   return (
     <>
-      {message && <FeedbackSnackbar key={message + messageBuild.toString()} feedBackMessage={message} />}
+      {message && <FeedbackSnackbar key={buildNumber.toString()} feedBackMessage={message} />}
       <DocumentFormModal open={show} handleClose={() => setShow(false)} onSaveDocument={handleDocumentAdd} />
       <Card sx={{ maxWidth: 600, margin: '1rem' }}>
         <CardActions>
