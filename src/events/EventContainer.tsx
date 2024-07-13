@@ -17,6 +17,16 @@ type EventContainer = {
 const EventContainer = () => {
   const [events, setEvents] = useState<EventProps[] | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [animationClass, setAnimationClass] = useState('');
+
+  useEffect(() => {
+    if (animationClass) {
+      const timeout = setTimeout(() => {
+        setAnimationClass('');
+      }, 500);
+      return () => clearTimeout(timeout);
+    }
+  }, [animationClass]);
 
   const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
   const [buildNumber, setBuildNumber] = useState<number>(0);
@@ -30,11 +40,23 @@ const EventContainer = () => {
   };
 
   const handleShiftEventsRight = () => {
-    if (events !== null) setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+    if (events && currentIndex < events.length - 3) {
+      setAnimationClass('fade-out');
+      setTimeout(() => {
+        setCurrentIndex(currentIndex + 1);
+        setAnimationClass('fade-in');
+      }, 500);
+    }
   };
 
   const handleShiftEventsLeft = () => {
-    if (events !== null) setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, events.length - 3));
+    if (currentIndex > 0) {
+      setAnimationClass('fade-out');
+      setTimeout(() => {
+        setCurrentIndex(currentIndex - 1);
+        setAnimationClass('fade-in');
+      }, 500);
+    }
   };
 
   useEffect(() => {
@@ -103,18 +125,16 @@ const EventContainer = () => {
       <div className="events">
         <div className="events-container-default-style">
           <div className="shift-buttons" style={{ backgroundColor: theme.palette.primary.main }}>
-            <ArrowForwardIosIcon onClick={handleShiftEventsRight} />
+            <ArrowForwardIosIcon onClick={handleShiftEventsLeft} />
           </div>
           <div className="events-show">
             {events === null
               ? Array(3)
                   .fill(null)
                   .map((_, index) => <SkeletonEventCard key={index} />)
-              : events
-                  .slice(currentIndex, currentIndex + 3)
-                  .map((event) => (
+              : events.slice(currentIndex, currentIndex + 3).map((event, index) => (
+                  <div key={event.id} className={`event-card ${animationClass} ${index < 3 ? 'visible' : ''}`}>
                     <EventCard
-                      key={event.id}
                       id={event.id}
                       date={event.date}
                       title={event.title}
@@ -123,10 +143,11 @@ const EventContainer = () => {
                       onEventDelete={onEventDelete}
                       onEventEdit={onEventEdit}
                     />
-                  ))}
+                  </div>
+                ))}
           </div>
           <div className="shift-buttons" style={{ backgroundColor: theme.palette.primary.main }}>
-            <ArrowBackIosIcon onClick={handleShiftEventsLeft} />
+            <ArrowBackIosIcon onClick={handleShiftEventsRight} />
           </div>
         </div>
       </div>

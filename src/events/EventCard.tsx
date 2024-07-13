@@ -28,7 +28,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345 }}>
+    <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345, minHeight: 450 }}>
       <CardHeader
         action={
           <IconButton aria-label="settings">
@@ -56,7 +56,7 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
         onLoad={() => setIsLoading(false)}
       />{' '}
       <CardContent>
-        <Typography variant="body1" color="text.secondary">
+        <Typography variant="body1" color="text.secondary" style={{ minHeight: '90px' }}>
           {details}
         </Typography>
       </CardContent>

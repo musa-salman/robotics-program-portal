@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useEventService } from './repository/EventContext';
 import GroupsIcon from '@mui/icons-material/Groups';
+import { TransitionGroup } from 'react-transition-group';
+
 import {
   Table,
   TableBody,
@@ -12,7 +14,11 @@ import {
   IconButton,
   Dialog,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  ListItem,
+  List,
+  Collapse,
+  ListItemText
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -43,8 +49,29 @@ const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId
   const handleRemoveRegistration = (studentId: string) => {
     // Add your code to remove the student registration here
     eventService.cancelRegistration(studentId, eventId);
+
     setRegisteredStudents((registeredStudents || []).filter((student) => student.id !== studentId));
   };
+
+  function renderItem(student: BriefStudent, index: number) {
+    return (
+      <ListItem
+        secondaryAction={
+          <TableRow key={index}>
+            <TableCell>{student.name}</TableCell>
+            <TableCell>{student.phone}</TableCell>
+            <TableCell>{student.email}</TableCell>
+            <TableCell>
+              <IconButton onClick={() => handleRemoveRegistration(student.id)} aria-label="delete" size="small">
+                <DeleteIcon />
+              </IconButton>
+            </TableCell>
+          </TableRow>
+        }>
+        <ListItemText primary={index + 1} />
+      </ListItem>
+    );
+  }
 
   const ShowDetails = () => {
     return (
@@ -61,7 +88,15 @@ const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {registeredStudents?.map((student, index) => (
+                  <List sx={{ maxWidth: 450, minWidth: 450 }}>
+                    <TransitionGroup>
+                      {registeredStudents?.map((student, index) => (
+                        <Collapse key={index}>{renderItem(student, index)}</Collapse>
+                      ))}
+                    </TransitionGroup>
+                  </List>
+
+                  {/* {registeredStudents?.map((student, index) => (
                     <TableRow key={index}>
                       <TableCell>{student.name}</TableCell>
                       <TableCell>{student.phone}</TableCell>
@@ -75,7 +110,7 @@ const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId
                         </IconButton>
                       </TableCell>
                     </TableRow>
-                  ))}
+                  ))} */}
                 </TableBody>
               </Table>
             </TableContainer>
