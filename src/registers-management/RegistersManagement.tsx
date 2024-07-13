@@ -19,7 +19,7 @@ const RegisterManagement = () => {
     setRows: React.Dispatch<React.SetStateAction<(Register & { isNew: boolean })[] | null>>,
     setShowItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     setInitialItem: React.Dispatch<React.SetStateAction<Register | null>>,
-    setMessage: React.Dispatch<React.SetStateAction<FeedbackMessage | null>>
+    showMessage: (message: FeedbackMessage) => void
   ): GridColDef[] => {
     return [
       { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1, editable: true },
@@ -59,10 +59,10 @@ const RegisterManagement = () => {
                   .rejectRegister(id.toString())
                   .then(() => {
                     setRows(rows!.filter((register) => register.id !== id));
-                    setMessage({ message: 'המועמד נדחה בהצלחה', variant: 'success' });
+                    showMessage({ message: 'המועמד נדחה בהצלחה', variant: 'success' });
                   })
                   .catch((_) => {
-                    setMessage({ message: 'התרחשה שגיאה בדחיית המועמד', variant: 'error' });
+                    showMessage({ message: 'התרחשה שגיאה בדחיית המועמד', variant: 'error' });
                   });
               }}
             />,
@@ -74,10 +74,10 @@ const RegisterManagement = () => {
                   .approveRegister(rows!.find((register) => register.id === id)!)
                   .then(() => {
                     setRows(rows!.filter((register) => register.id !== id));
-                    setMessage({ message: 'המועמד אושר בהצלחה', variant: 'success' });
+                    showMessage({ message: 'המועמד אושר בהצלחה', variant: 'success' });
                   })
                   .catch((_) => {
-                    setMessage({ message: 'התרחשה שגיאה באישור המועמד', variant: 'error' });
+                    showMessage({ message: 'התרחשה שגיאה באישור המועמד', variant: 'error' });
                   });
               }}
             />

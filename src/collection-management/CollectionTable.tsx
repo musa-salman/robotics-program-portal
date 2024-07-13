@@ -43,7 +43,7 @@ interface CollectionTableProps<T> {
     >,
     setShowAddItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     setInitialItem: React.Dispatch<React.SetStateAction<T | null>>,
-    setMessage: React.Dispatch<React.SetStateAction<FeedbackMessage | null>>
+    showMessage: (message: FeedbackMessage) => void
   ) => GridColDef[];
   repository?: BaseRepository<T>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -64,6 +64,7 @@ const CollectionTable = <T extends { id: string }>({
   const [rows, setRows] = useState<(T & { isNew: boolean })[] | null>(null);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [message, setMessage] = useState<FeedbackMessage | null>(null);
+  const [buildNumber, setBuildNumber] = useState<number>(0);
   const [showAddItemForm, setShowItemForm] = useState(false);
   const [initialItem, setInitialItem] = useState<T | null>(null);
   const [selectionModel, setSelectionModel] = useState<GridRowId[]>([]);
@@ -73,7 +74,7 @@ const CollectionTable = <T extends { id: string }>({
       (getItems !== undefined ? getItems() : repository!.find())
         .then((items) => setRows(items.map((item: T) => ({ ...item, isNew: false }))))
         .catch(() => {
-          setMessage({
+          showMessage({
             message: 'התרחשה שגיאה בטעינת הנתונים',
             variant: 'error'
           });
@@ -82,6 +83,11 @@ const CollectionTable = <T extends { id: string }>({
 
     if (!rows) fetchItems();
   }, [rows, repository]);
+
+  const showMessage = (message: FeedbackMessage) => {
+    showMessage(message);
+    setBuildNumber(buildNumber + 1);
+  };
 
   const handleRowSelection = useCallback(
     (selection: GridRowSelectionModel) => {
@@ -106,7 +112,7 @@ const CollectionTable = <T extends { id: string }>({
   const updateItem = (updatedItem: T) => {
     if (updatedItem === initialItem) {
       setShowItemForm(false);
-      setMessage({
+      showMessage({
         message: 'לא בוצעו שינויים',
         variant: 'info'
       });
@@ -120,14 +126,14 @@ const CollectionTable = <T extends { id: string }>({
         const extendedItem = { ...updatedItem, id: id, isNew: false };
         const updatedRows = rows!.map((row) => (row.id === id ? extendedItem : row));
         setRows(updatedRows);
-        setMessage({
+        showMessage({
           message: messageFormat.updateSuccess(updatedItem),
           variant: 'success'
         });
         setShowItemForm(false);
       })
       .catch(() => {
-        setMessage({
+        showMessage({
           message: messageFormat.updateError(updatedItem),
           variant: 'error'
         });
@@ -145,13 +151,13 @@ const CollectionTable = <T extends { id: string }>({
     repository!
       .update(updatedRow.id, updatedRow as T)
       .then(() => {
-        setMessage({
+        showMessage({
           message: messageFormat.updateSuccess(updatedRow),
           variant: 'success'
         });
       })
       .catch(() => {
-        setMessage({
+        showMessage({
           message: messageFormat.updateError(updatedRow),
           variant: 'error'
         });
