@@ -2,13 +2,19 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from 'react';
+import { Alert, Slide } from '@mui/material';
 
-interface SimpleSnackbarProps {
+interface FeedbackMessage {
   message: string;
+  variant: 'success' | 'error' | 'info' | 'warning';
 }
 
-const SimpleSnackbar: React.FC<SimpleSnackbarProps> = ({ message }) => {
-  const [open, setOpen] = useState<boolean>(true);
+interface FeedbackSnackbarProps {
+  feedBackMessage: FeedbackMessage;
+}
+
+const FeedbackSnackbar: React.FC<FeedbackSnackbarProps> = ({ feedBackMessage }) => {
+  const [open, setOpen] = useState(true);
 
   const handleClose = (_event: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -28,9 +34,20 @@ const SimpleSnackbar: React.FC<SimpleSnackbarProps> = ({ message }) => {
 
   return (
     <>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} message={message} action={action} />
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        autoHideDuration={3000}
+        TransitionComponent={Slide}
+        open={open}
+        onClose={handleClose}
+        action={action}>
+        <Alert onClose={handleClose} severity={feedBackMessage.variant} variant="filled" sx={{ width: '100%' }}>
+          {feedBackMessage.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 };
 
-export default SimpleSnackbar;
+export default FeedbackSnackbar;
+export type { FeedbackMessage };

@@ -3,7 +3,6 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import GPT from '../gpt-service/GPTComponent';
 import { generateEventDescription, suggestEventTitles } from './EventPrompts';
 import moment from 'moment';
-import { Margin } from '@mui/icons-material';
 
 interface EventFormProps {
   handleSaveAdd: () => void;
@@ -33,7 +32,7 @@ const EventForm: React.FC<EventFormProps> = ({
   requiredFields
 }) => {
   return (
-    <>
+    <form>
       <Box
         sx={{
           position: 'absolute',
@@ -90,11 +89,12 @@ const EventForm: React.FC<EventFormProps> = ({
                 fullWidth
                 disabled
                 placeholder="שם תמונה"
+                value={formData.imageURL}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <input
-                        accept="*"
+                        accept="image/*"
                         style={{ display: 'none' }}
                         id="upload-file"
                         type="file"
@@ -158,7 +158,7 @@ const EventForm: React.FC<EventFormProps> = ({
           </Grid>
         </form>
       </Box>
-    </>
+    </form>
   );
 };
 

@@ -49,20 +49,22 @@ function bootstrap({ theme, cacheRtl }: IProps) {
 
   const studentRepository = new CachingRepository(new StudentRepository());
   const userRepository = new CachingRepository(new UserRepository());
-  const userService = new UserService(
-    userRepository,
-    studentRepository,
-    eventRegistrationRepositories,
-    studentEventRepositories
-  );
 
   const registerRepository = new CachingRepository(new RegisterRepository());
   const registerService = new RegisterService(registerRepository, studentRepository, userRepository);
 
+  const userService = new UserService(
+    userRepository,
+    studentRepository,
+    eventRegistrationRepositories,
+    studentEventRepositories,
+    registerRepository
+  );
+
   const documentRepository = new CachingRepository(new DocumentRepository());
   const documentStudentRepositories = new DocumentStudentRepositories();
   const documentService = new DocumentInfoService(documentRepository, documentStudentRepositories, storage);
-  console.log(theme);
+
   return (
     <React.StrictMode>
       <ThemeProvider theme={theme}>

@@ -22,13 +22,15 @@ import { StorageServiceContext } from '../../../storage-service/StorageContext';
 import GPT from '../../../gpt-service/GPTComponent';
 import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
 import { useMaterialService } from '../../repository/StudyMaterialContext';
+import FeedbackSnackbar, { FeedbackMessage } from '../../../components/snackbar/SnackBar';
 
 interface MaterialUploadModalProps {
   handleClose: () => void;
-  handleAdd: (studyMaterial: StudyMaterial) => void;
+  handleAdd: (studyMaterial: StudyMaterial) => void | null;
+  initialValue: StudyMaterial | null;
 }
 
-const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, handleAdd }) => {
+const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, handleAdd, initialValue }) => {
   const [isForward, setIsForward] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [categories, setCategories] = useState<Category[] | null>(null);
@@ -55,15 +57,20 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
     }
   };
 
-  const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
-    filename: '',
-    id: '',
-    category: '',
-    title: '',
-    description: '',
-    date: new Date()
-  });
+  const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>(
+    initialValue || {
+      filename: '',
+      id: '',
+      category: '',
+      title: '',
+      description: '',
+      date: new Date()
+    }
+  );
   const storageService = useContext(StorageServiceContext);
+
+  // Define the feedback message
+  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
 
   useEffect(() => {
     const getCategory = async () => {
@@ -95,18 +102,38 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
       if (event.target.files && event.target.files[0]) {
         setStudyMaterial((prevData) => ({ ...prevData, filename: event.target.files[0].name }));
         setFile(event.target.files[0]);
+        setFeedbackMessage({
+          message: 'הקובץ נטען בהצלחה',
+          variant: 'success'
+        });
       }
     } catch (error: any) {
-      console.error('error handling file change', error);
+      setFeedbackMessage({
+        message: 'שגיאה בהעלאת הקובץ',
+        variant: 'error'
+      });
     }
   };
 
   const handleSubmit = async () => {
     if (studyMaterial.title !== '' && studyMaterial.filename !== '' && studyMaterial.category !== '' && file !== null) {
-      studyMaterialManagement.studyMaterialRepository.create(studyMaterial).then((docRef) => {
-        storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename);
-      });
-      handleAdd(studyMaterial);
+      studyMaterialManagement.studyMaterialRepository
+        .create(studyMaterial)
+        .then((docRef) => {
+          storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename);
+          handleAdd(studyMaterial);
+          //FIXME: Add a snackbar message is not working
+          setFeedbackMessage({
+            message: 'הקובץ הועלה בהצלחה',
+            variant: 'success'
+          });
+        })
+        .catch(() => {
+          setFeedbackMessage({
+            message: 'שגיאה בהעלאת הקובץ',
+            variant: 'error'
+          });
+        });
       handleClose();
     } else {
       setIsForward(true);
@@ -116,6 +143,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
 
   return (
     <>
+      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
       <Box
         sx={{
           position: 'absolute',
@@ -172,7 +200,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                     setIsValid((prevData) => ({ ...prevData, title: studyMaterial.category !== '' }));
                   }}>
                   {(categories || [])
-                    .filter((item) => item.category !== 'הכל')
+                    // .filter((item) => item.category !== 'הכל')
                     .map((item) => (
                       <MenuItem value={item.category}>{item.category}</MenuItem>
                     ))}
@@ -242,7 +270,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                 variant="contained"
                 style={{ marginRight: '8rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
                 onClick={handleSubmit}>
-                העלה
+                {initialValue ? 'שמור' : 'הוסף'}
               </Button>
             </Grid>
 

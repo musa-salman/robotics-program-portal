@@ -19,14 +19,24 @@ const EventContainer = () => {
   const eventRepository = useEventService().eventRepository;
 
   useEffect(() => {
-    const getEvents = async () => {
-      setEvents(convertIEventsToEventProps(await eventRepository.find()));
+    const getEvents = () => {
+      eventRepository
+        .find()
+        .then((events) =>
+          setEvents(
+            convertIEventsToEventProps(events).sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
+          )
+        );
     };
     if (events === null) getEvents();
   }, [events]);
 
   const addEvent = (newEvent: EventProps) => {
-    if (events !== null) setEvents([...events, newEvent]);
+    if (events !== null) {
+      const updatedEvents = [...events, newEvent];
+      updatedEvents.sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      setEvents(updatedEvents);
+    }
   };
 
   function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
@@ -55,6 +65,7 @@ const EventContainer = () => {
         // Create a new array with the updated event
         const newEvents = [...prevEvents];
         newEvents[index] = updatedEvent;
+        newEvents.sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime());
         return newEvents;
       }
       // If the event was not found, return the previous state

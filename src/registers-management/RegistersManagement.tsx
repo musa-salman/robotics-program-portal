@@ -7,19 +7,19 @@ import { Register } from '../register/Register';
 import { RegisterContext } from '../register/service/RegisterContext';
 import StudentForm from '../students-management/StudentForm';
 import { Close, Done } from '@mui/icons-material';
-import RegisterDetails from './RegisterDetails';
+import StudentDetails from './RegisterDetails';
+import { FeedbackMessage } from '../components/snackbar/SnackBar';
 
 const RegisterManagement = () => {
   const [selectedRegister, setSelectedRegister] = useState<Register | null>(null);
   const registerService = useContext(RegisterContext);
 
   const generateColumns = (
-    /// show form, set initial values, save item
     rows: (Register & { isNew: boolean })[] | null,
     setRows: React.Dispatch<React.SetStateAction<(Register & { isNew: boolean })[] | null>>,
     setShowItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     setInitialItem: React.Dispatch<React.SetStateAction<Register | null>>,
-    setMessage: React.Dispatch<React.SetStateAction<string | null>>
+    setMessage: React.Dispatch<React.SetStateAction<FeedbackMessage | null>>
   ): GridColDef[] => {
     return [
       { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1, editable: true },
@@ -30,11 +30,9 @@ const RegisterManagement = () => {
         headerName: 'שם תלמיד',
         flex: 1,
         renderCell: ({ row }) => (
-          <div>
-            <Typography>
-              {row.firstName} {row.lastName}
-            </Typography>
-          </div>
+          <Typography>
+            {row.firstName} {row.lastName}
+          </Typography>
         )
       },
       {
@@ -59,9 +57,12 @@ const RegisterManagement = () => {
               onClick={(_) => {
                 registerService
                   .rejectRegister(id.toString())
-                  .then(() => setRows(rows!.filter((register) => register.id !== id)))
+                  .then(() => {
+                    setRows(rows!.filter((register) => register.id !== id));
+                    setMessage({ message: 'המועמד נדחה בהצלחה', variant: 'success' });
+                  })
                   .catch((_) => {
-                    setMessage('התרחשה שגיאה בדחיית הרישום');
+                    setMessage({ message: 'התרחשה שגיאה בדחיית המועמד', variant: 'error' });
                   });
               }}
             />,
@@ -71,9 +72,12 @@ const RegisterManagement = () => {
               onClick={(_) => {
                 registerService
                   .approveRegister(rows!.find((register) => register.id === id)!)
-                  .then(() => setRows(rows!.filter((register) => register.id !== id)))
+                  .then(() => {
+                    setRows(rows!.filter((register) => register.id !== id));
+                    setMessage({ message: 'המועמד אושר בהצלחה', variant: 'success' });
+                  })
                   .catch((_) => {
-                    setMessage('התרחשה שגיאה באישור הרישום');
+                    setMessage({ message: 'התרחשה שגיאה באישור המועמד', variant: 'error' });
                   });
               }}
             />
@@ -84,14 +88,13 @@ const RegisterManagement = () => {
   };
 
   const messageFormat: MessageFormat<Register> = {
-    deleteError: () => 'התרחשה שגיאה בדחיית הרישום',
-    deleteSuccess: () => 'הרישום נדחה בהצלחה',
-    updateError: () => 'התרחשה שגיאה בעדכון הרישום',
-    updateSuccess: () => 'הרישום עודכן בהצלחה'
+    deleteError: () => 'התרחשה שגיאה במחיקת המועמד',
+    deleteSuccess: () => 'המועמד נמחק בהצלחה',
+    updateError: () => 'התרחשה שגיאה בעדכון המועמד',
+    updateSuccess: () => 'המועמד עודכן בהצלחה'
   };
 
   const handleRowSelected = useCallback((row: GridRowModel | null) => {
-    console.log(row);
     setSelectedRegister(row as Register);
   }, []);
 
@@ -107,7 +110,9 @@ const RegisterManagement = () => {
         />
       </Grid>
       <Grid item xs={4}>
-        {selectedRegister && <RegisterDetails register={selectedRegister} onClose={() => setSelectedRegister(null)} />}
+        {selectedRegister && (
+          <StudentDetails registrationData={selectedRegister} onClose={() => setSelectedRegister(null)} />
+        )}
       </Grid>
     </Grid>
   );

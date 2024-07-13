@@ -15,11 +15,13 @@ import CategorySelector from './components/CategorySelector';
 import DeleteModal from './DeleteModal';
 import CategoryButtons from './components/CaregoryButtons';
 import { CategoryManagement } from './components/upload-file/CategoryManagement';
+import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 
 function StudyMaterialContainer() {
   const materialService = useMaterialService();
 
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
+
   const [categoryList, setCategoryList] = useState<Category[] | null>(null);
 
   const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);
@@ -35,6 +37,9 @@ function StudyMaterialContainer() {
   const handleCloseAddEdit = () => setShowAddEdit(false);
   const handleShowEdit = () => setShowAddEdit(true);
   const [query, setQuery] = useState('');
+
+  // Define the feedback message
+  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
 
   useEffect(() => {
     const getStudyMaterials = async () => {
@@ -100,9 +105,16 @@ function StudyMaterialContainer() {
           material.id === selectedMaterial!.id ? { ...material, category: categorySelected.category } : material
         );
         setStudyMaterials(updatedStudyMaterials);
+        setFeedbackMessage({
+          message: 'החומר הועבר בהצלחה!',
+          variant: 'success'
+        });
       })
-      .catch((error) => {
-        console.error('Error move study material:', error);
+      .catch(() => {
+        setFeedbackMessage({
+          message: 'התרחשה שגיעה בעת העברת החומר. אנא נסה שנית.',
+          variant: 'error'
+        });
       });
   };
 
@@ -117,11 +129,10 @@ function StudyMaterialContainer() {
   const categories: string[] = (searchResults || studyMaterials || [])
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
-  console.log('category', categories);
-  console.log('categoryList', categoryList);
 
   return (
     <>
+      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
       <Box className="mat-out-box">
         <Box className="mat-in-box">
           {isMoveMode && (
@@ -151,7 +162,7 @@ function StudyMaterialContainer() {
           </div>
 
           <div className="con-taf">
-            <CategoryButtons categories={categories || []} onCategorySelect={handleCategorySelect} />
+            <CategoryButtons categories={categoryList || []} onCategorySelect={handleCategorySelect} />
           </div>
 
           {searchResults?.length === 0 ? (
@@ -185,7 +196,7 @@ function StudyMaterialContainer() {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
-            <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} />
+            <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} initialValue={null} />
           </Modal>
 
           <Modal

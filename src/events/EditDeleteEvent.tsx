@@ -12,7 +12,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import EventForm from './EventForm';
-import { Modal } from '@mui/material';
+import Modal from '@mui/material/Modal';
+import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 
 interface EditDeleteEventProps {
   event: EventProps;
@@ -32,6 +33,8 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
 
   const eventRepository = useEventService().eventRepository;
   const storageService = useContext(StorageServiceContext);
+
+  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
 
   const MAX_CHARS_Details = 100;
   const MAX_CHARS_Title = 17;
@@ -59,7 +62,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
     setFile(e.target.files?.[0] || null);
   };
 
-  const handleSaveEdit = async () => {
+  const handleSaveEdit = () => {
     const event: IEvent = {
       date: formData.date,
       title: formData.title,
@@ -70,29 +73,73 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
 
     setShowModalEdit(false);
     if (file) {
-      await storageService.upload(file, '/event-img/' + id).then(() => {
+      storageService.upload(file, '/event-img/' + id).then(() => {
         const storage = getStorage();
         const filePath = '/event-img/' + id;
-        getDownloadURL(ref(storage, filePath)).then((url) => {
-          event.imageURL = url;
-          formData.image = url;
-          editEvent(formData);
-          eventRepository.update(id, event);
-        });
+        getDownloadURL(ref(storage, filePath))
+          .then((url) => {
+            event.imageURL = url;
+            formData.image = url;
+            eventRepository.update(id, event).then(() => {
+              editEvent(formData);
+            });
+            setFeedbackMessage({
+              message: 'האירוע עודכן בהצלחה!',
+              variant: 'success'
+            });
+          })
+          .catch(() => {
+            setFeedbackMessage({
+              message: 'התרחשה שגיעה בעת עדכון האירוע. אנא נסה שנית.',
+              variant: 'error'
+            });
+          });
       });
     } else {
-      editEvent(formData);
-      eventRepository.update(id, event);
+      eventRepository
+        .update(id, event)
+        .then(() => {
+          editEvent(formData);
+          setFeedbackMessage({
+            message: 'האירוע עודכן בהצלחה!',
+            variant: 'success'
+          });
+        })
+        .catch(() => {
+          setFeedbackMessage({
+            message: 'התרחשה שגיעה בעת עדכון האירוע. אנא נסה שנית.',
+            variant: 'error'
+          });
+        });
     }
   };
 
-  const handleSaveDelete = async () => {
-    deleteEvent(id);
-    eventRepository.delete(id);
+  //FIXME: handleSaveDelete FeedbackMessage is not working well on success
+  const handleSaveDelete = () => {
     setShowModalDelete(false);
-    const filePath = '/event-img/' + id;
-    // Delete the file
-    storageService.delete(filePath);
+    eventRepository
+      .delete(id)
+      .then(async () => {
+        const filePath = '/event-img/' + id;
+        // Delete the file
+        await storageService.exists(filePath).then((exists) => {
+          if (!exists) {
+            return;
+          }
+          storageService.delete(filePath);
+        });
+        deleteEvent(id);
+        setFeedbackMessage({
+          message: 'אירוע נמחק בהצלחה!',
+          variant: 'success'
+        });
+      })
+      .catch(() => {
+        setFeedbackMessage({
+          message: 'התרחשה שגיעה בעת מחיקת האירוע. אנא נסה שנית.',
+          variant: 'error'
+        });
+      });
   };
 
   function handleEdit(): void {
@@ -151,6 +198,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
 
   return (
     <>
+      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
       <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} />
       {EditWindow()}
       {DeleteWindow()}

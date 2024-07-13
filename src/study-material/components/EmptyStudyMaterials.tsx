@@ -1,9 +1,8 @@
-import { Container, CssBaseline, Typography } from '@mui/material';
+import { Container, CssBaseline, Modal, Typography } from '@mui/material';
 import './EmptyStudyMaterials.css';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
 import { useState } from 'react';
-import { Modal } from 'react-bootstrap';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import MaterialUploadModal from './upload-file/MaterialUploadModal';
 
@@ -34,8 +33,12 @@ function EmptyStudyMaterials({ handleAdd }: EmptyStudyMaterialsProps) {
         </button>
       </Container>
 
-      <Modal show={show} onHide={handleClose}>
-        <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd}></MaterialUploadModal>
+      <Modal
+        open={show}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} />
       </Modal>
     </>
   );

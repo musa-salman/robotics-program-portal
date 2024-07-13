@@ -7,19 +7,24 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import './Banner.css';
 import EventContainer from '../events/EventContainer';
 import BannerButton from './BannerButton';
+import { Assignment, Insights, RestoreFromTrash, School } from '@mui/icons-material';
 
 const PRIMARY_STUDENT_LINKS = [
   { icon: <BookIcon />, label: 'חומרי לימוד', path: '/study-materials' },
   { icon: <EventIcon />, label: 'אירועים', path: '/events' }
 ];
 
-const PRIMARY_ADMIN_LINKS = [{ icon: <PeopleIcon />, label: 'ניהול תלמידים', path: '/students-management' }];
+const PRIMARY_ADMIN_LINKS = [
+  { icon: <School />, label: 'ניהול תלמידים', path: '/students-management' },
+  { icon: <Insights />, label: 'בחינה מעמיקה', path: '/deep-inspection' }
+];
 
 const STUDENT_LINKS = [{ icon: <PictureAsPdfIcon />, label: 'מסמכים', path: '/documents' }];
 
 const ADMIN_LINKS = [
   { icon: <PeopleIcon />, label: 'ניהול משתמשים', path: '/users' },
-  { icon: <PeopleIcon />, label: 'ניהול נרשמים', path: '/registers-management' }
+  { icon: <Assignment />, label: 'ניהול נרשמים', path: '/registers-management' },
+  { icon: <RestoreFromTrash />, label: 'משתמשים נדחים ומחוקים', path: '/rejected-and-deleted-users' }
 ];
 
 const Banner: React.FC = () => {

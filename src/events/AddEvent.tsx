@@ -8,6 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import EventForm from './EventForm';
 import { Modal } from '@mui/material';
+import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 
 interface AddEventProps {
   addEvent: (event: EventProps) => void;
@@ -16,6 +17,9 @@ interface AddEventProps {
 const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
   const MAX_CHARS_Title = 17;
   const MAX_CHARS_Details = 100;
+
+  // Define the feedback message
+  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
 
   const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -36,7 +40,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevState) => ({ ...prevState, image: formData.image }));
+    setFormData((prevState) => ({ ...prevState, image: e.target.value }));
     setFile(e.target.files?.[0] || null); // Provide a default value of null for the file state variable
   };
 
@@ -53,8 +57,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
     date: new Date(), // Provide initial value for date
     title: '', // Provide initial value for title
     details: '', // Provide initial value for details
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/pico-7a9d2.appspot.com/o/event-img%2FRobtics.png?alt=media&token=ebd02a49-3e7a-4165-8580-825a2d5a0a5d', // Provide initial value for image
+    image: './DefultEventImg.png', // Provide initial value for image
     onEventDelete: (_id: string) => {}, // Change the parameter type from '_id: string' to 'id: number'
     onEventEdit: (_event: EventProps) => {},
     id: '' // Provide initial value for id
@@ -79,25 +82,53 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
 
   async function handleAdd() {
     handleShowAddEvent();
-    const docRef = await eventRepository.create(event);
-    event.id = docRef.id;
-    formData.id = docRef.id;
-    if (file) {
-      await storageService.upload(file, '/event-img/' + docRef.id).then(() => {
-        const storage = getStorage();
-        const filePath = '/event-img/' + docRef.id;
-        // Get the download URL
-        getDownloadURL(ref(storage, filePath)).then((url) => {
-          event.imageURL = url;
-          formData.image = url;
-          eventRepository.update(docRef.id, event);
+    eventRepository
+      .create(event)
+      .then((docRef) => {
+        event.id = docRef.id;
+        formData.id = docRef.id;
+        if (file) {
+          storageService.upload(file, '/event-img/' + docRef.id).then(async () => {
+            const storage = getStorage();
+            const filePath = '/event-img/' + docRef.id;
+            // Get the download URL
+            await getDownloadURL(ref(storage, filePath)).then(async (url) => {
+              event.imageURL = url;
+              formData.image = url;
+              await eventRepository.update(docRef.id, event).then(() => {
+                addEvent(formData);
+              });
+            });
+          });
+        } else {
+          formData.image = event.imageURL;
           addEvent(formData);
+        }
+        //success message
+        setFeedbackMessage({
+          message: 'אירוע נוסף בהצלחה!',
+          variant: 'success'
+        });
+      })
+      .catch(() => {
+        setFeedbackMessage({
+          message: 'התרחשה שגיעה בעת הוספת האירוע. אנא נסה שנית.',
+          variant: 'error'
         });
       });
-    } else {
-      formData.image = event.imageURL;
-      addEvent(formData);
-    }
+    returnDefaultValues();
+  }
+
+  function returnDefaultValues() {
+    setFormData({
+      date: new Date(),
+      title: '',
+      details: '',
+      image: './DefultEventImg.png',
+      onEventDelete: (_id: string) => {},
+      onEventEdit: (_event: EventProps) => {},
+      id: ''
+    });
   }
 
   function AddWindow() {
@@ -117,7 +148,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
           formData={event}
           MAX_CHARS_Title={MAX_CHARS_Title}
           MAX_CHARS_Details={MAX_CHARS_Details}
-          requiredFields={{ add: false }}
+          requiredFields={{ add: true }}
         />
       </Modal>
     );
@@ -129,6 +160,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
         <AddIcon />
       </Button>
       {AddWindow()}
+      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
     </>
   );
 };

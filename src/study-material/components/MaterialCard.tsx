@@ -103,13 +103,6 @@ function MaterialCard({
     <>
       {showDeleteModal && <DeleteModal onDelete={handleDelete} onCancel={() => setShowDeleteModal(false)} />}
       <Card className="Card" sx={{ borderRadius: '15px', backgroundColor: theme.palette.background.paper }}>
-        {/* <MySpeedDial
-            handleEditToggle={handleEditToggle}
-            handleMoveToggle={handleMoveToggle}
-            handleSave={handleSave}
-            handleDelete={isDelete}
-            isEditing={isEditing}
-          /> */}
         <CardContent className="bodycard">
           {isEditing ? (
             <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>
