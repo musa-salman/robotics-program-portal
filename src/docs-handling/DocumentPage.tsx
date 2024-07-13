@@ -11,8 +11,9 @@ import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackB
 const DocumentsPage: React.FC = () => {
   const [documents, setDocuments] = useState<DocumentInfo[] | undefined>(undefined);
   const [show, setShow] = useState(false);
-  const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
   const handleShow = () => setShow(true);
+  const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
+  const [messageBuild, setMessageBuild] = useState<number>(0);
 
   const documentInfoService = useDocumentInfoService();
   const { user } = useContext(AuthContext);
@@ -29,9 +30,14 @@ const DocumentsPage: React.FC = () => {
         setDocuments(docs);
       })
       .catch(() => {
-        setMessage({ message: 'שגיאה בטעינת המסמכים', variant: 'error' });
+        showMessage({ message: 'שגיאה בטעינת המסמכים', variant: 'error' });
       });
   }, [documentInfoService]);
+
+  const showMessage = (message: FeedbackMessage) => {
+    setMessage(message);
+    setMessageBuild(messageBuild + 1);
+  };
 
   const handleDocumentAdd = (document: DocumentInfo, file?: File | undefined): Promise<void> => {
     if (!documentInfoService) {
@@ -50,10 +56,10 @@ const DocumentsPage: React.FC = () => {
           if (!prevDocs) return [];
           return [...prevDocs, document];
         });
-        setMessage({ message: 'המסמך נוסף בהצלחה', variant: 'success' });
+        showMessage({ message: 'המסמך נוסף בהצלחה', variant: 'success' });
       })
       .catch(() => {
-        setMessage({ message: 'שגיאה בהוספת המסמך', variant: 'error' });
+        showMessage({ message: 'שגיאה בהוספת המסמך', variant: 'error' });
       });
   };
 
@@ -69,10 +75,10 @@ const DocumentsPage: React.FC = () => {
           if (!prevDocs) return [];
           return prevDocs.filter((doc) => doc.id !== documentId);
         });
-        setMessage({ message: 'המסמך נמחק בהצלחה', variant: 'success' });
+        showMessage({ message: 'המסמך נמחק בהצלחה', variant: 'success' });
       })
       .catch(() => {
-        setMessage({ message: 'התרחשה שגיאה במחיקת המסמך, נסה שוב מאוחר יותר', variant: 'error' });
+        showMessage({ message: 'התרחשה שגיאה במחיקת המסמך, נסה שוב מאוחר יותר', variant: 'error' });
       });
   };
 
@@ -97,11 +103,11 @@ const DocumentsPage: React.FC = () => {
             return doc;
           });
         });
-        setMessage({ message: 'המסמך עודכן בהצלחה', variant: 'success' });
+        showMessage({ message: 'המסמך עודכן בהצלחה', variant: 'success' });
         return;
       })
       .catch(() => {
-        setMessage({ message: 'שגיאה בעדכון המסמך', variant: 'error' });
+        showMessage({ message: 'שגיאה בעדכון המסמך', variant: 'error' });
       });
   };
 
@@ -117,16 +123,16 @@ const DocumentsPage: React.FC = () => {
     return documentInfoService
       .uploadStudentDocument(user.id, documentId, file)
       .then(() => {
-        setMessage({ message: 'המסמך הועלה בהצלחה', variant: 'success' });
+        showMessage({ message: 'המסמך הועלה בהצלחה', variant: 'success' });
       })
       .catch(() => {
-        setMessage({ message: 'שגיאה בהעלאת המסמך', variant: 'error' });
+        showMessage({ message: 'שגיאה בהעלאת המסמך', variant: 'error' });
       });
   };
 
   return (
     <>
-      {message && <FeedbackSnackbar key={message.message} feedBackMessage={message} />}
+      {message && <FeedbackSnackbar key={message + messageBuild.toString()} feedBackMessage={message} />}
       <DocumentFormModal open={show} handleClose={() => setShow(false)} onSaveDocument={handleDocumentAdd} />
       <Card sx={{ maxWidth: 600, margin: '1rem' }}>
         <CardActions>
