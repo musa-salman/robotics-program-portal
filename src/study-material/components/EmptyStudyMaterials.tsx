@@ -38,7 +38,7 @@ function EmptyStudyMaterials({ handleAdd }: EmptyStudyMaterialsProps) {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} />
+        <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} initialValue={null} />
       </Modal>
     </>
   );
