@@ -44,7 +44,6 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
   };
 
   const handleInputCategories = (event: any) => {
-    console.log(newCategory);
     setNewCategory(event.target.value);
   };
 

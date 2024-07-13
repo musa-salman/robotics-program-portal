@@ -10,6 +10,7 @@ import DialogContent from '@mui/material/DialogContent';
 import FormGroup from '@mui/material/FormGroup';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
+import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 
 interface RegisterStudentToEventProps {
   eventId: string;
@@ -25,6 +26,9 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
   const eventService = useEventService();
   const studentRepository = useContext(StudentContext);
   const { user } = useContext(AuthContext);
+
+  // Define the feedback message
+  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
 
   useEffect(() => {
     const checkIfRegistered = () => {
@@ -61,7 +65,19 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
         } as BriefStudent,
         eventId
       )
-      .then(() => setRegister(true));
+      .then(() => {
+        setRegister(true);
+        setFeedbackMessage({
+          message: 'הרשמתך לאירוע בוצעה בהצלחה',
+          variant: 'success'
+        });
+      })
+      .catch(() => {
+        setFeedbackMessage({
+          message: 'הרשמתך לאירוע לא בוצעה',
+          variant: 'error'
+        });
+      });
   };
 
   function RegisterWindow() {
@@ -94,6 +110,7 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
 
   return (
     <>
+      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
       {isRegistered ? (
         <Button variant="contained" color="secondary" disabled>
           רשום
