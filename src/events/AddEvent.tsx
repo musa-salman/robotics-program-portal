@@ -47,7 +47,10 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
   const [file, setFile] = useState<File | null>(null);
   const [showModalAddEvent, setShowModalAddEvent] = useState(false);
 
-  const handleCloseAddEvent = () => setShowModalAddEvent(false);
+  const handleCloseAddEvent = () => {
+    setShowModalAddEvent(false);
+    returnDefaultValues();
+  };
   const handleShowAddEvent = () => setShowModalAddEvent(true);
 
   const eventRepository = useEventService().eventRepository;
