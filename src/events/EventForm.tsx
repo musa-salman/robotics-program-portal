@@ -58,21 +58,8 @@ const EventForm: React.FC<EventFormProps> = ({
       handleImageChange(event);
     }
   }
-
-  console.log('this  ' + formDataTemp.image);
-  console.log('./DefultEventImg.png');
-
   return (
     <div className="form-show">
-      <div className="card">
-        <EventCardPreview
-          date={formDataTemp.date}
-          title={formDataTemp.title}
-          details={formDataTemp.details}
-          image={formDataTemp.image === undefined ? formDataTemp.image : './DefultEventImg.png'}
-        />
-      </div>
-
       <div className="form">
         <form>
           <Box
@@ -95,6 +82,16 @@ const EventForm: React.FC<EventFormProps> = ({
             </Typography>
             <form>
               <Grid container spacing={3} sx={{ marginLeft: '0.25rem', marginRight: '0.25rem' }}>
+                <div className="card">
+                  <Grid xs={12} md={4}>
+                    <EventCardPreview
+                      date={formDataTemp.date}
+                      title={formDataTemp.title}
+                      details={formDataTemp.details}
+                      image={formDataTemp.image ? formDataTemp.image : './DefultEventImg.png'}
+                    />
+                  </Grid>
+                </div>
                 <Grid xs={11}>
                   <GPT
                     initialValue={formData.title}
