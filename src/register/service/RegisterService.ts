@@ -84,7 +84,8 @@ export class RegisterService implements IRegisterService {
         parentPhoneNumber: register.parentPhoneNumber,
         studentEmail: register.studentEmail,
         parentEmail: register.parentEmail,
-        studentAddress: register.studentAddress
+        studentAddress: register.studentAddress,
+        studentSchool: register.studentSchool
       })
       .update(doc(this.userRepository._collection, register.id), {
         roles: [Role.Student]
