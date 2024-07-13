@@ -116,7 +116,7 @@ const UsersManagement = () => {
                       );
                       setMessage({ message: 'התפקיד הוסף בהצלחה', variant: 'success' });
                     })
-                    .then(() => {
+                    .catch(() => {
                       setMessage({ message: 'התרחשה שגיאה בהוספת התפקיד', variant: 'error' });
                     });
                 }}
