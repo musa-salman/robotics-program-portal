@@ -6,6 +6,7 @@ import { db } from '../firebase';
 import { StudentRepository } from '../students-management/StudentRepository';
 import { StudentEventRepositories } from '../events/repository/StudentEventRepositories';
 import { EventRegistrationRepositories } from '../events/repository/EventRegistrationRepositories';
+import { RegisterRepository } from '../register/service/RegisterRepository';
 
 /**
  * Interface for the user service.
@@ -15,6 +16,7 @@ export interface IUserService {
   getStudentRepository(): StudentRepository;
   addRoleToUser(userId: string, role: Role): Promise<void>;
   deleteRoleFromUser(userId: string, role: Role): Promise<void>;
+  jumpToAdminRole(user: User): Promise<void>;
   deleteUser(userId: string): Promise<void>;
   getUsers(): Promise<User[]>;
   getUserRoles(userId: string): Promise<Role[]>;
@@ -25,17 +27,20 @@ export class UserService implements IUserService {
   private readonly studentRepository: StudentRepository;
   private readonly eventRegistrationRepositories: EventRegistrationRepositories;
   private readonly studentEventRepositories: StudentEventRepositories;
+  private readonly registrationRepository: RegisterRepository;
 
   constructor(
     userRepository: UserRepository,
     studentRepository: StudentRepository,
     eventRegistrationRepositories: EventRegistrationRepositories,
-    studentEventRepositories: StudentEventRepositories
+    studentEventRepositories: StudentEventRepositories,
+    registerRepository: RegisterRepository
   ) {
     this.userRepository = userRepository;
     this.studentRepository = studentRepository;
     this.eventRegistrationRepositories = eventRegistrationRepositories;
     this.studentEventRepositories = studentEventRepositories;
+    this.registrationRepository = registerRepository;
   }
 
   getUserRepository(): UserRepository {
@@ -53,6 +58,17 @@ export class UserService implements IUserService {
         return this.userRepository.update(userId, user);
       }
     });
+  }
+
+  jumpToAdminRole(user: User): Promise<void> {
+    const batch = writeBatch(db);
+
+    if (user.roles.includes(Role.Pending)) {
+      batch.delete(doc(this.registrationRepository._collection, user.id));
+    }
+
+    user.roles = [Role.Admin];
+    return batch.update(doc(this.userRepository._collection, user.id), { ...user }).commit();
   }
 
   async deleteRoleFromUser(userId: string, role: Role): Promise<void> {
@@ -78,9 +94,7 @@ export class UserService implements IUserService {
 
     const student = await this.studentRepository.findOne(userId);
     if (student) {
-      console.log(student);
       const registeredEvents = await this.studentEventRepositories.getStudentEventRepository(userId).find();
-      console.log(registeredEvents);
       registeredEvents.forEach((event) => {
         batch.delete(
           doc(this.eventRegistrationRepositories.getEventRegistrationRepository(event.id)._collection, userId)
