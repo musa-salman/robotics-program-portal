@@ -40,7 +40,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevState) => ({ ...prevState, image: formData.image }));
+    setFormData((prevState) => ({ ...prevState, image: e.target.value }));
     setFile(e.target.files?.[0] || null); // Provide a default value of null for the file state variable
   };
 
@@ -116,6 +116,19 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
           variant: 'error'
         });
       });
+    returnDefaultValues();
+  }
+
+  function returnDefaultValues() {
+    setFormData({
+      date: new Date(),
+      title: '',
+      details: '',
+      image: './DefultEventImg.png',
+      onEventDelete: (_id: string) => {},
+      onEventEdit: (_event: EventProps) => {},
+      id: ''
+    });
   }
 
   function AddWindow() {
@@ -135,7 +148,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
           formData={event}
           MAX_CHARS_Title={MAX_CHARS_Title}
           MAX_CHARS_Details={MAX_CHARS_Details}
-          requiredFields={{ add: false }}
+          requiredFields={{ add: true }}
         />
       </Modal>
     );
