@@ -20,6 +20,7 @@ import UsersManagement from './users-management/UsersManagement';
 import DocumentPage from './docs-handling/DocumentPage';
 import PageContainer from './components/PageContainer';
 import RejectedAndDeletedTable from './users-management/RejectedAndDeletedUsers';
+import InsightPage from './Insights/InsightPage';
 
 function App() {
   const isDev = process.env.NODE_ENV === '';
@@ -38,7 +39,7 @@ function App() {
       },
       {
         path: '/deep-inspection',
-        element: <div />,
+        element: <InsightPage />,
         allowedRoles: [Role.Admin, Role.Owner],
         title: 'בחינה מעמיקה'
       },
