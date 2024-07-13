@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './EventCard.css';
 import EditDeleteEvent from './EditDeleteEvent';
 import RegisterStudentToEvent from './RegisterStudentToEvent';
@@ -8,11 +8,11 @@ import RoleBasedAccessControl from '../authentication/components/RoleBasedAccess
 import formatDate from '../utils/dateFormatter';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import { CircularProgress } from '@mui/material';
 
 export interface EventProps {
   date: Date;
@@ -25,6 +25,8 @@ export interface EventProps {
 }
 
 const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventDelete, onEventEdit, id }) => {
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
     <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345 }}>
       <CardHeader
@@ -42,13 +44,22 @@ const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventD
         title={title}
         subheader={formatDate(date)}
       />
-      <CardMedia component="img" height="150" image={image} alt={title} />
+      {isLoading && (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 150 }}>
+          <CircularProgress /> {/* Loading indicator */}
+        </div>
+      )}
+      <img
+        style={{ display: isLoading ? 'none' : 'block', height: '150px', width: '100%', objectFit: 'cover' }}
+        src={image}
+        alt={title}
+        onLoad={() => setIsLoading(false)}
+      />{' '}
       <CardContent>
         <Typography variant="body1" color="text.secondary">
           {details}
         </Typography>
       </CardContent>
-
       <div className="register-button">
         <RoleBasedAccessControl allowedRoles={[Role.Student]} unauthorizedAuthenticatedComponent={<></>}>
           <RegisterStudentToEvent eventId={id} />

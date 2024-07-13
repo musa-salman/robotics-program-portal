@@ -2,7 +2,7 @@ import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { Category } from '../repository/Category';
 import './CaregoryButtons.css';
 interface CategoryButtonsProps {
-  categories: string[];
+  categories: Category[];
   onCategorySelect: (categorychoose: string) => void;
 }
 
@@ -17,11 +17,11 @@ const CategoryButtons: React.FC<CategoryButtonsProps> = ({ categories, onCategor
         {categories.map((category, index) => (
           <Button
             variant="outlined"
-            color="secondary"
+            color="primary"
             key={index}
-            onClick={() => onCategorySelect(category)}
+            onClick={() => onCategorySelect(category.category)}
             className="category-button">
-            {category}
+            {category.category}
           </Button>
         ))}
       </Box>

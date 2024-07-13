@@ -19,7 +19,13 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
   const MAX_CHARS_Details = 100;
 
   // Define the feedback message
-  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
+  const [message, setMessage] = useState<FeedbackMessage | null>(null);
+  const [buildNumber, setBuildNumber] = useState<number>(0);
+
+  const showMessage = (message: FeedbackMessage) => {
+    setMessage(message);
+    setBuildNumber(buildNumber + 1);
+  };
 
   const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -47,7 +53,10 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
   const [file, setFile] = useState<File | null>(null);
   const [showModalAddEvent, setShowModalAddEvent] = useState(false);
 
-  const handleCloseAddEvent = () => setShowModalAddEvent(false);
+  const handleCloseAddEvent = () => {
+    setShowModalAddEvent(false);
+    returnDefaultValues();
+  };
   const handleShowAddEvent = () => setShowModalAddEvent(true);
 
   const eventRepository = useEventService().eventRepository;
@@ -105,13 +114,13 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
           addEvent(formData);
         }
         //success message
-        setFeedbackMessage({
+        showMessage({
           message: 'אירוע נוסף בהצלחה!',
           variant: 'success'
         });
       })
       .catch(() => {
-        setFeedbackMessage({
+        showMessage({
           message: 'התרחשה שגיעה בעת הוספת האירוע. אנא נסה שנית.',
           variant: 'error'
         });
@@ -160,7 +169,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
         <AddIcon />
       </Button>
       {AddWindow()}
-      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
+      {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
     </>
   );
 };

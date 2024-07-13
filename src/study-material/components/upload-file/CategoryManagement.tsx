@@ -32,11 +32,15 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
     category: true
   });
 
-  // Define the feedback message
-  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
+  const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
+  const [buildNumber, setBuildNumber] = useState(0);
+
+  const showMessage = (message: FeedbackMessage) => {
+    setMessage(message);
+    setBuildNumber(buildNumber + 1);
+  };
 
   const handleEditItem = (editedCategory: Category) => {
-    console.log('edit c ', editedCategory.category, ' id ', editedCategory.id);
     if (showFirstButton) {
       setShowFirstButton(false);
       setUpdatedCategory(editedCategory);
@@ -58,7 +62,6 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
   };
 
   const addCategories = () => {
-    console.log('new ', newCategory);
     if (newCategory === '') {
       setIsForward(true);
     } else if (checkRepeat(newCategory)) {
@@ -76,13 +79,13 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
             }
             return [...prevCategories, add];
           });
-          setFeedbackMessage({
+          showMessage({
             message: 'הקטגוריה נוספה בהצלחה',
             variant: 'success'
           });
         })
         .catch(() => {
-          setFeedbackMessage({
+          showMessage({
             message: 'הקטגוריה לא נוספה',
             variant: 'error'
           });
@@ -111,13 +114,13 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
           setShowFirstButton(true);
           setUpdatedCategory(null);
           setSelectedCategory('');
-          setFeedbackMessage({
+          showMessage({
             message: 'הקטגוריה עודכנה בהצלחה',
             variant: 'success'
           });
         })
         .catch(() => {
-          setFeedbackMessage({
+          showMessage({
             message: 'הקטגוריה לא עודכנה',
             variant: 'error'
           });
@@ -134,7 +137,6 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
   };
 
   const handleDeleteCategory = (item: Category) => {
-    console.log('delete ', item);
     studyMaterialManagement.categoryRepository.delete(item.id);
 
     setCategories((prevCategories) => {
@@ -148,7 +150,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
 
   return (
     <>
-      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
+      {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
       <Box
         sx={{
           position: 'absolute',

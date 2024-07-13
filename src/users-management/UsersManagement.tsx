@@ -26,7 +26,7 @@ const UsersManagement = () => {
     setRows: React.Dispatch<React.SetStateAction<(User & { isNew: boolean })[] | null>>,
     _setShowItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     _setInitialItem: React.Dispatch<React.SetStateAction<User | null>>,
-    setMessage: React.Dispatch<React.SetStateAction<FeedbackMessage | null>>
+    showMessage: (message: FeedbackMessage) => void
   ): GridColDef[] => {
     return [
       { field: 'email', type: 'string', headerName: 'אימייל', flex: 1 },
@@ -58,9 +58,9 @@ const UsersManagement = () => {
                                 r.id === row.id ? { ...row, roles: row.roles.filter((r: Role) => r !== role) } : r
                               )
                             );
-                            setMessage({ message: 'התפקיד הוסר בהצלחה', variant: 'success' });
+                            showMessage({ message: 'התפקיד הוסר בהצלחה', variant: 'success' });
                           })
-                          .catch(() => setMessage({ message: 'התרחשה שגיאה בהסרת התפקיד', variant: 'error' }))
+                          .catch(() => showMessage({ message: 'התרחשה שגיאה בהסרת התפקיד', variant: 'error' }))
                 }
               />
             ))}
@@ -83,9 +83,9 @@ const UsersManagement = () => {
                               : r
                           )
                         );
-                        setMessage({ message: 'המשתמש הוגדר כמנהל בהצלחה', variant: 'success' });
+                        showMessage({ message: 'המשתמש הוגדר כמנהל בהצלחה', variant: 'success' });
                       })
-                      .catch(() => setMessage({ message: 'התרחשה שגיאה בהגדרת המשתמש כמנהל', variant: 'error' }));
+                      .catch(() => showMessage({ message: 'התרחשה שגיאה בהגדרת המשתמש כמנהל', variant: 'error' }));
                   }}
                 />
               ) : (
@@ -114,10 +114,10 @@ const UsersManagement = () => {
                             : r
                         )
                       );
-                      setMessage({ message: 'התפקיד הוסף בהצלחה', variant: 'success' });
+                      showMessage({ message: 'התפקיד הוסף בהצלחה', variant: 'success' });
                     })
                     .catch(() => {
-                      setMessage({ message: 'התרחשה שגיאה בהוספת התפקיד', variant: 'error' });
+                      showMessage({ message: 'התרחשה שגיאה בהוספת התפקיד', variant: 'error' });
                     });
                 }}
                 onCancel={() => {
@@ -145,9 +145,9 @@ const UsersManagement = () => {
                   .deleteUser(id.toString())
                   .then(() => {
                     setRows(rows!.filter((r) => r.id !== id.toString()));
-                    setMessage({ message: 'המשתמש נמחק בהצלחה', variant: 'success' });
+                    showMessage({ message: 'המשתמש נמחק בהצלחה', variant: 'success' });
                   })
-                  .catch(() => setMessage({ message: 'התרחשה שגיאה במחיקת המשתמש', variant: 'error' }));
+                  .catch(() => showMessage({ message: 'התרחשה שגיאה במחיקת המשתמש', variant: 'error' }));
               }}
             />
           ];

@@ -2,12 +2,13 @@ import EventCard, { EventProps } from './EventCard';
 import { useState, useEffect } from 'react';
 import { useEventService } from './repository/EventContext';
 import { IEvent } from './repository/Event';
-import { CircularProgress, Box } from '@mui/material';
 import './EventContainer.css';
 import EmptyEventCard from './EmptyEventCard';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useTheme } from '@mui/material/styles';
+import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
+import SkeletonEventCard from './EventCardSkeleton';
 
 type EventContainer = {
   eventsProps: EventProps[];
@@ -16,8 +17,17 @@ type EventContainer = {
 const EventContainer = () => {
   const [events, setEvents] = useState<EventProps[] | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
+  const [buildNumber, setBuildNumber] = useState<number>(0);
+
   const eventRepository = useEventService().eventRepository;
   const theme = useTheme();
+
+  const showMessage = (message: FeedbackMessage) => {
+    setMessage(message);
+    setBuildNumber(buildNumber + 1);
+  };
 
   const handleShiftEventsRight = () => {
     if (events !== null) setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
@@ -35,7 +45,8 @@ const EventContainer = () => {
           setEvents(
             convertIEventsToEventProps(events).sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
           )
-        );
+        )
+        .catch(() => showMessage({ message: 'שגיאה בטעינת האירועים', variant: 'error' }));
     };
     if (events === null) getEvents();
   }, [events]);
@@ -78,15 +89,7 @@ const EventContainer = () => {
     });
   }
 
-  if (events === null) {
-    return (
-      <Box className="loading-event">
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (events.length === 0) {
+  if (events && events.length === 0) {
     return (
       <>
         <EmptyEventCard addEvent={addEvent} />
@@ -95,30 +98,39 @@ const EventContainer = () => {
   }
 
   return (
-    <div className="events">
-      <div className="events-container-default-style">
-        <div className="shift-buttons" style={{ backgroundColor: theme.palette.primary.main }}>
-          <ArrowForwardIosIcon onClick={handleShiftEventsRight} />
-        </div>
-        <div className="events-show">
-          {events.slice(currentIndex, currentIndex + 3).map((event) => (
-            <EventCard
-              key={event.id}
-              id={event.id}
-              date={event.date}
-              title={event.title}
-              details={event.details}
-              image={event.image}
-              onEventDelete={onEventDelete}
-              onEventEdit={onEventEdit}
-            />
-          ))}
-        </div>
-        <div className="shift-buttons" style={{ backgroundColor: theme.palette.primary.main }}>
-          <ArrowBackIosIcon onClick={handleShiftEventsLeft} />
+    <>
+      {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
+      <div className="events">
+        <div className="events-container-default-style">
+          <div className="shift-buttons" style={{ backgroundColor: theme.palette.primary.main }}>
+            <ArrowForwardIosIcon onClick={handleShiftEventsRight} />
+          </div>
+          <div className="events-show">
+            {events === null
+              ? Array(3)
+                  .fill(null)
+                  .map((_, index) => <SkeletonEventCard key={index} />)
+              : events
+                  .slice(currentIndex, currentIndex + 3)
+                  .map((event) => (
+                    <EventCard
+                      key={event.id}
+                      id={event.id}
+                      date={event.date}
+                      title={event.title}
+                      details={event.details}
+                      image={event.image}
+                      onEventDelete={onEventDelete}
+                      onEventEdit={onEventEdit}
+                    />
+                  ))}
+          </div>
+          <div className="shift-buttons" style={{ backgroundColor: theme.palette.primary.main }}>
+            <ArrowBackIosIcon onClick={handleShiftEventsLeft} />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

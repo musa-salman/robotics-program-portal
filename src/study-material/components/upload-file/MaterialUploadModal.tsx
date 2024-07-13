@@ -26,10 +26,11 @@ import FeedbackSnackbar, { FeedbackMessage } from '../../../components/snackbar/
 
 interface MaterialUploadModalProps {
   handleClose: () => void;
-  handleAdd: (studyMaterial: StudyMaterial) => void;
+  handleAdd: (studyMaterial: StudyMaterial) => void | null;
+  initialValue: StudyMaterial | null;
 }
 
-const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, handleAdd }) => {
+const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, handleAdd, initialValue }) => {
   const [isForward, setIsForward] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [categories, setCategories] = useState<Category[] | null>(null);
@@ -56,18 +57,20 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
     }
   };
 
-  const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
-    filename: '',
-    id: '',
-    category: '',
-    title: '',
-    description: '',
-    date: new Date()
-  });
+  const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>(
+    initialValue || {
+      filename: '',
+      id: '',
+      category: '',
+      title: '',
+      description: '',
+      date: new Date()
+    }
+  );
   const storageService = useContext(StorageServiceContext);
 
-  // Define the feedback message
-  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
+  const [message, setMessage] = useState<FeedbackMessage | null>(null);
+  const [buildNumber, setBuildNumber] = useState(0);
 
   useEffect(() => {
     const getCategory = async () => {
@@ -89,6 +92,11 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
     return <div>Loading...</div>;
   }
 
+  const showMessage = (message: FeedbackMessage) => {
+    setMessage(message);
+    setBuildNumber(buildNumber + 1);
+  };
+
   const handleInput = (event: any) => {
     const { name, value } = event.target;
     setStudyMaterial((prevData) => ({ ...prevData, [name]: value }));
@@ -99,13 +107,13 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
       if (event.target.files && event.target.files[0]) {
         setStudyMaterial((prevData) => ({ ...prevData, filename: event.target.files[0].name }));
         setFile(event.target.files[0]);
-        setFeedbackMessage({
+        showMessage({
           message: 'הקובץ נטען בהצלחה',
           variant: 'success'
         });
       }
     } catch (error: any) {
-      setFeedbackMessage({
+      showMessage({
         message: 'שגיאה בהעלאת הקובץ',
         variant: 'error'
       });
@@ -119,14 +127,13 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
         .then((docRef) => {
           storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename);
           handleAdd(studyMaterial);
-          //FIXME: Add a snackbar message is not working
-          setFeedbackMessage({
+          showMessage({
             message: 'הקובץ הועלה בהצלחה',
             variant: 'success'
           });
         })
         .catch(() => {
-          setFeedbackMessage({
+          showMessage({
             message: 'שגיאה בהעלאת הקובץ',
             variant: 'error'
           });
@@ -140,7 +147,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
 
   return (
     <>
-      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
+      {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
       <Box
         sx={{
           position: 'absolute',
@@ -267,7 +274,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                 variant="contained"
                 style={{ marginRight: '8rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
                 onClick={handleSubmit}>
-                העלה
+                {initialValue ? 'שמור' : 'הוסף'}
               </Button>
             </Grid>
 
