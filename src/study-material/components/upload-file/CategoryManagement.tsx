@@ -1,8 +1,9 @@
 import { useState } from 'react';
 // import { Button, Col, FloatingLabel, Form, Modal, Row } from 'react-bootstrap';
 import { Category } from '../../repository/Category';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import SaveIcon from '@mui/icons-material/Save';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import './CategoryManagement.css';
 import { useMaterialService } from '../../repository/StudyMaterialContext';
 import { Box, Button, Grid, InputAdornment, TextField, Typography } from '@mui/material';
@@ -196,15 +197,15 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
                             <InputAdornment position="end">
                               {item.category !== updatedCategory?.category ? (
                                 <Button onClick={() => handleEditItem(item)}>
-                                  <FontAwesomeIcon icon={faPenToSquare} />
+                                   <EditIcon />
                                 </Button>
                               ) : (
                                 <Button onClick={() => handleSaveItem(item)}>
-                                  <FontAwesomeIcon icon={faFloppyDisk} />
+                                  <SaveIcon />
                                 </Button>
                               )}
                               <Button onClick={() => handleDeleteCategory(item)}>
-                                <FontAwesomeIcon icon={faTrashCan} />
+                                <DeleteIcon />
                               </Button>
                             </InputAdornment>
                           )
