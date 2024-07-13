@@ -80,11 +80,19 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
           .then((url) => {
             event.imageURL = url;
             formData.image = url;
-            editEvent(formData);
-            eventRepository.update(id, event);
+            eventRepository.update(id, event).then(() => {
+              editEvent(formData);
+            });
+            setFeedbackMessage({
+              message: 'האירוע עודכן בהצלחה!',
+              variant: 'success'
+            });
           })
-          .catch((error) => {
-            console.error('Error uploading file:', error);
+          .catch(() => {
+            setFeedbackMessage({
+              message: 'התרחשה שגיעה בעת עדכון האירוע. אנא נסה שנית.',
+              variant: 'error'
+            });
           });
       });
     } else {
@@ -92,34 +100,53 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
         .update(id, event)
         .then(() => {
           editEvent(formData);
+          setFeedbackMessage({
+            message: 'האירוע עודכן בהצלחה!',
+            variant: 'success'
+          });
         })
-        .catch((error) => {
-          console.error('Error updating event:', error);
+        .catch(() => {
+          setFeedbackMessage({
+            message: 'התרחשה שגיעה בעת עדכון האירוע. אנא נסה שנית.',
+            variant: 'error'
+          });
         });
     }
   };
 
   const handleSaveDelete = () => {
     setShowModalDelete(false);
+    // eventRepository
+    //   .delete(id)
+    //   .then(async () => {
+    //     const filePath = '/event-img/' + id;
+    //     // Delete the file
+    //     await storageService.exists(filePath).then((exists) => {
+    //       if (!exists) {
+    //         return;
+    //       }
+    //       storageService.delete(filePath);
+    //     });
+    //     deleteEvent(id);
+    //     setFeedbackMessage({
+    //       message: 'אירוע נמחק בהצלחה!',
+    //       variant: 'success'
+    //     });
+    //   })
+    //   .catch(() => {
+    //     setFeedbackMessage({
+    //       message: 'התרחשה שגיעה בעת מחיקת האירוע. אנא נסה שנית.',
+    //       variant: 'error'
+    //     });
+    //   });
     eventRepository
       .delete(id)
-      .then(async () => {
-        const filePath = '/event-img/' + id;
-        // Delete the file
-        await storageService.exists(filePath).then((exists) => {
-          if (!exists) {
-            return;
-          }
-          storageService.delete(filePath);
-        });
+      .then(() => {
         deleteEvent(id);
-        console.log('Event deleted successfully');
         setFeedbackMessage({
-          message: 'אירוע נמחק בהצלחה!',
+          message: 'האירוע נמחק בהצלחה!',
           variant: 'success'
         });
-        console.log('Event ssss successfully');
-        console.log(feedbackMessage + '  Easdsady');
       })
       .catch(() => {
         setFeedbackMessage({

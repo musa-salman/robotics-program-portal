@@ -22,6 +22,7 @@ const RoleSelector: React.FC<RoleSelectorProps> = ({ onSelect, onCancel }) => {
     <FormControl>
       <Select
         sx={{ minWidth: 120 }}
+        value=""
         autoWidth
         open
         labelId="role-selector-label"
