@@ -7,6 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import './CategoryManagement.css';
 import { useMaterialService } from '../../repository/StudyMaterialContext';
 import { Box, Button, Grid, InputAdornment, TextField, Typography } from '@mui/material';
+import FeedbackSnackbar, { FeedbackMessage } from '../../../components/snackbar/SnackBar';
 
 interface CategoryManagementProps {
   categories: Category[] | null;
@@ -31,6 +32,9 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
     category: true
   });
 
+  // Define the feedback message
+  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
+
   const handleEditItem = (editedCategory: Category) => {
     console.log('edit c ', editedCategory.category, ' id ', editedCategory.id);
     if (showFirstButton) {
@@ -54,55 +58,72 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
     return x === categories?.length;
   };
 
-  const addCategories = async () => {
+  const addCategories = () => {
     console.log('new ', newCategory);
     if (newCategory === '') {
       setIsForward(true);
-      console.log('you should fill this felid');
     } else if (checkRepeat(newCategory)) {
-      const docRef = await studyMaterialManagement.categoryRepository.create({ category: newCategory });
-      const add: Category = {
-        category: newCategory,
-        id: docRef.id
-      };
-      // handleSelect(add.category);
-      setCategories((prevCategories) => {
-        if (prevCategories === null) {
-          return [add];
-        }
-        return [...prevCategories, add];
-      });
+      studyMaterialManagement.categoryRepository
+        .create({ category: newCategory })
+        .then((docRef) => {
+          const add: Category = {
+            category: newCategory,
+            id: docRef.id
+          };
+          // handleSelect(add.category);
+          setCategories((prevCategories) => {
+            if (prevCategories === null) {
+              return [add];
+            }
+            return [...prevCategories, add];
+          });
+          setFeedbackMessage({
+            message: 'הקטגוריה נוספה בהצלחה',
+            variant: 'success'
+          });
+        })
+        .catch(() => {
+          setFeedbackMessage({
+            message: 'הקטגוריה לא נוספה',
+            variant: 'error'
+          });
+        });
     } else {
       setIsForward(true);
-      console.log('you already have it');
     }
   };
 
   const handleSaveItem = (item: Category) => {
-    console.log('1', categories);
-    console.log('save c ', updatedCategory?.category, ' id ', updatedCategory?.id);
-    console.log('select', selectedCategory);
     if (!checkRepeat(selectedCategory) && selectedCategory !== item.category) {
-      console.log('this action dose not exist');
     } else if (item.category === updatedCategory?.category && selectedCategory !== '') {
       const edit: Category = {
         category: selectedCategory,
         id: item.id
       };
-      studyMaterialManagement.categoryRepository.update(item.id, edit);
-
-      setCategories((prevCategories) => {
-        if (prevCategories === null) {
-          return null;
-        }
-        return prevCategories.map((category) => (category.id === updatedCategory.id ? edit : category));
-      });
-      console.log(categories);
-      setShowFirstButton(true);
-      setUpdatedCategory(null);
-      setSelectedCategory('');
+      studyMaterialManagement.categoryRepository
+        .update(item.id, edit)
+        .then(() => {
+          setCategories((prevCategories) => {
+            if (prevCategories === null) {
+              return null;
+            }
+            return prevCategories.map((category) => (category.id === updatedCategory.id ? edit : category));
+          });
+          setShowFirstButton(true);
+          setUpdatedCategory(null);
+          setSelectedCategory('');
+          setFeedbackMessage({
+            message: 'הקטגוריה עודכנה בהצלחה',
+            variant: 'success'
+          });
+        })
+        .catch(() => {
+          setFeedbackMessage({
+            message: 'הקטגוריה לא עודכנה',
+            variant: 'error'
+          });
+        });
     } else {
-      console.log('this action dose not exist');
       setShowFirstButton(true);
       setUpdatedCategory(null);
       setSelectedCategory('');
@@ -128,6 +149,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
 
   return (
     <>
+      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
       <Box
         sx={{
           position: 'absolute',
@@ -197,7 +219,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
                             <InputAdornment position="end">
                               {item.category !== updatedCategory?.category ? (
                                 <Button onClick={() => handleEditItem(item)}>
-                                   <EditIcon />
+                                  <EditIcon />
                                 </Button>
                               ) : (
                                 <Button onClick={() => handleSaveItem(item)}>

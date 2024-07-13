@@ -22,6 +22,7 @@ import { StorageServiceContext } from '../../../storage-service/StorageContext';
 import GPT from '../../../gpt-service/GPTComponent';
 import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
 import { useMaterialService } from '../../repository/StudyMaterialContext';
+import FeedbackSnackbar, { FeedbackMessage } from '../../../components/snackbar/SnackBar';
 
 interface MaterialUploadModalProps {
   handleClose: () => void;
@@ -65,6 +66,9 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
   });
   const storageService = useContext(StorageServiceContext);
 
+  // Define the feedback message
+  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
+
   useEffect(() => {
     const getCategory = async () => {
       try {
@@ -95,18 +99,38 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
       if (event.target.files && event.target.files[0]) {
         setStudyMaterial((prevData) => ({ ...prevData, filename: event.target.files[0].name }));
         setFile(event.target.files[0]);
+        setFeedbackMessage({
+          message: 'הקובץ נטען בהצלחה',
+          variant: 'success'
+        });
       }
     } catch (error: any) {
-      console.error('error handling file change', error);
+      setFeedbackMessage({
+        message: 'שגיאה בהעלאת הקובץ',
+        variant: 'error'
+      });
     }
   };
 
   const handleSubmit = async () => {
     if (studyMaterial.title !== '' && studyMaterial.filename !== '' && studyMaterial.category !== '' && file !== null) {
-      studyMaterialManagement.studyMaterialRepository.create(studyMaterial).then((docRef) => {
-        storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename);
-      });
-      handleAdd(studyMaterial);
+      studyMaterialManagement.studyMaterialRepository
+        .create(studyMaterial)
+        .then((docRef) => {
+          storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename);
+          handleAdd(studyMaterial);
+          //FIXME: Add a snackbar message is not working
+          setFeedbackMessage({
+            message: 'הקובץ הועלה בהצלחה',
+            variant: 'success'
+          });
+        })
+        .catch(() => {
+          setFeedbackMessage({
+            message: 'שגיאה בהעלאת הקובץ',
+            variant: 'error'
+          });
+        });
       handleClose();
     } else {
       setIsForward(true);
@@ -116,6 +140,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
 
   return (
     <>
+      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
       <Box
         sx={{
           position: 'absolute',
