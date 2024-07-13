@@ -19,6 +19,7 @@ import RejectionPage from './authentication/components/rejection-page/RejectionP
 import UsersManagement from './users-management/UsersManagement';
 import DocumentPage from './docs-handling/DocumentPage';
 import PageContainer from './components/PageContainer';
+import RejectedAndDeletedTable from './users-management/RejectedAndDeletedUsers';
 
 function App() {
   const isDev = process.env.NODE_ENV === '';
@@ -50,6 +51,16 @@ function App() {
         element: <StudentsManagement />,
         allowedRoles: [Role.Admin, Role.Owner],
         title: 'ניהול סטודנטים',
+        roleToComponentMap: {
+          [Role.PreEnrollment]: <RegisterComponent />,
+          [Role.Pending]: <WaitApprovalPage />
+        }
+      },
+      {
+        path: 'rejected-and-deleted-users',
+        element: <RejectedAndDeletedTable />,
+        allowedRoles: [Role.Admin, Role.Owner],
+        title: 'משתמשים נדחים ומחוקים',
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />,
           [Role.Pending]: <WaitApprovalPage />

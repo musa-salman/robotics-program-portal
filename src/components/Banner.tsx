@@ -7,7 +7,7 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import './Banner.css';
 import EventContainer from '../events/EventContainer';
 import BannerButton from './BannerButton';
-import { Assignment, School } from '@mui/icons-material';
+import { Assignment, RestoreFromTrash, School } from '@mui/icons-material';
 
 const PRIMARY_STUDENT_LINKS = [
   { icon: <BookIcon />, label: 'חומרי לימוד', path: '/study-materials' },
@@ -20,7 +20,8 @@ const STUDENT_LINKS = [{ icon: <PictureAsPdfIcon />, label: 'מסמכים', path
 
 const ADMIN_LINKS = [
   { icon: <PeopleIcon />, label: 'ניהול משתמשים', path: '/users' },
-  { icon: <Assignment />, label: 'ניהול נרשמים', path: '/registers-management' }
+  { icon: <Assignment />, label: 'ניהול נרשמים', path: '/registers-management' },
+  { icon: <RestoreFromTrash />, label: 'משתמשים נדחים ומחוקים', path: '/rejected-and-deleted-users' }
 ];
 
 const Banner: React.FC = () => {
