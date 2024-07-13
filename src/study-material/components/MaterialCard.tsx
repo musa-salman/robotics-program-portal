@@ -23,7 +23,7 @@ import { useMaterialService } from '../repository/StudyMaterialContext';
 import DeleteModal from '../DeleteModal';
 import { BiBorderRadius } from 'react-icons/bi';
 import { useTheme } from '@mui/material/styles';
-import { FeedbackMessage } from '../../components/snackbar/SnackBar';
+import FeedbackSnackbar, { FeedbackMessage } from '../../components/snackbar/SnackBar';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;

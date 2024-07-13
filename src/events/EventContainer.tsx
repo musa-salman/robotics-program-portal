@@ -2,7 +2,6 @@ import EventCard, { EventProps } from './EventCard';
 import { useState, useEffect } from 'react';
 import { useEventService } from './repository/EventContext';
 import { IEvent } from './repository/Event';
-import { CircularProgress, Box } from '@mui/material';
 import './EventContainer.css';
 import EmptyEventCard from './EmptyEventCard';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
