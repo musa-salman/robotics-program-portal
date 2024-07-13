@@ -17,7 +17,7 @@ const CategoryButtons: React.FC<CategoryButtonsProps> = ({ categories, onCategor
         {categories.map((category, index) => (
           <Button
             variant="outlined"
-            color="secondary"
+            color="primary"
             key={index}
             onClick={() => onCategorySelect(category)}
             className="category-button">

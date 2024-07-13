@@ -12,6 +12,7 @@
 .mat-in-box {
   height: 90%;
   width: 90%;
+  min-width: fit-content;
   padding: 20px;
   /* border: 2px solid; */
   display: flex;
@@ -57,7 +58,7 @@
 }
 
 .btns .edit-button:hover {
-  background-color: #bb6363e4;
+  /* background-color: #bb6363e4; */
   padding: 2px;
 }
 
@@ -69,7 +70,7 @@
 }
 
 .btns .adde-btn:hover {
-  background-color: #bb6363e4;
+  /* background-color: #bb6363e4; */
 }
 
 .con-taf {
@@ -80,6 +81,7 @@
 .primary {
   display: flex;
   width: 100%;
+  min-width: fit-content;
   /* border: 2px solid; */
 }
 

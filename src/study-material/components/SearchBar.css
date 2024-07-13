@@ -1,12 +1,12 @@
 .Container {
   display: flex;
   align-items: center;
-  background-color: #f7bdbde4;
+  /* background-color: #f7bdbde4; */
   border-radius: 10px;
   border: 2px solid;
   height: 3rem;
   padding: 0px;
-  border: 5px solid #65272a;
+  /* border: 5px solid #65272a; */
   margin: 20px;
   /* box-shadow: 0px 2px 3px 3px #bcbbbb; */
 }

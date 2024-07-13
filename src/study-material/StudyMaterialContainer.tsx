@@ -25,6 +25,7 @@ function StudyMaterialContainer() {
   const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);
   const [selectedMaterial, setSelectedMaterial] = useState<StudyMaterial | null>(null);
   const [isMoveMode, setIsMoveMode] = useState(false);
+
   const [show, setShow] = useState(false);
   const [showAddEdit, setShowAddEdit] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -48,11 +49,11 @@ function StudyMaterialContainer() {
   }, [materialService, studyMaterials, categoryList]);
 
   function handleUpdate(updatedMaterial: StudyMaterial) {
-    // const updatedMaterials = (studyMaterials || []).map((material) =>
-    //   material.id === updatedMaterial.id ? updatedMaterial : material
-    // );
-    // setStudyMaterials(updatedMaterials);
-    // console.log(updatedMaterials == studyMaterials );
+    const updatedMaterials = (studyMaterials || []).map((material) =>
+      material.id === updatedMaterial.id ? updatedMaterial : material
+    );
+    setStudyMaterials(updatedMaterials);
+    console.log(updatedMaterials == studyMaterials);
 
     setStudyMaterials((prevMaterials) => {
       if (!prevMaterials) return [];
@@ -179,13 +180,13 @@ function StudyMaterialContainer() {
               ))
           )}
 
-          {/* <Modal
-        open={show}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
-        <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} />
-      </Modal> */}
+          <Modal
+            open={show}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description">
+            <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} />
+          </Modal>
 
           <Modal
             open={showAddEdit}

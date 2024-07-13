@@ -2,7 +2,17 @@ import './MaterialCard.css';
 import { useContext, useState } from 'react';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
-import { Button, Card, CardContent, CardHeader, Divider, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Divider,
+  IconButton,
+  TextField,
+  Typography
+} from '@mui/material';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import { StorageServiceContext } from '../../storage-service/StorageContext';
 
@@ -12,6 +22,7 @@ import formatDate from '../../utils/dateFormatter';
 import { useMaterialService } from '../repository/StudyMaterialContext';
 import DeleteModal from '../DeleteModal';
 import { BiBorderRadius } from 'react-icons/bi';
+import { useTheme } from '@mui/material/styles';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -28,6 +39,7 @@ function MaterialCard({
   onDelete: DeleteHandler;
   onMove: MoveHandler;
 }) {
+  const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(studyMaterial.title);
   const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
@@ -90,17 +102,14 @@ function MaterialCard({
   return (
     <>
       {showDeleteModal && <DeleteModal onDelete={handleDelete} onCancel={() => setShowDeleteModal(false)} />}
-      <Card className="Card" sx={{ borderRadius: '15px' }}>
-        <div>
-          <MySpeedDial
+      <Card className="Card" sx={{ borderRadius: '15px', backgroundColor: theme.palette.background.paper }}>
+        {/* <MySpeedDial
             handleEditToggle={handleEditToggle}
             handleMoveToggle={handleMoveToggle}
             handleSave={handleSave}
             handleDelete={isDelete}
             isEditing={isEditing}
-          />
-          <br />
-        </div>
+          /> */}
         <CardContent className="bodycard">
           {isEditing ? (
             <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>
@@ -112,9 +121,26 @@ function MaterialCard({
               />
             </GPT>
           ) : (
-            <CardHeader title={studyMaterial.title} className="title-card" />
+            <CardHeader
+              sx={{
+                display: 'flex',
+                marginTop: '5px',
+                flexDirection: 'row-reverse'
+              }}
+              action={
+                <MySpeedDial
+                  handleEditToggle={handleEditToggle}
+                  handleMoveToggle={handleMoveToggle}
+                  handleSave={handleSave}
+                  handleDelete={isDelete}
+                  isEditing={isEditing}
+                />
+              }
+              title={studyMaterial.title}
+              className="title-card"
+            />
           )}
-          <Divider component="div" role="presentation" />
+          <Divider component="div" variant="fullWidth" style={{ backgroundColor: '#F2542D' }} />
           <div>
             {isEditing ? (
               <GPT initialValue={editedDescription} getData={() => suggestMaterialTitles(studyMaterial)}>
