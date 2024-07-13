@@ -34,10 +34,16 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
   const eventRepository = useEventService().eventRepository;
   const storageService = useContext(StorageServiceContext);
 
-  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
-
   const MAX_CHARS_Details = 100;
   const MAX_CHARS_Title = 17;
+
+  const [message, setMessage] = useState<FeedbackMessage | null>(null);
+  const [buildNumber, setBuildNumber] = useState<number>(0);
+
+  const showMessage = (message: FeedbackMessage) => {
+    setMessage(message);
+    setBuildNumber(buildNumber + 1);
+  };
 
   const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -83,13 +89,13 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
             eventRepository.update(id, event).then(() => {
               editEvent(formData);
             });
-            setFeedbackMessage({
+            showMessage({
               message: 'האירוע עודכן בהצלחה!',
               variant: 'success'
             });
           })
           .catch(() => {
-            setFeedbackMessage({
+            showMessage({
               message: 'התרחשה שגיעה בעת עדכון האירוע. אנא נסה שנית.',
               variant: 'error'
             });
@@ -100,13 +106,13 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
         .update(id, event)
         .then(() => {
           editEvent(formData);
-          setFeedbackMessage({
+          showMessage({
             message: 'האירוע עודכן בהצלחה!',
             variant: 'success'
           });
         })
         .catch(() => {
-          setFeedbackMessage({
+          showMessage({
             message: 'התרחשה שגיעה בעת עדכון האירוע. אנא נסה שנית.',
             variant: 'error'
           });
@@ -129,13 +135,13 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
           storageService.delete(filePath);
         });
         deleteEvent(id);
-        setFeedbackMessage({
+        showMessage({
           message: 'אירוע נמחק בהצלחה!',
           variant: 'success'
         });
       })
       .catch(() => {
-        setFeedbackMessage({
+        showMessage({
           message: 'התרחשה שגיעה בעת מחיקת האירוע. אנא נסה שנית.',
           variant: 'error'
         });
@@ -198,7 +204,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
 
   return (
     <>
-      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
+      {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
       <AdminMenu handleEdit={handleEdit} handleDelete={handleDelete} />
       {EditWindow()}
       {DeleteWindow()}

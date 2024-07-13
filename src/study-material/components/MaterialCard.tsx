@@ -23,6 +23,7 @@ import { useMaterialService } from '../repository/StudyMaterialContext';
 import DeleteModal from '../DeleteModal';
 import { BiBorderRadius } from 'react-icons/bi';
 import { useTheme } from '@mui/material/styles';
+import { FeedbackMessage } from '../../components/snackbar/SnackBar';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -49,11 +50,23 @@ function MaterialCard({
   const storageService = useContext(StorageServiceContext);
   const materialService = useMaterialService();
 
+  const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
+  const [buildNumber, setBuildNumber] = useState(0);
+
+  const showMessage = (message: FeedbackMessage) => {
+    setMessage(message);
+    setBuildNumber(buildNumber + 1);
+  };
+
   const handleDownload = async () => {
-    storageService.download(
-      '/study-material/' + studyMaterial.id + '-' + studyMaterial.filename,
-      studyMaterial.filename
-    );
+    storageService
+      .download('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename, studyMaterial.filename)
+      .catch(() => {
+        showMessage({
+          message: 'שגיאה בהורדת החומר',
+          variant: 'error'
+        });
+      });
   };
 
   const isDelete = () => {
@@ -66,9 +79,16 @@ function MaterialCard({
       .then(() => {
         materialService.studyMaterialRepository.delete(studyMaterial.id).then(() => onDelete(studyMaterial));
         onDelete(studyMaterial);
+        showMessage({
+          message: 'החומר נמחק בהצלחה',
+          variant: 'success'
+        });
       })
-      .catch((error) => {
-        console.error('Error Delete study material:', error);
+      .catch(() => {
+        showMessage({
+          message: 'שגיאה במחיקת החומר',
+          variant: 'error'
+        });
       });
   };
 
@@ -89,9 +109,16 @@ function MaterialCard({
         const updatedStudyMaterial = { ...studyMaterial, title: editedTitle, description: editedDescription };
         onUpdate(updatedStudyMaterial);
         setIsEditing(false);
+        showMessage({
+          message: 'החומר עודכן בהצלחה',
+          variant: 'success'
+        });
       })
-      .catch((error) => {
-        console.error('Error updating study material:', error);
+      .catch(() => {
+        showMessage({
+          message: 'שגיאה בעדכון החומר',
+          variant: 'error'
+        });
       });
   };
 
@@ -101,6 +128,7 @@ function MaterialCard({
 
   return (
     <>
+      {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
       {showDeleteModal && <DeleteModal onDelete={handleDelete} onCancel={() => setShowDeleteModal(false)} />}
       <Card className="Card" sx={{ borderRadius: '15px', backgroundColor: theme.palette.background.paper }}>
         <CardContent className="bodycard">

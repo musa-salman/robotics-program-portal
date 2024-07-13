@@ -38,20 +38,41 @@ function StudyMaterialContainer() {
   const handleShowEdit = () => setShowAddEdit(true);
   const [query, setQuery] = useState('');
 
-  // Define the feedback message
-  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
+  const [message, setMessage] = useState<FeedbackMessage | null>(null);
+  const [buildNumber, setBuildNumber] = useState<number>(0);
 
   useEffect(() => {
-    const getStudyMaterials = async () => {
-      setStudyMaterials(await materialService.studyMaterialRepository.find());
+    const getStudyMaterials = () => {
+      return materialService.studyMaterialRepository
+        .find()
+        .then((materials) => setStudyMaterials(materials))
+        .catch(() => {
+          showMessage({
+            message: 'התרחשה שגיעה בעת הבאת החומרים. אנא נסה שנית.',
+            variant: 'error'
+          });
+        });
     };
-    const getCategories = async () => {
-      setCategoryList(await materialService.categoryRepository.find());
+    const getCategories = () => {
+      return materialService.categoryRepository
+        .find()
+        .then((categories) => setCategoryList(categories))
+        .catch(() => {
+          showMessage({
+            message: 'התרחשה שגיעה בעת הבאת הקטגוריות. אנא נסה שנית.',
+            variant: 'error'
+          });
+        });
     };
 
     if (studyMaterials === null) getStudyMaterials();
     if (categoryList === null) getCategories();
   }, [materialService, studyMaterials, categoryList]);
+
+  const showMessage = (message: FeedbackMessage) => {
+    setMessage(message);
+    setBuildNumber(buildNumber + 1);
+  };
 
   function handleUpdate(updatedMaterial: StudyMaterial) {
     const updatedMaterials = (studyMaterials || []).map((material) =>
@@ -105,13 +126,13 @@ function StudyMaterialContainer() {
           material.id === selectedMaterial!.id ? { ...material, category: categorySelected.category } : material
         );
         setStudyMaterials(updatedStudyMaterials);
-        setFeedbackMessage({
+        showMessage({
           message: 'החומר הועבר בהצלחה!',
           variant: 'success'
         });
       })
       .catch(() => {
-        setFeedbackMessage({
+        showMessage({
           message: 'התרחשה שגיעה בעת העברת החומר. אנא נסה שנית.',
           variant: 'error'
         });
@@ -132,7 +153,7 @@ function StudyMaterialContainer() {
 
   return (
     <>
-      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
+      {message && <FeedbackSnackbar key={message.message} feedBackMessage={message} />}
       <Box className="mat-out-box">
         <Box className="mat-in-box">
           {isMoveMode && (

@@ -20,15 +20,16 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
   const [isRegistered, setRegister] = useState<boolean | null>(null);
   const [student, setStudent] = useState<Student | null>(null);
   const [showModalRegister, setShowModalRegister] = useState(false);
+
+  const [message, setMessage] = useState<FeedbackMessage | null>(null);
+  const [buildNumber, setBuildNumber] = useState<number>(0);
+
   const handleCloseRegister = () => setShowModalRegister(false);
   const handleShowRegister = () => setShowModalRegister(true);
 
   const eventService = useEventService();
   const studentRepository = useContext(StudentContext);
   const { user } = useContext(AuthContext);
-
-  // Define the feedback message
-  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
 
   useEffect(() => {
     const checkIfRegistered = () => {
@@ -47,6 +48,11 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
     if (user && student === null) fetchStudent();
     if (student && isRegistered === null) checkIfRegistered();
   }, [isRegistered, student]);
+
+  const showMessage = (message: FeedbackMessage) => {
+    setMessage(message);
+    setBuildNumber(buildNumber + 1);
+  };
 
   function handleRegister() {
     handleShowRegister();
@@ -67,13 +73,13 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
       )
       .then(() => {
         setRegister(true);
-        setFeedbackMessage({
+        showMessage({
           message: 'הרשמתך לאירוע בוצעה בהצלחה',
           variant: 'success'
         });
       })
       .catch(() => {
-        setFeedbackMessage({
+        showMessage({
           message: 'הרשמתך לאירוע לא בוצעה',
           variant: 'error'
         });
@@ -110,7 +116,7 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
 
   return (
     <>
-      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
+      {message && <FeedbackSnackbar key={message.message} feedBackMessage={message} />}
       {isRegistered ? (
         <Button variant="contained" color="secondary" disabled>
           רשום
