@@ -179,13 +179,13 @@ function StudyMaterialContainer() {
               ))
           )}
 
-          {/* <Modal
-        open={show}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
-        <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} />
-      </Modal> */}
+          <Modal
+            open={show}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description">
+            <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} />
+          </Modal>
 
           <Modal
             open={showAddEdit}
