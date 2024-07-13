@@ -64,7 +64,7 @@ function bootstrap({ theme, cacheRtl }: IProps) {
   const documentRepository = new CachingRepository(new DocumentRepository());
   const documentStudentRepositories = new DocumentStudentRepositories();
   const documentService = new DocumentInfoService(documentRepository, documentStudentRepositories, storage);
-  console.log(theme);
+
   return (
     <React.StrictMode>
       <ThemeProvider theme={theme}>

@@ -26,7 +26,7 @@ const UsersManagement = () => {
     setRows: React.Dispatch<React.SetStateAction<(User & { isNew: boolean })[] | null>>,
     _setShowItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     _setInitialItem: React.Dispatch<React.SetStateAction<User | null>>,
-    setMessage: React.Dispatch<React.SetStateAction<FeedbackMessage | undefined>>
+    setMessage: React.Dispatch<React.SetStateAction<FeedbackMessage | null>>
   ): GridColDef[] => {
     return [
       { field: 'email', type: 'string', headerName: 'אימייל', flex: 1 },

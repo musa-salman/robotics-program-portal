@@ -9,8 +9,12 @@ interface FeedbackMessage {
   variant: 'success' | 'error' | 'info' | 'warning';
 }
 
-const FeedbackSnackbar: React.FC<FeedbackMessage> = (feedBackMessage: FeedbackMessage) => {
-  const [open, setOpen] = useState<boolean>(true);
+interface FeedbackSnackbarProps {
+  feedBackMessage: FeedbackMessage;
+}
+
+const FeedbackSnackbar: React.FC<FeedbackSnackbarProps> = ({ feedBackMessage }) => {
+  const [open, setOpen] = useState(true);
 
   const handleClose = (_event: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {

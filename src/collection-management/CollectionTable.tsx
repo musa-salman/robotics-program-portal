@@ -43,7 +43,7 @@ interface CollectionTableProps<T> {
     >,
     setShowAddItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     setInitialItem: React.Dispatch<React.SetStateAction<T | null>>,
-    setMessage: React.Dispatch<React.SetStateAction<FeedbackMessage | undefined>>
+    setMessage: React.Dispatch<React.SetStateAction<FeedbackMessage | null>>
   ) => GridColDef[];
   repository?: BaseRepository<T>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,7 +63,7 @@ const CollectionTable = <T extends { id: string }>({
 }: CollectionTableProps<T>) => {
   const [rows, setRows] = useState<(T & { isNew: boolean })[] | null>(null);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
-  const [message, setMessage] = useState<FeedbackMessage>();
+  const [message, setMessage] = useState<FeedbackMessage | null>(null);
   const [showAddItemForm, setShowItemForm] = useState(false);
   const [initialItem, setInitialItem] = useState<T | null>(null);
   const [selectionModel, setSelectionModel] = useState<GridRowId[]>([]);
@@ -85,6 +85,8 @@ const CollectionTable = <T extends { id: string }>({
 
   const handleRowSelection = useCallback(
     (selection: GridRowSelectionModel) => {
+      if (!onRowSelected) return;
+
       if (selection.length === 0) {
         setSelectionModel([]);
         if (onRowSelected) onRowSelected(null);
@@ -96,7 +98,7 @@ const CollectionTable = <T extends { id: string }>({
 
       const { isNew, ...selectedRow } = selected as any;
       setSelectionModel([selectedId]);
-      onRowSelected!(selectedRow);
+      onRowSelected(selectedRow);
     },
     [rows]
   );
@@ -207,7 +209,7 @@ const CollectionTable = <T extends { id: string }>({
           />
         </div>
       </Box>
-      {message && <FeedbackSnackbar {...message} />}
+      {message && <FeedbackSnackbar key={message.message} feedBackMessage={message} />}
     </>
   );
 };
