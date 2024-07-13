@@ -32,8 +32,13 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
     category: true
   });
 
-  // Define the feedback message
-  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
+  const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
+  const [buildNumber, setBuildNumber] = useState(0);
+
+  const showMessage = (message: FeedbackMessage) => {
+    setMessage(message);
+    setBuildNumber(buildNumber + 1);
+  };
 
   const handleEditItem = (editedCategory: Category) => {
     if (showFirstButton) {
@@ -74,13 +79,13 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
             }
             return [...prevCategories, add];
           });
-          setFeedbackMessage({
+          showMessage({
             message: 'הקטגוריה נוספה בהצלחה',
             variant: 'success'
           });
         })
         .catch(() => {
-          setFeedbackMessage({
+          showMessage({
             message: 'הקטגוריה לא נוספה',
             variant: 'error'
           });
@@ -109,13 +114,13 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
           setShowFirstButton(true);
           setUpdatedCategory(null);
           setSelectedCategory('');
-          setFeedbackMessage({
+          showMessage({
             message: 'הקטגוריה עודכנה בהצלחה',
             variant: 'success'
           });
         })
         .catch(() => {
-          setFeedbackMessage({
+          showMessage({
             message: 'הקטגוריה לא עודכנה',
             variant: 'error'
           });
@@ -145,7 +150,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
 
   return (
     <>
-      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
+      {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
       <Box
         sx={{
           position: 'absolute',
