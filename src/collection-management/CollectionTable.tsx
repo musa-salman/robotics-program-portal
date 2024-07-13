@@ -85,7 +85,7 @@ const CollectionTable = <T extends { id: string }>({
   }, [rows, repository]);
 
   const showMessage = (message: FeedbackMessage) => {
-    showMessage(message);
+    setMessage(message);
     setBuildNumber(buildNumber + 1);
   };
 
@@ -170,8 +170,7 @@ const CollectionTable = <T extends { id: string }>({
     setRowModesModel(newRowModesModel);
   };
 
-  const columns = generateColumns(rows, setRows, setShowItemForm, setInitialItem, setMessage);
-
+  const columns = generateColumns(rows, setRows, setShowItemForm, setInitialItem, showMessage);
   return (
     <>
       <Dialog
@@ -224,7 +223,7 @@ const CollectionTable = <T extends { id: string }>({
           />
         </div>
       </Box>
-      {message && <FeedbackSnackbar key={message.message} feedBackMessage={message} />}
+      {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
     </>
   );
 };
