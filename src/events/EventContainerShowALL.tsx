@@ -19,8 +19,14 @@ const EventContainer = () => {
   const eventRepository = useEventService().eventRepository;
 
   useEffect(() => {
-    const getEvents = async () => {
-      setEvents(convertIEventsToEventProps(await eventRepository.find()));
+    const getEvents = () => {
+      eventRepository
+        .find()
+        .then((events) =>
+          setEvents(
+            convertIEventsToEventProps(events).sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
+          )
+        );
     };
     if (events === null) getEvents();
   }, [events]);

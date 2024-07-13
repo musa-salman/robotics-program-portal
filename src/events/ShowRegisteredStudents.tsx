@@ -51,9 +51,7 @@ const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId
       <div>
         <GroupsIcon onClick={handleDetails} />
         <Dialog open={showDetails} onClose={handleDetails} aria-labelledby="customized-dialog-title">
-          <DialogTitle id="customized-dialog-title" onClose={handleDetails}>
-            רשומים לאירוע
-          </DialogTitle>
+          <DialogTitle id="customized-dialog-title">רשומים לאירוע</DialogTitle>
           <DialogContent dividers>
             <TableContainer component={Paper}>
               <Table>

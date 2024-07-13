@@ -1,12 +1,7 @@
 .events-container-default-style {
-  padding: 10px;
-  border-radius: 10px;
   display: flex;
-  flex-wrap: wrap;
-  align-content: space-between;
-  justify-content: right;
-  margin: 10px;
-  gap: 10px;
+  max-width: 1300px;
+  margin: auto;
 }
 
 .events-container-show-all-events-style {
@@ -20,15 +15,27 @@
   gap: 10px;
 }
 
+.events-show {
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  justify-content: right;
+  margin: 10px;
+  gap: 10px;
+  margin: auto;
+}
+
 /* Styling for the shift buttons*/
 .shift-buttons {
   border: none;
-  color: white;
-  background-color: #e43232;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  height: 50px;
-  width: 50px;
+  min-height: 50px;
+  min-width: 50px;
+  max-height: 50px;
+  max-width: 50px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -37,7 +44,7 @@
 }
 
 .shift-buttons:hover {
-  background-color: #ff0000;
+  background-color: #3c0e0e;
 }
 
 .show-all {

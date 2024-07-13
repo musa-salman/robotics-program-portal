@@ -32,7 +32,7 @@ const EventForm: React.FC<EventFormProps> = ({
   requiredFields
 }) => {
   return (
-    <>
+    <form>
       <Box
         sx={{
           position: 'absolute',
@@ -157,7 +157,7 @@ const EventForm: React.FC<EventFormProps> = ({
           </Grid>
         </form>
       </Box>
-    </>
+    </form>
   );
 };
 
