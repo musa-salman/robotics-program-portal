@@ -70,6 +70,7 @@ const EventContainer = () => {
         // Create a new array with the updated event
         const newEvents = [...prevEvents];
         newEvents[index] = updatedEvent;
+        newEvents.sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime());
         return newEvents;
       }
       // If the event was not found, return the previous state

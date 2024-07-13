@@ -196,7 +196,6 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
     );
   }
 
-  console.log(feedbackMessage);
   return (
     <>
       {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
