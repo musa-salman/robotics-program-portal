@@ -8,6 +8,7 @@ import './CategoryManagement.css';
 import { useMaterialService } from '../../repository/StudyMaterialContext';
 import { Box, Button, Grid, InputAdornment, TextField, Typography } from '@mui/material';
 import FeedbackSnackbar, { FeedbackMessage } from '../../../components/snackbar/SnackBar';
+import DeleteModal from '../../DeleteModal';
 
 interface CategoryManagementProps {
   categories: Category[] | null;
@@ -27,6 +28,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
   const [updatedCategory, setUpdatedCategory] = useState<Category | null>(null);
   const [showFirstButton, setShowFirstButton] = useState(true);
   const [isForward, setIsForward] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const studyMaterialManagement = useMaterialService();
   const [isValid, setIsValid] = useState({
     category: true
@@ -137,7 +139,19 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
   };
 
   const handleDeleteCategory = (item: Category) => {
-    studyMaterialManagement.categoryRepository.delete(item.id);
+    studyMaterialManagement.categoryRepository.delete(item.id)
+    .then (() =>{
+      showMessage({
+        message: 'הקטגוריה נמחקה בהצלחה',
+        variant: 'success'
+      });
+    }).catch(() =>{
+      showMessage({
+        message: 'הקטגוריה לא נמחקה',
+        variant: 'error'
+      });
+    });
+  
 
     setCategories((prevCategories) => {
       if (prevCategories !== null) {
@@ -151,6 +165,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
   return (
     <>
       {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
+      {/* {showDeleteModal && <DeleteModal onDelete={handleDelete} onCancel={() => setShowDeleteModal(false)} message={"האם אתה בטוח שברצונך למחוק את קטגוריה הזו"}/>} */}
       <Box
         sx={{
           position: 'absolute',

@@ -129,7 +129,7 @@ function MaterialCard({
   return (
     <>
       {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
-      {showDeleteModal && <DeleteModal onDelete={handleDelete} onCancel={() => setShowDeleteModal(false)} />}
+      {showDeleteModal && <DeleteModal onDelete={handleDelete} onCancel={() => setShowDeleteModal(false)} message={"האם אתה בטוח שברצונך למחוק את הפיל הזה"}/>}
       <Card className="Card" sx={{ borderRadius: '15px', backgroundColor: theme.palette.background.paper }}>
         <CardContent className="bodycard">
           {isEditing ? (

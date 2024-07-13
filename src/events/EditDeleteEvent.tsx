@@ -14,6 +14,7 @@ import Button from '@mui/material/Button';
 import EventForm from './EventForm';
 import Modal from '@mui/material/Modal';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
+import DeleteModal from '../study-material/DeleteModal';
 
 interface EditDeleteEventProps {
   event: EventProps;
@@ -27,7 +28,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [showModalDelete, setShowModalDelete] = useState(false);
-
+  
   const handleCloseEdit = () => setShowModalEdit(false);
   const handleCloseDelete = () => setShowModalDelete(false);
 
@@ -181,24 +182,9 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
 
   function DeleteWindow() {
     return (
-      <Dialog
-        open={showModalDelete}
-        onClose={handleCloseDelete}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title">האם אתה בטוח שברצונך למחוק את האירוע הזה</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">אתה לא יכול לחזור אחורה לאחר מחיקת האירוע</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDelete} color="secondary">
-            סגור
-          </Button>
-          <Button onClick={handleSaveDelete} color="error">
-            לִמְחוֹק
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <>
+      {showModalDelete && <DeleteModal onDelete={handleSaveDelete} onCancel={() => setShowModalDelete(false)} message={"האם אתה בטוח שברצונך למחוק את האירוע הזה"}/>}
+      </>
     );
   }
 
