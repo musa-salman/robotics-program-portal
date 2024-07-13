@@ -24,6 +24,7 @@ const StudentsManagement = () => {
   ): GridColDef[] => {
     return [
       { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1, editable: true },
+      { field: 'studentAddress', type: 'string', headerName: 'כתובת', flex: 1, editable: true },
       {
         field: 'studentName',
         type: 'string',
