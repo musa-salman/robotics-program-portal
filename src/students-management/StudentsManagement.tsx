@@ -1,14 +1,17 @@
-import { GridActionsCellItem, GridColDef } from '@mui/x-data-grid';
+import { GridActionsCellItem, GridColDef, GridRowModel } from '@mui/x-data-grid';
 import CollectionTable, { MessageFormat } from '../collection-management/CollectionTable';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Student } from './Student';
 import StudentForm from './StudentForm';
 import './StudentsManagement.css';
-import { Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { useUserService } from '../users/UserContext';
+import StudentDetails from '../registers-management/RegisterDetails';
+import { useCallback, useState } from 'react';
 
 const StudentsManagement = () => {
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const userService = useUserService();
 
   const generateColumns = (
@@ -21,7 +24,6 @@ const StudentsManagement = () => {
   ): GridColDef[] => {
     return [
       { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1, editable: true },
-      { field: 'studentAddress', type: 'string', headerName: 'כתובת', flex: 1, editable: true },
       {
         field: 'studentName',
         type: 'string',
@@ -32,30 +34,6 @@ const StudentsManagement = () => {
             <Typography>
               {row.firstName} {row.lastName}
             </Typography>
-          </div>
-        )
-      },
-      {
-        field: 'studentContact',
-        type: 'custom',
-        headerName: 'פרטי תלמיד',
-        flex: 1,
-        renderCell: ({ row }) => (
-          <div className="multiline-cell">
-            <Typography>{row.studentPhoneNumber}</Typography>
-            <Typography>{row.studentEmail}</Typography>
-          </div>
-        )
-      },
-      {
-        field: 'parentContact',
-        type: 'custom',
-        headerName: 'פרטי הורה',
-        flex: 1,
-        renderCell: ({ row }) => (
-          <div className="multiline-cell">
-            <Typography>{row.parentPhoneNumber}</Typography>
-            <Typography>{row.parentEmail}</Typography>
           </div>
         )
       },
@@ -100,14 +78,29 @@ const StudentsManagement = () => {
     updateError: (item: Student) => `התרחשה שגיאה בעדכון התלמיד: ${item.firstName} ${item.lastName}`
   };
 
+  const handleRowSelected = useCallback((student: GridRowModel | null) => {
+    const { isNew, ...studentData } = student as any;
+    setSelectedStudent(studentData as Student);
+  }, []);
+
   return (
     <>
-      <CollectionTable<Student>
-        generateColumns={generateColumns}
-        repository={userService.getStudentRepository()}
-        FormComponent={StudentForm}
-        messageFormat={messageFormat}
-      />
+      <Grid container spacing={2}>
+        <Grid item xs={selectedStudent ? 8 : 12}>
+          <CollectionTable<Student>
+            generateColumns={generateColumns}
+            repository={userService.getStudentRepository()}
+            FormComponent={StudentForm}
+            messageFormat={messageFormat}
+            onRowSelected={handleRowSelected}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          {selectedStudent && (
+            <StudentDetails registrationData={selectedStudent} onClose={() => setSelectedStudent(null)} />
+          )}
+        </Grid>
+      </Grid>
     </>
   );
 };
