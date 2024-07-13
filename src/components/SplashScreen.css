@@ -80,4 +80,5 @@
   display: flex;
   justify-content: left;
   justify-items: right;
+  font-size: 100px;
 }

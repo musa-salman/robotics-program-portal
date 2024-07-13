@@ -3,7 +3,6 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import GPT from '../gpt-service/GPTComponent';
 import { generateEventDescription, suggestEventTitles } from './EventPrompts';
 import moment from 'moment';
-import { Margin } from '@mui/icons-material';
 
 interface EventFormProps {
   handleSaveAdd: () => void;
@@ -33,7 +32,7 @@ const EventForm: React.FC<EventFormProps> = ({
   requiredFields
 }) => {
   return (
-    <>
+    <form>
       <Box
         sx={{
           position: 'absolute',
@@ -49,8 +48,8 @@ const EventForm: React.FC<EventFormProps> = ({
         <Typography id="modal-modal-title" variant="h1" sx={{ fontSize: '40px', border: 'none', textAlign: 'center' }}>
           שינוי אירוע
         </Typography>
-        <form  >
-          <Grid container spacing={3} sx={{marginLeft:"0.25rem" ,marginRight:"0.25rem"}}>
+        <form>
+          <Grid container spacing={3} sx={{ marginLeft: '0.25rem', marginRight: '0.25rem' }}>
             <Grid xs={11}>
               <GPT
                 initialValue={formData.title}
@@ -71,9 +70,9 @@ const EventForm: React.FC<EventFormProps> = ({
               </GPT>
             </Grid>
 
-            <Grid xs={4} >
+            <Grid xs={4}>
               <TextField
-                style={{marginTop:"0.75rem"}}
+                style={{ marginTop: '0.75rem' }}
                 required={true}
                 fullWidth
                 label="תאריך"
@@ -86,7 +85,7 @@ const EventForm: React.FC<EventFormProps> = ({
 
             <Grid xs={6.6}>
               <TextField
-                style={{marginTop:"0.75rem",marginLeft:"1.50rem" ,marginRight:"1.50rem"}}
+                style={{ marginTop: '0.75rem', marginLeft: '1.50rem', marginRight: '1.50rem' }}
                 fullWidth
                 disabled
                 placeholder="שם תמונה"
@@ -133,29 +132,32 @@ const EventForm: React.FC<EventFormProps> = ({
               </GPT>
             </Grid>
 
-            <Grid xs={7}  sx={{marginTop:"0.75rem"}}>
-              <Button 
-                variant="contained" 
-                style={{marginLeft:"1.50rem" ,marginRight:"1.50rem" , paddingLeft:"1.50rem",paddingRight:"1.50rem"}} 
-                onClick={handleCloseAddEvent}
-              >
+            <Grid xs={7} sx={{ marginTop: '0.75rem' }}>
+              <Button
+                variant="contained"
+                style={{
+                  marginLeft: '1.50rem',
+                  marginRight: '1.50rem',
+                  paddingLeft: '1.50rem',
+                  paddingRight: '1.50rem'
+                }}
+                onClick={handleCloseAddEvent}>
                 סגור
               </Button>
             </Grid>
 
-            <Grid xs={5} sx={{marginTop:"0.75rem"}}>
-              <Button 
-                variant="contained" 
-                style={{ paddingLeft:"1.50rem",paddingRight:"1.50rem"}}  
-                onClick={handleSaveAdd}
-              >
+            <Grid xs={5} sx={{ marginTop: '0.75rem' }}>
+              <Button
+                variant="contained"
+                style={{ paddingLeft: '1.50rem', paddingRight: '1.50rem' }}
+                onClick={handleSaveAdd}>
                 {requiredFields.add ? 'הוסף' : 'שמור שינויים'}
               </Button>
             </Grid>
           </Grid>
         </form>
       </Box>
-    </>
+    </form>
   );
 };
 

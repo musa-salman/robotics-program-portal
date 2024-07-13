@@ -50,9 +50,9 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
     PaperProps: {
       style: {
         maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
+        width: 250
+      }
+    }
   };
 
   const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
@@ -132,7 +132,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
         <Typography id="modal-modal-title" variant="h1" sx={{ fontSize: '40px', border: 'none', textAlign: 'center' }}>
           העלת קובץ
         </Typography>
-        <form style={{marginTop:"0.25rem"}}>
+        <form style={{ marginTop: '0.25rem' }}>
           <Grid container spacing={3}>
             <Grid item xs={11.6}>
               <GPT
@@ -174,9 +174,11 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                   {(categories || [])
                     // .filter((item) => item.category !== 'הכל')
                     .map((item) => (
-                      <MenuItem value={item.category} >{item.category}</MenuItem>
+                      <MenuItem value={item.category}>{item.category}</MenuItem>
                     ))}
-                  <Button onClick={handleShowCategoryManagement} style={{paddingLeft:"1.25rem" ,paddingRight:"1.25rem" ,fontSize:"1.1rem"}} >
+                  <Button
+                    onClick={handleShowCategoryManagement}
+                    style={{ paddingLeft: '1.25rem', paddingRight: '1.25rem', fontSize: '1.1rem' }}>
                     {' '}
                     הוספה/שינוי
                   </Button>
@@ -187,7 +189,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
 
             <Grid xs={6.8}>
               <TextField
-                style={{marginTop:"1.50rem",paddingLeft:"1.25rem" ,paddingRight:"1.25rem"}}
+                style={{ marginTop: '1.50rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
                 fullWidth
                 disabled
                 value={studyMaterial.filename}
@@ -219,7 +221,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
               />
             </Grid>
 
-            <Grid xs={12} style={{paddingLeft:"1.25rem" ,paddingRight:"1.25rem"}}>
+            <Grid xs={12} style={{ paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
               <GPT initialValue="" getData={() => generateMaterialDescription(studyMaterial)}>
                 <TextField
                   name="description"
@@ -235,22 +237,20 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
               </GPT>
             </Grid>
 
-            <Grid xs={7}  style={{marginTop:"0.75rem",paddingLeft:"1.25rem" ,paddingRight:"1.25rem"}}>
-              <Button 
-                variant="contained"  
-                style={{marginRight:"8rem",paddingLeft:"1.25rem" ,paddingRight:"1.25rem"}} 
-                onClick={handleSubmit}
-              >
+            <Grid xs={7} style={{ marginTop: '0.75rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
+              <Button
+                variant="contained"
+                style={{ marginRight: '8rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
+                onClick={handleSubmit}>
                 העלה
               </Button>
             </Grid>
 
-            <Grid xs={5} style={{marginTop:"0.75rem",paddingLeft:"1.25rem" ,paddingRight:"1.25rem"}}>
-              <Button 
-                variant="contained" 
-                style={{marginRight:"2rem",paddingLeft:"1.25rem" ,paddingRight:"1.25rem"}}
-                onClick={handleClose}
-              >
+            <Grid xs={5} style={{ marginTop: '0.75rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
+              <Button
+                variant="contained"
+                style={{ marginRight: '2rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
+                onClick={handleClose}>
                 סגירה
               </Button>
             </Grid>

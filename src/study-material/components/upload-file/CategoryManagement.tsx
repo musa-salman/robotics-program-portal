@@ -143,12 +143,12 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
         <Typography id="modal-modal-title" variant="h1" sx={{ fontSize: '40px', border: 'none', textAlign: 'center' }}>
           הוספה/שינוי
         </Typography>
-        <form  style={{marginTop:"2rem"}}>
+        <form style={{ marginTop: '2rem' }}>
           <Grid container spacing={3} sx={{ justifyContent: 'center' }}>
             <Grid xs={10}>
               <TextField
                 fullWidth
-                style={{marginTop:"1rem"}}
+                style={{ marginTop: '1rem' }}
                 label="קטגוריה"
                 value={newCategory}
                 onChange={handleInputCategories}
@@ -169,12 +169,12 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
                 }}
               />
             </Grid>
-            <Grid xs={8} style={{height:"18rem",overflow:"auto",marginTop:"1rem"}}>
+            <Grid xs={8} style={{ height: '18rem', overflow: 'auto', marginTop: '1rem' }}>
               {(categories || [])
                 .filter((item) => item.category !== 'הכל')
                 .map((item) => (
                   <>
-                    <Grid xs={11.6} key={item.category} style={{paddingTop:"1rem" }}>
+                    <Grid xs={11.6} key={item.category} style={{ paddingTop: '1rem' }}>
                       <TextField
                         fullWidth
                         label="קטגוריה"
@@ -187,7 +187,9 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
                           setIsValid((prevData) => ({ ...prevData, category: updatedCategory?.category !== '' }));
                         }}
                         helperText={
-                          (!isValid.category || isForward) && updatedCategory?.category === item.category ? 'יש למלה' : ''
+                          (!isValid.category || isForward) && updatedCategory?.category === item.category
+                            ? 'יש למלה'
+                            : ''
                         }
                         InputProps={{
                           endAdornment: (
@@ -213,11 +215,10 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
                 ))}
             </Grid>
             <Grid xs={5}>
-              <Button 
-                variant="contained" 
-                style={{marginTop:"0.75rem",marginRight:"4rem",paddingLeft:"1.25rem" ,paddingRight:"1.25rem"}}
-                onClick={handleCloseCategoryManagement}
-              >
+              <Button
+                variant="contained"
+                style={{ marginTop: '0.75rem', marginRight: '4rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
+                onClick={handleCloseCategoryManagement}>
                 סגירה
               </Button>
             </Grid>

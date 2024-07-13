@@ -11,6 +11,7 @@ import { suggestMaterialTitles } from './upload-file/StudyMaterialPrompts';
 import formatDate from '../../utils/dateFormatter';
 import { useMaterialService } from '../repository/StudyMaterialContext';
 import DeleteModal from '../DeleteModal';
+import { BiBorderRadius } from 'react-icons/bi';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -89,15 +90,17 @@ function MaterialCard({
   return (
     <>
       {showDeleteModal && <DeleteModal onDelete={handleDelete} onCancel={() => setShowDeleteModal(false)} />}
-      <Card className="Card">
-        <MySpeedDial
-          handleEditToggle={handleEditToggle}
-          handleMoveToggle={handleMoveToggle}
-          handleSave={handleSave}
-          handleDelete={isDelete}
-          isEditing={isEditing}
-        />
-        <br />
+      <Card className="Card" sx={{ borderRadius: '15px' }}>
+        <div>
+          <MySpeedDial
+            handleEditToggle={handleEditToggle}
+            handleMoveToggle={handleMoveToggle}
+            handleSave={handleSave}
+            handleDelete={isDelete}
+            isEditing={isEditing}
+          />
+          <br />
+        </div>
         <CardContent className="bodycard">
           {isEditing ? (
             <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>

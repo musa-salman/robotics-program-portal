@@ -1,72 +1,91 @@
-.primary {
-  border: none;
-  border-radius: none;
-  background-color: transparent;
+.mat-out-box {
+  height: 100%;
+  width: 100%;
+  padding: 30px;
+  /* border: 2px solid; */
+  padding: 30px;
   display: flex;
-  margin: 20px;
+  justify-content: center;
+  align-content: center;
 }
 
-.study-materials-container {
+.mat-in-box {
+  height: 90%;
+  width: 90%;
+  padding: 20px;
+  /* border: 2px solid; */
   display: flex;
+  justify-content: center;
+  flex-direction: column;
   flex-wrap: wrap;
-  align-content: space-between;
-  justify-content: right;
-  gap: 20px;
+  background-color: transparent;
+  backdrop-filter: blur(20px);
+  border: 8px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-search {
   display: flex;
+  height: fit-content;
+  max-height: 80vh;
+  width: 99%;
+  min-width: fit-content;
   align-items: center;
-  padding: 20px;
-  flex-wrap: wrap;
-  column-gap: 10px;
+  margin-right: 6px;
   justify-content: space-between;
+  /* border: 2px solid; */
+  padding: 4px;
+  top: 0;
+}
+
+.search {
+  width: 90%;
 }
 
 .btns {
-  margin-left: 14px;
-}
-
-.btn-search .adde-btn {
-  /* background: linear-gradient(90deg, rgba(222, 67, 19, 1) 6%, rgba(254, 193, 99, 1) 94%); */
-  color: whitesmoke;
-  background-color: #edd2d2;
-  /* border: 2px solid #e8e8e8; */
-  margin-left: 18px;
-  transition: ease 0.5s;
-}
-
-/*  #a4a49f;  #e0a3a3 #edd2d2    EDEBE8*/
-
-.btn-search .adde-btn:hover {
-  background-color: #eec3c3;
-}
-
-.Card-Header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.stg-nam {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  flex-direction: row;
+  margin-right: 10px;
+  gap: 10px;
 }
 
 .btns .edit-button {
-  background-color: #c1b8b3;
-  margin-left: 18px;
-  color: whitesmoke;
+  /* color: #6c0102; */
+  /* color: whitesmoke; */
+  /* background-color: #5a0f10; */
+  transition: 0.5s ease-in;
+  /* box-shadow: 0px 0px 2px 2px #f78d8de4; */
 }
 
 .btns .edit-button:hover {
-  background-color: #bdaea6;
+  background-color: #bb6363e4;
+  padding: 2px;
 }
 
-.header-text {
-  text-align: right;
-  font-size: 20px;
-  color: black;
-  font-weight: bold;
+.btns .adde-btn {
+  /* color: whitesmoke; */
+  /* background-color: #5a0f10; */
+  transition: 0.5s ease-in;
+  /* box-shadow: 0px 0px 2px 2px #f78d8de4; */
+}
+
+.btns .adde-btn:hover {
+  background-color: #bb6363e4;
+}
+
+.con-taf {
+  width: 100%;
+  min-width: 20rem;
+}
+
+.primary {
+  display: flex;
+  width: 100%;
+  /* border: 2px solid; */
+}
+
+.study-materials-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
 }

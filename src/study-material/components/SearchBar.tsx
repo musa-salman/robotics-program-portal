@@ -1,7 +1,10 @@
 import React, { ChangeEvent } from 'react';
-import { FaSearch } from 'react-icons/fa';
+// import { FaSearch } from 'react-icons/fa';
+import SearchIcon from '@mui/icons-material/Search';
 import './SearchBar.css';
 import { StudyMaterial } from '../repository/StudyMaterial';
+import { backdropClasses, Container, InputAdornment, TextField } from '@mui/material';
+import { start } from 'repl';
 
 interface SearchBarProps {
   studyMaterials: StudyMaterial[];
@@ -31,9 +34,21 @@ export const SearchBar: React.FC<SearchBarProps> = ({ studyMaterials, onSearchRe
   };
 
   return (
-    <div className="Container">
-      <FaSearch id="search-icon" />
-      <input placeholder="  חיפוש" onChange={handleChange} aria-label="Search" value={query} />
-    </div>
+    <Container>
+      <TextField
+        placeholder="חיפוש..."
+        onChange={handleChange}
+        aria-label="Search"
+        value={query}
+        sx={{ backgroundColor: 'background.paper', borderColor: 'secondary.main' }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon id="search-icon" />
+            </InputAdornment>
+          )
+        }}
+      />
+    </Container>
   );
 };
