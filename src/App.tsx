@@ -37,6 +37,12 @@ function App() {
         }
       },
       {
+        path: '/deep-inspection',
+        element: <div />,
+        allowedRoles: [Role.Admin, Role.Owner],
+        title: 'בחינה מעמיקה'
+      },
+      {
         path: '/events',
         element: <EventContainer />,
         allowedRoles: [Role.Admin, Role.Owner, Role.Student],
