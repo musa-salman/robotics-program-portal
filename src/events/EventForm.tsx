@@ -89,11 +89,12 @@ const EventForm: React.FC<EventFormProps> = ({
                 fullWidth
                 disabled
                 placeholder="שם תמונה"
+                value={formData.imageURL}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <input
-                        accept="*"
+                        accept="image/*"
                         style={{ display: 'none' }}
                         id="upload-file"
                         type="file"

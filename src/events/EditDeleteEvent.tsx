@@ -114,37 +114,23 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
     }
   };
 
+  //FIXME: handleSaveDelete FeedbackMessage is not working well on success
   const handleSaveDelete = () => {
     setShowModalDelete(false);
-    // eventRepository
-    //   .delete(id)
-    //   .then(async () => {
-    //     const filePath = '/event-img/' + id;
-    //     // Delete the file
-    //     await storageService.exists(filePath).then((exists) => {
-    //       if (!exists) {
-    //         return;
-    //       }
-    //       storageService.delete(filePath);
-    //     });
-    //     deleteEvent(id);
-    //     setFeedbackMessage({
-    //       message: 'אירוע נמחק בהצלחה!',
-    //       variant: 'success'
-    //     });
-    //   })
-    //   .catch(() => {
-    //     setFeedbackMessage({
-    //       message: 'התרחשה שגיעה בעת מחיקת האירוע. אנא נסה שנית.',
-    //       variant: 'error'
-    //     });
-    //   });
     eventRepository
       .delete(id)
-      .then(() => {
+      .then(async () => {
+        const filePath = '/event-img/' + id;
+        // Delete the file
+        await storageService.exists(filePath).then((exists) => {
+          if (!exists) {
+            return;
+          }
+          storageService.delete(filePath);
+        });
         deleteEvent(id);
         setFeedbackMessage({
-          message: 'האירוע נמחק בהצלחה!',
+          message: 'אירוע נמחק בהצלחה!',
           variant: 'success'
         });
       })
@@ -210,7 +196,6 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
     );
   }
 
-  console.log(feedbackMessage);
   return (
     <>
       {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
