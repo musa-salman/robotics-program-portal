@@ -45,7 +45,7 @@ const EventContainer = () => {
       setTimeout(() => {
         setCurrentIndex(currentIndex + 1);
         setAnimationClass('fade-in');
-      }, 500);
+      }, 400);
     }
   };
 
@@ -55,7 +55,7 @@ const EventContainer = () => {
       setTimeout(() => {
         setCurrentIndex(currentIndex - 1);
         setAnimationClass('fade-in');
-      }, 500);
+      }, 400);
     }
   };
 

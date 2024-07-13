@@ -1,5 +1,4 @@
 import EventCard, { EventProps } from './EventCard';
-import { useState, useEffect } from 'react';
 import { useEventService } from './repository/EventContext';
 import { IEvent } from './repository/Event';
 import { CircularProgress, Box } from '@mui/material';
@@ -8,6 +7,7 @@ import EmptyEventCard from './EmptyEventCard';
 import AddEvent from './AddEvent';
 import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
 import Role from '../authentication/components/Roles';
+import { useEffect, useState } from 'react';
 
 type EventContainer = {
   eventsProps: EventProps[];
@@ -15,6 +15,7 @@ type EventContainer = {
 
 const EventContainer = () => {
   const [events, setEvents] = useState<EventProps[] | null>(null);
+  const [animatingEvents, setAnimatingEvents] = useState<{ [key: string]: boolean }>({});
 
   const eventRepository = useEventService().eventRepository;
 
@@ -36,7 +37,31 @@ const EventContainer = () => {
       const updatedEvents = [...events, newEvent];
       updatedEvents.sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime());
       setEvents(updatedEvents);
+      setAnimatingEvents((prev) => ({ ...prev, [newEvent.id]: true }));
+      setTimeout(() => setAnimatingEvents((prev) => ({ ...prev, [newEvent.id]: false })), 500);
     }
+  };
+
+  const onEventDelete = (id: string) => {
+    setAnimatingEvents((prev) => ({ ...prev, [id]: true }));
+    setTimeout(() => {
+      setEvents((events || []).filter((e) => e.id !== id));
+      setAnimatingEvents((prev) => ({ ...prev, [id]: false }));
+    }, 500); // Match the animation duration
+  };
+
+  const onEventEdit = (updatedEvent: EventProps) => {
+    setEvents((prevEvents) => {
+      if (!prevEvents) return [];
+      const index = prevEvents.findIndex((event) => event.id === updatedEvent.id);
+      if (index !== -1) {
+        const newEvents = [...prevEvents];
+        newEvents[index] = updatedEvent;
+        newEvents.sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        return newEvents;
+      }
+      return prevEvents;
+    });
   };
 
   function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
@@ -48,28 +73,9 @@ const EventContainer = () => {
         image: event.imageURL,
         id: event.id,
         onEventDelete: onEventDelete,
-        onEventEdit: onEventEdit
+        onEventEdit: onEventEdit,
+        animating: false // New prop for animation state
       };
-    });
-  }
-
-  function onEventDelete(id: string) {
-    setEvents((events || []).filter((e) => e.id !== id));
-  }
-
-  function onEventEdit(updatedEvent: EventProps) {
-    setEvents((prevEvents) => {
-      if (!prevEvents) return [];
-      const index = prevEvents.findIndex((event) => event.id === updatedEvent.id);
-      if (index !== -1) {
-        // Create a new array with the updated event
-        const newEvents = [...prevEvents];
-        newEvents[index] = updatedEvent;
-        newEvents.sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime());
-        return newEvents;
-      }
-      // If the event was not found, return the previous state
-      return prevEvents;
     });
   }
 
@@ -107,6 +113,7 @@ const EventContainer = () => {
             image={event.image}
             onEventDelete={onEventDelete}
             onEventEdit={onEventEdit}
+            animating={animatingEvents[event.id]}
           />
         ))}
       </div>

@@ -22,57 +22,71 @@ export interface EventProps {
   onEventDelete: (id: string) => void;
   onEventEdit: (event: EventProps) => void;
   id: string;
+  animating?: boolean; // New prop for animation state
 }
 
-const EventCard: React.FC<EventProps> = ({ date, title, details, image, onEventDelete, onEventEdit, id }) => {
+const EventCard: React.FC<EventProps> = ({
+  date,
+  title,
+  details,
+  image,
+  onEventDelete,
+  onEventEdit,
+  id,
+  animating
+}) => {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345, minHeight: 450 }}>
-      <CardHeader
-        action={
-          <IconButton aria-label="settings">
+    <div className={`event-card ${animating ? 'zoom-out' : 'zoom-in'}`}>
+      <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345, minHeight: 450 }}>
+        <CardHeader
+          action={
+            <IconButton aria-label="settings">
+              <RoleBasedAccessControl
+                allowedRoles={[Role.Admin, Role.Owner]}
+                unauthorizedAuthenticatedComponent={<></>}>
+                <EditDeleteEvent
+                  event={{ date, title, details, image, onEventDelete, onEventEdit, id }}
+                  editEvent={onEventEdit}
+                  deleteEvent={onEventDelete}
+                />
+              </RoleBasedAccessControl>
+            </IconButton>
+          }
+          title={title}
+          subheader={formatDate(date)}
+        />
+        {isLoading && (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 150 }}>
+            <CircularProgress /> {/* Loading indicator */}
+          </div>
+        )}
+        <img
+          style={{ display: isLoading ? 'none' : 'block', height: '150px', width: '100%', objectFit: 'cover' }}
+          src={image}
+          alt={title}
+          onLoad={() => setIsLoading(false)}
+        />{' '}
+        <CardContent>
+          <Typography variant="body1" color="text.secondary" style={{ minHeight: '90px' }}>
+            {details}
+          </Typography>
+        </CardContent>
+        <div className="register-button">
+          <RoleBasedAccessControl allowedRoles={[Role.Student]} unauthorizedAuthenticatedComponent={<></>}>
+            <RegisterStudentToEvent eventId={id} />
+          </RoleBasedAccessControl>
+        </div>
+        <CardActions disableSpacing>
+          <IconButton aria-label="show-registered-students">
             <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
-              <EditDeleteEvent
-                event={{ date, title, details, image, onEventDelete, onEventEdit, id }}
-                editEvent={onEventEdit}
-                deleteEvent={onEventDelete}
-              />
+              <ShowRegisteredStudents eventId={id} />
             </RoleBasedAccessControl>
           </IconButton>
-        }
-        title={title}
-        subheader={formatDate(date)}
-      />
-      {isLoading && (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 150 }}>
-          <CircularProgress /> {/* Loading indicator */}
-        </div>
-      )}
-      <img
-        style={{ display: isLoading ? 'none' : 'block', height: '150px', width: '100%', objectFit: 'cover' }}
-        src={image}
-        alt={title}
-        onLoad={() => setIsLoading(false)}
-      />{' '}
-      <CardContent>
-        <Typography variant="body1" color="text.secondary" style={{ minHeight: '90px' }}>
-          {details}
-        </Typography>
-      </CardContent>
-      <div className="register-button">
-        <RoleBasedAccessControl allowedRoles={[Role.Student]} unauthorizedAuthenticatedComponent={<></>}>
-          <RegisterStudentToEvent eventId={id} />
-        </RoleBasedAccessControl>
-      </div>
-      <CardActions disableSpacing>
-        <IconButton aria-label="show-registered-students">
-          <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
-            <ShowRegisteredStudents eventId={id} />
-          </RoleBasedAccessControl>
-        </IconButton>
-      </CardActions>
-    </Card>
+        </CardActions>
+      </Card>
+    </div>
   );
 };
 
