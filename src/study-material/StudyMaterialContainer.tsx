@@ -21,6 +21,7 @@ function StudyMaterialContainer() {
   const materialService = useMaterialService();
 
   const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
+
   const [categoryList, setCategoryList] = useState<Category[] | null>(null);
 
   const [searchResults, setSearchResults] = useState<StudyMaterial[] | null>(null);
@@ -160,7 +161,7 @@ function StudyMaterialContainer() {
           </div>
 
           <div className="con-taf">
-            <CategoryButtons categories={categories || []} onCategorySelect={handleCategorySelect} />
+            <CategoryButtons categories={categoryList || []} onCategorySelect={handleCategorySelect} />
           </div>
 
           {searchResults?.length === 0 ? (
@@ -194,7 +195,7 @@ function StudyMaterialContainer() {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
-            <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} />
+            <MaterialUploadModal handleClose={handleClose} handleAdd={handleAdd} initialValue={null} />
           </Modal>
 
           <Modal

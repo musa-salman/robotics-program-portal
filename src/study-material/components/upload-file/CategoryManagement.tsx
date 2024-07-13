@@ -36,7 +36,6 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
   const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
 
   const handleEditItem = (editedCategory: Category) => {
-    console.log('edit c ', editedCategory.category, ' id ', editedCategory.id);
     if (showFirstButton) {
       setShowFirstButton(false);
       setUpdatedCategory(editedCategory);
@@ -58,7 +57,6 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
   };
 
   const addCategories = () => {
-    console.log('new ', newCategory);
     if (newCategory === '') {
       setIsForward(true);
     } else if (checkRepeat(newCategory)) {
@@ -134,7 +132,6 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
   };
 
   const handleDeleteCategory = (item: Category) => {
-    console.log('delete ', item);
     studyMaterialManagement.categoryRepository.delete(item.id);
 
     setCategories((prevCategories) => {

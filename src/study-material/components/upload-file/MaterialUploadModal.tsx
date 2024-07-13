@@ -26,10 +26,11 @@ import FeedbackSnackbar, { FeedbackMessage } from '../../../components/snackbar/
 
 interface MaterialUploadModalProps {
   handleClose: () => void;
-  handleAdd: (studyMaterial: StudyMaterial) => void;
+  handleAdd: (studyMaterial: StudyMaterial) => void | null;
+  initialValue: StudyMaterial | null;
 }
 
-const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, handleAdd }) => {
+const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, handleAdd, initialValue }) => {
   const [isForward, setIsForward] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [categories, setCategories] = useState<Category[] | null>(null);
@@ -56,14 +57,16 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
     }
   };
 
-  const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>({
-    filename: '',
-    id: '',
-    category: '',
-    title: '',
-    description: '',
-    date: new Date()
-  });
+  const [studyMaterial, setStudyMaterial] = useState<StudyMaterial>(
+    initialValue || {
+      filename: '',
+      id: '',
+      category: '',
+      title: '',
+      description: '',
+      date: new Date()
+    }
+  );
   const storageService = useContext(StorageServiceContext);
 
   // Define the feedback message
@@ -267,7 +270,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                 variant="contained"
                 style={{ marginRight: '8rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
                 onClick={handleSubmit}>
-                העלה
+                {initialValue ? 'שמור' : 'הוסף'}
               </Button>
             </Grid>
 

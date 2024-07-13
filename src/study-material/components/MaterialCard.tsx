@@ -13,6 +13,7 @@ import { useMaterialService } from '../repository/StudyMaterialContext';
 import DeleteModal from '../DeleteModal';
 import { BiBorderRadius } from 'react-icons/bi';
 import FeedbackSnackbar, { FeedbackMessage } from '../../components/snackbar/SnackBar';
+import MaterialUploadModal from './upload-file/MaterialUploadModal';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -40,6 +41,7 @@ function MaterialCard({
 
   // Define the feedback message
   const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
+  const handleClose = () => setShow(false);
 
   const handleDownload = async () => {
     storageService.download(
@@ -121,7 +123,7 @@ function MaterialCard({
           <br />
         </div>
         <CardContent className="bodycard">
-          {isEditing ? (
+          {/* {isEditing ? (
             <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>
               <TextField
                 value={editedTitle}
@@ -130,12 +132,12 @@ function MaterialCard({
                 fullWidth
               />
             </GPT>
-          ) : (
-            <CardHeader title={studyMaterial.title} className="title-card" />
-          )}
+          ) : ( */}
+          <CardHeader title={studyMaterial.title} className="title-card" />
+          {/* )} */}
           <Divider component="div" role="presentation" />
           <div>
-            {isEditing ? (
+            {/* {isEditing ? (
               <GPT initialValue={editedDescription} getData={() => suggestMaterialTitles(studyMaterial)}>
                 <TextField
                   value={editedDescription}
@@ -146,10 +148,13 @@ function MaterialCard({
                   fullWidth
                 />
               </GPT>
-            ) : (
-              <Typography className="description">{studyMaterial.description}</Typography>
-            )}
+            ) : ( */}
+            <Typography className="description">{studyMaterial.description}</Typography>
+            {/* )} */}
           </div>
+          {isEditing && (
+            <MaterialUploadModal handleClose={handleEditToggle} handleAdd={null} initialValue={studyMaterial} />
+          )}
           <Typography className="date"> תאריך : {formatDate(studyMaterial.date)}</Typography>
 
           <Button onClick={handleDownload}>
