@@ -172,7 +172,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                     setIsValid((prevData) => ({ ...prevData, title: studyMaterial.category !== '' }));
                   }}>
                   {(categories || [])
-                    .filter((item) => item.category !== 'הכל')
+                    // .filter((item) => item.category !== 'הכל')
                     .map((item) => (
                       <MenuItem value={item.category}>{item.category}</MenuItem>
                     ))}
