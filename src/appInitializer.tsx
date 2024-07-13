@@ -49,15 +49,17 @@ function bootstrap({ theme, cacheRtl }: IProps) {
 
   const studentRepository = new CachingRepository(new StudentRepository());
   const userRepository = new CachingRepository(new UserRepository());
+
+  const registerRepository = new CachingRepository(new RegisterRepository());
+  const registerService = new RegisterService(registerRepository, studentRepository, userRepository);
+
   const userService = new UserService(
     userRepository,
     studentRepository,
     eventRegistrationRepositories,
-    studentEventRepositories
+    studentEventRepositories,
+    registerRepository
   );
-
-  const registerRepository = new CachingRepository(new RegisterRepository());
-  const registerService = new RegisterService(registerRepository, studentRepository, userRepository);
 
   const documentRepository = new CachingRepository(new DocumentRepository());
   const documentStudentRepositories = new DocumentStudentRepositories();
