@@ -36,6 +36,7 @@ const UsersManagement = () => {
         type: 'custom',
         headerName: 'תפקיד',
         flex: 1,
+        sortComparator: (v1, v2) => Math.min(...v1) - Math.min(...v2),
         renderCell: ({ row }) => (
           <>
             {row.roles.map((role: Role) => (
@@ -44,7 +45,11 @@ const UsersManagement = () => {
                 label={roleNames[role]}
                 color={roleColorsLevel[role]}
                 onDelete={
-                  role === Role.Student
+                  role === Role.Student ||
+                  role === Role.Pending ||
+                  role === Role.PreEnrollment ||
+                  role === Role.Rejected ||
+                  role === Role.deleted
                     ? undefined
                     : (event) =>
                         handleDelete(event, row, role)
@@ -65,8 +70,18 @@ const UsersManagement = () => {
                   disabled={showAddRoleDialog}
                   label="הגדר כמנהל"
                   onClick={() => {
-                    setShowAddRoleDialog(true);
-                    setUserToAddRole(row);
+                    userService.jumpToAdminRole(row).then(() => {
+                      setRows(
+                        rows!.map((r) =>
+                          r.id === row.id
+                            ? ({
+                                ...row,
+                                roles: [Role.Admin]
+                              } as User & { isNew: boolean })
+                            : r
+                        )
+                      );
+                    });
                   }}
                 />
               ) : (

@@ -7,7 +7,7 @@ import { Register } from '../register/Register';
 import { RegisterContext } from '../register/service/RegisterContext';
 import StudentForm from '../students-management/StudentForm';
 import { Close, Done } from '@mui/icons-material';
-import RegisterDetails from './RegisterDetails';
+import StudentDetails from './RegisterDetails';
 
 const RegisterManagement = () => {
   const [selectedRegister, setSelectedRegister] = useState<Register | null>(null);
@@ -91,7 +91,6 @@ const RegisterManagement = () => {
   };
 
   const handleRowSelected = useCallback((row: GridRowModel | null) => {
-    console.log(row);
     setSelectedRegister(row as Register);
   }, []);
 
@@ -107,7 +106,9 @@ const RegisterManagement = () => {
         />
       </Grid>
       <Grid item xs={4}>
-        {selectedRegister && <RegisterDetails register={selectedRegister} onClose={() => setSelectedRegister(null)} />}
+        {selectedRegister && (
+          <StudentDetails registrationData={selectedRegister} onClose={() => setSelectedRegister(null)} />
+        )}
       </Grid>
     </Grid>
   );
