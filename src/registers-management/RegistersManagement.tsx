@@ -15,12 +15,11 @@ const RegisterManagement = () => {
   const registerService = useContext(RegisterContext);
 
   const generateColumns = (
-    /// show form, set initial values, save item
     rows: (Register & { isNew: boolean })[] | null,
     setRows: React.Dispatch<React.SetStateAction<(Register & { isNew: boolean })[] | null>>,
     setShowItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     setInitialItem: React.Dispatch<React.SetStateAction<Register | null>>,
-    setMessage: React.Dispatch<React.SetStateAction<FeedbackMessage | undefined>>
+    setMessage: React.Dispatch<React.SetStateAction<FeedbackMessage | null>>
   ): GridColDef[] => {
     return [
       { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1, editable: true },
@@ -31,11 +30,9 @@ const RegisterManagement = () => {
         headerName: 'שם תלמיד',
         flex: 1,
         renderCell: ({ row }) => (
-          <div>
-            <Typography>
-              {row.firstName} {row.lastName}
-            </Typography>
-          </div>
+          <Typography>
+            {row.firstName} {row.lastName}
+          </Typography>
         )
       },
       {

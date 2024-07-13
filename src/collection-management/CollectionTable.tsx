@@ -104,6 +104,15 @@ const CollectionTable = <T extends { id: string }>({
   );
 
   const updateItem = (updatedItem: T) => {
+    if (updatedItem === initialItem) {
+      setShowItemForm(false);
+      setMessage({
+        message: 'לא בוצעו שינויים',
+        variant: 'info'
+      });
+      return;
+    }
+
     const id = updatedItem.id;
     repository!
       .update(updatedItem.id, updatedItem)
