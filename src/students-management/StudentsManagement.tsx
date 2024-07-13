@@ -21,7 +21,7 @@ const StudentsManagement = () => {
     setRows: React.Dispatch<React.SetStateAction<(Student & { isNew: boolean })[] | null>>,
     setShowItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     setInitialItem: React.Dispatch<React.SetStateAction<Student | null>>,
-    setMessage: React.Dispatch<React.SetStateAction<FeedbackMessage | undefined>>
+    showMessage: (message: FeedbackMessage) => void
   ): GridColDef[] => {
     return [
       { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1, editable: true },
@@ -63,10 +63,10 @@ const StudentsManagement = () => {
                   .deleteUser(id.toString())
                   .then(() => {
                     setRows(rows!.filter((student) => student.id !== id));
-                    setMessage({ message: 'התלמיד נמחק בהצלחה', variant: 'success' });
+                    showMessage({ message: 'התלמיד נמחק בהצלחה', variant: 'success' });
                   })
                   .catch((_) => {
-                    setMessage({ message: 'התרחשה שגיאה במחיקת התלמיד', variant: 'error' });
+                    showMessage({ message: 'התרחשה שגיאה במחיקת התלמיד', variant: 'error' });
                   });
               }}
             />

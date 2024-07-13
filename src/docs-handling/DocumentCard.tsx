@@ -8,6 +8,7 @@ import { DocumentInfo } from './service/DocumentInfo';
 import DocumentFormModal from './DocumentForm';
 import { AuthContext } from '../authentication/services/AuthContext';
 import Role from '../authentication/components/Roles';
+import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 
 interface DocumentCardProps {
   documentInfo: DocumentInfo;
@@ -26,6 +27,9 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
   const [file, setFile] = useState<File | null>(null);
   const [isFileUploaded, setIsFileUploaded] = useState(false);
 
+  const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
+  const [buildNumber, setBuildNumber] = useState<number>(0);
+
   const storage = useContext(StorageServiceContext);
   const { user } = useContext(AuthContext);
 
@@ -34,10 +38,20 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
       return;
     }
 
-    storage.exists(`documents/${documentInfo.id}/${user.id}`).then((exists) => {
-      setIsFileUploaded(exists);
-    });
+    storage
+      .exists(`documents/${documentInfo.id}/${user.id}`)
+      .then((exists) => {
+        setIsFileUploaded(exists);
+      })
+      .catch(() => {
+        showMessage({ message: 'שגיאה בטעינת המסמך', variant: 'error' });
+      });
   }, [user]);
+
+  const showMessage = (message: FeedbackMessage) => {
+    setMessage(message);
+    setBuildNumber(buildNumber + 1);
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -46,10 +60,15 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
   };
 
   const handleUpload = () => {
-    onStudentUpload(documentInfo.id, file!).then(() => {
-      setIsFileUploaded(true);
-      setFile(null);
-    });
+    onStudentUpload(documentInfo.id, file!)
+      .then(() => {
+        setIsFileUploaded(true);
+        setFile(null);
+        showMessage({ message: 'הקובץ הועלה בהצלחה', variant: 'success' });
+      })
+      .catch(() => {
+        showMessage({ message: 'שגיאה בהעלאת הקובץ', variant: 'error' });
+      });
   };
 
   const handleDelete = () => {
@@ -61,14 +80,20 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
       return;
     }
 
-    storage.delete(`documents/${documentInfo.id}/${user.id}`).then(() => {
-      setIsFileUploaded(false);
-    });
+    storage
+      .delete(`documents/${documentInfo.id}/${user.id}`)
+      .then(() => {
+        setIsFileUploaded(false);
+        showMessage({ message: 'הקובץ נמחק בהצלחה', variant: 'success' });
+      })
+      .catch(() => {
+        showMessage({ message: 'שגיאה במחיקת הקובץ', variant: 'error' });
+      });
   };
 
   const handleDownload = () => {
-    storage.download(`documents/${documentInfo.id}`, documentInfo.filename).then(() => {
-      console.log('Downloaded');
+    storage.download(`documents/${documentInfo.id}`, documentInfo.filename).catch(() => {
+      showMessage({ message: 'שגיאה בהורדת הקובץ', variant: 'error' });
     });
   };
 
@@ -83,6 +108,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
 
   return (
     <>
+      {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
       <DocumentFormModal
         open={show}
         handleClose={() => setShow(false)}

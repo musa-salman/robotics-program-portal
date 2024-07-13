@@ -2,7 +2,17 @@ import './MaterialCard.css';
 import { useContext, useState } from 'react';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
-import { Button, Card, CardContent, CardHeader, Divider, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Divider,
+  IconButton,
+  TextField,
+  Typography
+} from '@mui/material';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import { StorageServiceContext } from '../../storage-service/StorageContext';
 
@@ -12,8 +22,7 @@ import formatDate from '../../utils/dateFormatter';
 import { useMaterialService } from '../repository/StudyMaterialContext';
 import DeleteModal from '../DeleteModal';
 import { BiBorderRadius } from 'react-icons/bi';
-import FeedbackSnackbar, { FeedbackMessage } from '../../components/snackbar/SnackBar';
-import MaterialUploadModal from './upload-file/MaterialUploadModal';
+import { useTheme } from '@mui/material/styles';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -30,6 +39,7 @@ function MaterialCard({
   onDelete: DeleteHandler;
   onMove: MoveHandler;
 }) {
+  const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(studyMaterial.title);
   const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
@@ -38,10 +48,6 @@ function MaterialCard({
 
   const storageService = useContext(StorageServiceContext);
   const materialService = useMaterialService();
-
-  // Define the feedback message
-  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage | undefined>(undefined);
-  const handleClose = () => setShow(false);
 
   const handleDownload = async () => {
     storageService.download(
@@ -60,16 +66,9 @@ function MaterialCard({
       .then(() => {
         materialService.studyMaterialRepository.delete(studyMaterial.id).then(() => onDelete(studyMaterial));
         onDelete(studyMaterial);
-        setFeedbackMessage({
-          message: 'החומר נמחק בהצלחה',
-          variant: 'success'
-        });
       })
-      .catch(() => {
-        setFeedbackMessage({
-          message: 'שגיאה במחיקת החומר',
-          variant: 'error'
-        });
+      .catch((error) => {
+        console.error('Error Delete study material:', error);
       });
   };
 
@@ -90,16 +89,9 @@ function MaterialCard({
         const updatedStudyMaterial = { ...studyMaterial, title: editedTitle, description: editedDescription };
         onUpdate(updatedStudyMaterial);
         setIsEditing(false);
-        setFeedbackMessage({
-          message: 'החומר עודכן בהצלחה',
-          variant: 'success'
-        });
       })
-      .catch(() => {
-        setFeedbackMessage({
-          message: 'שגיאה בעדכון החומר',
-          variant: 'error'
-        });
+      .catch((error) => {
+        console.error('Error updating study material:', error);
       });
   };
 
@@ -109,21 +101,10 @@ function MaterialCard({
 
   return (
     <>
-      {feedbackMessage && <FeedbackSnackbar key={feedbackMessage.message} feedBackMessage={feedbackMessage} />}
       {showDeleteModal && <DeleteModal onDelete={handleDelete} onCancel={() => setShowDeleteModal(false)} />}
-      <Card className="Card" sx={{ borderRadius: '15px' }}>
-        <div>
-          <MySpeedDial
-            handleEditToggle={handleEditToggle}
-            handleMoveToggle={handleMoveToggle}
-            handleSave={handleSave}
-            handleDelete={isDelete}
-            isEditing={isEditing}
-          />
-          <br />
-        </div>
+      <Card className="Card" sx={{ borderRadius: '15px', backgroundColor: theme.palette.background.paper }}>
         <CardContent className="bodycard">
-          {/* {isEditing ? (
+          {isEditing ? (
             <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>
               <TextField
                 value={editedTitle}
@@ -132,12 +113,29 @@ function MaterialCard({
                 fullWidth
               />
             </GPT>
-          ) : ( */}
-          <CardHeader title={studyMaterial.title} className="title-card" />
-          {/* )} */}
-          <Divider component="div" role="presentation" />
+          ) : (
+            <CardHeader
+              sx={{
+                display: 'flex',
+                marginTop: '5px',
+                flexDirection: 'row-reverse'
+              }}
+              action={
+                <MySpeedDial
+                  handleEditToggle={handleEditToggle}
+                  handleMoveToggle={handleMoveToggle}
+                  handleSave={handleSave}
+                  handleDelete={isDelete}
+                  isEditing={isEditing}
+                />
+              }
+              title={studyMaterial.title}
+              className="title-card"
+            />
+          )}
+          <Divider component="div" variant="fullWidth" style={{ backgroundColor: '#F2542D' }} />
           <div>
-            {/* {isEditing ? (
+            {isEditing ? (
               <GPT initialValue={editedDescription} getData={() => suggestMaterialTitles(studyMaterial)}>
                 <TextField
                   value={editedDescription}
@@ -148,13 +146,10 @@ function MaterialCard({
                   fullWidth
                 />
               </GPT>
-            ) : ( */}
-            <Typography className="description">{studyMaterial.description}</Typography>
-            {/* )} */}
+            ) : (
+              <Typography className="description">{studyMaterial.description}</Typography>
+            )}
           </div>
-          {isEditing && (
-            <MaterialUploadModal handleClose={handleEditToggle} handleAdd={null} initialValue={studyMaterial} />
-          )}
           <Typography className="date"> תאריך : {formatDate(studyMaterial.date)}</Typography>
 
           <Button onClick={handleDownload}>

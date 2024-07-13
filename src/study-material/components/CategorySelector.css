@@ -13,9 +13,7 @@
   border-radius: 8px;
   padding: 16px;
   background-color: #d6d0cc;
-  border:
-    5px,
-    solid #5c191b;
+  border: 5px, solid;
   max-height: 80vh;
   overflow-y: auto;
 }
@@ -50,6 +48,6 @@
 }
 
 .close-icn {
-  color: rgba(183, 46, 46, 0.622);
+  /* color: rgba(183, 46, 46, 0.622); */
   width: 20px;
 }

@@ -1,16 +1,14 @@
 import { Container, CssBaseline, Typography } from '@mui/material';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
-import './EmptyStudyMaterials.css';
+import './NoResultFound.css';
 
 function NoResultFound() {
   return (
     <>
-      <CssBaseline />
+      {/* <CssBaseline /> */}
       <Container className="container">
-        <SearchOffIcon />
-        <Typography variant="h5" className="text">
-          אין תוצאות למה בקשת להראות
-        </Typography>
+        <SearchOffIcon className="SearchOffIcon" />
+        <Typography className="tex">אין תוצאות למה בקשת להראות</Typography>
       </Container>
     </>
   );

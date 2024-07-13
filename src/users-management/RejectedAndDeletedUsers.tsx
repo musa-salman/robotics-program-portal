@@ -16,7 +16,7 @@ const RejectedAndDeletedTable = () => {
     setRows: React.Dispatch<React.SetStateAction<(User & { isNew: boolean })[] | null>>,
     _setShowItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     _setInitialItem: React.Dispatch<React.SetStateAction<User | null>>,
-    _setMessage: React.Dispatch<React.SetStateAction<FeedbackMessage | undefined>>
+    _showMessage: (message: FeedbackMessage) => void
   ): GridColDef[] => {
     return [
       { field: 'email', type: 'string', headerName: 'אימייל', flex: 1 },
