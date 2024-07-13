@@ -2,13 +2,13 @@ import EventCard, { EventProps } from './EventCard';
 import { useState, useEffect } from 'react';
 import { useEventService } from './repository/EventContext';
 import { IEvent } from './repository/Event';
-import { CircularProgress, Box } from '@mui/material';
 import './EventContainer.css';
 import EmptyEventCard from './EmptyEventCard';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useTheme } from '@mui/material/styles';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
+import SkeletonEventCard from './EventCardSkeleton';
 
 type EventContainer = {
   eventsProps: EventProps[];
@@ -89,15 +89,7 @@ const EventContainer = () => {
     });
   }
 
-  if (events === null) {
-    return (
-      <Box className="loading-event">
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (events.length === 0) {
+  if (events && events.length === 0) {
     return (
       <>
         <EmptyEventCard addEvent={addEvent} />
@@ -114,18 +106,24 @@ const EventContainer = () => {
             <ArrowForwardIosIcon onClick={handleShiftEventsRight} />
           </div>
           <div className="events-show">
-            {events.slice(currentIndex, currentIndex + 3).map((event) => (
-              <EventCard
-                key={event.id}
-                id={event.id}
-                date={event.date}
-                title={event.title}
-                details={event.details}
-                image={event.image}
-                onEventDelete={onEventDelete}
-                onEventEdit={onEventEdit}
-              />
-            ))}
+            {events === null
+              ? Array(3)
+                  .fill(null)
+                  .map((_, index) => <SkeletonEventCard key={index} />)
+              : events
+                  .slice(currentIndex, currentIndex + 3)
+                  .map((event) => (
+                    <EventCard
+                      key={event.id}
+                      id={event.id}
+                      date={event.date}
+                      title={event.title}
+                      details={event.details}
+                      image={event.image}
+                      onEventDelete={onEventDelete}
+                      onEventEdit={onEventEdit}
+                    />
+                  ))}
           </div>
           <div className="shift-buttons" style={{ backgroundColor: theme.palette.primary.main }}>
             <ArrowBackIosIcon onClick={handleShiftEventsLeft} />
