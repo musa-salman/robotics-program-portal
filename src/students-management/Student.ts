@@ -8,4 +8,5 @@ export interface Student {
   studentEmail: string;
   parentEmail: string;
   studentAddress: string;
+  studentSchool: string;
 }
