@@ -76,7 +76,6 @@ const EventCard: React.FC<EventProps> = ({
               minHeight: '90px',
               display: 'block', // Ensures the text is displayed in a block format, allowing for natural line breaks
               marginBottom: '1em', // Adds some space below the text, if needed
-              maxWidth: '330px',
               wordWrap: 'break-word' // Ensures long words will be broken and wrapped to the next line
             }}>
             {details}
