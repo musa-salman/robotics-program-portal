@@ -73,7 +73,8 @@ const EventCard: React.FC<EventProps> = ({
             variant="body1"
             color="text.secondary"
             style={{
-              minHeight: '90px',
+              minHeight: '100px',
+              maxHeight: '100px',
               wordWrap: 'break-word' // Ensures long words will be broken and wrapped to the next line
             }}>
             {details}
