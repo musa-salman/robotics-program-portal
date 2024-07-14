@@ -14,9 +14,10 @@ import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackB
 
 interface RegisterStudentToEventProps {
   eventId: string;
+  eventDate: Date;
 }
 
-const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId }) => {
+const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId, eventDate }) => {
   const [isRegistered, setRegister] = useState<boolean | null>(null);
   const [student, setStudent] = useState<Student | null>(null);
   const [showModalRegister, setShowModalRegister] = useState(false);
@@ -120,6 +121,10 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
       {isRegistered ? (
         <Button variant="contained" color="secondary" disabled>
           רשום
+        </Button>
+      ) : new Date() > new Date(eventDate) ? (
+        <Button variant="contained" color="secondary" disabled>
+          התאריך עבר
         </Button>
       ) : (
         <Button variant="contained" color="primary" onClick={handleRegister}>

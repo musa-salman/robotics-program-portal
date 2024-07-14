@@ -28,7 +28,11 @@ const EventCardPreview: React.FC<EventProps> = ({ date, title, details, image })
             <MoreVertIcon />
           </IconButton>
         }
-        title={title}
+        title={
+          <Typography variant="h5" component="div" style={{ minHeight: '32px' }}>
+            {title}
+          </Typography>
+        }
         subheader={formatDate(date)}
       />
       <CardMedia component="img" height="150" image={image} alt={title} />
@@ -37,10 +41,8 @@ const EventCardPreview: React.FC<EventProps> = ({ date, title, details, image })
           variant="body1"
           color="text.secondary"
           style={{
-            minHeight: '90px',
-            display: 'block', // Ensures the text is displayed in a block format, allowing for natural line breaks
-            marginBottom: '1em', // Adds some space below the text, if needed
-            maxWidth: '330px',
+            minHeight: '100px',
+            maxHeight: '100px',
             wordWrap: 'break-word' // Ensures long words will be broken and wrapped to the next line
           }}>
           {details}

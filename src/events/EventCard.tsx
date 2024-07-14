@@ -54,7 +54,11 @@ const EventCard: React.FC<EventProps> = ({
               </RoleBasedAccessControl>
             </IconButton>
           }
-          title={title}
+          title={
+            <Typography variant="h5" component="div" style={{ minHeight: '32px' }}>
+              {title}
+            </Typography>
+          }
           subheader={formatDate(date)}
         />
         {isLoading && (
@@ -82,7 +86,7 @@ const EventCard: React.FC<EventProps> = ({
         </CardContent>
         <div className="register-button">
           <RoleBasedAccessControl allowedRoles={[Role.Student]} unauthorizedAuthenticatedComponent={<></>}>
-            <RegisterStudentToEvent eventId={id} />
+            <RegisterStudentToEvent eventId={id} eventDate={date} />
           </RoleBasedAccessControl>
         </div>
         <CardActions disableSpacing>
