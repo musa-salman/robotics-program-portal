@@ -58,8 +58,9 @@ const RejectedAndDeletedTable = () => {
   };
 
   const messageFormat: MessageFormat<User> = {
-    deleteError: () => '',
-    deleteSuccess: () => '',
+    deleteError: () => 'התרחשה שגיאה במחיקת המשתמש',
+    deleteSuccess: () => 'המשתמש נמחק בהצלחה',
+    deleteConfirmation: (item) => `האם אתה בטוח שברצונך למחוק את ${item.email}?`,
     updateError: () => '',
     updateSuccess: () => ''
   };

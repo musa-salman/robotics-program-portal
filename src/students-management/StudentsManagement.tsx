@@ -15,13 +15,17 @@ const StudentsManagement = () => {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const userService = useUserService();
 
+  const handleDelete = (student: Student) => {
+    return userService.deleteUser(student.id);
+  };
   const generateColumns = (
     /// show form, set initial values, save item
     rows: (Student & { isNew: boolean })[] | null,
     setRows: React.Dispatch<React.SetStateAction<(Student & { isNew: boolean })[] | null>>,
     setShowItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     setInitialItem: React.Dispatch<React.SetStateAction<Student | null>>,
-    showMessage: (message: FeedbackMessage) => void
+    showMessage: (message: FeedbackMessage) => void,
+    onRowDeleted: (row: GridRowModel) => void
   ): GridColDef[] => {
     return [
       { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1, editable: true },
@@ -59,15 +63,7 @@ const StudentsManagement = () => {
               icon={<DeleteIcon color="action" />}
               label="מחק"
               onClick={(_) => {
-                userService
-                  .deleteUser(id.toString())
-                  .then(() => {
-                    setRows(rows!.filter((student) => student.id !== id));
-                    showMessage({ message: 'התלמיד נמחק בהצלחה', variant: 'success' });
-                  })
-                  .catch((_) => {
-                    showMessage({ message: 'התרחשה שגיאה במחיקת התלמיד', variant: 'error' });
-                  });
+                onRowDeleted(rows!.find((student) => student.id === id)!);
               }}
             />
           ];
@@ -79,6 +75,7 @@ const StudentsManagement = () => {
   const messageFormat: MessageFormat<Student> = {
     deleteSuccess: () => 'התלמיד נמחק בהצלחה',
     deleteError: () => 'התרחשה שגיאה במחיקת התלמיד',
+    deleteConfirmation: (item: Student) => `האם אתה בטוח שברצונך למחוק את התלמיד ${item.firstName} ${item.lastName}?`,
     updateSuccess: (item: Student) => `התלמיד ${item.firstName} ${item.lastName} עודכן בהצלחה`,
     updateError: (item: Student) => `התרחשה שגיאה בעדכון התלמיד: ${item.firstName} ${item.lastName}`
   };
@@ -98,6 +95,7 @@ const StudentsManagement = () => {
             FormComponent={StudentForm}
             messageFormat={messageFormat}
             onRowSelected={handleRowSelected}
+            onDelete={handleDelete}
           />
         </Grid>
         <Grid item xs={4}>

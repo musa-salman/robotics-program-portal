@@ -1,11 +1,20 @@
-.footer .social-links a {
-  margin: 0 5px;
+.footer-items {
   display: flex;
-  justify-content: flex-end;
+  color: #fff;
+  font-size: 1.5rem;
+  background-color: black;
+  width: 100%;
 }
 
-.footer .footer-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+.social-links {
+  display: flex;
+  color: #fff;
+  font-size: 1.5rem;
+  margin-right: 85%;
+}
+
+.footer-links {
+  display: flex;
+  color: #fff;
+  font-size: 1.5rem;
 }

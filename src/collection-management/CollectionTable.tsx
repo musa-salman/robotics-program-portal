@@ -15,10 +15,12 @@ import { BaseRepository } from '../repositories/BaseRepository';
 import CustomToolbar from './CustomToolbar';
 import { CachingRepository } from '../repositories/caching/CachingRepository';
 import './CollectionTable.css';
+import DeleteModal from '../study-material/DeleteModal';
 
 interface MessageFormat<T> {
   deleteSuccess: () => string;
   deleteError: () => string;
+  deleteConfirmation: (item: T) => string;
   updateSuccess: (item: T) => string;
   updateError: (item: T) => string;
 }
@@ -43,7 +45,8 @@ interface CollectionTableProps<T> {
     >,
     setShowAddItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     setInitialItem: React.Dispatch<React.SetStateAction<T | null>>,
-    showMessage: (message: FeedbackMessage) => void
+    showMessage: (message: FeedbackMessage) => void,
+    onRowDeleted: (row: GridRowModel) => void
   ) => GridColDef[];
   repository?: BaseRepository<T>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,6 +54,7 @@ interface CollectionTableProps<T> {
   getItems?: () => Promise<T[]>;
   messageFormat: MessageFormat<T>;
   onRowSelected?: (row: GridRowModel | null) => void;
+  onDelete?: (item: T) => Promise<void>;
 }
 
 const CollectionTable = <T extends { id: string }>({
@@ -59,7 +63,8 @@ const CollectionTable = <T extends { id: string }>({
   FormComponent,
   getItems,
   messageFormat,
-  onRowSelected
+  onRowSelected,
+  onDelete
 }: CollectionTableProps<T>) => {
   const [rows, setRows] = useState<(T & { isNew: boolean })[] | null>(null);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
@@ -68,6 +73,7 @@ const CollectionTable = <T extends { id: string }>({
   const [showAddItemForm, setShowItemForm] = useState(false);
   const [initialItem, setInitialItem] = useState<T | null>(null);
   const [selectionModel, setSelectionModel] = useState<GridRowId[]>([]);
+  const [itemDeletionConfirmation, setDeleteConfirmation] = useState<T>();
 
   useEffect(() => {
     function fetchItems() {
@@ -83,6 +89,27 @@ const CollectionTable = <T extends { id: string }>({
 
     if (!rows) fetchItems();
   }, [rows, repository]);
+
+  const handleDelete = () => {
+    if (!itemDeletionConfirmation) return;
+
+    onDelete!(itemDeletionConfirmation)
+      .then(() => {
+        setRows(rows!.filter((item) => item.id !== itemDeletionConfirmation.id));
+        showMessage({
+          message: messageFormat.deleteSuccess(),
+          variant: 'success'
+        });
+        setDeleteConfirmation(undefined);
+      })
+      .catch(() => {
+        showMessage({
+          message: messageFormat.deleteError(),
+          variant: 'error'
+        });
+        setDeleteConfirmation(undefined);
+      });
+  };
 
   const showMessage = (message: FeedbackMessage) => {
     setMessage(message);
@@ -141,7 +168,10 @@ const CollectionTable = <T extends { id: string }>({
   };
 
   const handleRefresh = () => {
-    (repository as CachingRepository<T>).invalidateCache();
+    if (repository instanceof CachingRepository) {
+      repository.invalidateCache();
+    }
+
     setRows(null);
   };
 
@@ -170,9 +200,20 @@ const CollectionTable = <T extends { id: string }>({
     setRowModesModel(newRowModesModel);
   };
 
-  const columns = generateColumns(rows, setRows, setShowItemForm, setInitialItem, showMessage);
+  const columns = generateColumns(rows, setRows, setShowItemForm, setInitialItem, showMessage, (row) => {
+    const { isNew, ...item } = row;
+    setDeleteConfirmation(item as T);
+  });
+
   return (
     <>
+      {itemDeletionConfirmation && (
+        <DeleteModal
+          onDelete={handleDelete}
+          onCancel={() => setDeleteConfirmation(undefined)}
+          message={messageFormat.deleteConfirmation(itemDeletionConfirmation!)}
+        />
+      )}
       <Dialog
         open={showAddItemForm}
         onClose={() => setShowItemForm(false)}

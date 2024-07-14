@@ -46,11 +46,8 @@ function TabPanel(props: TabPanelProps) {
             left: '60%',
             transform: 'translate(-50%, -50%)',
             height: 500,
-            // boxShadow: 24,
             width: '60rem',
-            // borderRadius: 1,
             outline: 'none'
-            // backgroundColor:"black"
           }}>
           <Typography
             sx={{
@@ -59,11 +56,8 @@ function TabPanel(props: TabPanelProps) {
               left: '50%',
               transform: 'translate(-50%, -50%)',
               height: 500,
-              // boxShadow: 24,
               width: '50rem',
-              // borderRadius: 1,
               outline: 'none'
-              // backgroundColor:"white"
             }}>
             {children}
           </Typography>
