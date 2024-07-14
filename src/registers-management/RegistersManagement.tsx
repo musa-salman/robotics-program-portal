@@ -14,12 +14,17 @@ const RegisterManagement = () => {
   const [selectedRegister, setSelectedRegister] = useState<Register | null>(null);
   const registerService = useContext(RegisterContext);
 
+  const handleDelete = (register: Register) => {
+    return registerService.rejectRegister(register.id);
+  };
+
   const generateColumns = (
     rows: (Register & { isNew: boolean })[] | null,
     setRows: React.Dispatch<React.SetStateAction<(Register & { isNew: boolean })[] | null>>,
     setShowItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     setInitialItem: React.Dispatch<React.SetStateAction<Register | null>>,
-    showMessage: (message: FeedbackMessage) => void
+    showMessage: (message: FeedbackMessage) => void,
+    onRowDeleted: (row: GridRowModel) => void
   ): GridColDef[] => {
     return [
       { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1, editable: true },
@@ -55,15 +60,7 @@ const RegisterManagement = () => {
               icon={<Close color="error" />}
               label="לדחות"
               onClick={(_) => {
-                registerService
-                  .rejectRegister(id.toString())
-                  .then(() => {
-                    setRows(rows!.filter((register) => register.id !== id));
-                    showMessage({ message: 'המועמד נדחה בהצלחה', variant: 'success' });
-                  })
-                  .catch((_) => {
-                    showMessage({ message: 'התרחשה שגיאה בדחיית המועמד', variant: 'error' });
-                  });
+                onRowDeleted(rows!.find((register) => register.id === id)!);
               }}
             />,
             <GridActionsCellItem
@@ -90,6 +87,7 @@ const RegisterManagement = () => {
   const messageFormat: MessageFormat<Register> = {
     deleteError: () => 'התרחשה שגיאה במחיקת המועמד',
     deleteSuccess: () => 'המועמד נמחק בהצלחה',
+    deleteConfirmation: (item) => `האם אתה בטוח שברצונך למחוק את המועמד ${item.firstName} ${item.lastName}?`,
     updateError: () => 'התרחשה שגיאה בעדכון המועמד',
     updateSuccess: () => 'המועמד עודכן בהצלחה'
   };
@@ -99,22 +97,25 @@ const RegisterManagement = () => {
   }, []);
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={selectedRegister ? 8 : 12}>
-        <CollectionTable<Register>
-          generateColumns={generateColumns}
-          repository={registerService.registerRepository}
-          FormComponent={StudentForm}
-          messageFormat={messageFormat}
-          onRowSelected={handleRowSelected}
-        />
+    <>
+      <Grid container spacing={2}>
+        <Grid item xs={selectedRegister ? 8 : 12}>
+          <CollectionTable<Register>
+            generateColumns={generateColumns}
+            repository={registerService.registerRepository}
+            FormComponent={StudentForm}
+            messageFormat={messageFormat}
+            onRowSelected={handleRowSelected}
+            onDelete={handleDelete}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          {selectedRegister && (
+            <StudentDetails registrationData={selectedRegister} onClose={() => setSelectedRegister(null)} />
+          )}
+        </Grid>
       </Grid>
-      <Grid item xs={4}>
-        {selectedRegister && (
-          <StudentDetails registrationData={selectedRegister} onClose={() => setSelectedRegister(null)} />
-        )}
-      </Grid>
-    </Grid>
+    </>
   );
 };
 
