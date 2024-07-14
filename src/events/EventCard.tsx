@@ -39,7 +39,7 @@ const EventCard: React.FC<EventProps> = ({
 
   return (
     <div className={`event-card ${animating ? 'zoom-out' : 'zoom-in'}`}>
-      <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345, minHeight: 450 }}>
+      <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345, minHeight: 460 }}>
         <CardHeader
           action={
             <IconButton aria-label="settings">
@@ -75,7 +75,7 @@ const EventCard: React.FC<EventProps> = ({
             style={{
               minHeight: '90px',
               display: 'block', // Ensures the text is displayed in a block format, allowing for natural line breaks
-              marginBottom: '1em', // Adds some space below the text, if needed
+              // marginBottom: '1em', // Adds some space below the text, if needed
               wordWrap: 'break-word' // Ensures long words will be broken and wrapped to the next line
             }}>
             {details}
