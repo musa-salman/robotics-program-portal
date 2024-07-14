@@ -5,14 +5,10 @@
 }
 
 .events-container-show-all-events-style {
-  padding: 10px;
-  border-radius: 10px;
   display: flex;
   flex-wrap: wrap;
-  align-content: space-between;
-  justify-content: right;
-  margin: 10px;
-  gap: 10px;
+  justify-content: flex-start; /* Aligns items to the start of the container */
+  gap: 10px; /* Adjusts the gap between items */
 }
 
 .events-show {
@@ -53,7 +49,6 @@
 }
 
 .event-card {
-  flex: 1;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
