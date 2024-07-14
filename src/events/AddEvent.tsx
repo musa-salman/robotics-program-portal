@@ -165,7 +165,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
 
   return (
     <>
-      <Button className="add-button" onClick={handleAddEvent}>
+      <Button variant="contained" className="add-button" onClick={handleAddEvent}>
         <AddIcon />
       </Button>
       {AddWindow()}
