@@ -7,8 +7,16 @@
 .events-container-show-all-events-style {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start; /* Aligns items to the start of the container */
   gap: 10px; /* Adjusts the gap between items */
+  justify-content: right;
+}
+
+.events-header-button {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  margin: 10px;
+  gap: 10px;
 }
 
 .events-show {
@@ -41,11 +49,6 @@
 
 .shift-buttons:hover {
   background-color: #3c0e0e;
-}
-
-.events-show {
-  display: flex;
-  position: relative;
 }
 
 .event-card {

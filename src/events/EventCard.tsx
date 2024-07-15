@@ -39,7 +39,7 @@ const EventCard: React.FC<EventProps> = ({
 
   return (
     <div className={`event-card ${animating ? 'zoom-out' : 'zoom-in'}`}>
-      <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345, minHeight: 450 }}>
+      <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345 }}>
         <CardHeader
           action={
             <IconButton aria-label="settings">
@@ -54,7 +54,11 @@ const EventCard: React.FC<EventProps> = ({
               </RoleBasedAccessControl>
             </IconButton>
           }
-          title={title}
+          title={
+            <Typography variant="h5" component="div" style={{ minHeight: '32px' }}>
+              {title}
+            </Typography>
+          }
           subheader={formatDate(date)}
         />
         {isLoading && (
@@ -73,10 +77,8 @@ const EventCard: React.FC<EventProps> = ({
             variant="body1"
             color="text.secondary"
             style={{
-              minHeight: '90px',
-              display: 'block', // Ensures the text is displayed in a block format, allowing for natural line breaks
-              marginBottom: '1em', // Adds some space below the text, if needed
-              maxWidth: '330px',
+              minHeight: '100px',
+              maxHeight: '100px',
               wordWrap: 'break-word' // Ensures long words will be broken and wrapped to the next line
             }}>
             {details}
@@ -84,7 +86,7 @@ const EventCard: React.FC<EventProps> = ({
         </CardContent>
         <div className="register-button">
           <RoleBasedAccessControl allowedRoles={[Role.Student]} unauthorizedAuthenticatedComponent={<></>}>
-            <RegisterStudentToEvent eventId={id} />
+            <RegisterStudentToEvent eventId={id} eventDate={date} />
           </RoleBasedAccessControl>
         </div>
         <CardActions disableSpacing>

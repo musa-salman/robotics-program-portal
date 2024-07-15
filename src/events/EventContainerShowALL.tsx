@@ -1,7 +1,7 @@
 import EventCard, { EventProps } from './EventCard';
 import { useEventService } from './repository/EventContext';
 import { IEvent } from './repository/Event';
-import { CircularProgress, Box } from '@mui/material';
+import { CircularProgress, Box, Button, Input } from '@mui/material';
 import './EventContainer.css';
 import EmptyEventCard from './EmptyEventCard';
 import AddEvent from './AddEvent';
@@ -16,8 +16,33 @@ type EventContainer = {
 const EventContainer = () => {
   const [events, setEvents] = useState<EventProps[] | null>(null);
   const [animatingEvents, setAnimatingEvents] = useState<{ [key: string]: boolean }>({});
+  const [searchQuery, setSearchQuery] = useState('');
 
   const eventRepository = useEventService().eventRepository;
+  const [filteredEvents, setFilteredEvents] = useState(events);
+  const [sortField, setSortField] = useState('');
+  const [sortDirection, setSortDirection] = useState('asc'); // 'asc' or 'desc'
+
+  // Effect to sort events whenever sortField or sortDirection changes
+  useEffect(() => {
+    if (sortField) {
+      sortEvents(sortField, sortDirection);
+    }
+  }, [sortField, sortDirection]);
+
+  useEffect(() => {
+    if (searchQuery.length === 0) {
+      setFilteredEvents(events);
+    } else {
+      const filtered = events?.filter(
+        (event) =>
+          event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          event.date?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          event.details.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredEvents(filtered || []);
+    }
+  }, [searchQuery, events]);
 
   useEffect(() => {
     const getEvents = () => {
@@ -31,6 +56,24 @@ const EventContainer = () => {
     };
     if (events === null) getEvents();
   }, [events]);
+
+  const sortEvents = (field: string, direction: string) => {
+    if (filteredEvents === null) {
+      return;
+    }
+    const sortedEvents = [...filteredEvents].sort((a, b) => {
+      if (field === 'date') {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return direction === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
+      } else if (field === 'title') {
+        return direction === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title);
+      } else {
+        return 0;
+      }
+    });
+    setFilteredEvents(sortedEvents);
+  };
 
   const addEvent = (newEvent: EventProps) => {
     if (events !== null) {
@@ -101,21 +144,54 @@ const EventContainer = () => {
         <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
           <AddEvent addEvent={addEvent} />
         </RoleBasedAccessControl>
+        <Input
+          placeholder="חיפוש אירועים לפי שם או תאריך או פרטים..."
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ width: '50%' }}
+        />
+        <Button
+          onClick={() => {
+            setSortField('date');
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+          }}>
+          מיין לפי תאריך {sortDirection === 'asc' && sortField === 'date' ? '↑' : '↓'}
+        </Button>
+        <Button
+          onClick={() => {
+            setSortField('title');
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+          }}>
+          מיין לפי כותרת {sortDirection === 'asc' && sortField === 'title' ? '↑' : '↓'}
+        </Button>
       </div>
       <div className="events-container-show-all-events-style">
-        {events?.map((event) => (
-          <EventCard
-            key={event.id}
-            id={event.id}
-            date={event.date}
-            title={event.title}
-            details={event.details}
-            image={event.image}
-            onEventDelete={onEventDelete}
-            onEventEdit={onEventEdit}
-            animating={animatingEvents[event.id]}
-          />
-        ))}
+        {filteredEvents
+          ? filteredEvents.map((event) => (
+              <EventCard
+                key={event.id}
+                id={event.id}
+                date={event.date}
+                title={event.title}
+                details={event.details}
+                image={event.image}
+                onEventDelete={onEventDelete}
+                onEventEdit={onEventEdit}
+                animating={animatingEvents[event.id]}
+              />
+            ))
+          : events?.map((event) => (
+              <EventCard
+                key={event.id}
+                id={event.id}
+                date={event.date}
+                title={event.title}
+                details={event.details}
+                image={event.image}
+                onEventDelete={onEventDelete}
+                onEventEdit={onEventEdit}
+                animating={animatingEvents[event.id]}
+              />
+            ))}
       </div>
     </div>
   );
