@@ -5,12 +5,6 @@ import { useEventService } from './repository/EventContext';
 import { StorageServiceContext } from '../storage-service/StorageContext';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import AdminMenu from './AdminOptions';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogActions from '@mui/material/DialogActions';
-import Button from '@mui/material/Button';
 import EventForm from './EventForm';
 import Modal from '@mui/material/Modal';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
@@ -28,7 +22,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [showModalDelete, setShowModalDelete] = useState(false);
-  
+
   const handleCloseEdit = () => setShowModalEdit(false);
   const handleCloseDelete = () => setShowModalDelete(false);
 
@@ -183,7 +177,13 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
   function DeleteWindow() {
     return (
       <>
-      {showModalDelete && <DeleteModal onDelete={handleSaveDelete} onCancel={() => setShowModalDelete(false)} message={"האם אתה בטוח שברצונך למחוק את האירוע הזה"}/>}
+        {showModalDelete && (
+          <DeleteModal
+            onDelete={handleSaveDelete}
+            onCancel={() => handleCloseDelete}
+            message={'האם אתה בטוח שברצונך למחוק את האירוע הזה'}
+          />
+        )}
       </>
     );
   }

@@ -1,7 +1,7 @@
 import { PieChart, BarChart, LineChart } from '@mui/x-charts';
-import { InsightData } from '../insights/InsightPage';
 import { StudyMaterial } from './repository/StudyMaterial';
 import { Category } from './repository/Category';
+import { InsightData } from '../Insights/InsightPage';
 
 const categories: Category[] = [
   { id: '1', category: 'מתמטיקה' },
