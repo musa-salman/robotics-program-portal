@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface InsightCardProps {
@@ -8,12 +8,12 @@ interface InsightCardProps {
 
 const InsightCard: React.FC<InsightCardProps> = ({ question, generateGraph }) => {
   return (
-    <>
-      <Box>
-        <h3>{question}</h3>
+    <Card>
+      <CardContent>
+        <Typography variant="h6">{question}</Typography>
         {generateGraph()}
-      </Box>
-    </>
+      </CardContent>
+    </Card>
   );
 };
 
