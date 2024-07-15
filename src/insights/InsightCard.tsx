@@ -9,7 +9,11 @@ interface InsightCardProps {
 const InsightCard: React.FC<InsightCardProps> = ({ question, generateGraph }) => {
   return (
     <Card>
-      <CardContent>
+      <CardContent 
+        sx={{
+          height: "auto",
+        }}
+        >
         <Typography variant="h6">{question}</Typography>
         {generateGraph()}
       </CardContent>
