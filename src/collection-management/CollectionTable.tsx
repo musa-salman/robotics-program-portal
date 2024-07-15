@@ -8,7 +8,7 @@ import {
   GridValidRowModel,
   GridRowSelectionModel
 } from '@mui/x-data-grid';
-import { Box, Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogTitle, Modal, Typography } from '@mui/material';
 import { heIL } from '@mui/x-data-grid/locales';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 import { BaseRepository } from '../repositories/BaseRepository';
@@ -214,20 +214,21 @@ const CollectionTable = <T extends { id: string }>({
           message={messageFormat.deleteConfirmation(itemDeletionConfirmation!)}
         />
       )}
-      <Dialog
+
+       <Dialog
         open={showAddItemForm}
         onClose={() => setShowItemForm(false)}
         fullWidth
         maxWidth="sm"
         className="dialog-container">
-        <DialogTitle>עריכת פריט</DialogTitle>
-        {FormComponent && initialItem && <FormComponent saveItem={updateItem} initialItem={initialItem} />}
-        <DialogActions>
+        <DialogTitle sx={{ fontSize: '40px', border: 'none', textAlign: 'center',backgroundColor: 'background.paper' }}>עריכת פריט</DialogTitle>
+          {FormComponent && initialItem && <FormComponent saveItem={updateItem} initialItem={initialItem}  setShowItemForm={ setShowItemForm}/>}
+        {/* <DialogActions>
           <Button onClick={() => setShowItemForm(false)} color="secondary">
             בטל
           </Button>
-        </DialogActions>
-      </Dialog>
+        </DialogActions> */}
+      </Dialog> 
       <Box className="table-container">
         <div className="data-grid-container">
           <DataGrid
