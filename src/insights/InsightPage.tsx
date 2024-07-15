@@ -44,24 +44,30 @@ function TabPanel(props: TabPanelProps) {
       {value === index && (
         <Box
           sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '60%',
-            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'black', //FIXME:
+            boxShadow: 24,
+            // width: '90rem',
+            borderRadius: 1,
+            // outline: 'none',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+
             height: 500,
             width: '60rem',
             outline: 'none'
           }}>
           <Typography
             sx={{
-              position: 'absolute',
-              top: '60%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              paddingTop: '6rem',
+
               height: 500,
-              width: '50rem',
+              width: '60rem',
+
               outline: 'none'
-            }}>
+            }}
+            component="div">
             {children}
           </Typography>
         </Box>
@@ -72,7 +78,8 @@ function TabPanel(props: TabPanelProps) {
 
 const InsightPage = () => {
   const insightsList: InsightCategoriesList = {
-    insightCategories: [registerInsightList, userInsights, eventInsights, documentInsights, studyMaterialInsights]
+    //, eventInsights
+    insightCategories: [registerInsightList, userInsights, documentInsights, studyMaterialInsights]
   };
 
   const [detailsCategory, setDetailsCategory] = useState<InsightData>({
@@ -83,17 +90,19 @@ const InsightPage = () => {
   const [value2, setValue2] = useState(0);
 
   const updateTabValue = (_event: React.SyntheticEvent, newValue: number) => {
+    console.log('newValue', newValue);
     setValue(newValue);
+    setValue2(0);
     const exam: InsightData = {
-      title: insightsList.insightCategories[value].title,
-      insights: insightsList.insightCategories[value].insights
+      title: insightsList.insightCategories[newValue].title,
+      insights: insightsList.insightCategories[newValue].insights
     };
     setDetailsCategory(exam);
     console.log(value);
   };
   const handleTabChange = (_event: React.SyntheticEvent, newValue2: number) => {
     setValue2(newValue2);
-    console.log(value2);
+    console.log('value', value);
   };
 
   return (
@@ -103,14 +112,16 @@ const InsightPage = () => {
           boxShadow: 24,
           width: '90rem',
           borderRadius: 1,
-          outline: 'none'
+          outline: 'none',
+          marginLeft: 'auto',
+          marginRight: 'auto'
         }}>
         <Box sx={{ p: 2, bgcolor: 'background.paper', display: 'flex', justifyContent: 'center' }}>
           <Tabs
             value={value}
             onChange={updateTabValue}
             variant="scrollable"
-            scrollButtons={false}
+            scrollButtons={true}
             aria-label="scrollable prevent tabs example">
             {insightsList.insightCategories.map((category, index) => (
               <Tab label={category.title} key={index} />
@@ -132,8 +143,8 @@ const InsightPage = () => {
           {detailsCategory.insights.map(
             (item, idx) =>
               idx === value2 && (
-                <TabPanel value={value2} index={idx}>
-                  <InsightCard key={value2} {...item} />
+                <TabPanel value={value2} index={idx} key={value}>
+                  <InsightCard {...item} />
                 </TabPanel>
               )
           )}

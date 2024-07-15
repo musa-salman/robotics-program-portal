@@ -22,6 +22,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [showModalDelete, setShowModalDelete] = useState(false);
+  const [isForward, setIsForward] = useState(false); //FIXME: validation
 
   const handleCloseEdit = () => setShowModalEdit(false);
   const handleCloseDelete = () => setShowModalDelete(false);
@@ -169,6 +170,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
           MAX_CHARS_Title={MAX_CHARS_Title}
           MAX_CHARS_Details={MAX_CHARS_Details}
           requiredFields={{ add: false }}
+          isForward={isForward}
         />
       </Modal>
     );
