@@ -1,5 +1,4 @@
 import { ReactNode, useState } from 'react';
-import InsightCard from './InsightCard';
 import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -7,6 +6,10 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import registerInsightList from '../registers-management/RegisterInsights';
 import userInsights from '../users/UserInsights';
+import InsightCard from './InsightCard';
+import eventInsights from '../events/EventInsights';
+import studyMaterialInsights from '../study-material/StudyMaterialInsights';
+import documentInsights from '../docs-handling/DocumentInsights';
 
 interface InsightCardProps {
   question: string;
@@ -69,7 +72,7 @@ function TabPanel(props: TabPanelProps) {
 
 const InsightPage = () => {
   const insightsList: InsightCategoriesList = {
-    insightCategories: [registerInsightList, userInsights]
+    insightCategories: [registerInsightList, userInsights, eventInsights, documentInsights, studyMaterialInsights]
   };
 
   const [detailsCategory, setDetailsCategory] = useState<InsightData>({
