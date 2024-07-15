@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@mui/material';
 import './BannerButton.css';
+import { Link } from 'react-router-dom';
 
 interface ButtonIconProps {
   icon: React.ReactElement;
@@ -11,15 +12,17 @@ interface ButtonIconProps {
 }
 
 const ButtonIcon: React.FC<ButtonIconProps> = ({ icon, label, type, path, className }) => {
-  const goToPath = () => {
-    window.location.href = path;
-  };
-
   return (
     <>
-      <Button className={className} startIcon={icon} variant="outlined" color={type} onClick={goToPath}>
-        {label}
-      </Button>
+      <Link to={path} className="link">
+        <Button
+          variant="outlined"
+          color={type === 'primary' ? 'primary' : 'secondary'}
+          className={className}
+          startIcon={icon}>
+          {label}
+        </Button>
+      </Link>
     </>
   );
 };
