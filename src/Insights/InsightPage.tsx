@@ -100,8 +100,6 @@ const InsightPage = () => {
     <>
       <Box
         sx={{
-          top: '53%',
-          left: '50%',
           boxShadow: 24,
           width: '90rem',
           borderRadius: 1,
