@@ -20,7 +20,7 @@ import UsersManagement from './users-management/UsersManagement';
 import DocumentPage from './docs-handling/DocumentPage';
 import PageContainer from './components/PageContainer';
 import RejectedAndDeletedTable from './users-management/RejectedAndDeletedUsers';
-import InsightPage from './insights/InsightPage';
+import InsightPage from './Insights/InsightPage';
 
 function App() {
   const isDev = process.env.NODE_ENV === '';
