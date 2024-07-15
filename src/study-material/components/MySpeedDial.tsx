@@ -22,20 +22,20 @@ function MySpeedDial({ handleEditToggle, handleMoveToggle, handleSave, handleDel
 
   const handleOpen = () => setOpen(!open);
 
-  let actions = [];
+  // let actions = [];
 
-  if (!isEditing) {
-    actions = [
-      { icon: <EditIcon />, name: 'לַעֲרוֹך', action: handleEditToggle, className: '' },
-      { icon: <DeleteIcon />, name: 'לִמְחוֹק', action: handleDelete, className: 'delete-action' },
-      { icon: <DriveFileMoveIcon />, name: 'לעבור', action: handleMoveToggle, className: '' }
-    ];
-  } else {
-    actions = [
-      { icon: <SaveIcon />, name: 'Save', action: handleSave, className: '' },
-      { icon: <CancelIcon />, name: 'Cancel', action: handleEditToggle, className: '' }
-    ];
-  }
+  // if (!isEditing) {
+  let actions = [
+    { icon: <EditIcon />, name: 'לַעֲרוֹך', action: handleEditToggle, className: '' },
+    { icon: <DeleteIcon />, name: 'לִמְחוֹק', action: handleDelete, className: 'delete-action' },
+    { icon: <DriveFileMoveIcon />, name: 'לעבור', action: handleMoveToggle, className: '' }
+  ];
+  // } else {
+  //   actions = [
+  //     { icon: <SaveIcon />, name: 'Save', action: handleSave, className: '' },
+  //     { icon: <CancelIcon />, name: 'Cancel', action: handleEditToggle, className: '' }
+  //   ];
+  // }
 
   return (
     <SpeedDial
