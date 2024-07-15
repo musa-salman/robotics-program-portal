@@ -44,32 +44,30 @@ function TabPanel(props: TabPanelProps) {
       {value === index && (
         <Box
           sx={{
-            backgroundColor:"black",//FIXME:
+            backgroundColor: 'black', //FIXME:
             boxShadow: 24,
-          // width: '90rem',
-          borderRadius: 1,
-          // outline: 'none',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-            
-            
+            // width: '90rem',
+            borderRadius: 1,
+            // outline: 'none',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+
             height: 500,
             width: '60rem',
             outline: 'none'
           }}>
           <Typography
             sx={{
-              
-          
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            paddingTop:"6rem",
-            
-            height: 500,
-            width: '60rem',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              paddingTop: '6rem',
 
-            outline: 'none'
-            }}component="div">
+              height: 500,
+              width: '60rem',
+
+              outline: 'none'
+            }}
+            component="div">
             {children}
           </Typography>
         </Box>
@@ -79,7 +77,8 @@ function TabPanel(props: TabPanelProps) {
 }
 
 const InsightPage = () => {
-  const insightsList: InsightCategoriesList = {//, eventInsights
+  const insightsList: InsightCategoriesList = {
+    //, eventInsights
     insightCategories: [registerInsightList, userInsights, documentInsights, studyMaterialInsights]
   };
 
@@ -91,7 +90,7 @@ const InsightPage = () => {
   const [value2, setValue2] = useState(0);
 
   const updateTabValue = (_event: React.SyntheticEvent, newValue: number) => {
-    console.log("newValue",newValue)
+    console.log('newValue', newValue);
     setValue(newValue);
     setValue2(0);
     const exam: InsightData = {
@@ -103,7 +102,7 @@ const InsightPage = () => {
   };
   const handleTabChange = (_event: React.SyntheticEvent, newValue2: number) => {
     setValue2(newValue2);
-    console.log("value",value);
+    console.log('value', value);
   };
 
   return (
@@ -114,8 +113,8 @@ const InsightPage = () => {
           width: '90rem',
           borderRadius: 1,
           outline: 'none',
-          marginLeft:"auto",
-          marginRight:"auto",
+          marginLeft: 'auto',
+          marginRight: 'auto'
         }}>
         <Box sx={{ p: 2, bgcolor: 'background.paper', display: 'flex', justifyContent: 'center' }}>
           <Tabs
@@ -144,13 +143,11 @@ const InsightPage = () => {
           {detailsCategory.insights.map(
             (item, idx) =>
               idx === value2 && (
-                <TabPanel value={value2} index={idx} key={value} >
-                  <InsightCard  {...item} />
+                <TabPanel value={value2} index={idx} key={value}>
+                  <InsightCard {...item} />
                 </TabPanel>
               )
           )}
-
-          
         </Box>
       </Box>
     </>
