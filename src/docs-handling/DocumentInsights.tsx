@@ -1,7 +1,7 @@
-import { LineChart, ScatterChart, Gauge, ScatterValueType } from '@mui/x-charts';
+import { BarChart, LineChart, ScatterChart, Gauge, ScatterValueType } from '@mui/x-charts';
 import { DocumentInfo } from './service/DocumentInfo';
 import { StudentDocument } from './service/StudentDocument';
-import { InsightData } from '../Insights/InsightPage';
+import { InsightData } from '../insights/InsightPage';
 
 const documents: DocumentInfo[] = [
   { id: '1', name: 'טופס הרשמה', filename: 'registration_form.pdf', description: 'טופס הרשמה למערכת' },
