@@ -150,6 +150,8 @@ function StudyMaterialContainer() {
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index);
 
+  console.log('catergories', categories);
+  console.log('catergory list', categoryList);
   return (
     <>
       {message && <FeedbackSnackbar key={message.message} feedBackMessage={message} />}
@@ -182,7 +184,7 @@ function StudyMaterialContainer() {
           </div>
 
           <div className="con-taf">
-            <CategoryButtons categories={categoryList || []} onCategorySelect={handleCategorySelect} />
+            <CategoryButtons categories={categories || []} onCategorySelect={handleCategorySelect} />
           </div>
 
           {searchResults?.length === 0 ? (

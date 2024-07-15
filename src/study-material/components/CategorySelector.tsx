@@ -22,7 +22,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, onMove,
   return (
     <>
       <Modal open={open} onClose={onCancel}>
-        <Box className="move-list-container">
+        <Box className="move-list-container" sx={{ bgcolor: 'background.paper' }}>
           <List className="move-list">
             <Typography variant="h4">עבור לקטגוריה</Typography>
             {categories.map((category, index) => (

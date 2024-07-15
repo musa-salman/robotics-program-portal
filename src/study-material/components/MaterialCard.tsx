@@ -159,8 +159,8 @@ function MaterialCard({
           )}
           <Divider component="div" variant="fullWidth" style={{ backgroundColor: '#F2542D' }} />
           <div>
-            {isEditing ? (
-              <GPT initialValue={editedDescription} getData={() => suggestMaterialTitles(studyMaterial)}>
+            {/* {isEditing ? (
+               <GPT initialValue={editedDescription} getData={() => suggestMaterialTitles(studyMaterial)}>
                 <TextField
                   value={editedDescription}
                   onChange={(e) => setEditedDescription(e.target.value)}
@@ -170,9 +170,8 @@ function MaterialCard({
                   fullWidth
                 />
               </GPT>
-            ) : (
-              <Typography className="description">{studyMaterial.description}</Typography>
-            )}
+            ) : ( */}
+            <Typography className="description">{studyMaterial.description}</Typography>
           </div>
           <Typography className="date"> תאריך : {formatDate(studyMaterial.date)}</Typography>
 
