@@ -141,7 +141,7 @@ function MaterialCard({
                   handleEditToggle={handleEditToggle}
                   handleMoveToggle={handleMoveToggle}
                   handleSave={handleSave}
-                  handleDelete={isDelete}
+                  handleDelete={handleDelete}
                   isEditing={isEditing}
                 />
               }
