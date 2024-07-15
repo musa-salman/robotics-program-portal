@@ -44,6 +44,7 @@ function TabPanel(props: TabPanelProps) {
       {value === index && (
         <Box
           sx={{
+            backgroundColor:"black",//FIXME:
             boxShadow: 24,
           // width: '90rem',
           borderRadius: 1,
@@ -68,7 +69,7 @@ function TabPanel(props: TabPanelProps) {
             width: '60rem',
 
             outline: 'none'
-            }}>
+            }}component="div">
             {children}
           </Typography>
         </Box>
@@ -143,8 +144,8 @@ const InsightPage = () => {
           {detailsCategory.insights.map(
             (item, idx) =>
               idx === value2 && (
-                <TabPanel value={value2} index={idx}>
-                  <InsightCard key={value2} {...item} />
+                <TabPanel value={value2} index={idx} key={value} >
+                  <InsightCard  {...item} />
                 </TabPanel>
               )
           )}
