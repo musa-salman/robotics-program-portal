@@ -1,4 +1,4 @@
-import { Box, Typography, Button, TextField, Grid } from '@mui/material';
+import { Box, Typography, Button, TextField, Grid, Modal } from '@mui/material';
 import { useState } from 'react';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import FeedbackSnackbar, { FeedbackMessage } from '../../components/snackbar/SnackBar';
@@ -20,11 +20,13 @@ const EditModal: React.FC<EditModalProps> = ({
   handleDetailsChange,
   handleTitleChange
 }) => {
+  const [open] = useState(true);
+
   return (
     <>
       <div className="form-show">
         <div className="form">
-          <form>
+          <Modal open={open} onClose={handleClose}>
             <Box
               sx={{
                 position: 'absolute',
@@ -105,7 +107,7 @@ const EditModal: React.FC<EditModalProps> = ({
                 </Grid>
               </form>
             </Box>
-          </form>
+          </Modal>
         </div>
       </div>
     </>
