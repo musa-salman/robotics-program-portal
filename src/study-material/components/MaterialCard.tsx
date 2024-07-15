@@ -2,7 +2,7 @@ import './MaterialCard.css';
 import { useContext, useState } from 'react';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
-import { Button, Card, CardContent, CardHeader, Divider, TextField, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Divider, TextField, Typography } from '@mui/material';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import { StorageServiceContext } from '../../storage-service/StorageContext';
 
@@ -145,7 +145,8 @@ function MaterialCard({
             sx={{
               display: 'flex',
               marginTop: '5px',
-              flexDirection: 'row-reverse'
+
+              textAlign: 'left'
             }}
             action={
               <MySpeedDial
@@ -161,14 +162,17 @@ function MaterialCard({
           />
           <Divider component="div" variant="fullWidth" style={{ backgroundColor: '#F2542D' }} />
           <div>
-            <Typography className="description">{studyMaterial.description}</Typography>
+            <Typography variant="body2" className="description">
+              {studyMaterial.description}
+            </Typography>
           </div>
           <Typography className="date"> תאריך : {formatDate(studyMaterial.date)}</Typography>
-
-          <Button onClick={handleDownload}>
-            הורדה
-            <DownloadIcon />
-          </Button>
+          <CardActions>
+            <Button sx={{ display: 'flex', justifyItems: 'flex-end', alignItems: 'flex-end' }} onClick={handleDownload}>
+              הורדה
+              <DownloadIcon />
+            </Button>
+          </CardActions>
         </CardContent>
       </Card>
     </>

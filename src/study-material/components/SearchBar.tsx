@@ -40,7 +40,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ studyMaterials, onSearchRe
         onChange={handleChange}
         aria-label="Search"
         value={query}
-        sx={{ backgroundColor: 'background.paper', borderColor: 'secondary.main' }}
+        sx={{ backgroundColor: 'background.paper', borderColor: 'secondary.main', width: '100%' }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
