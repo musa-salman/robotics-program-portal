@@ -63,6 +63,7 @@ function MaterialCard({
   };
 
   const handleDelete = async () => {
+    console.log(studyMaterial);
     storageService
       .delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename)
       .then(() => {
@@ -118,6 +119,13 @@ function MaterialCard({
   return (
     <>
       {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
+      {showDeleteModal && (
+        <DeleteModal
+          message="האם אתה בטוח שברצונך למחוק את החומר?"
+          onDelete={handleDelete}
+          onCancel={() => setShowDeleteModal(false)}
+        />
+      )}
       <Card className="Card" sx={{ borderRadius: '15px', backgroundColor: theme.palette.background.paper }}>
         <CardContent className="bodycard">
           {isEditing ? (

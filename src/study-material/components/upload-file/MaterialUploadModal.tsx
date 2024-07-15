@@ -126,6 +126,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
         .create(studyMaterial)
         .then((docRef) => {
           storageService.upload(file, '/study-material/' + docRef.id + '-' + studyMaterial.filename);
+          studyMaterial.id = docRef.id;
           handleAdd(studyMaterial);
           showMessage({
             message: 'הקובץ הועלה בהצלחה',
@@ -142,7 +143,6 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
     } else {
       setIsForward(true);
     }
-    console.log('studyMaterial', studyMaterial);
   };
 
   return (
