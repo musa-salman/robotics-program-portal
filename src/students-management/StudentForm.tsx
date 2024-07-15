@@ -14,9 +14,14 @@ import { School } from '@mui/icons-material';
 interface AddStudentFormProps {
   initialItem?: Student;
   saveItem: (student: Student) => void;
+  setShowItemForm: (value: boolean) => void;
 }
 
-const StudentForm: React.FC<AddStudentFormProps> = ({ initialItem: initialStudent, saveItem: saveStudent }) => {
+const StudentForm: React.FC<AddStudentFormProps> = ({
+  initialItem: initialStudent,
+  saveItem: saveStudent,
+  setShowItemForm
+}) => {
   const [student, setStudent] = useState(
     initialStudent ?? {
       id: '',
@@ -44,15 +49,28 @@ const StudentForm: React.FC<AddStudentFormProps> = ({ initialItem: initialStuden
   const [isStudentAddressValid, setIsStudentAddressValid] = useState(true);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    saveStudent(student);
+    if (
+      isIdentityCard(student.studentId, 'he-IL') &&
+      isHebrewOnly(student.firstName) &&
+      !isEmpty(student.firstName) &&
+      isHebrewOnly(student.lastName) &&
+      !isEmpty(student.lastName) &&
+      isMobilePhone(student.studentPhoneNumber) &&
+      isMobilePhone(student.parentPhoneNumber) &&
+      isEmail(student.studentEmail) &&
+      isEmail(student.parentEmail) &&
+      student.studentSchool !== '' &&
+      student.studentAddress !== ''
+    ) {
+      e.preventDefault();
+      saveStudent(student);
+    }
   };
 
   return (
     <>
       {/* // <Paper className="student-form"> */}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <Grid container spacing={2} className="student-form">
           <Grid item xs={12}>
             <TextField
@@ -195,8 +213,29 @@ const StudentForm: React.FC<AddStudentFormProps> = ({ initialItem: initialStuden
             />
           </Grid>
           <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary" fullWidth>
+            {/* <Button type="submit" variant="contained" color="primary" fullWidth>
               שמור
+            </Button> */}
+          </Grid>
+          <Grid xs={7} sx={{ marginTop: '0.75rem' }}>
+            <Button
+              variant="contained"
+              style={{
+                marginLeft: '1.50rem',
+                marginRight: '8rem',
+                paddingLeft: '1.50rem',
+                paddingRight: '1.50rem'
+              }}
+              type="submit">
+              שמור
+            </Button>
+          </Grid>
+          <Grid xs={5} sx={{ marginTop: '0.75rem' }}>
+            <Button
+              variant="contained"
+              style={{ paddingLeft: '1.50rem', paddingRight: '1.50rem', marginRight: '3rem' }}
+              onClick={() => setShowItemForm(false)}>
+              בטל
             </Button>
           </Grid>
         </Grid>

@@ -73,26 +73,13 @@ function StudyMaterialContainer() {
     setBuildNumber(buildNumber + 1);
   };
 
-  function handleUpdate(updatedMaterial: StudyMaterial) {
+  //Fix this function the use state is not working
+  const handleUpdate = (updatedMaterial: StudyMaterial) => {
     const updatedMaterials = (studyMaterials || []).map((material) =>
       material.id === updatedMaterial.id ? updatedMaterial : material
     );
     setStudyMaterials(updatedMaterials);
-    console.log(updatedMaterials == studyMaterials);
-
-    setStudyMaterials((prevMaterials) => {
-      if (!prevMaterials) return [];
-      const index = prevMaterials.findIndex((material) => material.id === updatedMaterial.id);
-      if (index !== -1) {
-        // Create a new array with the updated event
-        const newMaterials = [...prevMaterials];
-        newMaterials[index] = updatedMaterial;
-        return newMaterials;
-      }
-      // If the event was not found, return the previous state
-      return prevMaterials;
-    });
-  }
+  };
 
   const handleDelete = (deletedStudy: StudyMaterial) => {
     const updatedMaterials = (studyMaterials || []).filter((material) => material.id !== deletedStudy.id);
@@ -100,8 +87,7 @@ function StudyMaterialContainer() {
   };
 
   const handleAdd = (studyMaterial: StudyMaterial) => {
-    studyMaterials?.push(studyMaterial);
-    setStudyMaterials(studyMaterials);
+    setStudyMaterials((prevMaterials) => [...(prevMaterials || []), studyMaterial]);
   };
 
   const handleCategorySelect = (category: string) => {

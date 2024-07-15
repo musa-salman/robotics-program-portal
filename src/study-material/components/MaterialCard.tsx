@@ -13,6 +13,7 @@ import { useMaterialService } from '../repository/StudyMaterialContext';
 import DeleteModal from '../DeleteModal';
 import { useTheme } from '@mui/material/styles';
 import FeedbackSnackbar, { FeedbackMessage } from '../../components/snackbar/SnackBar';
+import EditModel from './EditModel';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -41,6 +42,17 @@ function MaterialCard({
 
   const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
   const [buildNumber, setBuildNumber] = useState(0);
+  const [formData, setFormData] = useState<StudyMaterial>(studyMaterial);
+
+  const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setFormData((prevState) => ({ ...prevState, description: value }));
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setFormData((prevState) => ({ ...prevState, title: value }));
+  };
 
   const showMessage = (message: FeedbackMessage) => {
     setMessage(message);
@@ -63,7 +75,6 @@ function MaterialCard({
   };
 
   const handleDelete = async () => {
-    console.log(studyMaterial);
     storageService
       .delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename)
       .then(() => {
@@ -87,18 +98,11 @@ function MaterialCard({
   };
 
   const handleSave = () => {
-    const updatedStudyMaterial = {
-      ...studyMaterial,
-      title: editedTitle,
-      description: editedDescription
-    };
-
     materialService.studyMaterialRepository
-      .update(studyMaterial.id, updatedStudyMaterial)
+      .update(studyMaterial.id, formData)
       .then(() => {
-        const updatedStudyMaterial = { ...studyMaterial, title: editedTitle, description: editedDescription };
-        onUpdate(updatedStudyMaterial);
-        setIsEditing(false);
+        onUpdate(formData);
+        handleEditToggle();
         showMessage({
           message: 'החומר עודכן בהצלחה',
           variant: 'success'
@@ -126,51 +130,37 @@ function MaterialCard({
           onCancel={() => setShowDeleteModal(false)}
         />
       )}
+      {isEditing && (
+        <EditModel
+          handleClose={handleEditToggle}
+          handleSave={handleSave}
+          handleTitleChange={handleTitleChange}
+          handleDetailsChange={handleDetailsChange}
+          studyMaterial={studyMaterial}
+        />
+      )}
       <Card className="Card" sx={{ borderRadius: '15px', backgroundColor: theme.palette.background.paper }}>
         <CardContent className="bodycard">
-          {isEditing ? (
-            <GPT initialValue={editedTitle} getData={() => suggestMaterialTitles(studyMaterial)}>
-              <TextField
-                value={editedTitle}
-                onChange={(e) => setEditedTitle(e.target.value)}
-                variant="outlined"
-                fullWidth
+          <CardHeader
+            sx={{
+              display: 'flex',
+              marginTop: '5px',
+              flexDirection: 'row-reverse'
+            }}
+            action={
+              <MySpeedDial
+                handleEditToggle={handleEditToggle}
+                handleMoveToggle={handleMoveToggle}
+                handleSave={handleSave}
+                handleDelete={isDelete}
+                isEditing={isEditing}
               />
-            </GPT>
-          ) : (
-            <CardHeader
-              sx={{
-                display: 'flex',
-                marginTop: '5px',
-                flexDirection: 'row-reverse'
-              }}
-              action={
-                <MySpeedDial
-                  handleEditToggle={handleEditToggle}
-                  handleMoveToggle={handleMoveToggle}
-                  handleSave={handleSave}
-                  handleDelete={isDelete}
-                  isEditing={isEditing}
-                />
-              }
-              title={studyMaterial.title}
-              className="title-card"
-            />
-          )}
+            }
+            title={studyMaterial.title}
+            className="title-card"
+          />
           <Divider component="div" variant="fullWidth" style={{ backgroundColor: '#F2542D' }} />
           <div>
-            {/* {isEditing ? (
-               <GPT initialValue={editedDescription} getData={() => suggestMaterialTitles(studyMaterial)}>
-                <TextField
-                  value={editedDescription}
-                  onChange={(e) => setEditedDescription(e.target.value)}
-                  multiline
-                  rows={4}
-                  variant="outlined"
-                  fullWidth
-                />
-              </GPT>
-            ) : ( */}
             <Typography className="description">{studyMaterial.description}</Typography>
           </div>
           <Typography className="date"> תאריך : {formatDate(studyMaterial.date)}</Typography>
