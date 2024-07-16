@@ -166,7 +166,7 @@ function MaterialCard({
               {studyMaterial.description}
             </Typography>
           </div>
-          <Typography className="date"> תאריך : {formatDate(studyMaterial.date)}</Typography>
+          <Typography className="date"> {formatDate(studyMaterial.date)}</Typography>
           <CardActions>
             <Button sx={{ display: 'flex', justifyItems: 'flex-end', alignItems: 'flex-end' }} onClick={handleDownload}>
               הורדה

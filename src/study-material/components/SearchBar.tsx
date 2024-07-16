@@ -3,7 +3,7 @@ import React, { ChangeEvent } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import './SearchBar.css';
 import { StudyMaterial } from '../repository/StudyMaterial';
-import { backdropClasses, Container, InputAdornment, TextField } from '@mui/material';
+import { backdropClasses, Container, IconButton, Input, InputAdornment, TextField } from '@mui/material';
 import { start } from 'repl';
 
 interface SearchBarProps {
@@ -35,19 +35,17 @@ export const SearchBar: React.FC<SearchBarProps> = ({ studyMaterials, onSearchRe
 
   return (
     <Container>
-      <TextField
+      <Input
         placeholder="חיפוש..."
         onChange={handleChange}
         aria-label="Search"
+        sx={{ width: '100%' }}
         value={query}
-        sx={{ backgroundColor: 'background.paper', borderColor: 'secondary.main', width: '100%' }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon id="search-icon" />
-            </InputAdornment>
-          )
-        }}
+        startAdornment={
+          <IconButton>
+            <SearchIcon />
+          </IconButton>
+        }
       />
     </Container>
   );
