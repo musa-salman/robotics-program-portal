@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { StudyMaterial } from '../repository/StudyMaterial';
-import FeedbackSnackbar, { FeedbackMessage } from '../../components/snackbar/SnackBar';
 import { generateMaterialDescription, suggestMaterialTitles } from './upload-file/StudyMaterialPrompts';
 import GPT from '../../gpt-service/GPTComponent';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -84,7 +83,7 @@ const EditModal: React.FC<EditModalProps> = ({
     <>
       <div className="form-show">
         <div className="form">
-          <Modal open={open} onClose={handleClose}>
+          <Modal open={Boolean(open)} onClose={handleClose}>
             <Box
               sx={{
                 position: 'absolute',
