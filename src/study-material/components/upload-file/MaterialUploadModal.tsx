@@ -23,6 +23,7 @@ import GPT from '../../../gpt-service/GPTComponent';
 import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
 import { useMaterialService } from '../../repository/StudyMaterialContext';
 import FeedbackSnackbar, { FeedbackMessage } from '../../../components/snackbar/SnackBar';
+import MaterialCardPreview from '../MaterialCardPreview';
 
 interface MaterialUploadModalProps {
   handleClose: () => void;
@@ -168,6 +169,11 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
           העלת קובץ
         </Typography>
         <form style={{ marginTop: '0.25rem' }}>
+          <div className="card">
+            <Grid xs={12} md={4}>
+              <MaterialCardPreview studyMaterial={studyMaterial} />
+            </Grid>
+          </div>
           <Grid container spacing={3}>
             <Grid item xs={11.6}>
               <GPT
