@@ -14,10 +14,14 @@ import { School } from '@mui/icons-material';
 interface AddStudentFormProps {
   initialItem?: Student;
   saveItem: (student: Student) => void;
-  setShowItemForm:(value:boolean) =>void;
+  setShowItemForm: (value: boolean) => void;
 }
 
-const StudentForm: React.FC<AddStudentFormProps> = ({ initialItem: initialStudent, saveItem: saveStudent ,setShowItemForm}) => {
+const StudentForm: React.FC<AddStudentFormProps> = ({
+  initialItem: initialStudent,
+  saveItem: saveStudent,
+  setShowItemForm
+}) => {
   const [student, setStudent] = useState(
     initialStudent ?? {
       id: '',
@@ -45,20 +49,22 @@ const StudentForm: React.FC<AddStudentFormProps> = ({ initialItem: initialStuden
   const [isStudentAddressValid, setIsStudentAddressValid] = useState(true);
 
   const handleSubmit = (e: React.FormEvent) => {
-    if(isIdentityCard(student.studentId, 'he-IL') &&
-    isHebrewOnly(student.firstName) && !isEmpty(student.firstName) &&
-    isHebrewOnly(student.lastName) && !isEmpty(student.lastName) &&
-    isMobilePhone(student.studentPhoneNumber) &&
-    isMobilePhone(student.parentPhoneNumber) &&
-    isEmail(student.studentEmail) &&
-    isEmail(student.parentEmail) &&
-    student.studentSchool !== "" &&
-    student.studentAddress !== ""
-  ){
-    e.preventDefault();
-    saveStudent(student);
-
-  }
+    if (
+      isIdentityCard(student.studentId, 'he-IL') &&
+      isHebrewOnly(student.firstName) &&
+      !isEmpty(student.firstName) &&
+      isHebrewOnly(student.lastName) &&
+      !isEmpty(student.lastName) &&
+      isMobilePhone(student.studentPhoneNumber) &&
+      isMobilePhone(student.parentPhoneNumber) &&
+      isEmail(student.studentEmail) &&
+      isEmail(student.parentEmail) &&
+      student.studentSchool !== '' &&
+      student.studentAddress !== ''
+    ) {
+      e.preventDefault();
+      saveStudent(student);
+    }
   };
 
   return (
@@ -212,26 +218,26 @@ const StudentForm: React.FC<AddStudentFormProps> = ({ initialItem: initialStuden
             </Button> */}
           </Grid>
           <Grid xs={7} sx={{ marginTop: '0.75rem' }}>
-                  <Button
-                    variant="contained"
-                    style={{
-                      marginLeft: '1.50rem',
-                      marginRight: '8rem',
-                      paddingLeft: '1.50rem',
-                      paddingRight: '1.50rem'
-                    }}
-                    type="submit">
-                    שמור
-                  </Button>
-                </Grid>
-                <Grid xs={5} sx={{ marginTop: '0.75rem' }}>
-                  <Button
-                    variant="contained"
-                    style={{ paddingLeft: '1.50rem', paddingRight: '1.50rem' ,marginRight: '3rem'}}
-                    onClick={() => setShowItemForm(false)}
-                    >בטל
-                  </Button>
-                </Grid>
+            <Button
+              variant="contained"
+              style={{
+                marginLeft: '1.50rem',
+                marginRight: '8rem',
+                paddingLeft: '1.50rem',
+                paddingRight: '1.50rem'
+              }}
+              type="submit">
+              שמור
+            </Button>
+          </Grid>
+          <Grid xs={5} sx={{ marginTop: '0.75rem' }}>
+            <Button
+              variant="contained"
+              style={{ paddingLeft: '1.50rem', paddingRight: '1.50rem', marginRight: '3rem' }}
+              onClick={() => setShowItemForm(false)}>
+              בטל
+            </Button>
+          </Grid>
         </Grid>
       </form>
       {/* </Paper> */}

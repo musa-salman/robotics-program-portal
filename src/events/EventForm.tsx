@@ -20,7 +20,7 @@ interface EventFormProps {
   requiredFields: {
     add: boolean;
   };
-  isForward:boolean;
+  isForward: boolean;
 }
 
 const EventForm: React.FC<EventFormProps> = ({
@@ -38,13 +38,10 @@ const EventForm: React.FC<EventFormProps> = ({
 }) => {
   const [formDataTemp, setFormDataTemp] = useState(formData);
   const [isValid, setIsValid] = useState({
-    
-    
-    details:true,
-    title: true,
-   
+    details: true,
+    title: true
   });
-  
+
   function handleTitleChangeTemp(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setFormDataTemp({ ...formDataTemp, title: event.target.value });
     handleTitleChange(event);
@@ -116,7 +113,6 @@ const EventForm: React.FC<EventFormProps> = ({
                       inputProps={{ maxLength: MAX_CHARS_Title }}
                       defaultValue={formData.title}
                       variant="outlined"
-                      
                       error={!isValid.title || isForward}
                       onBlur={() => {
                         setIsValid((prevData) => ({ ...prevData, title: formData.title !== '' }));
@@ -147,8 +143,7 @@ const EventForm: React.FC<EventFormProps> = ({
                     disabled
                     placeholder="שם תמונה"
                     value={formData.imageURL}
-                    helperText={ "יש לבחור רק תמונה" }
-
+                    helperText={'יש לבחור רק תמונה'}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -158,7 +153,6 @@ const EventForm: React.FC<EventFormProps> = ({
                             id="upload-file"
                             type="file"
                             onChange={handleImageChangeTemp}
-                            
                           />
                           <label htmlFor="upload-file">
                             <Button variant="contained" component="label" htmlFor="upload-file">

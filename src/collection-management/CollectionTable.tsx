@@ -215,20 +215,25 @@ const CollectionTable = <T extends { id: string }>({
         />
       )}
 
-       <Dialog
+      <Dialog
         open={showAddItemForm}
         onClose={() => setShowItemForm(false)}
         fullWidth
         maxWidth="sm"
         className="dialog-container">
-        <DialogTitle sx={{ fontSize: '40px', border: 'none', textAlign: 'center',backgroundColor: 'background.paper' }}>עריכת פריט</DialogTitle>
-          {FormComponent && initialItem && <FormComponent saveItem={updateItem} initialItem={initialItem}  setShowItemForm={ setShowItemForm}/>}
+        <DialogTitle
+          sx={{ fontSize: '40px', border: 'none', textAlign: 'center', backgroundColor: 'background.paper' }}>
+          עריכת פריט
+        </DialogTitle>
+        {FormComponent && initialItem && (
+          <FormComponent saveItem={updateItem} initialItem={initialItem} setShowItemForm={setShowItemForm} />
+        )}
         {/* <DialogActions>
           <Button onClick={() => setShowItemForm(false)} color="secondary">
             בטל
           </Button>
         </DialogActions> */}
-      </Dialog> 
+      </Dialog>
       <Box className="table-container">
         <div className="data-grid-container">
           <DataGrid

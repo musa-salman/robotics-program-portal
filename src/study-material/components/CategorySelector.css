@@ -12,8 +12,8 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   padding: 16px;
-  background-color: #d6d0cc;
-  border: 5px, solid;
+  /* background-color: #d6d0cc; */
+  /* border: 5px, solid; */
   max-height: 80vh;
   overflow-y: auto;
 }
@@ -36,7 +36,7 @@
 
 .move-list-item-text {
   text-align: center;
-  color: black;
+  /* color: black; */
 }
 
 .move-list-container .clo-btn {

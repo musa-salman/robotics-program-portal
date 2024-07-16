@@ -79,7 +79,6 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
 
   const handleSaveAdd = () => {
     handleAdd();
-    
   };
 
   const event: IEvent = {
@@ -92,8 +91,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
 
   async function handleAdd() {
     handleShowAddEvent();
-    if(event.title !== "" && event.details!== "")
-    {
+    if (event.title !== '' && event.details !== '') {
       eventRepository
         .create(event)
         .then((docRef) => {
