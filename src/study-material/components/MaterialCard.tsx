@@ -160,7 +160,6 @@ function MaterialCard({
             sx={{
               display: 'flex',
               marginTop: '5px',
-
               textAlign: 'left'
             }}
             action={
@@ -177,7 +176,14 @@ function MaterialCard({
           />
           <Divider component="div" variant="fullWidth" style={{ backgroundColor: '#F2542D' }} />
           <div>
-            <Typography variant="body2" className="description">
+            <Typography
+              variant="body2"
+              className="description"
+              style={{
+                minHeight: '100px',
+                maxHeight: '100px',
+                wordWrap: 'break-word' // Ensures long words will be broken and wrapped to the next line
+              }}>
               {studyMaterial.description}
             </Typography>
           </div>
