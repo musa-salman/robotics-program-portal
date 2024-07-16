@@ -2,12 +2,9 @@ import './MaterialCard.css';
 import { useContext, useState } from 'react';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
-import { Button, Card, CardActions, CardContent, CardHeader, Divider, TextField, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Divider, Typography } from '@mui/material';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import { StorageServiceContext } from '../../storage-service/StorageContext';
-
-import GPT from '../../gpt-service/GPTComponent';
-import { suggestMaterialTitles } from './upload-file/StudyMaterialPrompts';
 import formatDate from '../../utils/dateFormatter';
 import { useMaterialService } from '../repository/StudyMaterialContext';
 import DeleteModal from '../DeleteModal';
@@ -48,7 +45,8 @@ function MaterialCard({
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevState) => ({ ...prevState, filename: e.target.value }));
+    const filename = e.target.files?.[0]?.name || '';
+    setFormData((prevState) => ({ ...prevState, filename }));
     setFile(e.target.files?.[0] || null);
   };
 
@@ -72,15 +70,16 @@ function MaterialCard({
     setShowDeleteModal(true);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     storageService
       .delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename)
       .then(() => {
-        materialService.studyMaterialRepository.delete(studyMaterial.id).then(() => onDelete(studyMaterial));
-        onDelete(studyMaterial);
-        showMessage({
-          message: 'החומר נמחק בהצלחה',
-          variant: 'success'
+        materialService.studyMaterialRepository.delete(studyMaterial.id).then(() => {
+          onDelete(studyMaterial);
+          showMessage({
+            message: 'החומר נמחק בהצלחה',
+            variant: 'success'
+          });
         });
       })
       .catch(() => {
@@ -105,7 +104,7 @@ function MaterialCard({
             .upload(file, '/study-material/' + formData.id + '-' + formData.filename)
             .then(() => {
               showMessage({
-                message: 'החומר עודכן בהצלחה',
+                message: 'הקובץ הועלה בהצלחה',
                 variant: 'success'
               });
               alert('החומר עודכן בהצלחה');

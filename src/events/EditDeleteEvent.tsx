@@ -9,6 +9,8 @@ import EventForm from './EventForm';
 import Modal from '@mui/material/Modal';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 import DeleteModal from '../study-material/DeleteModal';
+import { title } from 'process';
+import { Details } from '@mui/icons-material';
 
 interface EditDeleteEventProps {
   event: EventProps;
@@ -72,6 +74,19 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
       imageURL: formData.image,
       id: formData.id
     };
+
+    if (
+      event.title === '' ||
+      event.title === undefined ||
+      event.title === null ||
+      event.title === ' ' ||
+      event.details === '' ||
+      event.details === undefined ||
+      event.details === null ||
+      event.details === ' '
+    ) {
+      return;
+    }
 
     setShowModalEdit(false);
     if (file) {
@@ -169,7 +184,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
           formData={event}
           MAX_CHARS_Title={MAX_CHARS_Title}
           MAX_CHARS_Details={MAX_CHARS_Details}
-          requiredFields={{ add: false }}
+          requiredFields={{ add: true }}
           isForward={isForward}
         />
       </Modal>

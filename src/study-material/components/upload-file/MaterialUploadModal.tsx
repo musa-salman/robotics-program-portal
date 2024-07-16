@@ -72,6 +72,9 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
   const [message, setMessage] = useState<FeedbackMessage | null>(null);
   const [buildNumber, setBuildNumber] = useState(0);
 
+  const MAX_CHARS_Title = 17;
+  const MAX_CHARS_Details = 100;
+
   useEffect(() => {
     const getCategory = async () => {
       try {
@@ -182,7 +185,8 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                   onBlur={() => {
                     setIsValid((prevData) => ({ ...prevData, title: studyMaterial.title !== '' }));
                   }}
-                  helperText={!isValid.title ? 'יש למלה' : ''}
+                  helperText={!isValid.title ? 'יש למלה' : `${studyMaterial.title.length}/${MAX_CHARS_Title} אותיות`}
+                  inputProps={{ maxLength: MAX_CHARS_Title }}
                 />
               </GPT>
             </Grid>
@@ -265,6 +269,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                   margin="normal"
                   multiline
                   rows={5}
+                  helperText={`${studyMaterial.description.length}/${MAX_CHARS_Details} אותיות`}
                 />
               </GPT>
             </Grid>
