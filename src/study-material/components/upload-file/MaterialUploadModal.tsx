@@ -270,6 +270,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                   multiline
                   rows={5}
                   helperText={`${studyMaterial.description.length}/${MAX_CHARS_Details} אותיות`}
+                  inputProps={{ maxLength: MAX_CHARS_Details }}
                 />
               </GPT>
             </Grid>

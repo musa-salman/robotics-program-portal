@@ -50,6 +50,9 @@ const EditModal: React.FC<EditModalProps> = ({
   const handleShowCategoryManagement = () => setShowCategoryManagement(true);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const MAX_CHARS_Title = 17;
+  const MAX_CHARS_Details = 100;
+
   const studyMaterialManagement = useMaterialService();
 
   useEffect(() => {
@@ -121,7 +124,10 @@ const EditModal: React.FC<EditModalProps> = ({
                         onBlur={() => {
                           setIsValid((prevData) => ({ ...prevData, title: studyMaterial.title !== '' }));
                         }}
-                        helperText={!isValid.title ? 'יש למלה' : ''}
+                        helperText={
+                          !isValid.title ? 'יש למלה' : `${studyMaterial.title.length}/${MAX_CHARS_Title} אותיות`
+                        }
+                        inputProps={{ maxLength: MAX_CHARS_Title }}
                       />
                     </GPT>
                   </Grid>
@@ -207,6 +213,8 @@ const EditModal: React.FC<EditModalProps> = ({
                         margin="normal"
                         multiline
                         rows={5}
+                        helperText={`${studyMaterial.description.length}/${MAX_CHARS_Details} אותיות`}
+                        inputProps={{ maxLength: MAX_CHARS_Details }}
                       />
                     </GPT>
                   </Grid>
