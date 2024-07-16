@@ -32,10 +32,7 @@ function MaterialCard({
 }) {
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(studyMaterial.title);
-  const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedMaterial, setSelectedMaterial] = useState<StudyMaterial | null>(null);
 
   const storageService = useContext(StorageServiceContext);
   const materialService = useMaterialService();
@@ -43,15 +40,16 @@ function MaterialCard({
   const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
   const [buildNumber, setBuildNumber] = useState(0);
   const [formData, setFormData] = useState<StudyMaterial>(studyMaterial);
+  const [file, setFile] = useState<File | null>(null);
 
-  const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    setFormData((prevState) => ({ ...prevState, description: value }));
+  const handleInput = (event: any) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    setFormData((prevState) => ({ ...prevState, title: value }));
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevState) => ({ ...prevState, filename: e.target.value }));
+    setFile(e.target.files?.[0] || null);
   };
 
   const showMessage = (message: FeedbackMessage) => {
@@ -101,6 +99,24 @@ function MaterialCard({
     materialService.studyMaterialRepository
       .update(studyMaterial.id, formData)
       .then(() => {
+        formData.id = studyMaterial.id;
+        if (file !== null) {
+          storageService
+            .upload(file, '/study-material/' + formData.id + '-' + formData.filename)
+            .then(() => {
+              showMessage({
+                message: 'החומר עודכן בהצלחה',
+                variant: 'success'
+              });
+              alert('החומר עודכן בהצלחה');
+            })
+            .catch(() => {
+              showMessage({
+                message: 'שגיאה בהעלאת הקובץ',
+                variant: 'error'
+              });
+            });
+        }
         onUpdate(formData);
         handleEditToggle();
         showMessage({
@@ -134,8 +150,8 @@ function MaterialCard({
         <EditModel
           handleClose={handleEditToggle}
           handleSave={handleSave}
-          handleTitleChange={handleTitleChange}
-          handleDetailsChange={handleDetailsChange}
+          handleInputChange={handleInput}
+          handleFileChange={handleFileChange}
           studyMaterial={studyMaterial}
         />
       )}

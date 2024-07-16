@@ -1,9 +1,10 @@
 import React from 'react';
-import { AppBar, Toolbar, Container, Box, Link, Avatar } from '@mui/material';
+import { AppBar, Toolbar, Container, Box, Avatar } from '@mui/material';
 import AvatarMenu from './AvatarMenu';
 import './Header.css';
 import LoginButton from '../../authentication/components/Login/Login';
 import { useAuth } from '../../authentication/services/useAuth';
+import { Link } from 'react-router-dom';
 
 interface HeaderProps {
   logo: string;
@@ -21,7 +22,8 @@ const Header: React.FC<HeaderProps> = ({ logo, links }) => {
             <Avatar alt="Logo" src={logo} sx={{ width: 40, height: 40 }} />
             <nav className="nav-links">
               {links.map((link) => (
-                <Link key={link.name} href={link.path}>
+                <Link key={link.name} to={link.path}>
+                  {/* <Link key={link.name} href={link.path} underline="none" color="inherit"> */}
                   {link.name}
                 </Link>
               ))}
