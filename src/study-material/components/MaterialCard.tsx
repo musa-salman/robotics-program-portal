@@ -99,6 +99,24 @@ function MaterialCard({
     materialService.studyMaterialRepository
       .update(studyMaterial.id, formData)
       .then(() => {
+        formData.id = studyMaterial.id;
+        if (file !== null) {
+          storageService
+            .upload(file, '/study-material/' + formData.id + '-' + formData.filename)
+            .then(() => {
+              showMessage({
+                message: 'החומר עודכן בהצלחה',
+                variant: 'success'
+              });
+              alert('החומר עודכן בהצלחה');
+            })
+            .catch(() => {
+              showMessage({
+                message: 'שגיאה בהעלאת הקובץ',
+                variant: 'error'
+              });
+            });
+        }
         onUpdate(formData);
         handleEditToggle();
         showMessage({
