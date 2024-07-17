@@ -23,7 +23,7 @@ import RejectedAndDeletedTable from './users-management/RejectedAndDeletedUsers'
 import InsightPage from './insights/InsightPage';
 
 function App() {
-  const isDev = process.env.NODE_ENV === '';
+  const isDev = process.env.NODE_ENV === 'developments';
 
   const routeConfigurations = {
     authorizedRoutes: [
