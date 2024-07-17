@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import EventForm from './EventForm';
 import { Modal } from '@mui/material';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
+import { Moment } from 'moment';
 
 interface AddEventProps {
   addEvent: (event: EventProps) => void;
@@ -42,8 +43,12 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
     }
   };
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevState) => ({ ...prevState, date: e.target.valueAsDate! }));
+  const handleStartDateChange = (date: Moment) => {
+    setFormData((prevState) => ({ ...prevState, startDate: date.toDate() }));
+  };
+
+  const handleEndDateChange = (date: Moment) => {
+    setFormData((prevState) => ({ ...prevState, endDate: date.toDate() }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +69,8 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
   const storageService = useContext(StorageServiceContext);
 
   const [formData, setFormData] = useState<EventProps>({
-    date: new Date(), // Provide initial value for date
+    startDate: new Date(), // Provide initial value for startDate
+    endDate: new Date(), // Provide initial value for endDate
     title: '', // Provide initial value for title
     details: '', // Provide initial value for details
     image: './DefultEventImg.png', // Provide initial value for image
@@ -82,7 +88,8 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
   };
 
   const event: IEvent = {
-    date: new Date(formData.date),
+    startDate: new Date(formData.startDate),
+    endDate: new Date(formData.endDate),
     title: formData.title,
     details: formData.details,
     imageURL: formData.image,
@@ -134,7 +141,8 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
 
   function returnDefaultValues() {
     setFormData({
-      date: new Date(),
+      startDate: new Date(),
+      endDate: new Date(),
       title: '',
       details: '',
       image: './DefultEventImg.png',
@@ -154,7 +162,8 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
         <EventForm
           handleSaveAdd={handleSaveAdd}
           handleTitleChange={handleTitleChange}
-          handleDateChange={handleDateChange}
+          handleStartDateChange={handleStartDateChange}
+          handleEndDateChange={handleEndDateChange}
           handleImageChange={handleImageChange}
           handleDetailsChange={handleDetailsChange}
           handleCloseAddEvent={handleCloseAddEvent}

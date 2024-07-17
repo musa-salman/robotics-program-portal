@@ -41,7 +41,7 @@ export class MaterialService implements IMaterialService {
     this.studyMaterialRepository = studyMaterialRepository;
   }
 
-  _moveStudyMaterials(oldCategory: string, newCategory: string, batch: WriteBatch): void {
+  _moveStudyMaterials(oldCategory: string, newCategory: string, batch: WriteBatch): Promise<void> {
     this.studyMaterialRepository.find().then((studyMaterials) => {
       studyMaterials.forEach((studyMaterial) => {
         if (studyMaterial.category === oldCategory) {
@@ -50,6 +50,8 @@ export class MaterialService implements IMaterialService {
         }
       });
     });
+
+    return Promise.resolve();
   }
 
   async deleteCategory(categoryId: string): Promise<void> {
@@ -60,9 +62,10 @@ export class MaterialService implements IMaterialService {
     if (!category) {
       return;
     }
-    this._moveStudyMaterials(category.category, defaultCategory, batch);
-    batch.delete(doc(this.categoryRepository._collection, categoryId));
-    return batch.commit();
+    return this._moveStudyMaterials(category.category, defaultCategory, batch).then(() => {
+      batch.delete(doc(this.categoryRepository._collection, categoryId));
+      return batch.commit();
+    });
   }
 
   async moveStudyMaterial(studyMaterial: StudyMaterial, newCategory: string): Promise<void> {

@@ -1,7 +1,7 @@
-import { PieChart } from '@mui/x-charts';
+import { PieChart, PieValueType } from '@mui/x-charts';
 import { InsightData } from '../insights/InsightPage';
-
-const getRandomValue = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+import { useContext, useEffect, useState } from 'react';
+import { RegisterContext } from '../register/service/RegisterContext';
 
 const registerInsightList: InsightData = {
   title: 'תובנות על נרשמים',
@@ -9,17 +9,23 @@ const registerInsightList: InsightData = {
     {
       question: 'איך התלמידים מגיעים למגמה?',
       generateGraph: () => {
+        const registerService = useContext(RegisterContext);
+        const [majorRegistrations, setMajorRegistrations] = useState<PieValueType[] | null>(null);
+
+        useEffect(() => {
+          if (majorRegistrations === null) {
+            registerService.countMajorRegistrations().then((data) => {
+              setMajorRegistrations(Object.entries(data).map(([key, value]) => ({ id: key, value, label: key })));
+            });
+          }
+        }, [registerService]);
+
+        console.log(majorRegistrations);
         return (
           <PieChart
             series={[
               {
-                data: [
-                  { id: 0, value: getRandomValue(5, 20), label: 'בית הספר' },
-                  { id: 1, value: getRandomValue(10, 25), label: 'עלון מנח"י' },
-                  { id: 2, value: getRandomValue(15, 30), label: 'קרוב משפחה שלמד במגמה' },
-                  { id: 3, value: getRandomValue(20, 35), label: 'חיפוש עצמי באינטרנט' },
-                  { id: 4, value: getRandomValue(25, 40), label: 'אחרת' }
-                ],
+                data: majorRegistrations || [],
                 highlightScope: { faded: 'global', highlighted: 'item' },
                 faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
               }
@@ -32,16 +38,22 @@ const registerInsightList: InsightData = {
     {
       question: 'כמה יחידות לימוד במתמטיקה לומדים התלמידים?',
       generateGraph: () => {
+        const registerService = useContext(RegisterContext);
+        const [studyUnitsRegistrations, setStudyUnitsRegistrations] = useState<PieValueType[] | null>(null);
+
+        useEffect(() => {
+          if (studyUnitsRegistrations === null) {
+            registerService.collectMathUnitStatistics().then((data) => {
+              setStudyUnitsRegistrations(Object.entries(data).map(([key, value]) => ({ id: key, value, label: key })));
+            });
+          }
+        }, [registerService]);
+
         return (
           <PieChart
             series={[
               {
-                data: [
-                  { id: 0, value: getRandomValue(5, 20), label: '3' },
-                  { id: 1, value: getRandomValue(10, 25), label: '4' },
-                  { id: 2, value: getRandomValue(15, 30), label: '5' },
-                  { id: 3, value: getRandomValue(20, 35), label: 'אחרת' }
-                ],
+                data: studyUnitsRegistrations || [],
                 highlightScope: { faded: 'global', highlighted: 'item' },
                 faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
               }
@@ -54,16 +66,22 @@ const registerInsightList: InsightData = {
     {
       question: 'מה התלמידים מעדיפים ללמוד?',
       generateGraph: () => {
+        const registerService = useContext(RegisterContext);
+        const [preferencesRegistrations, setPreferencesRegistrations] = useState<PieValueType[] | null>(null);
+
+        useEffect(() => {
+          if (preferencesRegistrations === null) {
+            registerService.countMajorRegistrations().then((data) => {
+              setPreferencesRegistrations(Object.entries(data).map(([key, value]) => ({ id: key, value, label: key })));
+            });
+          }
+        }, [registerService]);
+
         return (
           <PieChart
             series={[
               {
-                data: [
-                  { id: 0, value: getRandomValue(5, 20), label: 'מכטרוניקה 5 יח"ל' },
-                  { id: 1, value: getRandomValue(10, 25), label: 'מכטרוניקה 10 יח"ל' },
-                  { id: 2, value: getRandomValue(15, 30), label: 'עדיין לא ידוע' },
-                  { id: 3, value: getRandomValue(20, 35), label: 'אחרת' }
-                ],
+                data: preferencesRegistrations || [],
                 highlightScope: { faded: 'global', highlighted: 'item' },
                 faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
               }

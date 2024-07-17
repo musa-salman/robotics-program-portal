@@ -24,7 +24,7 @@ import InsightPage from './insights/InsightPage';
 import Management from './students-management/Management';
 
 function App() {
-  const isDev = process.env.NODE_ENV === '';
+  const isDev = process.env.NODE_ENV === 'developments';
 
   const routeConfigurations = {
     authorizedRoutes: [

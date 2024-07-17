@@ -1,25 +1,12 @@
+import { useEffect, useState } from 'react';
 import { InsightData } from '../insights/InsightPage';
+import { BarChart, Gauge, LineChart, PieChart, PieValueType } from '@mui/x-charts';
+import { useEventService } from './repository/EventContext';
+import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Select } from '@mui/material';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { Moment } from 'moment';
 import { IEvent } from './repository/Event';
-import { BarChart, Gauge, LineChart, PieChart, ScatterChart, ScatterValueType } from '@mui/x-charts';
-
-const events: IEvent[] = [
-  { id: '1', title: 'סדנת מתמטיקה', details: 'יסודות האלגברה', imageURL: 'math.jpg', date: new Date() },
-  { id: '2', title: 'יריד מדע', details: 'תערוכות ביולוגיה וכימיה', imageURL: 'science.jpg', date: new Date() },
-  { id: '3', title: 'הרצאת היסטוריה', details: 'סקירה של היסטוריה עולמית', imageURL: 'history.jpg', date: new Date() }
-];
-
-const students: BriefStudent[] = [
-  { id: '1', name: 'יוחנן כהן', email: 'john@example.com', phone: '1234567890' },
-  { id: '2', name: 'חנה לוי', email: 'jane@example.com', phone: '0987654321' },
-  { id: '3', name: 'אליס בראון', email: 'alice@example.com', phone: '1122334455' }
-];
-
-const registrations: { eventId: string; studentId: string }[] = [
-  { eventId: '1', studentId: '1' },
-  { eventId: '2', studentId: '2' },
-  { eventId: '3', studentId: '3' },
-  { eventId: '1', studentId: '2' }
-];
 
 const eventInsights: InsightData = {
   title: 'תובנות על אירועים',
@@ -27,45 +14,139 @@ const eventInsights: InsightData = {
     {
       question: 'כמה תלמידים נרשמו לכל אירוע?',
       generateGraph: () => {
-        const registrationCount = events.map((event) => ({
-          id: event.id,
-          value: registrations.filter((reg) => reg.eventId === event.id).length,
-          label: event.title
-        }));
+        const eventService = useEventService();
+        const [eventMetrics, setEventMetrics] = useState<Record<string, IEvent & { count: number }> | null>(null);
+        const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
+        const [startDate, setStartDate] = useState<Moment | null>(null);
+        const [endDate, setEndDate] = useState<Moment | null>(null);
+
+        useEffect(() => {
+          if (!eventMetrics) {
+            eventService.aggregateEventRegistrations().then((data) => {
+              setSelectedEvents(Object.keys(data));
+              setEventMetrics(data);
+            });
+          }
+        }, [eventMetrics, eventService]);
+
+        const handleSelectedEvents = (event: any) => {
+          event.preventDefault();
+          event.stopPropagation();
+          setSelectedEvents(event.target.value as string[]);
+        };
+
+        const handleDateRange = (date: Moment | null, type: 'start' | 'end') => {
+          if (type === 'start') {
+            setStartDate(date);
+          } else {
+            setEndDate(date);
+          }
+
+          if (startDate && endDate && eventMetrics) {
+            console.log('eventMetrics', eventMetrics);
+            setSelectedEvents(
+              Object.keys(eventMetrics).filter((event) => {
+                const eventDate = eventMetrics[event].startDate;
+                return eventDate >= startDate.toDate() && eventDate <= endDate.toDate();
+              })
+            );
+          }
+        };
 
         return (
-          <BarChart
-            xAxis={[
-              {
-                data: registrationCount.map((item) => item.label),
-                label: 'אירוע',
-                axisId: 'x'
-              }
-            ]}
-            series={[
-              {
-                data: registrationCount.map((item) => item.value)
-              }
-            ]}
-            height={200}
-          />
+          <>
+            <FormControl fullWidth sx={{ m: 1, display: 'flex', flexDirection: 'row', gap: '10px' }}>
+              <InputLabel id="demo-multiple-checkbox-label">בחר אירועים</InputLabel>
+              <Select
+                sx={{
+                  width: '50%'
+                }}
+                labelId="demo-multiple-checkbox-label"
+                id="demo-multiple-checkbox"
+                multiple
+                value={selectedEvents}
+                onChange={(event) => handleSelectedEvents(event)}
+                renderValue={(selected) => selected.join(', ')}>
+                {eventMetrics &&
+                  Object.keys(eventMetrics).map((name) => (
+                    <MenuItem key={name} value={name}>
+                      <Checkbox checked={selectedEvents.indexOf(name) > -1} />
+                      <ListItemText primary={name} />
+                    </MenuItem>
+                  ))}
+              </Select>
+              <LocalizationProvider adapterLocale={'he'} dateAdapter={AdapterMoment}>
+                <DatePicker
+                  label="תאריך התחלה"
+                  onChange={(newValue) => {
+                    handleDateRange(newValue, 'start');
+                  }}
+                />
+                <DatePicker
+                  label="תאריך סיום"
+                  onChange={(newValue) => {
+                    handleDateRange(newValue, 'end');
+                  }}
+                />
+              </LocalizationProvider>
+            </FormControl>
+            <BarChart
+              xAxis={[
+                {
+                  data: selectedEvents,
+                  label: 'אירוע',
+                  axisId: 'x',
+                  scaleType: 'band'
+                }
+              ]}
+              series={[
+                {
+                  data: selectedEvents.map((event) => (eventMetrics ? eventMetrics[event].count : 0))
+                }
+              ]}
+              height={200}
+            />
+          </>
         );
       }
     },
     {
       question: 'מהי חלוקת התלמידים בין האירועים?',
       generateGraph: () => {
-        const registrationCount = events.map((event) => ({
-          id: event.id,
-          value: registrations.filter((reg) => reg.eventId === event.id).length,
-          label: event.title
-        }));
+        const eventService = useEventService();
+        const [registrationStats, setRegistrationStats] = useState<PieValueType[] | null>(null);
+
+        console.log('inside function generateGraph');
+        console.log('registrationStats', registrationStats);
+        useEffect(() => {
+          console.log('inside useEffect');
+          if (registrationStats === null) {
+            console.log('inside if', registrationStats);
+            eventService
+              .aggregateEventRegistrations()
+              .then((data) => {
+                // const dataEntries = Object.entries(data).map(([key, value]) => ({
+                //   id: key,
+                //   value: value.count,
+                //   label: key
+                // }));
+                // setRegistrationStats(dataEntries);
+              })
+              .catch((error) => {
+                console.log('error', error);
+              });
+          }
+        });
 
         return (
           <PieChart
             series={[
               {
-                data: registrationCount,
+                data: [
+                  { id: 'event1', value: 5, label: 'אירוע 1' },
+                  { id: 'event2', value: 10, label: 'אירוע 2' },
+                  { id: 'event3', value: 20, label: 'אירוע 3' }
+                ],
                 highlightScope: { faded: 'global', highlighted: 'item' },
                 faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
               }
@@ -78,23 +159,28 @@ const eventInsights: InsightData = {
     {
       question: 'כיצד התפתחו ההרשמות לאירועים לאורך הזמן?',
       generateGraph: () => {
-        const registrationCountByDate = registrations.reduce(
-          (acc, reg) => {
-            const event = events.find((e) => e.id === reg.eventId);
-            if (event) {
-              const date = event.date.toDateString();
-              acc[date] = acc[date] ? acc[date] + 1 : 1;
-            }
-            return acc;
-          },
-          {} as Record<string, number>
-        );
+        const eventService = useEventService();
+        const [registrationCountByDate, setRegistrationCountByDate] = useState<Record<
+          number,
+          IEvent & { count: number }
+        > | null>(null);
 
+        useEffect(() => {
+          if (!registrationCountByDate) {
+            eventService.eventCreationOverTime().then((data) => {
+              setRegistrationCountByDate(data);
+            });
+          }
+        }, [eventService, registrationCountByDate]);
+
+        console.log('registrationCountByDate', registrationCountByDate);
         return (
           <LineChart
             xAxis={[
               {
-                data: Object.keys(registrationCountByDate),
+                data: registrationCountByDate
+                  ? Object.keys(registrationCountByDate).map((date) => new Date(parseInt(date)))
+                  : [],
                 label: 'תאריך',
                 axisId: 'x',
                 scaleType: 'time'
@@ -102,7 +188,7 @@ const eventInsights: InsightData = {
             ]}
             series={[
               {
-                data: Object.entries(registrationCountByDate).map(([_, count]) => count),
+                data: registrationCountByDate ? Object.values(registrationCountByDate).map((event) => event.count) : [],
                 label: 'מספר הרשמות'
               }
             ]}
@@ -114,43 +200,22 @@ const eventInsights: InsightData = {
     {
       question: 'מספר הרשמות ממוצע לכל אירוע',
       generateGraph: () => {
-        const totalRegistrations = registrations.length;
-        const averageRegistrations = totalRegistrations / events.length;
+        const eventService = useEventService();
+        const [averageRegistrations, setAverageRegistrations] = useState<number>();
+
+        useEffect(() => {
+          if (!averageRegistrations) {
+            eventService.averageEventRegistrations().then((data) => {
+              setAverageRegistrations(data);
+            });
+          }
+        }, [eventService, averageRegistrations]);
 
         return (
           <Gauge
             series={[
               {
                 data: [{ value: averageRegistrations, label: 'ממוצע הרשמות' }]
-              }
-            ]}
-            height={200}
-          />
-        );
-      }
-    },
-    {
-      question: 'גרף פיזור של הרשמות לאירועים מול תאריכים',
-      generateGraph: () => {
-        const scatterData: ScatterValueType[] = registrations
-          .map((reg) => {
-            const event = events.find((e) => e.id === reg.eventId);
-            return event
-              ? ({
-                  id: event.id,
-                  x: event.date.getTime(),
-                  y: 1
-                } as ScatterValueType)
-              : null;
-          })
-          .filter((item) => item !== null);
-
-        return (
-          <ScatterChart
-            series={[
-              {
-                data: scatterData,
-                label: 'מספר הרשמות'
               }
             ]}
             height={200}

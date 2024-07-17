@@ -90,11 +90,16 @@ function StudyMaterialContainer() {
     setStudyMaterials((prevMaterials) => [...(prevMaterials || []), studyMaterial]);
   };
 
+  console.log('the selected  berfore cat ', selectedCategories);
   const handleCategorySelect = (category: string) => {
-    setSelectedCategories([]);
-    setSelectedCategories((prev) =>
-      prev.includes(category) ? prev.filter((cat) => cat !== category) : [...prev, category]
-    );
+    // setSelectedCategories([]);
+    if (category === 'הכל') {
+      setSelectedCategories(categories);
+      console.log('the selected cat ', selectedCategories);
+    } else {
+      setSelectedCategories([category]);
+      console.log('the selected cat ', selectedCategories);
+    }
   };
 
   const handleMoveClick = (studyMaterial: StudyMaterial) => {
@@ -132,9 +137,11 @@ function StudyMaterialContainer() {
     return <EmptyStudyMaterials handleAdd={handleAdd} />;
   }
 
-  const categories: string[] = (searchResults || studyMaterials || [])
-    .map((s) => s.category)
-    .filter((item, index, arr) => arr.indexOf(item) === index);
+  // const categories: string[] = (searchResults || studyMaterials || [])
+  //   .map((s) => s.category)
+  //   .filter((item, index, arr) => arr.indexOf(item) === index);
+
+  const categories: string[] = ['הכל', ...new Set((searchResults || studyMaterials || []).map((s) => s.category))];
 
   console.log('catergories', categories);
   console.log('catergory list', categoryList);

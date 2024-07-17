@@ -2,12 +2,9 @@ import './MaterialCard.css';
 import { useContext, useState } from 'react';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
-import { Button, Card, CardContent, CardHeader, Divider, TextField, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Divider, Typography } from '@mui/material';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import { StorageServiceContext } from '../../storage-service/StorageContext';
-
-import GPT from '../../gpt-service/GPTComponent';
-import { suggestMaterialTitles } from './upload-file/StudyMaterialPrompts';
 import formatDate from '../../utils/dateFormatter';
 import { useMaterialService } from '../repository/StudyMaterialContext';
 import DeleteModal from '../DeleteModal';
@@ -32,10 +29,7 @@ function MaterialCard({
 }) {
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(studyMaterial.title);
-  const [editedDescription, setEditedDescription] = useState(studyMaterial.description);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedMaterial, setSelectedMaterial] = useState<StudyMaterial | null>(null);
 
   const storageService = useContext(StorageServiceContext);
   const materialService = useMaterialService();
@@ -43,15 +37,17 @@ function MaterialCard({
   const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
   const [buildNumber, setBuildNumber] = useState(0);
   const [formData, setFormData] = useState<StudyMaterial>(studyMaterial);
+  const [file, setFile] = useState<File | null>(null);
 
-  const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    setFormData((prevState) => ({ ...prevState, description: value }));
+  const handleInput = (event: any) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    setFormData((prevState) => ({ ...prevState, title: value }));
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const filename = e.target.files?.[0]?.name || '';
+    setFormData((prevState) => ({ ...prevState, filename }));
+    setFile(e.target.files?.[0] || null);
   };
 
   const showMessage = (message: FeedbackMessage) => {
@@ -74,15 +70,16 @@ function MaterialCard({
     setShowDeleteModal(true);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     storageService
       .delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename)
       .then(() => {
-        materialService.studyMaterialRepository.delete(studyMaterial.id).then(() => onDelete(studyMaterial));
-        onDelete(studyMaterial);
-        showMessage({
-          message: 'החומר נמחק בהצלחה',
-          variant: 'success'
+        materialService.studyMaterialRepository.delete(studyMaterial.id).then(() => {
+          onDelete(studyMaterial);
+          showMessage({
+            message: 'החומר נמחק בהצלחה',
+            variant: 'success'
+          });
         });
       })
       .catch(() => {
@@ -101,6 +98,24 @@ function MaterialCard({
     materialService.studyMaterialRepository
       .update(studyMaterial.id, formData)
       .then(() => {
+        formData.id = studyMaterial.id;
+        if (file !== null) {
+          storageService
+            .upload(file, '/study-material/' + formData.id + '-' + formData.filename)
+            .then(() => {
+              showMessage({
+                message: 'הקובץ הועלה בהצלחה',
+                variant: 'success'
+              });
+              alert('החומר עודכן בהצלחה');
+            })
+            .catch(() => {
+              showMessage({
+                message: 'שגיאה בהעלאת הקובץ',
+                variant: 'error'
+              });
+            });
+        }
         onUpdate(formData);
         handleEditToggle();
         showMessage({
@@ -134,8 +149,8 @@ function MaterialCard({
         <EditModel
           handleClose={handleEditToggle}
           handleSave={handleSave}
-          handleTitleChange={handleTitleChange}
-          handleDetailsChange={handleDetailsChange}
+          handleInputChange={handleInput}
+          handleFileChange={handleFileChange}
           studyMaterial={studyMaterial}
         />
       )}
@@ -145,7 +160,7 @@ function MaterialCard({
             sx={{
               display: 'flex',
               marginTop: '5px',
-              flexDirection: 'row-reverse'
+              textAlign: 'left'
             }}
             action={
               <MySpeedDial
@@ -161,14 +176,24 @@ function MaterialCard({
           />
           <Divider component="div" variant="fullWidth" style={{ backgroundColor: '#F2542D' }} />
           <div>
-            <Typography className="description">{studyMaterial.description}</Typography>
+            <Typography
+              variant="body2"
+              className="description"
+              style={{
+                minHeight: '100px',
+                maxHeight: '100px',
+                wordWrap: 'break-word' // Ensures long words will be broken and wrapped to the next line
+              }}>
+              {studyMaterial.description}
+            </Typography>
           </div>
-          <Typography className="date"> תאריך : {formatDate(studyMaterial.date)}</Typography>
-
-          <Button onClick={handleDownload}>
-            הורדה
-            <DownloadIcon />
-          </Button>
+          <Typography className="date"> {formatDate(studyMaterial.date)}</Typography>
+          <CardActions>
+            <Button sx={{ display: 'flex', justifyItems: 'flex-end', alignItems: 'flex-end' }} onClick={handleDownload}>
+              הורדה
+              <DownloadIcon />
+            </Button>
+          </CardActions>
         </CardContent>
       </Card>
     </>
