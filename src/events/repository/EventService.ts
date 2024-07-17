@@ -6,6 +6,7 @@ import { db } from '../../firebase';
 import { StudentEventRepository } from './StudentEventRepository';
 import { EventRegistrationRepositories } from './EventRegistrationRepositories';
 import { StudentEventRepositories } from './StudentEventRepositories';
+import { IEvent } from './Event';
 
 /**
  * Represents the interface for managing events.
@@ -68,7 +69,13 @@ export interface IEventService {
   getEventRegistrationRepository(eventId: string): EventRegistrationRepository;
 }
 
-export class EventService implements IEventService {
+export interface IEventAggregator {
+  aggregateEventRegistrations(): Promise<Record<string, IEvent & { count: number }>>;
+  eventCreationOverTime(): Promise<Record<string, IEvent & { count: number }>>;
+  averageEventRegistrations(): Promise<number>;
+}
+
+export class EventService implements IEventService, IEventAggregator {
   readonly eventRepository: EventRepository;
 
   // Map of event registration repositories, keyed by event ID.
@@ -153,5 +160,41 @@ export class EventService implements IEventService {
     });
 
     return batch.commit();
+  }
+
+  async aggregateEventRegistrations(): Promise<Record<string, IEvent & { count: number }>> {
+    const eventRegistrations = await this.eventRepository.find();
+    const eventRegistrationCounts: Record<string, IEvent & { count: number }> = {};
+
+    for (const event of eventRegistrations) {
+      const registrations = await this.getRegisteredStudents(event.id);
+
+      eventRegistrationCounts[event.title] = event as IEvent & { count: number };
+      eventRegistrationCounts[event.title].count = registrations.length;
+    }
+
+    return eventRegistrationCounts;
+  }
+
+  async eventCreationOverTime(): Promise<Record<number, IEvent & { count: number }>> {
+    const events = await this.eventRepository.find();
+    const eventCreationCounts: Record<number, IEvent & { count: number }> = {};
+
+    for (const event of events) {
+      const date = event.date.getTime();
+      eventCreationCounts[date].count = (eventCreationCounts[date].count || 0) + 1;
+    }
+
+    return eventCreationCounts;
+  }
+
+  averageEventRegistrations(): Promise<number> {
+    return this.aggregateEventRegistrations().then((eventRegistrationCounts) => {
+      const totalRegistrations = Object.values(eventRegistrationCounts).reduce(
+        (acc, participantCount) => acc + participantCount.count,
+        0
+      );
+      return totalRegistrations / Object.keys(eventRegistrationCounts).length;
+    });
   }
 }
