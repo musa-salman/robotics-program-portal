@@ -14,6 +14,12 @@ export function createConverter<T>(): FirestoreDataConverter<T, DocumentData> {
       if (data['date']) {
         data['date'] = data['date'].toDate();
       }
+      if (data['startDate']) {
+        data['startDate'] = data['startDate'].toDate();
+      }
+      if (data['endDate']) {
+        data['endDate'] = data['endDate'].toDate();
+      }
       return { id: snapshot.id, ...data } as T;
     }
   };
