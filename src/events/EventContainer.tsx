@@ -65,7 +65,9 @@ const EventContainer = () => {
         .find()
         .then((events) =>
           setEvents(
-            convertIEventsToEventProps(events).sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
+            convertIEventsToEventProps(events).sort(
+              (b, a) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+            )
           )
         )
         .catch(() => showMessage({ message: 'שגיאה בטעינת האירועים', variant: 'error' }));
@@ -80,7 +82,7 @@ const EventContainer = () => {
   function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     return events.map((event) => {
       return {
-        date: event.date,
+        date: event.startDate,
         title: event.title,
         details: event.details,
         image: event.imageURL,
@@ -103,7 +105,7 @@ const EventContainer = () => {
         // Create a new array with the updated event
         const newEvents = [...prevEvents];
         newEvents[index] = updatedEvent;
-        newEvents.sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        newEvents.sort((b, a) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
         return newEvents;
       }
       // If the event was not found, return the previous state
@@ -136,7 +138,7 @@ const EventContainer = () => {
                   <div key={event.id} className={`event-card ${animationClass} ${index < 3 ? 'visible' : ''}`}>
                     <EventCard
                       id={event.id}
-                      date={event.date}
+                      startDate={event.startDate}
                       title={event.title}
                       details={event.details}
                       image={event.image}

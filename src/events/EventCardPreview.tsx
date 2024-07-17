@@ -13,13 +13,15 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import Button from '@mui/material/Button';
 
 export interface EventProps {
-  date: Date;
+  startDate: Date;
+  endDate: Date;
   title: string;
   details: string;
   image: string;
 }
 
-const EventCardPreview: React.FC<EventProps> = ({ date, title, details, image }) => {
+const EventCardPreview: React.FC<EventProps> = ({ startDate, endDate, title, details, image }) => {
+  console.log('EventCardPreview: ', startDate, endDate, title, details, image);
   return (
     <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345 }}>
       <CardHeader
@@ -33,7 +35,7 @@ const EventCardPreview: React.FC<EventProps> = ({ date, title, details, image })
             {title}
           </Typography>
         }
-        subheader={formatDate(date)}
+        subheader={formatDate(startDate)}
       />
       <CardMedia component="img" height="150" image={image} alt={title} />
       <CardContent>

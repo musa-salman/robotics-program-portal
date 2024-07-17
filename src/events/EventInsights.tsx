@@ -46,7 +46,7 @@ const eventInsights: InsightData = {
             console.log('eventMetrics', eventMetrics);
             setSelectedEvents(
               Object.keys(eventMetrics).filter((event) => {
-                const eventDate = eventMetrics[event].date;
+                const eventDate = eventMetrics[event].startDate;
                 return eventDate >= startDate.toDate() && eventDate <= endDate.toDate();
               })
             );

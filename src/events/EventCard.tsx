@@ -15,7 +15,8 @@ import Typography from '@mui/material/Typography';
 import { CircularProgress } from '@mui/material';
 
 export interface EventProps {
-  date: Date;
+  startDate: Date;
+  endDate: Date;
   title: string;
   details: string;
   image: string;
@@ -26,7 +27,8 @@ export interface EventProps {
 }
 
 const EventCard: React.FC<EventProps> = ({
-  date,
+  startDate,
+  endDate,
   title,
   details,
   image,
@@ -36,7 +38,6 @@ const EventCard: React.FC<EventProps> = ({
   animating
 }) => {
   const [isLoading, setIsLoading] = useState(true);
-
   return (
     <div className={`event-card ${animating ? 'zoom-out' : 'zoom-in'}`}>
       <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345 }}>
@@ -47,7 +48,7 @@ const EventCard: React.FC<EventProps> = ({
                 allowedRoles={[Role.Admin, Role.Owner]}
                 unauthorizedAuthenticatedComponent={<></>}>
                 <EditDeleteEvent
-                  event={{ date, title, details, image, onEventDelete, onEventEdit, id }}
+                  event={{ startDate, endDate, title, details, image, onEventDelete, onEventEdit, id }}
                   editEvent={onEventEdit}
                   deleteEvent={onEventDelete}
                 />
@@ -59,7 +60,7 @@ const EventCard: React.FC<EventProps> = ({
               {title}
             </Typography>
           }
-          subheader={formatDate(date)}
+          subheader={formatDate(startDate)}
         />
         {isLoading && (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 150 }}>
@@ -86,7 +87,7 @@ const EventCard: React.FC<EventProps> = ({
         </CardContent>
         <div className="register-button">
           <RoleBasedAccessControl allowedRoles={[Role.Student]} unauthorizedAuthenticatedComponent={<></>}>
-            <RegisterStudentToEvent eventId={id} eventDate={date} />
+            <RegisterStudentToEvent eventId={id} eventDate={startDate} />
           </RoleBasedAccessControl>
         </div>
         <CardActions disableSpacing>

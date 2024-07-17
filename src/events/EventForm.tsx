@@ -2,15 +2,20 @@ import { Box, Typography, Button, TextField, Grid, InputAdornment } from '@mui/m
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import GPT from '../gpt-service/GPTComponent';
 import { generateEventDescription, suggestEventTitles } from './EventPrompts';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import './EventForm.css';
 import { useState } from 'react';
 import EventCardPreview from './EventCardPreview';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { DateTimePicker } from '@mui/x-date-pickers';
 
 interface EventFormProps {
   handleSaveAdd: () => void;
   handleTitleChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  handleDateChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleStartDateChange: (event: Moment) => void;
+  handleEndDateChange: (event: Moment) => void;
   handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleDetailsChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleCloseAddEvent: () => void;
@@ -26,7 +31,8 @@ interface EventFormProps {
 const EventForm: React.FC<EventFormProps> = ({
   handleSaveAdd,
   handleTitleChange,
-  handleDateChange,
+  handleStartDateChange,
+  handleEndDateChange,
   handleImageChange,
   handleDetailsChange,
   handleCloseAddEvent,
@@ -47,10 +53,20 @@ const EventForm: React.FC<EventFormProps> = ({
     handleTitleChange(event);
   }
 
-  function handleDateChangeTemp(event: React.ChangeEvent<HTMLInputElement>) {
-    setFormDataTemp({ ...formDataTemp, date: event.target.value });
-    handleDateChange(event);
+  function handleStartDateChangeTemp(event: Moment | null) {
+    if (event) {
+      setFormDataTemp((prevState: any) => ({ ...prevState, StartDate: event.toDate() }));
+      handleStartDateChange(event);
+    }
   }
+
+  function handleEndDateChangeTemp(event: Moment | null) {
+    if (event) {
+      setFormDataTemp((prevState: any) => ({ ...prevState, endDate: event.toDate() }));
+      handleEndDateChange(event);
+    }
+  }
+
   function handleDetailsChangeTemp(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setFormDataTemp({ ...formDataTemp, details: event.target.value });
     handleDetailsChange(event);
@@ -91,7 +107,8 @@ const EventForm: React.FC<EventFormProps> = ({
                 <div className="card">
                   <Grid xs={12} md={4}>
                     <EventCardPreview
-                      date={formDataTemp.date}
+                      startDate={formDataTemp.date}
+                      endDate={formDataTemp.endDate}
                       title={formDataTemp.title}
                       details={formDataTemp.details}
                       image={formDataTemp.image ? formDataTemp.image : './DefultEventImg.png'}
@@ -122,18 +139,23 @@ const EventForm: React.FC<EventFormProps> = ({
                     />
                   </GPT>
                 </Grid>
-
-                <Grid xs={4}>
-                  <TextField
-                    style={{ marginTop: '0.75rem' }}
-                    required
-                    fullWidth
-                    label="תאריך"
-                    type="date"
-                    placeholder="יום/חודש/שנה"
-                    onChange={handleDateChangeTemp}
-                    defaultValue={moment(formData.date).format('YYYY-MM-DD')}
-                  />
+                <Grid xs={5}>
+                  <LocalizationProvider adapterLocale={'he'} dateAdapter={AdapterMoment}>
+                    <DemoContainer components={['DateTimePicker']}>
+                      <DateTimePicker
+                        label="תאריך התחלה"
+                        onChange={handleStartDateChangeTemp}
+                        defaultValue={moment(formData.StartDate)}
+                      />
+                    </DemoContainer>
+                    <DemoContainer components={['DateTimePicker']}>
+                      <DateTimePicker
+                        label="תאריך סיום"
+                        onChange={handleEndDateChangeTemp}
+                        defaultValue={moment(formData.endDate)}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
                 </Grid>
 
                 <Grid xs={6.6}>

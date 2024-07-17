@@ -181,7 +181,7 @@ export class EventService implements IEventService, IEventAggregator {
     const eventCreationCounts: Record<number, IEvent & { count: number }> = {};
 
     for (const event of events) {
-      const date = event.date.getTime();
+      const date = event.startDate.getTime();
       eventCreationCounts[date].count = (eventCreationCounts[date].count || 0) + 1;
     }
 
