@@ -125,13 +125,12 @@ const eventInsights: InsightData = {
             eventService
               .aggregateEventRegistrations()
               .then((data) => {
-                const dataEntries = Object.entries(data).map(([key, value]) => ({
-                  id: key,
-                  value: value.count,
-                  label: key
-                }));
-
-                setRegistrationStats(dataEntries);
+                // const dataEntries = Object.entries(data).map(([key, value]) => ({
+                //   id: key,
+                //   value: value.count,
+                //   label: key
+                // }));
+                // setRegistrationStats(dataEntries);
               })
               .catch((error) => {
                 console.log('error', error);
