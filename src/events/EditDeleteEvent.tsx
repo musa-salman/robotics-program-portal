@@ -87,7 +87,9 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
       event.details === '' ||
       event.details === undefined ||
       event.details === null ||
-      event.details === ' '
+      event.details === ' ' ||
+      event.title.length > MAX_CHARS_Title ||
+      event.details.length > MAX_CHARS_Details
     ) {
       return;
     }
