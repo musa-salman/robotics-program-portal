@@ -182,7 +182,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
         {showModalDelete && (
           <DeleteModal
             onDelete={handleSaveDelete}
-            onCancel={() => handleCloseDelete}
+            onCancel={handleCloseDelete}
             message={'האם אתה בטוח שברצונך למחוק את האירוע הזה'}
           />
         )}
