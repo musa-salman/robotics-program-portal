@@ -98,7 +98,12 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
 
   async function handleAdd() {
     handleShowAddEvent();
-    if (event.title !== '' && event.details !== '') {
+    if (
+      event.title !== '' &&
+      event.details !== '' &&
+      event.title.length <= MAX_CHARS_Title &&
+      event.details.length <= MAX_CHARS_Details
+    ) {
       eventRepository
         .create(event)
         .then((docRef) => {
