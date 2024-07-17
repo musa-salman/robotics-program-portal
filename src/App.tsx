@@ -21,6 +21,7 @@ import DocumentPage from './docs-handling/DocumentPage';
 import PageContainer from './components/PageContainer';
 import RejectedAndDeletedTable from './users-management/RejectedAndDeletedUsers';
 import InsightPage from './insights/InsightPage';
+import Management from './students-management/Management';
 
 function App() {
   const isDev = process.env.NODE_ENV === '';
@@ -55,7 +56,7 @@ function App() {
       },
       {
         path: '/students-management',
-        element: <StudentsManagement />,
+        element: <Management />,
         allowedRoles: [Role.Admin, Role.Owner],
         title: 'ניהול סטודנטים',
         roleToComponentMap: {
