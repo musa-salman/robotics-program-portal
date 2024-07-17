@@ -9,6 +9,7 @@ import EventForm from './EventForm';
 import Modal from '@mui/material/Modal';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 import DeleteModal from '../study-material/DeleteModal';
+import { Moment } from 'moment';
 
 interface EditDeleteEventProps {
   event: EventProps;
@@ -55,8 +56,12 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
     }
   };
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevState) => ({ ...prevState, date: e.target.valueAsDate! }));
+  const handleStartDateChange = (date: Moment) => {
+    setFormData((prevState) => ({ ...prevState, startDate: date.toDate() }));
+  };
+
+  const handleEndDateChange = (date: Moment) => {
+    setFormData((prevState) => ({ ...prevState, endDate: date.toDate() }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +71,8 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
 
   const handleSaveEdit = () => {
     const event: IEvent = {
-      date: formData.date,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
       title: formData.title,
       details: formData.details,
       imageURL: formData.image,
@@ -175,7 +181,8 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
         <EventForm
           handleSaveAdd={handleSaveEdit} // make sure this function exists in your code
           handleTitleChange={handleTitleChange}
-          handleDateChange={handleDateChange}
+          handleStartDateChange={handleStartDateChange}
+          handleEndDateChange={handleEndDateChange}
           handleImageChange={handleImageChange}
           handleDetailsChange={handleDetailsChange}
           handleCloseAddEvent={handleCloseEdit} // make sure this function exists in your code
