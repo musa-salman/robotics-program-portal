@@ -104,8 +104,8 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
         category: selectedCategory,
         id: item.id
       };
-      studyMaterialManagement.categoryRepository
-        .update(item.id, edit)
+      studyMaterialManagement
+        .renameCategory(item.id, selectedCategory)
         .then(() => {
           setCategories((prevCategories) => {
             if (prevCategories === null) {
@@ -139,19 +139,20 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
   };
 
   const handleDeleteCategory = (item: Category) => {
-    studyMaterialManagement.categoryRepository.delete(item.id)
-    .then (() =>{
-      showMessage({
-        message: 'הקטגוריה נמחקה בהצלחה',
-        variant: 'success'
+    studyMaterialManagement
+      .deleteCategory(item.id)
+      .then(() => {
+        showMessage({
+          message: 'הקטגוריה נמחקה בהצלחה',
+          variant: 'success'
+        });
+      })
+      .catch(() => {
+        showMessage({
+          message: 'הקטגוריה לא נמחקה',
+          variant: 'error'
+        });
       });
-    }).catch(() =>{
-      showMessage({
-        message: 'הקטגוריה לא נמחקה',
-        variant: 'error'
-      });
-    });
-  
 
     setCategories((prevCategories) => {
       if (prevCategories !== null) {
