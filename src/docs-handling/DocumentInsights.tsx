@@ -1,4 +1,4 @@
-import { BarChart, LineChart, ScatterChart, Gauge, ScatterValueType } from '@mui/x-charts';
+import { LineChart, ScatterChart, Gauge, ScatterValueType } from '@mui/x-charts';
 import { DocumentInfo } from './service/DocumentInfo';
 import { StudentDocument } from './service/StudentDocument';
 import { InsightData } from '../insights/InsightPage';
