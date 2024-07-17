@@ -55,9 +55,10 @@ const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId
 
   function renderItem(student: BriefStudent, index: number) {
     return (
-      <ListItem
-        secondaryAction={
+      <Table>
+        <TableBody>
           <TableRow key={index}>
+            <TableCell scope="row">{index + 1}</TableCell>
             <TableCell>{student.name}</TableCell>
             <TableCell>{student.phone}</TableCell>
             <TableCell>{student.email}</TableCell>
@@ -67,9 +68,8 @@ const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId
               </IconButton>
             </TableCell>
           </TableRow>
-        }>
-        <ListItemText primary={index + 1} />
-      </ListItem>
+        </TableBody>
+      </Table>
     );
   }
 
@@ -86,9 +86,18 @@ const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId
                   <TableRow>
                     <TableCell>סך הסטודנטים הרשומים : {registeredStudents?.length}</TableCell>
                   </TableRow>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell sx={{ width: '20%' }}>#</TableCell>
+                      <TableCell sx={{ width: '20%' }}>Name</TableCell>
+                      <TableCell sx={{ width: '20%' }}>Phone</TableCell>
+                      <TableCell sx={{ width: '20%' }}>Email</TableCell>
+                      <TableCell sx={{ width: '20%' }}>Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
                 </TableHead>
                 <TableBody>
-                  <List sx={{ maxWidth: 450, minWidth: 450 }}>
+                  <List sx={{ maxWidth: 550, minWidth: 550 }}>
                     <TransitionGroup>
                       {registeredStudents?.map((student, index) => (
                         <Collapse key={index}>{renderItem(student, index)}</Collapse>

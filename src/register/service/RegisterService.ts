@@ -38,7 +38,12 @@ export interface IRegisterService {
   getRegisters(): Promise<Register[]>;
 }
 
-export class RegisterService implements IRegisterService {
+export interface IRegisterAggregations {
+  countMajorRegistrations(): Promise<Record<string, number>>;
+  collectMathUnitStatistics(): Promise<Record<string, number>>;
+}
+
+export class RegisterService implements IRegisterService, IRegisterAggregations {
   public readonly registerRepository: RegisterRepository;
   private readonly studentRepository: StudentRepository;
   private readonly userRepository: UserRepository;
@@ -95,5 +100,29 @@ export class RegisterService implements IRegisterService {
 
   getRegisters(): Promise<Register[]> {
     return this.registerRepository.find();
+  }
+
+  countMajorRegistrations(): Promise<Record<string, number>> {
+    return this.registerRepository.find().then((registers) => {
+      return registers.reduce(
+        (acc, register) => {
+          acc[register.studyUnitsMajor] = (acc[register.studyUnitsMajor] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      );
+    });
+  }
+
+  collectMathUnitStatistics(): Promise<Record<string, number>> {
+    return this.registerRepository.find().then((registers) => {
+      return registers.reduce(
+        (acc, register) => {
+          acc[register.numStudyUnitsMath] = (acc[register.numStudyUnitsMath] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      );
+    });
   }
 }

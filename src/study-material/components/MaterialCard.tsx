@@ -2,12 +2,9 @@ import './MaterialCard.css';
 import { useContext, useState } from 'react';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
-import { Button, Card, CardContent, CardHeader, Divider, TextField, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Divider, Typography } from '@mui/material';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import { StorageServiceContext } from '../../storage-service/StorageContext';
-
-import GPT from '../../gpt-service/GPTComponent';
-import { suggestMaterialTitles } from './upload-file/StudyMaterialPrompts';
 import formatDate from '../../utils/dateFormatter';
 import { useMaterialService } from '../repository/StudyMaterialContext';
 import DeleteModal from '../DeleteModal';
@@ -48,7 +45,8 @@ function MaterialCard({
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevState) => ({ ...prevState, filename: e.target.value }));
+    const filename = e.target.files?.[0]?.name || '';
+    setFormData((prevState) => ({ ...prevState, filename }));
     setFile(e.target.files?.[0] || null);
   };
 
@@ -72,15 +70,16 @@ function MaterialCard({
     setShowDeleteModal(true);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     storageService
       .delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename)
       .then(() => {
-        materialService.studyMaterialRepository.delete(studyMaterial.id).then(() => onDelete(studyMaterial));
-        onDelete(studyMaterial);
-        showMessage({
-          message: 'החומר נמחק בהצלחה',
-          variant: 'success'
+        materialService.studyMaterialRepository.delete(studyMaterial.id).then(() => {
+          onDelete(studyMaterial);
+          showMessage({
+            message: 'החומר נמחק בהצלחה',
+            variant: 'success'
+          });
         });
       })
       .catch(() => {
@@ -105,7 +104,7 @@ function MaterialCard({
             .upload(file, '/study-material/' + formData.id + '-' + formData.filename)
             .then(() => {
               showMessage({
-                message: 'החומר עודכן בהצלחה',
+                message: 'הקובץ הועלה בהצלחה',
                 variant: 'success'
               });
               alert('החומר עודכן בהצלחה');
@@ -161,7 +160,7 @@ function MaterialCard({
             sx={{
               display: 'flex',
               marginTop: '5px',
-              flexDirection: 'row-reverse'
+              textAlign: 'left'
             }}
             action={
               <MySpeedDial
@@ -177,14 +176,24 @@ function MaterialCard({
           />
           <Divider component="div" variant="fullWidth" style={{ backgroundColor: '#F2542D' }} />
           <div>
-            <Typography className="description">{studyMaterial.description}</Typography>
+            <Typography
+              variant="body2"
+              className="description"
+              style={{
+                minHeight: '100px',
+                maxHeight: '100px',
+                wordWrap: 'break-word' // Ensures long words will be broken and wrapped to the next line
+              }}>
+              {studyMaterial.description}
+            </Typography>
           </div>
-          <Typography className="date"> תאריך : {formatDate(studyMaterial.date)}</Typography>
-
-          <Button onClick={handleDownload}>
-            הורדה
-            <DownloadIcon />
-          </Button>
+          <Typography className="date"> {formatDate(studyMaterial.date)}</Typography>
+          <CardActions>
+            <Button sx={{ display: 'flex', justifyItems: 'flex-end', alignItems: 'flex-end' }} onClick={handleDownload}>
+              הורדה
+              <DownloadIcon />
+            </Button>
+          </CardActions>
         </CardContent>
       </Card>
     </>

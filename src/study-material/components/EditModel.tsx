@@ -20,6 +20,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { CategoryManagement } from './upload-file/CategoryManagement';
 import { Category } from '../repository/Category';
 import { useMaterialService } from '../repository/StudyMaterialContext';
+import MaterialCardPreview from './MaterialCardPreview';
 
 interface EditModalProps {
   handleClose: () => void;
@@ -49,6 +50,12 @@ const EditModal: React.FC<EditModalProps> = ({
   const handleCloseCategoryManagement = () => setShowCategoryManagement(false);
   const handleShowCategoryManagement = () => setShowCategoryManagement(true);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [form, setForm] = useState<StudyMaterial>(studyMaterial);
+  console.log(form);
+
+  const MAX_CHARS_Title = 17;
+  const MAX_CHARS_Details = 100;
 
   const studyMaterialManagement = useMaterialService();
 
@@ -105,6 +112,11 @@ const EditModal: React.FC<EditModalProps> = ({
               </Typography>
               <form style={{ marginTop: '0.25rem' }}>
                 <Grid container spacing={3}>
+                  <div className="card">
+                    <Grid xs={12} md={4}>
+                      <MaterialCardPreview studyMaterial={form} />
+                    </Grid>
+                  </div>
                   <Grid item xs={11.6}>
                     <GPT
                       initialValue={studyMaterial.title}
@@ -115,13 +127,19 @@ const EditModal: React.FC<EditModalProps> = ({
                         label="כותרת"
                         name="title"
                         defaultValue={studyMaterial.title}
-                        onChange={handleInputChange}
+                        onChange={(e) => {
+                          handleInputChange(e);
+                          setForm({ ...form, title: e.target.value });
+                        }}
                         required
                         error={!isValid.title || isForward}
                         onBlur={() => {
                           setIsValid((prevData) => ({ ...prevData, title: studyMaterial.title !== '' }));
                         }}
-                        helperText={!isValid.title ? 'יש למלה' : ''}
+                        helperText={
+                          !isValid.title ? 'יש למלה' : `${studyMaterial.title.length}/${MAX_CHARS_Title} אותיות`
+                        }
+                        inputProps={{ maxLength: MAX_CHARS_Title }}
                       />
                     </GPT>
                   </Grid>
@@ -135,7 +153,10 @@ const EditModal: React.FC<EditModalProps> = ({
                         value={studyMaterial.category}
                         name="category"
                         label="בחר מיקום"
-                        onChange={handleInputChange}
+                        onChange={(e) => {
+                          handleInputChange(e);
+                          setForm({ ...form, category: e.target.value });
+                        }}
                         required
                         MenuProps={MenuProps}
                         error={!isValid.category || isForward}
@@ -203,10 +224,15 @@ const EditModal: React.FC<EditModalProps> = ({
                         defaultValue={studyMaterial.description}
                         variant="outlined"
                         fullWidth
-                        onChange={handleInputChange}
+                        onChange={(e) => {
+                          handleInputChange(e);
+                          setForm({ ...form, description: e.target.value });
+                        }}
                         margin="normal"
                         multiline
                         rows={5}
+                        helperText={`${studyMaterial.description.length}/${MAX_CHARS_Details} אותיות`}
+                        inputProps={{ maxLength: MAX_CHARS_Details }}
                       />
                     </GPT>
                   </Grid>
