@@ -23,7 +23,6 @@ const Header: React.FC<HeaderProps> = ({ logo, links }) => {
             <nav className="nav-links">
               {links.map((link) => (
                 <Link key={link.name} to={link.path}>
-                  {/* <Link key={link.name} href={link.path} underline="none" color="inherit"> */}
                   {link.name}
                 </Link>
               ))}
