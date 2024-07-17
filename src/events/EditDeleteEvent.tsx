@@ -9,8 +9,6 @@ import EventForm from './EventForm';
 import Modal from '@mui/material/Modal';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 import DeleteModal from '../study-material/DeleteModal';
-import { title } from 'process';
-import { Details } from '@mui/icons-material';
 
 interface EditDeleteEventProps {
   event: EventProps;
@@ -184,7 +182,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
           formData={event}
           MAX_CHARS_Title={MAX_CHARS_Title}
           MAX_CHARS_Details={MAX_CHARS_Details}
-          requiredFields={{ add: true }}
+          requiredFields={{ add: false }}
           isForward={isForward}
         />
       </Modal>

@@ -105,7 +105,7 @@ const EventForm: React.FC<EventFormProps> = ({
                     options={{ simplify: false, improve: false, shorten: false }}>
                     <TextField
                       fullWidth
-                      required={true}
+                      required
                       label="כותרת"
                       type="text"
                       placeholder="שם אירוע"
@@ -126,7 +126,7 @@ const EventForm: React.FC<EventFormProps> = ({
                 <Grid xs={4}>
                   <TextField
                     style={{ marginTop: '0.75rem' }}
-                    required={true}
+                    required
                     fullWidth
                     label="תאריך"
                     type="date"
@@ -173,7 +173,7 @@ const EventForm: React.FC<EventFormProps> = ({
                     options={{ simplify: true, improve: true, shorten: true }}>
                     <TextField
                       fullWidth
-                      required={true}
+                      required
                       label="פרטים"
                       multiline
                       rows={3}
