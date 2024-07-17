@@ -50,19 +50,20 @@ const Management = () => {
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="ניהול משתמשים" {...a11yProps(0)} />
-                    <Tab label="ניהול נרשמים" {...a11yProps(1)} /> 
-                    <Tab label="ניהול סטודנטים"{...a11yProps(2)} />
+                    <Tab label="תלמידים" {...a11yProps(0)} />
+                    <Tab label= "תפקידים"{...a11yProps(1)} /> 
+                    <Tab label="נרשמים" {...a11yProps(2)} />
                     </Tabs>
                 </Box>
                 <CustomTabPanel value={value} index={0}>
-                    <UsersManagement />   
+                    <StudentsManagement />
+                       
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
-                    <RegisterManagement />
+                    <UsersManagement />
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={2}>
-                    <StudentsManagement />
+                    <RegisterManagement />
                 </CustomTabPanel>
             </Box>
 
