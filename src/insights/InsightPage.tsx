@@ -4,12 +4,12 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import registerInsightList from '../registers-management/RegisterInsights';
+import registerInsights from '../registers-management/RegisterInsights';
 import userInsights from '../users/UserInsights';
 import InsightCard from './InsightCard';
-import eventInsights from '../events/EventInsights';
 import studyMaterialInsights from '../study-material/StudyMaterialInsights';
 import documentInsights from '../docs-handling/DocumentInsights';
+import eventInsights from '../events/EventInsights';
 
 interface InsightCardProps {
   question: string;
@@ -44,7 +44,7 @@ function TabPanel(props: TabPanelProps) {
       {value === index && (
         <Box
           sx={{
-            backgroundColor: 'black', //FIXME:
+            // backgroundColor: 'black', //FIXME:
             boxShadow: 24,
             // width: '90rem',
             borderRadius: 1,
@@ -78,8 +78,7 @@ function TabPanel(props: TabPanelProps) {
 
 const InsightPage = () => {
   const insightsList: InsightCategoriesList = {
-    //, eventInsights
-    insightCategories: [registerInsightList, userInsights, documentInsights, studyMaterialInsights]
+    insightCategories: [registerInsights, userInsights, documentInsights, studyMaterialInsights, eventInsights]
   };
 
   const [detailsCategory, setDetailsCategory] = useState<InsightData>({
