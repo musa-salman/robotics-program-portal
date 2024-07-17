@@ -23,6 +23,7 @@ import GPT from '../../../gpt-service/GPTComponent';
 import { generateMaterialDescription, suggestMaterialTitles } from './StudyMaterialPrompts';
 import { useMaterialService } from '../../repository/StudyMaterialContext';
 import FeedbackSnackbar, { FeedbackMessage } from '../../../components/snackbar/SnackBar';
+import MaterialCardPreview from '../MaterialCardPreview';
 
 interface MaterialUploadModalProps {
   handleClose: () => void;
@@ -71,6 +72,9 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
 
   const [message, setMessage] = useState<FeedbackMessage | null>(null);
   const [buildNumber, setBuildNumber] = useState(0);
+
+  const MAX_CHARS_Title = 17;
+  const MAX_CHARS_Details = 100;
 
   useEffect(() => {
     const getCategory = async () => {
@@ -165,6 +169,11 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
           העלת קובץ
         </Typography>
         <form style={{ marginTop: '0.25rem' }}>
+          <div className="card">
+            <Grid xs={12} md={4}>
+              <MaterialCardPreview studyMaterial={studyMaterial} />
+            </Grid>
+          </div>
           <Grid container spacing={3}>
             <Grid item xs={11.6}>
               <GPT
@@ -182,7 +191,8 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                   onBlur={() => {
                     setIsValid((prevData) => ({ ...prevData, title: studyMaterial.title !== '' }));
                   }}
-                  helperText={!isValid.title ? 'יש למלה' : ''}
+                  helperText={!isValid.title ? 'יש למלה' : `${studyMaterial.title.length}/${MAX_CHARS_Title} אותיות`}
+                  inputProps={{ maxLength: MAX_CHARS_Title }}
                 />
               </GPT>
             </Grid>
@@ -265,6 +275,8 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                   margin="normal"
                   multiline
                   rows={5}
+                  helperText={`${studyMaterial.description.length}/${MAX_CHARS_Details} אותיות`}
+                  inputProps={{ maxLength: MAX_CHARS_Details }}
                 />
               </GPT>
             </Grid>
