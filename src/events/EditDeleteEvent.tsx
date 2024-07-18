@@ -10,6 +10,7 @@ import Modal from '@mui/material/Modal';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 import DeleteModal from '../study-material/DeleteModal';
 import { Moment } from 'moment';
+import { KeyboardReturnOutlined } from '@mui/icons-material';
 
 interface EditDeleteEventProps {
   event: EventProps;
@@ -91,6 +92,11 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
       event.title.length > MAX_CHARS_Title ||
       event.details.length > MAX_CHARS_Details
     ) {
+      return;
+    }
+
+    if (event.startDate > event.endDate) {
+      alert('תאריך התחלה צריך להיות לפני תאריך סיום');
       return;
     }
 
