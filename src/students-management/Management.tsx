@@ -1,4 +1,4 @@
-import {  useState } from 'react';
+import { useState } from 'react';
 
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -22,8 +22,7 @@ function CustomTabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
+      {...other}>
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
@@ -32,48 +31,39 @@ function CustomTabPanel(props: TabPanelProps) {
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`
   };
 }
 
-
 const Management = () => {
-    const [value, setValue] = useState(0);
+  const [value, setValue] = useState(0);
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-    };
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
-
-    return(
-        <>
-            <Box sx={{ width: '100%' }}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="תלמידים" {...a11yProps(0)} />
-                    <Tab label= "תפקידים"{...a11yProps(1)} /> 
-                    <Tab label="נרשמים" {...a11yProps(2)} />
-                    </Tabs>
-                </Box>
-                <CustomTabPanel value={value} index={0}>
-                    <StudentsManagement />
-                       
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={1}>
-                    <UsersManagement />
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={2}>
-                    <RegisterManagement />
-                </CustomTabPanel>
-            </Box>
-
-
-
-
-
-        </>
-    );
-
+  return (
+    <>
+      <Box sx={{ width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tab label="תלמידים" {...a11yProps(0)} />
+            <Tab label="תפקידים" {...a11yProps(1)} />
+            <Tab label="נרשמים" {...a11yProps(2)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          <StudentsManagement />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <UsersManagement />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+          <RegisterManagement />
+        </CustomTabPanel>
+      </Box>
+    </>
+  );
 };
 
 export default Management;

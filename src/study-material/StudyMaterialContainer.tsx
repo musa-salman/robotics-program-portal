@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './StudyMaterialContainer.css';
 import { useMaterialService } from './repository/StudyMaterialContext';
 import { StudyMaterial } from './repository/StudyMaterial';
 import MaterialUploadModal from './components/upload-file/MaterialUploadModal';
 import AddIcon from '@mui/icons-material/Add';
-import { Box, CardContent, Fab, Modal } from '@mui/material';
+import { Box, Button, CardContent, Modal } from '@mui/material';
 import NoResultFound from './components/NoResultFound';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Category } from './repository/Category';
@@ -39,6 +39,7 @@ function StudyMaterialContainer() {
 
   const [message, setMessage] = useState<FeedbackMessage | null>(null);
   const [buildNumber, setBuildNumber] = useState<number>(0);
+  const firstButtonRef = useRef(null);
 
   useEffect(() => {
     const getStudyMaterials = () => {
@@ -55,7 +56,12 @@ function StudyMaterialContainer() {
     const getCategories = () => {
       return materialService.categoryRepository
         .find()
-        .then((categories) => setCategoryList(categories))
+        .then((categories) => {
+          setCategoryList(categories);
+          if (firstButtonRef.current) {
+            // firstButtonRef.current.focus();
+          }
+        })
         .catch(() => {
           showMessage({
             message: 'התרחשה שגיעה בעת הבאת הקטגוריות. אנא נסה שנית.',
@@ -63,7 +69,6 @@ function StudyMaterialContainer() {
           });
         });
     };
-
     if (studyMaterials === null) getStudyMaterials();
     if (categoryList === null) getCategories();
   }, [materialService, studyMaterials, categoryList]);
@@ -137,11 +142,11 @@ function StudyMaterialContainer() {
     return <EmptyStudyMaterials handleAdd={handleAdd} />;
   }
 
-  // const categories: string[] = (searchResults || studyMaterials || [])
-  //   .map((s) => s.category)
-  //   .filter((item, index, arr) => arr.indexOf(item) === index);
+  let categories: string[] = (searchResults || studyMaterials || [])
+    .map((s) => s.category)
+    .filter((item, index, arr) => arr.indexOf(item) === index);
 
-  const categories: string[] = ['הכל', ...new Set((searchResults || studyMaterials || []).map((s) => s.category))];
+  categories = ['הכל', ...categories.filter((c) => c !== 'הכל')];
 
   console.log('catergories', categories);
   console.log('catergory list', categoryList);
@@ -167,12 +172,12 @@ function StudyMaterialContainer() {
               />
             </div>
             <div className="btns">
-              <Fab className="edit-button" aria-label="edit" onClick={handleShowEdit}>
+              <Button variant="outlined" aria-label="edit" onClick={handleShowEdit}>
                 <SettingsIcon />
-              </Fab>
-              <Fab className="adde-btn" aria-label="add" onClick={handleShow}>
+              </Button>
+              <Button variant="contained" aria-label="add" onClick={handleShow}>
                 <AddIcon />
-              </Fab>
+              </Button>
             </div>
           </div>
 
@@ -186,8 +191,8 @@ function StudyMaterialContainer() {
             (categories || [])
               .filter((category) => selectedCategories.includes(category))
               .map((category) => (
-                <Box className="primary" key={category}>
-                  <CardContent className="body">
+                <Box key={category}>
+                  <CardContent>
                     <div className="study-materials-container">
                       {(searchResults || studyMaterials || [])
                         .filter((s) => s.category === category)

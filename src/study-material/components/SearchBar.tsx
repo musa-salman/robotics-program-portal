@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 // import { FaSearch } from 'react-icons/fa';
 import SearchIcon from '@mui/icons-material/Search';
-import './SearchBar.css';
+// import './SearchBar.css';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import { backdropClasses, Container, IconButton, Input, InputAdornment, TextField } from '@mui/material';
 import { start } from 'repl';
@@ -34,19 +34,21 @@ export const SearchBar: React.FC<SearchBarProps> = ({ studyMaterials, onSearchRe
   };
 
   return (
-    <Container>
+    // <Container >
+    <div>
       <Input
-        placeholder="חיפוש..."
+        placeholder="  חיפוש..."
         onChange={handleChange}
         aria-label="Search"
-        sx={{ width: '100%' }}
+        sx={{ width: '99%', margin: '20px' }}
         value={query}
-        startAdornment={
-          <IconButton>
-            <SearchIcon />
-          </IconButton>
-        }
+        startAdornment={<SearchIcon />}
       />
-    </Container>
+      {/* <Input
+         placeholder="  חיפוש..."
+          onChange={handleChange}
+          style={{ width: '50%' }}
+        /> */}
+    </div>
   );
 };

@@ -11,46 +11,41 @@ const userInsights: InsightData = {
     {
       question: 'מה התפלגות התפקידים של המשתמשים?',
       generateGraph: () => {
-       
-        const [numRoleOwner,setNumRoleOwner]=useState(0);
-        const [numRoleAdmin,setNumRoleAdmin]=useState(0);
-        const [numRoleStudent,setNumRoleStudent]=useState(0);
-        const [users,setUsers] =useState<User[] |null>(null);
+        const [numRoleOwner, setNumRoleOwner] = useState(0);
+        const [numRoleAdmin, setNumRoleAdmin] = useState(0);
+        const [numRoleStudent, setNumRoleStudent] = useState(0);
+        const [users, setUsers] = useState<User[] | null>(null);
 
         const userService = useUserService();
         useEffect(() => {
-          if(users === null){
-            userService.getUsers().then((data)=>{
+          if (users === null) {
+            userService.getUsers().then((data) => {
               setUsers(data);
-              
-              let numOwner:number=0;
-              let numAdmin:number=0;
-              let numStudent:number=0;
-              data.forEach((index)=>{
-                index.roles.forEach((role)=>{
-                  if(role === Role.Owner)
-                      numOwner++;
-                  if(role === Role.Admin)
-                    numAdmin++;
-                  if(role === Role.Student)
-                    numStudent++;
+
+              let numOwner: number = 0;
+              let numAdmin: number = 0;
+              let numStudent: number = 0;
+              data.forEach((index) => {
+                index.roles.forEach((role) => {
+                  if (role === Role.Owner) numOwner++;
+                  if (role === Role.Admin) numAdmin++;
+                  if (role === Role.Student) numStudent++;
                 });
               });
-              console.log("ON",numOwner);
-              console.log("A",numAdmin);
-              console.log("S",numStudent);
+              console.log('ON', numOwner);
+              console.log('A', numAdmin);
+              console.log('S', numStudent);
               setNumRoleOwner(numOwner);
               setNumRoleAdmin(numAdmin);
               setNumRoleStudent(numStudent);
-              console.log("users",data);
+              console.log('users', data);
             });
           }
-          
-        },[users]);
-        if(users === null){
+        }, [users]);
+        if (users === null) {
           <div>Loading...</div>;
         }
-        
+
         return (
           <PieChart
             series={[

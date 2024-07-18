@@ -38,7 +38,7 @@ const eventInsights: InsightData = {
                 console.log('error', error);
               });
           }
-        }, [registrationStats,eventService]);
+        }, [registrationStats, eventService]);
         if (registrationStats === null) {
           return <div>Loading...</div>;
         }
@@ -71,18 +71,21 @@ const eventInsights: InsightData = {
 
         useEffect(() => {
           if (eventMetrics === null) {
-            eventService.aggregateEventRegistrations().then((data) => {
-              setSelectedEvents(Object.keys(data));
-              setEventMetrics(data);
-            }).catch((error) =>{
-              console.error('Error fetching event metrics:', error);
-            });
+            eventService
+              .aggregateEventRegistrations()
+              .then((data) => {
+                setSelectedEvents(Object.keys(data));
+                setEventMetrics(data);
+              })
+              .catch((error) => {
+                console.error('Error fetching event metrics:', error);
+              });
           }
         }, [eventMetrics, eventService]);
         if (eventMetrics === null) {
           return <div>Loading...</div>;
         }
-        
+
         // const handleSelectedEvents = (event: any) => {
         //   event.preventDefault();
         //   event.stopPropagation();
@@ -160,25 +163,25 @@ const eventInsights: InsightData = {
               ]}
               height={200}
             /> */}
-             <PieChart
-            series={[
-              {
-                data: [
-                  { id: 'event1', value: 5, label: 'אירוע 1' },
-                  { id: 'event2', value: 10, label: 'אירוע 2' },
-                  { id: 'event3', value: 20, label: 'אירוע 3' }
-                ],
-                highlightScope: { faded: 'global', highlighted: 'item' },
-                faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
-              }
-            ]}
-            height={200}
-          />
+            <PieChart
+              series={[
+                {
+                  data: [
+                    { id: 'event1', value: 5, label: 'אירוע 1' },
+                    { id: 'event2', value: 10, label: 'אירוע 2' },
+                    { id: 'event3', value: 20, label: 'אירוע 3' }
+                  ],
+                  highlightScope: { faded: 'global', highlighted: 'item' },
+                  faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
+                }
+              ]}
+              height={200}
+            />
           </>
         );
       }
-    },
-    
+    }
+
     // {
     //   question: 'כיצד התפתחו ההרשמות לאירועים לאורך הזמן?',
     //   generateGraph: () => {

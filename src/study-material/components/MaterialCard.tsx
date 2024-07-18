@@ -11,6 +11,7 @@ import DeleteModal from '../DeleteModal';
 import { useTheme } from '@mui/material/styles';
 import FeedbackSnackbar, { FeedbackMessage } from '../../components/snackbar/SnackBar';
 import EditModel from './EditModel';
+import customColor from '../../utils/customTheme';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -154,7 +155,13 @@ function MaterialCard({
           studyMaterial={studyMaterial}
         />
       )}
-      <Card className="Card" sx={{ borderRadius: '15px', backgroundColor: theme.palette.background.paper }}>
+      <Card
+        className="Card"
+        sx={{
+          borderRadius: '15px',
+          backgroundColor: theme.palette.background.paper,
+          boxShadow: `0 4px 8px ${theme.palette.primary.main}`
+        }}>
         <CardContent className="bodycard">
           <CardHeader
             sx={{
@@ -188,10 +195,10 @@ function MaterialCard({
             </Typography>
           </div>
           <Typography className="date"> {formatDate(studyMaterial.date)}</Typography>
-          <CardActions>
-            <Button sx={{ display: 'flex', justifyItems: 'flex-end', alignItems: 'flex-end' }} onClick={handleDownload}>
+          <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Button sx={{ width: '10rem', fontSize: '20px' }} onClick={handleDownload}>
               הורדה
-              <DownloadIcon />
+              <DownloadIcon sx={{ margin: '10px' }} />
             </Button>
           </CardActions>
         </CardContent>

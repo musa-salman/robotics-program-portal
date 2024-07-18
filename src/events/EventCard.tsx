@@ -39,7 +39,6 @@ const EventCard: React.FC<EventProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  console.log(startDate);
   return (
     <div className={`event-card ${animating ? 'zoom-out' : 'zoom-in'}`}>
       <Card className="cardIconButton" sx={{ maxWidth: 365, minWidth: 365 }}>

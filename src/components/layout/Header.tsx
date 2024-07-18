@@ -16,7 +16,7 @@ const Header: React.FC<HeaderProps> = ({ logo, links }) => {
 
   return (
     <header>
-      <AppBar position="static" color="primary">
+      <AppBar position="static" color="secondary">
         <Container>
           <Toolbar>
             <Avatar alt="Logo" src={logo} sx={{ width: 40, height: 40 }} />

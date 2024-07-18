@@ -82,7 +82,8 @@ const EventContainer = () => {
   function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     return events.map((event) => {
       return {
-        date: event.startDate,
+        startDate: event.startDate,
+        endDate: event.endDate,
         title: event.title,
         details: event.details,
         image: event.imageURL,
@@ -139,6 +140,7 @@ const EventContainer = () => {
                     <EventCard
                       id={event.id}
                       startDate={event.startDate}
+                      endDate={event.endDate}
                       title={event.title}
                       details={event.details}
                       image={event.image}
