@@ -1,21 +1,21 @@
 import { CachingRepository } from '../../repositories/caching/CachingRepository';
-import { DocumentStudentRepository } from './DocumentStudentRepository';
+import { StudentDocumentRepository } from './StudentDocumentRepository';
 
-export class DocumentStudentRepositories {
-  private readonly documentStudentRepositories: Map<string, DocumentStudentRepository>;
+export class StudentDocumentRepositories {
+  private readonly documentStudentRepositories: Map<string, StudentDocumentRepository>;
 
   constructor() {
     this.documentStudentRepositories = new Map();
   }
 
-  getDocumentStudentRepository(documentId: string): DocumentStudentRepository {
-    if (!this.documentStudentRepositories.has(documentId)) {
+  getStudentDocumentRepository(studentDocId: string): StudentDocumentRepository {
+    if (!this.documentStudentRepositories.has(studentDocId)) {
       this.documentStudentRepositories.set(
-        documentId,
-        new CachingRepository(new DocumentStudentRepository(documentId))
+        studentDocId,
+        new CachingRepository(new StudentDocumentRepository(studentDocId))
       );
     }
 
-    return this.documentStudentRepositories.get(documentId)!;
+    return this.documentStudentRepositories.get(studentDocId)!;
   }
 }

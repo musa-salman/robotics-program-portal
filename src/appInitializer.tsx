@@ -27,7 +27,7 @@ import { DocumentProvider } from './docs-handling/service/DocumentInfoContext';
 import { DocumentInfoService } from './docs-handling/service/DocumentService';
 import { IStorageService } from './storage-service/IStorageService';
 import { StorageService } from './storage-service/StorageService';
-import { DocumentStudentRepositories } from './docs-handling/service/DocumentStudentRepositories';
+import { StudentDocumentRepositories } from './docs-handling/service/DocumentStudentRepositories';
 import { DocumentRepository } from './docs-handling/service/DocumentRepository';
 
 interface IProps {
@@ -62,7 +62,7 @@ function bootstrap({ theme, cacheRtl }: IProps) {
   );
 
   const documentRepository = new CachingRepository(new DocumentRepository());
-  const documentStudentRepositories = new DocumentStudentRepositories();
+  const documentStudentRepositories = new StudentDocumentRepositories();
   const documentService = new DocumentInfoService(documentRepository, documentStudentRepositories, storage);
 
   return (

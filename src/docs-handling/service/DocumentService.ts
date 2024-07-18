@@ -2,52 +2,61 @@ import { DocumentData, DocumentReference } from 'firebase/firestore';
 import { IStorageService } from '../../storage-service/IStorageService';
 import { DocumentInfo } from './DocumentInfo';
 import { DocumentRepository } from './DocumentRepository';
-import { DocumentStudentRepositories } from './DocumentStudentRepositories';
-import { DocumentStudentRepository } from './DocumentStudentRepository';
-import { UploadResult } from 'firebase/storage';
+import { StudentDocumentRepositories } from './DocumentStudentRepositories';
+import { StudentDocumentRepository } from './StudentDocumentRepository';
 
 interface IDocumentInfoService {
   getDocumentRepository(): DocumentRepository;
-  getDocumentStudentRepository(documentId: string): DocumentStudentRepository;
+  getStudentDocumentRepository(studentId: string): StudentDocumentRepository;
 
   addDocument(document: DocumentInfo, file: File): Promise<DocumentReference<DocumentInfo, DocumentData>>;
   updateDocument(document: DocumentInfo, file?: File): Promise<void>;
   deleteDocument(documentId: string): Promise<void>;
 
-  uploadStudentDocument(studentId: string, documentId: string, file: File): Promise<UploadResult>;
+  uploadStudentDocument(studentId: string, document: DocumentInfo, file: File): Promise<void>;
   deleteStudentDocument(studentId: string, documentId: string): Promise<void>;
-  isStudentDocumentUploaded(documentId: string, studentId: string): Promise<boolean>;
+  isDocumentUploadedByStudent(studentId: string, documentId: string): Promise<boolean>;
+  downloadStudentDocument(studentId: string, document: DocumentInfo): Promise<void>;
 }
 
 class DocumentInfoService implements IDocumentInfoService {
   private readonly documentRepository: DocumentRepository;
-  private readonly documentStudentRepositories: DocumentStudentRepositories;
+  private readonly studentDocumentRepositories: StudentDocumentRepositories;
   private readonly storage: IStorageService;
 
   constructor(
     documentRepository: DocumentRepository,
-    documentStudentRepositories: DocumentStudentRepositories,
+    studentDocumentRepositories: StudentDocumentRepositories,
     storage: IStorageService
   ) {
     this.documentRepository = documentRepository;
     this.storage = storage;
-    this.documentStudentRepositories = documentStudentRepositories;
+    this.studentDocumentRepositories = studentDocumentRepositories;
   }
 
   getDocumentRepository(): DocumentRepository {
     return this.documentRepository;
   }
 
-  getDocumentStudentRepository(documentId: string): DocumentStudentRepository {
-    return this.documentStudentRepositories.getDocumentStudentRepository(documentId);
+  getStudentDocumentRepository(studentId: string): StudentDocumentRepository {
+    return this.studentDocumentRepositories.getStudentDocumentRepository(studentId);
   }
 
-  uploadStudentDocument(studentId: string, documentId: string, file: File): Promise<UploadResult> {
-    return this.storage.upload(file, `documents/${documentId}/${studentId}`);
+  uploadStudentDocument(studentId: string, document: DocumentInfo, file: File): Promise<void> {
+    return this.storage.upload(file, `documents/${document.id}/${studentId}`).then(() => {
+      return this.studentDocumentRepositories.getStudentDocumentRepository(studentId).createWithId(document.id, {
+        studentId,
+        documentId: document.id,
+        filename: file.name,
+        documentName: document.name
+      });
+    });
   }
 
   deleteStudentDocument(studentId: string, documentId: string): Promise<void> {
-    return this.storage.delete(`documents/${documentId}/${studentId}`);
+    return this.storage.delete(`documents/${documentId}/${studentId}`).then(() => {
+      return this.studentDocumentRepositories.getStudentDocumentRepository(documentId).delete(studentId);
+    });
   }
 
   addDocument(document: DocumentInfo, file: File): Promise<DocumentReference<DocumentInfo, DocumentData>> {
@@ -56,6 +65,14 @@ class DocumentInfoService implements IDocumentInfoService {
 
       return doc;
     });
+  }
+
+  isDocumentUploadedByStudent(studentId: string, documentId: string): Promise<boolean> {
+    return this.storage.exists(`documents/${documentId}/${studentId}`);
+  }
+
+  downloadStudentDocument(studentId: string, document: DocumentInfo): Promise<void> {
+    return this.storage.download(`documents/${document.id}/${studentId}`, document.filename);
   }
 
   updateDocument(document: DocumentInfo, file?: File | undefined): Promise<void> {
@@ -81,11 +98,6 @@ class DocumentInfoService implements IDocumentInfoService {
 
         throw error;
       });
-    // TODO: delete all uploaded files for this document by students
-  }
-
-  isStudentDocumentUploaded(documentId: string, studentId: string): Promise<boolean> {
-    return this.storage.exists(`documents/${documentId}/${studentId}`);
   }
 }
 

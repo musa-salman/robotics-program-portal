@@ -111,7 +111,7 @@ const DocumentsPage: React.FC = () => {
       });
   };
 
-  const handleStudentUpload = (documentId: string, file: File) => {
+  const handleStudentUpload = (document: DocumentInfo, file: File) => {
     if (!documentInfoService) {
       return Promise.resolve();
     }
@@ -121,7 +121,7 @@ const DocumentsPage: React.FC = () => {
     }
 
     return documentInfoService
-      .uploadStudentDocument(user.id, documentId, file)
+      .uploadStudentDocument(user.id, document, file)
       .then(() => {
         showMessage({ message: 'המסמך הועלה בהצלחה', variant: 'success' });
       })
