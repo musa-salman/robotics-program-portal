@@ -17,25 +17,16 @@ interface MySpeedDialProps {
   isEditing: boolean;
 }
 
-function MySpeedDial({ handleEditToggle, handleMoveToggle, handleSave, handleDelete, isEditing }: MySpeedDialProps) {
+function MySpeedDial({ handleEditToggle, handleMoveToggle, handleDelete }: MySpeedDialProps) {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(!open);
 
-  // let actions = [];
-
-  // if (!isEditing) {
   let actions = [
     { icon: <EditIcon />, name: 'לַעֲרוֹך', action: handleEditToggle, className: '' },
     { icon: <DeleteIcon />, name: 'לִמְחוֹק', action: handleDelete, className: 'delete-action' },
     { icon: <DriveFileMoveIcon />, name: 'לעבור', action: handleMoveToggle, className: '' }
   ];
-  // } else {
-  //   actions = [
-  //     { icon: <SaveIcon />, name: 'Save', action: handleSave, className: '' },
-  //     { icon: <CancelIcon />, name: 'Cancel', action: handleEditToggle, className: '' }
-  //   ];
-  // }
 
   return (
     <SpeedDial

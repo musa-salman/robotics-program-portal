@@ -1,4 +1,4 @@
-import { Container, CssBaseline, Modal, Typography } from '@mui/material';
+import { Button, Container, CssBaseline, Modal, Typography } from '@mui/material';
 import './EmptyStudyMaterials.css';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
@@ -17,20 +17,18 @@ function EmptyStudyMaterials({ handleAdd }: EmptyStudyMaterialsProps) {
 
   return (
     <>
-      <CssBaseline />
       <Container className="container">
-        <FolderOffIcon />
+        <FolderOffIcon sx={{ margin: '10px', fontSize: '50px' }} />
         <Typography variant="h5" className="text">
           אין מה להראות
         </Typography>
-        <Typography variant="body1" className="textt">
-          {' '}
+        <Typography variant="body1" sx={{ margin: '10px', fontSize: '1.5rem' }}>
           זה ריק כאן אין קבצים
         </Typography>
-        <button className="add-btn" onClick={handleShow}>
+        <Button sx={{ margin: '20px', width: '10rem', fontSize: '20px' }} onClick={handleShow}>
           העלה
-          <FileUploadIcon className="addIcon" />
-        </button>
+          <FileUploadIcon sx={{ margin: '10px' }} />
+        </Button>
       </Container>
 
       <Modal

@@ -181,7 +181,7 @@ function MaterialCard({
             title={studyMaterial.title}
             className="title-card"
           />
-          <Divider component="div" variant="fullWidth" style={{ backgroundColor: '#F2542D' }} />
+          <Divider component="div" variant="fullWidth" style={{ backgroundColor: 'black', height: '2px' }} />
           <div>
             <Typography
               variant="body2"
