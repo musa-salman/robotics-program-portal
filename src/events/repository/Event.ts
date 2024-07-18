@@ -1,5 +1,6 @@
 export interface IEvent {
-  date: Date;
+  startDate: Date;
+  endDate: Date;
   title: string;
   details: string;
   imageURL: string;

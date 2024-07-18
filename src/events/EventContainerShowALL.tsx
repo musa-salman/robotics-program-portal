@@ -37,7 +37,7 @@ const EventContainer = () => {
       const filtered = events?.filter(
         (event) =>
           event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          event.date?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          event.startDate?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
           event.details.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredEvents(filtered || []);
@@ -50,7 +50,9 @@ const EventContainer = () => {
         .find()
         .then((events) =>
           setEvents(
-            convertIEventsToEventProps(events).sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime())
+            convertIEventsToEventProps(events).sort(
+              (b, a) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+            )
           )
         );
     };
@@ -63,8 +65,8 @@ const EventContainer = () => {
     }
     const sortedEvents = [...filteredEvents].sort((a, b) => {
       if (field === 'date') {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
+        const dateA = new Date(a.startDate);
+        const dateB = new Date(b.startDate);
         return direction === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
       } else if (field === 'title') {
         return direction === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title);
@@ -78,7 +80,7 @@ const EventContainer = () => {
   const addEvent = (newEvent: EventProps) => {
     if (events !== null) {
       const updatedEvents = [...events, newEvent];
-      updatedEvents.sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      updatedEvents.sort((b, a) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
       setEvents(updatedEvents);
       setAnimatingEvents((prev) => ({ ...prev, [newEvent.id]: true }));
       setTimeout(() => setAnimatingEvents((prev) => ({ ...prev, [newEvent.id]: false })), 500);
@@ -100,7 +102,7 @@ const EventContainer = () => {
       if (index !== -1) {
         const newEvents = [...prevEvents];
         newEvents[index] = updatedEvent;
-        newEvents.sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        newEvents.sort((b, a) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
         return newEvents;
       }
       return prevEvents;
@@ -110,7 +112,8 @@ const EventContainer = () => {
   function convertIEventsToEventProps(events: IEvent[]): EventProps[] {
     return events.map((event) => {
       return {
-        date: event.date,
+        startDate: event.startDate,
+        endDate: event.endDate,
         title: event.title,
         details: event.details,
         image: event.imageURL,
@@ -170,7 +173,8 @@ const EventContainer = () => {
               <EventCard
                 key={event.id}
                 id={event.id}
-                date={event.date}
+                startDate={event.startDate}
+                endDate={event.endDate}
                 title={event.title}
                 details={event.details}
                 image={event.image}
@@ -183,7 +187,8 @@ const EventContainer = () => {
               <EventCard
                 key={event.id}
                 id={event.id}
-                date={event.date}
+                startDate={event.startDate}
+                endDate={event.endDate}
                 title={event.title}
                 details={event.details}
                 image={event.image}

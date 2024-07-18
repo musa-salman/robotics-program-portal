@@ -2,8 +2,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import createCache from '@emotion/cache';
 import rtlPlugin from 'stylis-plugin-rtl';
-import createTheme from '@mui/material/styles/createTheme';
 import bootstrap from './appInitializer.tsx';
+import { createTheme } from '@mui/material/styles';
 
 const cacheRtl = createCache({
   key: 'muirtl',
@@ -50,12 +50,31 @@ const theme = createTheme({
     },
     info: {
       main: '#2196f3'
-    }
+    },
+    tonalOffset: 0.2,
+    common: {
+      black: '#000',
+      white: '#fff'
+    },
+    contrastThreshold: 3
   },
   components: {
     MuiPagination: {
       defaultProps: {
         dir: 'ltr'
+      },
+      variants: [
+        {
+          props: { dir: 'rtl' },
+          style: {
+            direction: 'rtl'
+          }
+        }
+      ],
+      styleOverrides: {
+        root: {
+          direction: 'rtl'
+        }
       }
     },
     MuiAppBar: {

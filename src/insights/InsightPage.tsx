@@ -78,7 +78,7 @@ function TabPanel(props: TabPanelProps) {
 
 const InsightPage = () => {
   const insightsList: InsightCategoriesList = {
-    insightCategories: [registerInsights, userInsights, documentInsights, studyMaterialInsights, eventInsights]
+    insightCategories: [registerInsights, userInsights, studyMaterialInsights, eventInsights]
   };
 
   const [detailsCategory, setDetailsCategory] = useState<InsightData>({
