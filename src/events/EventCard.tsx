@@ -5,7 +5,7 @@ import RegisterStudentToEvent from './RegisterStudentToEvent';
 import ShowRegisteredStudents from './ShowRegisteredStudents';
 import Role from '../authentication/components/Roles';
 import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
-import formatDate from '../utils/dateFormatter';
+import { formatDateTimeRange } from '../utils/dateFormatter';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -38,9 +38,11 @@ const EventCard: React.FC<EventProps> = ({
   animating
 }) => {
   const [isLoading, setIsLoading] = useState(true);
+
+  console.log(startDate);
   return (
     <div className={`event-card ${animating ? 'zoom-out' : 'zoom-in'}`}>
-      <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345 }}>
+      <Card className="cardIconButton" sx={{ maxWidth: 365, minWidth: 365 }}>
         <CardHeader
           action={
             <IconButton aria-label="settings">
@@ -60,7 +62,11 @@ const EventCard: React.FC<EventProps> = ({
               {title}
             </Typography>
           }
-          subheader={formatDate(startDate)}
+          subheader={
+            <Typography variant="h7" component="div" style={{ minHeight: '50px' }}>
+              {formatDateTimeRange(startDate, endDate)}
+            </Typography>
+          }
         />
         {isLoading && (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 150 }}>

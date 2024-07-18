@@ -15,7 +15,6 @@ type EventContainer = {
 
 const EventContainer = () => {
   const [events, setEvents] = useState<EventProps[] | null>(null);
-  console.log(events);
   const [animatingEvents, setAnimatingEvents] = useState<{ [key: string]: boolean }>({});
   const [searchQuery, setSearchQuery] = useState('');
 

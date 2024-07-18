@@ -1,6 +1,6 @@
 import React from 'react';
 import './EventCard.css';
-import formatDate from '../utils/dateFormatter';
+import { formatDateTimeRange } from '../utils/dateFormatter';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -23,7 +23,7 @@ export interface EventProps {
 const EventCardPreview: React.FC<EventProps> = ({ startDate, endDate, title, details, image }) => {
   console.log('EventCardPreview: ', startDate, endDate, title, details, image);
   return (
-    <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345 }}>
+    <Card className="cardIconButton" sx={{ maxWidth: 365, minWidth: 365 }}>
       <CardHeader
         action={
           <IconButton aria-label="settings">
@@ -35,7 +35,11 @@ const EventCardPreview: React.FC<EventProps> = ({ startDate, endDate, title, det
             {title}
           </Typography>
         }
-        subheader={formatDate(startDate)}
+        subheader={
+          <Typography variant="h7" component="div" style={{ minHeight: '50px' }}>
+            {formatDateTimeRange(startDate, endDate)}
+          </Typography>
+        }
       />
       <CardMedia component="img" height="150" image={image} alt={title} />
       <CardContent>
