@@ -16,6 +16,7 @@ const ButtonIcon: React.FC<ButtonIconProps> = ({ icon, label, type, path, classN
     <>
       <Link to={path} className="link">
         <Button
+          sx={{ fontSize: 'large' }}
           variant="outlined"
           color={type === 'primary' ? 'primary' : 'secondary'}
           className={className}

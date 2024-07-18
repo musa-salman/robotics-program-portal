@@ -7,7 +7,8 @@
 .events-container-show-all-events-style {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px; /* Adjusts the gap between items */
+  gap: 10px;
+  /* Adjusts the gap between items */
   justify-content: right;
   margin-top: 30px;
 }
@@ -67,6 +68,7 @@
     opacity: 0;
     transform: translateX(20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -82,6 +84,7 @@
     opacity: 1;
     transform: translateX(0);
   }
+
   to {
     opacity: 0;
     transform: translateX(-20px);
@@ -93,6 +96,7 @@
     transform: scale(0);
     opacity: 0;
   }
+
   to {
     transform: scale(1);
     opacity: 1;
@@ -104,6 +108,7 @@
     transform: scale(1);
     opacity: 1;
   }
+
   to {
     transform: scale(0);
     opacity: 0;

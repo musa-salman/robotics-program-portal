@@ -16,20 +16,6 @@ const CategoryButtons: React.FC<CategoryButtonsProps> = ({ categories, onCategor
   return (
     <>
       <Box className="category-box" sx={{ bgcolor: 'background.paper' }}>
-        {/* <Typography className="tafret" variant="h4">
-          תפריט
-        </Typography> */}
-        <Divider component="div" role="presentation" sx={{ color: 'red' }} />
-        {/* {categories.map((category, index) => (
-          // <Button
-          //   variant="outlined"
-          //   color="primary"
-          //   key={index}
-          //   onClick={() => onCategorySelect(category)}
-          //   className="category-button">
-          //   {category}
-          // </Button>
-        ))} */}
         <Tabs
           value={value}
           onChange={handleChange}
