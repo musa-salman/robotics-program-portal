@@ -41,7 +41,7 @@ const EventCard: React.FC<EventProps> = ({
 
   return (
     <div className={`event-card ${animating ? 'zoom-out' : 'zoom-in'}`}>
-      <Card className="cardIconButton" sx={{ maxWidth: 365, minWidth: 365 }}>
+      <Card className="cardIconButton" sx={{ maxWidth: 380, minWidth: 380 }}>
         <CardHeader
           action={
             <IconButton aria-label="settings">
