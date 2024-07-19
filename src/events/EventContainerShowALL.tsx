@@ -142,9 +142,9 @@ const EventContainer = () => {
   }
 
   return (
-    <Box className="mat-in-box" sx={{ marginTop: '20px', borderRadius: '5px' }}>
-      <div className="events">
-        <div className="events-all">
+    <div className="events">
+      <div className="events-all">
+        <Box className="mat-in-box" sx={{ marginTop: '20px', borderRadius: '5px' }}>
           <div className="events-header-button">
             <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
               <AddEvent addEvent={addEvent} />
@@ -200,9 +200,9 @@ const EventContainer = () => {
                   />
                 ))}
           </div>
-        </div>
+        </Box>
       </div>
-    </Box>
+    </div>
   );
 };
 
