@@ -5,11 +5,9 @@ import Header from './Header';
 
 const Layout = () => {
   const headerLinks = [
-    { name: 'בית', path: '/' },
     { name: 'אירועים', path: '/events' },
     { name: 'חומרי למידה', path: '/study-materials' },
     { name: 'נהול תלמדים', path: '/students-management' },
-    ,
     { name: 'סטטיסטיקות', path: '/deep-inspection' }
   ].filter((link) => link !== undefined);
 
@@ -30,7 +28,7 @@ const Layout = () => {
           width: '100%',
           overflow: 'hidden'
         }}>
-        <Header logo="./logo.jpg" links={headerLinks} />
+        <Header links={headerLinks} />
         <Box
           component="main"
           sx={{
