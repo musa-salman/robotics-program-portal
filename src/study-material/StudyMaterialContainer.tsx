@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import './StudyMaterialContainer.css';
 import { useMaterialService } from './repository/StudyMaterialContext';
 import { StudyMaterial } from './repository/StudyMaterial';
@@ -39,7 +39,6 @@ function StudyMaterialContainer() {
 
   const [message, setMessage] = useState<FeedbackMessage | null>(null);
   const [buildNumber, setBuildNumber] = useState<number>(0);
-  const firstButtonRef = useRef(null);
 
   useEffect(() => {
     const getStudyMaterials = () => {
