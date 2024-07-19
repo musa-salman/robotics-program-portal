@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Student } from './Student';
 import StudentForm from './StudentForm';
 import './StudentsManagement.css';
-import { Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { useUserService } from '../users/UserContext';
 import StudentDetails from '../registers-management/RegisterDetails';
 import { useCallback, useState } from 'react';

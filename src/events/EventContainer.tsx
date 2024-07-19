@@ -9,7 +9,6 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useTheme } from '@mui/material/styles';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 import SkeletonEventCard from './EventCardSkeleton';
-import { Box } from '@mui/material';
 
 type EventContainer = {
   eventsProps: EventProps[];

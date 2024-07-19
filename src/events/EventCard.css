@@ -19,7 +19,7 @@
 .event-card {
   border-radius: 8px;
   transition: box-shadow 0.25s;
-  box-shadow: 0 0 10px rgba(255, 115, 0, 0.23);
+  /* box-shadow: 0 0 10px rgba(255, 115, 0, 0.23); */
   margin-top: 10px;
   margin-left: 10px;
   margin-right: 10px;

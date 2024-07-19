@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import './StudyMaterialContainer.css';
 import { useMaterialService } from './repository/StudyMaterialContext';
 import { StudyMaterial } from './repository/StudyMaterial';
 import MaterialUploadModal from './components/upload-file/MaterialUploadModal';
 import AddIcon from '@mui/icons-material/Add';
-import { Box, Button, CardContent, Modal } from '@mui/material';
+import { Box, Button, CardContent, Modal, Typography } from '@mui/material';
 import NoResultFound from './components/NoResultFound';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Category } from './repository/Category';
@@ -41,8 +41,6 @@ function StudyMaterialContainer() {
 
   const [message, setMessage] = useState<FeedbackMessage | null>(null);
   const [buildNumber, setBuildNumber] = useState<number>(0);
-  const firstButtonRef = useRef(null);
-  const [isAscending, setIsAscending] = useState(true);
 
   useEffect(() => {
     const getStudyMaterials = () => {
@@ -64,9 +62,7 @@ function StudyMaterialContainer() {
         .find()
         .then((categories) => {
           setCategoryList(categories);
-          if (firstButtonRef.current) {
-            // firstButtonRef.current.focus();
-          }
+          setSelectedCategories(categories.map((category) => category.category));
         })
         .catch(() => {
           showMessage({
@@ -198,9 +194,19 @@ function StudyMaterialContainer() {
           ) : (
             (categories || [])
               .filter((category) => selectedCategories.includes(category))
+              .filter((category) => {
+                if (category === 'הכל') {
+                  return false; // Skip this iteration
+                }
+                return true;
+              })
               .map((category) => (
                 <Box key={category}>
                   <CardContent>
+                    {/* Display the category name */}
+                    <Typography variant="h6" component="h2" style={{ marginBottom: '20px' }}>
+                      {category}
+                    </Typography>
                     <div className="study-materials-container">
                       {(searchResults || studyMaterials || [])
                         .filter((s) => s.category === category)

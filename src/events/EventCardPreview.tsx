@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import GroupsIcon from '@mui/icons-material/Groups';
 import Button from '@mui/material/Button';
+import { useTheme } from '@mui/material/styles';
 
 export interface EventProps {
   startDate: Date;
@@ -21,11 +22,17 @@ export interface EventProps {
 }
 
 const EventCardPreview: React.FC<EventProps> = ({ startDate, endDate, title, details, image }) => {
-  console.log('EventCardPreview: ', startDate, endDate, title, details, image);
+  const theme = useTheme();
+
   return (
     <Card
       className="cardIconButton"
-      sx={{ maxWidth: 380, minWidth: 380, background: 'linear-gradient(45deg, #4B4B4B 60%, #000000 60%)' }}>
+      sx={{
+        maxWidth: 380,
+        minWidth: 380,
+        background: 'linear-gradient(45deg, #000000 60%, #2B2B2B 60%)',
+        boxShadow: `0 4px 8px ${theme.palette.primary.main}`
+      }}>
       <CardHeader
         action={
           <IconButton aria-label="settings">
@@ -33,7 +40,7 @@ const EventCardPreview: React.FC<EventProps> = ({ startDate, endDate, title, det
           </IconButton>
         }
         title={
-          <Typography variant="h5" component="div" style={{ minHeight: '32px' }}>
+          <Typography variant="h5" component="div" style={{ minHeight: '32px', color: theme.palette.primary.main }}>
             {title}
           </Typography>
         }

@@ -16,7 +16,7 @@ const PRIMARY_STUDENT_LINKS = [
 
 const PRIMARY_ADMIN_LINKS = [
   { icon: <School />, label: 'ניהול תלמידים', path: '/students-management' },
-  { icon: <Insights />, label: 'בחינה מעמיקה', path: '/deep-inspection' }
+  { icon: <Insights />, label: 'סטטיסטיקות', path: '/deep-inspection' }
 ];
 
 const STUDENT_LINKS = [{ icon: <PictureAsPdfIcon />, label: 'מסמכים', path: '/documents' }];
