@@ -15,6 +15,8 @@ import CategorySelector from './components/CategorySelector';
 import CategoryButtons from './components/CaregoryButtons';
 import { CategoryManagement } from './components/upload-file/CategoryManagement';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
+import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
+import Role from '../authentication/components/Roles';
 
 function StudyMaterialContainer() {
   const materialService = useMaterialService();
@@ -44,7 +46,10 @@ function StudyMaterialContainer() {
     const getStudyMaterials = () => {
       return materialService.studyMaterialRepository
         .find()
-        .then((materials) => setStudyMaterials(materials))
+        .then((materials) => {
+          const sortedMaterials = materials.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+          setStudyMaterials(sortedMaterials);
+        })
         .catch(() => {
           showMessage({
             message: 'התרחשה שגיעה בעת הבאת החומרים. אנא נסה שנית.',
@@ -176,6 +181,16 @@ function StudyMaterialContainer() {
                 setQuery={setQuery}
               />
             </div>
+            <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
+              <div className="btns">
+                <Button variant="outlined" aria-label="edit" onClick={handleShowEdit}>
+                  <SettingsIcon />
+                </Button>
+                <Button variant="contained" aria-label="add" onClick={handleShow}>
+                  <AddIcon />
+                </Button>
+              </div>
+            </RoleBasedAccessControl>
           </div>
 
           <div className="con-taf">

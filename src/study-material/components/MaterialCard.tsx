@@ -11,6 +11,8 @@ import DeleteModal from '../DeleteModal';
 import { useTheme } from '@mui/material/styles';
 import FeedbackSnackbar, { FeedbackMessage } from '../../components/snackbar/SnackBar';
 import EditModel from './EditModel';
+import RoleBasedAccessControl from '../../authentication/components/RoleBasedAccessControl';
+import Role from '../../authentication/components/Roles';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -169,13 +171,17 @@ function MaterialCard({
               textAlign: 'left'
             }}
             action={
-              <MySpeedDial
-                handleEditToggle={handleEditToggle}
-                handleMoveToggle={handleMoveToggle}
-                handleSave={handleSave}
-                handleDelete={isDelete}
-                isEditing={isEditing}
-              />
+              <RoleBasedAccessControl
+                allowedRoles={[Role.Admin, Role.Owner]}
+                unauthorizedAuthenticatedComponent={<></>}>
+                <MySpeedDial
+                  handleEditToggle={handleEditToggle}
+                  handleMoveToggle={handleMoveToggle}
+                  handleSave={handleSave}
+                  handleDelete={isDelete}
+                  isEditing={isEditing}
+                />
+              </RoleBasedAccessControl>
             }
             className="title-card"
             title={
