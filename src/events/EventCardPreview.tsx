@@ -25,7 +25,7 @@ const EventCardPreview: React.FC<EventProps> = ({ startDate, endDate, title, det
   return (
     <Card
       className="cardIconButton"
-      sx={{ maxWidth: 380, minWidth: 380, background: 'linear-gradient(45deg, #4B4B4B 60%, #000000 60%)' }}>
+      sx={{ maxWidth: 380, minWidth: 380, background: 'linear-gradient(45deg, #000000 60%, #2B2B2B 60%)' }}>
       <CardHeader
         action={
           <IconButton aria-label="settings">
