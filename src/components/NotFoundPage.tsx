@@ -12,9 +12,9 @@ const NotFoundPage: React.FC = () => {
   };
 
   return (
-    <Container sx={{ textAlign: 'center', mt: 5 }}>
+    <Container sx={{ textAlign: 'center', mt: 5, marginBottom: '20px' }}>
       <Box>
-        <img src={RobotImage} alt="Robot" style={{ maxWidth: '100%', height: 'auto' }} />
+        <img src={RobotImage} alt="Robot" style={{ maxWidth: '90%', height: 'auto' }} />
       </Box>
       <Typography variant="h3" component="h1" gutterBottom>
         אופס! איבדנו את העמוד
