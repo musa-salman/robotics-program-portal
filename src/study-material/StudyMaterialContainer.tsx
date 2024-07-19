@@ -4,7 +4,7 @@ import { useMaterialService } from './repository/StudyMaterialContext';
 import { StudyMaterial } from './repository/StudyMaterial';
 import MaterialUploadModal from './components/upload-file/MaterialUploadModal';
 import AddIcon from '@mui/icons-material/Add';
-import { Box, Button, CardContent, Modal } from '@mui/material';
+import { Box, Button, CardContent, Modal, Typography } from '@mui/material';
 import NoResultFound from './components/NoResultFound';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Category } from './repository/Category';
@@ -189,10 +189,20 @@ function StudyMaterialContainer() {
             <NoResultFound />
           ) : (
             (categories || [])
-              .filter((category) => selectedCategories.includes(category))
+              .filter((category) => selectedCategories.includes('הכל'))
+              .filter((category) => {
+                if (category === 'הכל') {
+                  return false; // Skip this iteration
+                }
+                return true;
+              })
               .map((category) => (
                 <Box key={category}>
                   <CardContent>
+                    {/* Display the category name */}
+                    <Typography variant="h6" component="h2" style={{ marginBottom: '20px' }}>
+                      {category}
+                    </Typography>
                     <div className="study-materials-container">
                       {(searchResults || studyMaterials || [])
                         .filter((s) => s.category === category)
