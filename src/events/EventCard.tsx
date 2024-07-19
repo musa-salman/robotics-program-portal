@@ -43,7 +43,7 @@ const EventCard: React.FC<EventProps> = ({
     <div className={`event-card ${animating ? 'zoom-out' : 'zoom-in'}`}>
       <Card
         className="cardIconButton"
-        sx={{ maxWidth: 380, minWidth: 380, background: 'linear-gradient(45deg, #4B4B4B 60%, #000000 60%)' }}>
+        sx={{ maxWidth: 380, minWidth: 380, background: 'linear-gradient(45deg, #000000 60%, #2B2B2B 60%)' }}>
         <CardHeader
           action={
             <IconButton aria-label="settings">
@@ -94,7 +94,7 @@ const EventCard: React.FC<EventProps> = ({
         </CardContent>
         <div className="register-button">
           <RoleBasedAccessControl allowedRoles={[Role.Student]} unauthorizedAuthenticatedComponent={<></>}>
-            <RegisterStudentToEvent eventId={id} eventDate={startDate} />
+            <RegisterStudentToEvent eventId={id} eventDate={endDate} />
           </RoleBasedAccessControl>
         </div>
         <CardActions disableSpacing>
