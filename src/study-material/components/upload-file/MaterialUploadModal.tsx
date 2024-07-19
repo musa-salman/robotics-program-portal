@@ -284,18 +284,17 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
             <Grid xs={7} style={{ marginTop: '0.75rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
               <Button
                 variant="contained"
-                style={{ marginRight: '8rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
-                onClick={handleSubmit}>
-                {initialValue ? 'שמור' : 'הוסף'}
-              </Button>
-            </Grid>
-
-            <Grid xs={5} style={{ marginTop: '0.75rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
-              <Button
-                variant="contained"
                 style={{ marginRight: '2rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
                 onClick={handleClose}>
                 סגירה
+              </Button>
+            </Grid>
+            <Grid xs={5} style={{ marginTop: '0.75rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
+              <Button
+                variant="contained"
+                style={{ marginRight: '8rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
+                onClick={handleSubmit}>
+                {initialValue ? 'שמור' : 'הוסף'}
               </Button>
             </Grid>
           </Grid>

@@ -11,7 +11,13 @@ function MaterialCardPreview({ studyMaterial }: { studyMaterial: StudyMaterial }
 
   return (
     <>
-      <Card className="Card" sx={{ borderRadius: '15px', backgroundColor: theme.palette.background.paper }}>
+      <Card
+        className="Card"
+        sx={{
+          borderRadius: '15px',
+          background: 'linear-gradient(45deg, #000000 60%, #2B2B2B 60%)',
+          boxShadow: `0 4px 8px ${theme.palette.primary.main}`
+        }}>
         <CardContent className="bodycard">
           <CardHeader
             sx={{
