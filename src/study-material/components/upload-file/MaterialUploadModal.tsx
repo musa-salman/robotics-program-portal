@@ -125,6 +125,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
   };
 
   const handleSubmit = async () => {
+    if (studyMaterial.title.length > MAX_CHARS_Title || studyMaterial.description.length > MAX_CHARS_Details) return;
     if (studyMaterial.title !== '' && studyMaterial.filename !== '' && studyMaterial.category !== '' && file !== null) {
       studyMaterialManagement.studyMaterialRepository
         .create(studyMaterial)

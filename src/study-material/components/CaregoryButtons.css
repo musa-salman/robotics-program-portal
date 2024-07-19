@@ -13,10 +13,3 @@
 .category-box .divider {
   margin-bottom: 10px;
 }
-
-.category-box .category-button {
-  margin: 5px;
-  width: fit-content;
-  border-radius: 20px;
-  font-size: large;
-}

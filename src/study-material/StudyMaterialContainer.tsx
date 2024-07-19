@@ -32,6 +32,7 @@ function StudyMaterialContainer() {
   const [show, setShow] = useState(false);
   const [showAddEdit, setShowAddEdit] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [isAll, setIsAll] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -97,15 +98,15 @@ function StudyMaterialContainer() {
     setStudyMaterials((prevMaterials) => [...(prevMaterials || []), studyMaterial]);
   };
 
-  console.log('the selected  berfore cat ', selectedCategories);
   const handleCategorySelect = (category: string) => {
     // setSelectedCategories([]);
     if (category === 'הכל') {
       setSelectedCategories(categories);
-      console.log('the selected cat ', selectedCategories);
+      setIsAll(true);
     } else {
       setSelectedCategories([category]);
       console.log('the selected cat ', selectedCategories);
+      setIsAll(false);
     }
   };
 
@@ -196,17 +197,18 @@ function StudyMaterialContainer() {
               .filter((category) => selectedCategories.includes(category))
               .filter((category) => {
                 if (category === 'הכל') {
-                  return false; // Skip this iteration
+                  return false;
                 }
                 return true;
               })
               .map((category) => (
                 <Box key={category}>
                   <CardContent>
-                    {/* Display the category name */}
-                    <Typography variant="h6" component="h2" style={{ marginBottom: '20px' }}>
-                      {category}
-                    </Typography>
+                    {isAll && (
+                      <Typography variant="h6" component="h2" style={{ marginBottom: '20px' }}>
+                        {category}
+                      </Typography>
+                    )}
                     <div className="study-materials-container">
                       {(searchResults || studyMaterials || [])
                         .filter((s) => s.category === category)

@@ -18,8 +18,6 @@ const ButtonIcon: React.FC<ButtonIconProps> = ({ icon, label, type, path, classN
         <Button
           sx={{
             fontSize: 'large',
-            backgroundColor: 'rgba(255, 255, 255, 0.2)', // Semi-transparent background
-            backdropFilter: 'blur(8px)', // Blur effect
             borderRadius: '4px' // Optional: Adds rounded corners
           }}
           variant="outlined"

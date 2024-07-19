@@ -27,7 +27,7 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  background: url('/Orange_Black_pentagon_Phone_Backround.jpg');
+  /* background: url('/Orange_Black_pentagon_Phone_Backround.jpg'); */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

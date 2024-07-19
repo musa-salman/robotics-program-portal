@@ -42,10 +42,16 @@
 
 .nav-links a:hover {
   color: #ff5100;
-  text-shadow: 0 0 8px rgba(255, 81, 0, 0.7); /* Adds a glowing effect */
-  padding: 10px; /* Adds space around the text */
-  background-color: rgba(255, 81, 0, 0.2); /* Semi-transparent background */
-  border-radius: 5px; /* Rounded corners */
-  box-shadow: 0 0 8px rgba(255, 81, 0, 0.7); /* Adds a glowing box shadow */
-  transition: all 0.3s ease; /* Smooth transition for all properties */
+  text-shadow: 0 0 8px rgba(255, 81, 0, 0.7);
+  /* Adds a glowing effect */
+  padding: 10px;
+  /* Adds space around the text */
+  background-color: rgba(255, 81, 0, 0.2);
+  /* Semi-transparent background */
+  border-radius: 5px;
+  /* Rounded corners */
+  box-shadow: 0 0 8px rgba(255, 81, 0, 0.7);
+  /* Adds a glowing box shadow */
+  transition: all 0.3s ease;
+  /* Smooth transition for all properties */
 }

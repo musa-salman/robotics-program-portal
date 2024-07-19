@@ -161,7 +161,7 @@ function MaterialCard({
         className="Card"
         sx={{
           borderRadius: '15px',
-          background: 'linear-gradient(45deg, #000000 60%, #2B2B2B 60%)',
+          background: theme.palette.background.paper,
           boxShadow: `0 4px 8px ${theme.palette.primary.main}`
         }}>
         <CardContent className="bodycard">
@@ -185,6 +185,7 @@ function MaterialCard({
               </RoleBasedAccessControl>
             }
             title={studyMaterial.title}
+            style={{ color: theme.palette.primary.main }}
             className="title-card"
           />
           <Divider component="div" variant="fullWidth" style={{ backgroundColor: 'black', height: '2px' }} />

@@ -48,7 +48,7 @@ const EventCard: React.FC<EventProps> = ({
         sx={{
           maxWidth: 380,
           minWidth: 380,
-          background: 'linear-gradient(45deg, #000000 60%, #2B2B2B 60%)',
+          background: theme.palette.background.paper,
           boxShadow: `0 4px 8px ${theme.palette.primary.main}`
         }}>
         <CardHeader
@@ -66,12 +66,12 @@ const EventCard: React.FC<EventProps> = ({
             </IconButton>
           }
           title={
-            <Typography variant="h5" component="div" style={{ minHeight: '32px', color: theme.palette.primary.main }}>
+            <Typography variant="h4" component="div" style={{ minHeight: '32px', color: theme.palette.primary.main }}>
               {title}
             </Typography>
           }
           subheader={
-            <Typography variant="h7" component="div" style={{ minHeight: '64px' }}>
+            <Typography variant="body2" component="div" style={{ minHeight: '64px' }}>
               {formatDateTimeRange(startDate, endDate)}
             </Typography>
           }
