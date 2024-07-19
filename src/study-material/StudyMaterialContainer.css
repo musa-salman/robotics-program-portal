@@ -19,7 +19,8 @@
   flex-wrap: wrap;
   background-color: transparent;
   backdrop-filter: blur(20px);
-  border: 8px solid rgba(255, 255, 255, 0.2);
+  border: 8px solid black;
+  /* rgba(0, 0, 0, 0.2) */
 }
 
 .btn-search {

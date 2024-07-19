@@ -64,7 +64,7 @@ const EventCard: React.FC<EventProps> = ({
             </Typography>
           }
           subheader={
-            <Typography variant="h7" component="div" style={{ minHeight: '64px' }}>
+            <Typography variant="h6" component="div" style={{ minHeight: '50px' }}>
               {formatDateTimeRange(startDate, endDate)}
             </Typography>
           }

@@ -142,8 +142,10 @@ const EventContainer = () => {
   }
 
   return (
-    <div className="events">
-      <div className="events-all">
+    <Box className="mat-in-box" sx={{ marginTop: '20px', borderRadius: '5px' }}>
+      <div className="events">
+        {/* <div className="events">
+      <div className="events-all"> */}
         <div className="events-header-button">
           <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
             <AddEvent addEvent={addEvent} />
@@ -151,7 +153,8 @@ const EventContainer = () => {
           <Input
             placeholder="חיפוש אירועים לפי שם או תאריך או פרטים..."
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ width: '70%' }}
+            style={{ width: '50%' }}
+            // style={{ width: '70%' }}
           />
           <Button
             onClick={() => {
@@ -200,7 +203,7 @@ const EventContainer = () => {
               ))}
         </div>
       </div>
-    </div>
+    </Box>
   );
 };
 

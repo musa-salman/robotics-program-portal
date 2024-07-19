@@ -1,6 +1,8 @@
 .events-container-default-style {
   display: flex;
-  max-width: 1400px;
+  flex-direction: row;
+  max-width: 1300px;
+  gap: 30px;
   margin: auto;
 }
 
@@ -13,13 +15,18 @@
 .events-container-show-all-events-style {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 30px 20px;
+  margin-bottom: 10px;
+  justify-content: center;
   margin-top: 30px;
 }
 
 .events-header-button {
   display: flex;
-  margin: 10px;
+  margin-bottom: 50px;
+  margin-top: 30px;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
 }
 
@@ -27,11 +34,11 @@
   padding: 10px;
   border-radius: 10px;
   display: flex;
-  flex-wrap: wrap;
-  align-content: space-between;
-  justify-content: right;
+  flex-wrap: nowrap;
+  /* align-content: space-between; */
+  justify-content: space-around;
   margin: 10px;
-  gap: 10px;
+  gap: 20px;
   margin: auto;
 }
 
