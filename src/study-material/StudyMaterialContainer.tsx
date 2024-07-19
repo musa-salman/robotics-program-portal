@@ -167,11 +167,11 @@ function StudyMaterialContainer() {
           <div className="btn-search">
             <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
               <div className="btns">
-                <Button variant="outlined" aria-label="edit" onClick={handleShowEdit}>
-                  <SettingsIcon />
-                </Button>
                 <Button variant="contained" aria-label="add" onClick={handleShow}>
                   <AddIcon />
+                </Button>
+                <Button variant="outlined" aria-label="edit" onClick={handleShowEdit}>
+                  <SettingsIcon />
                 </Button>
               </div>
             </RoleBasedAccessControl>
