@@ -10,7 +10,6 @@ import Modal from '@mui/material/Modal';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 import DeleteModal from '../study-material/DeleteModal';
 import { Moment } from 'moment';
-import { KeyboardReturnOutlined } from '@mui/icons-material';
 
 interface EditDeleteEventProps {
   event: EventProps;

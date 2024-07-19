@@ -23,7 +23,9 @@ export interface EventProps {
 const EventCardPreview: React.FC<EventProps> = ({ startDate, endDate, title, details, image }) => {
   console.log('EventCardPreview: ', startDate, endDate, title, details, image);
   return (
-    <Card className="cardIconButton" sx={{ maxWidth: 380, minWidth: 380 }}>
+    <Card
+      className="cardIconButton"
+      sx={{ maxWidth: 380, minWidth: 380, background: 'linear-gradient(45deg, #4B4B4B 60%, #000000 60%)' }}>
       <CardHeader
         action={
           <IconButton aria-label="settings">
