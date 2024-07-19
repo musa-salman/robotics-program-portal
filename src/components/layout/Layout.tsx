@@ -4,7 +4,13 @@ import { Outlet } from 'react-router-dom';
 import Header from './Header';
 
 const Layout = () => {
-  const headerLinks = [{ name: 'בית', path: '/' }];
+  const headerLinks = [
+    { name: 'בית', path: '/' },
+    { name: 'אירועים', path: '/events' },
+    { name: 'חומרי למידה', path: '/study-materials' },
+    { name: 'נהול תלמדים', path: '/students-management' },
+    { name: 'סטטיסטיקות', path: '/deep-inspection' }
+  ].filter((link) => link !== undefined);
 
   const socialMedia = [
     {
@@ -23,7 +29,7 @@ const Layout = () => {
           width: '100%',
           overflow: 'hidden'
         }}>
-        <Header logo="/pico_logo.png" links={headerLinks} />
+        <Header links={headerLinks} />
         <Box
           component="main"
           sx={{

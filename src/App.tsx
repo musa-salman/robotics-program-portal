@@ -6,7 +6,6 @@ import Layout from './components/layout/Layout';
 import TestingLayout from './components/layout/TestingLayout';
 import Role from './authentication/components/Roles';
 import Banner from './components/Banner';
-import StudentsManagement from './students-management/StudentsManagement';
 import NotFoundPage from './components/NotFoundPage';
 import RegisterComponent from './register/RegisterComponent';
 import WaitApprovalPage from './authentication/components/wait-approval-page/WaitingApprovalPage';

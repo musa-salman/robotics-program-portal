@@ -5,7 +5,7 @@ import RegisterStudentToEvent from './RegisterStudentToEvent';
 import ShowRegisteredStudents from './ShowRegisteredStudents';
 import Role from '../authentication/components/Roles';
 import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
-import formatDate from '../utils/dateFormatter';
+import { formatDateTimeRange } from '../utils/dateFormatter';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -38,9 +38,12 @@ const EventCard: React.FC<EventProps> = ({
   animating
 }) => {
   const [isLoading, setIsLoading] = useState(true);
+
   return (
     <div className={`event-card ${animating ? 'zoom-out' : 'zoom-in'}`}>
-      <Card className="cardIconButton" sx={{ maxWidth: 345, minWidth: 345 }}>
+      <Card
+        className="cardIconButton"
+        sx={{ maxWidth: 380, minWidth: 380, background: 'linear-gradient(45deg, #000000 60%, #2B2B2B 60%)' }}>
         <CardHeader
           action={
             <IconButton aria-label="settings">
@@ -60,7 +63,11 @@ const EventCard: React.FC<EventProps> = ({
               {title}
             </Typography>
           }
-          subheader={formatDate(startDate)}
+          subheader={
+            <Typography variant="h7" component="div" style={{ minHeight: '64px' }}>
+              {formatDateTimeRange(startDate, endDate)}
+            </Typography>
+          }
         />
         {isLoading && (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 150 }}>
@@ -75,7 +82,7 @@ const EventCard: React.FC<EventProps> = ({
         />{' '}
         <CardContent>
           <Typography
-            variant="body1"
+            variant="h6"
             color="text.secondary"
             style={{
               minHeight: '100px',
@@ -87,7 +94,7 @@ const EventCard: React.FC<EventProps> = ({
         </CardContent>
         <div className="register-button">
           <RoleBasedAccessControl allowedRoles={[Role.Student]} unauthorizedAuthenticatedComponent={<></>}>
-            <RegisterStudentToEvent eventId={id} eventDate={startDate} />
+            <RegisterStudentToEvent eventId={id} eventDate={endDate} />
           </RoleBasedAccessControl>
         </div>
         <CardActions disableSpacing>

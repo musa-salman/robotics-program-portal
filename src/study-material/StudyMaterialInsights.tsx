@@ -63,10 +63,9 @@ import formatDate from '../utils/dateFormatter';
 //   }
 // ];
 
-
 interface CategoryInsights {
-  category:Category;
-  count:number;
+  category: Category;
+  count: number;
 }
 
 const studyMaterialInsights: InsightData = {
@@ -75,53 +74,52 @@ const studyMaterialInsights: InsightData = {
     {
       question: 'איך מחולקים חומרי הלימוד לפי קטגוריות?',
       generateGraph: () => {
-        const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] |null>(null)
-        const [categories, setCategories] = useState<Category[] | null>(null); 
-        const [categoryInsights,setCategoryInsights]=useState<{ id: string; value: number; label: string }[]>([]);         
+        const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
+        const [categories, setCategories] = useState<Category[] | null>(null);
+        const [categoryInsights, setCategoryInsights] = useState<{ id: string; value: number; label: string }[]>([]);
         const studyMaterialManagement = useMaterialService();
         useEffect(() => {
-          
-          if(categories === null){
-            studyMaterialManagement.categoryRepository.find().then((data)=>{
-              setCategories(data);
-            }).catch((error)=>{
-              console.log("error while git categories");
-            });
-            
+          if (categories === null) {
+            studyMaterialManagement.categoryRepository
+              .find()
+              .then((data) => {
+                setCategories(data);
+              })
+              .catch((error) => {
+                console.log('error while git categories');
+              });
           }
-          if(studyMaterials === null){
-            studyMaterialManagement.studyMaterialRepository.find().then((data)=>{
-              setStudyMaterials(data);
-            }).catch((error)=>{
-              console.log("error while git studyMaterial");
-            });
+          if (studyMaterials === null) {
+            studyMaterialManagement.studyMaterialRepository
+              .find()
+              .then((data) => {
+                setStudyMaterials(data);
+              })
+              .catch((error) => {
+                console.log('error while git studyMaterial');
+              });
           }
-          if(studyMaterials !== null && categories !== null){
-            
+          if (studyMaterials !== null && categories !== null) {
             const categoryInsightsArray = categories.map((category) => {
               return {
                 category: category,
-                count: studyMaterials.filter((material) => material.category === category.category).length,
+                count: studyMaterials.filter((material) => material.category === category.category).length
               };
             });
-            const categoryCount =categoryInsightsArray.map((index)=>({
+            const categoryCount = categoryInsightsArray.map((index) => ({
               id: index.category.id,
               value: index.count,
               label: index.category.category
-              
             }));
             setCategoryInsights(categoryCount);
-            console.log("ca",categoryCount);
+            console.log('ca', categoryCount);
           }
-      
-
-
-        },[categories,studyMaterials]);
-        if(categories === null || studyMaterials === null){
+        }, [categories, studyMaterials]);
+        if (categories === null || studyMaterials === null) {
           return <div>Loading...</div>;
         }
         return (
-          <> 
+          <>
             <PieChart
               series={[
                 {
@@ -139,27 +137,28 @@ const studyMaterialInsights: InsightData = {
     {
       question: 'כיצד השתנו ההוספות של חומרי לימוד לאורך זמן?',
       generateGraph: () => {
-        const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] |null>(null)
-        const [categories, setCategories] = useState<Category[] | null>(null); 
-        const [studyMaterialCountByDate,setStudyMaterialCountByDate]=useState<Record<string, number>>();         
+        const [studyMaterials, setStudyMaterials] = useState<StudyMaterial[] | null>(null);
+        const [categories, setCategories] = useState<Category[] | null>(null);
+        const [studyMaterialCountByDate, setStudyMaterialCountByDate] = useState<Record<string, number>>();
         const studyMaterialManagement = useMaterialService();
 
         useEffect(() => {
-          
-          
-          if(studyMaterials === null){
-            studyMaterialManagement.studyMaterialRepository.find().then((data)=>{
-              setStudyMaterials(data);
-            }).catch((error)=>{
-              console.log("error while git studyMaterial");
-            });
+          if (studyMaterials === null) {
+            studyMaterialManagement.studyMaterialRepository
+              .find()
+              .then((data) => {
+                setStudyMaterials(data);
+              })
+              .catch((error) => {
+                console.log('error while git studyMaterial');
+              });
           }
-          if(studyMaterials !== null ){
+          if (studyMaterials !== null) {
             const studyMaterialCount = studyMaterials.reduce(
               (acc, material) => {
                 const date = new Date(material.date);
                 const year = date.getUTCFullYear();
-                const month = String(date.getUTCMonth() + 1).padStart(2, '0'); 
+                const month = String(date.getUTCMonth() + 1).padStart(2, '0');
                 const day = String(date.getUTCDate()).padStart(2, '0');
                 const formattedDate = `${year}-${month}-${day}`;
                 console.log(formatDate);
@@ -169,24 +168,16 @@ const studyMaterialInsights: InsightData = {
               {} as Record<string, number>
             );
             setStudyMaterialCountByDate(studyMaterialCount);
-            
           }
-      
-
-
-        },[studyMaterials]);
-        if( studyMaterials === null){
+        }, [studyMaterials]);
+        if (studyMaterials === null) {
           return <div>Loading...</div>;
         }
-        
 
-
-        
-
-        console.log("f",studyMaterialCountByDate);
+        console.log('f', studyMaterialCountByDate);
         return (
           <>
-            {studyMaterialCountByDate !== undefined &&
+            {studyMaterialCountByDate !== undefined && (
               <LineChart
                 xAxis={[
                   {
@@ -204,11 +195,11 @@ const studyMaterialInsights: InsightData = {
                 ]}
                 height={200}
               />
-            }
-        </>
+            )}
+          </>
         );
       }
-    },
+    }
     // {
     //   question: 'כמות חומרי הלימוד בכל קטגוריה?',
     //   generateGraph: () => {

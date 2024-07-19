@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Card, CardActions, CardContent } from '@mui/material';
+import { Button, Card, CardActions, CardContent, TextField } from '@mui/material';
 import { useDocumentInfoService } from './service/DocumentInfoContext';
 import DocumentCard from './DocumentCard';
 import { Add } from '@mui/icons-material';
@@ -10,10 +10,12 @@ import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackB
 
 const DocumentsPage: React.FC = () => {
   const [documents, setDocuments] = useState<DocumentInfo[] | undefined>(undefined);
+  const [filteredDocuments, setFilteredDocuments] = useState<DocumentInfo[]>([]);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
   const [buildNumber, setBuildNumber] = useState<number>(0);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const documentInfoService = useDocumentInfoService();
   const { user } = useContext(AuthContext);
@@ -28,11 +30,22 @@ const DocumentsPage: React.FC = () => {
       .find()
       .then((docs) => {
         setDocuments(docs);
+        setFilteredDocuments(docs);
       })
       .catch(() => {
         showMessage({ message: 'שגיאה בטעינת המסמכים', variant: 'error' });
       });
   }, [documentInfoService]);
+
+  useEffect(() => {
+    if (documents) {
+      let filtered = documents.filter((doc) => doc.name.toLowerCase().includes(searchQuery.toLowerCase()));
+
+      filtered = filtered.sort((a, b) => a.name.localeCompare(b.name));
+
+      setFilteredDocuments(filtered);
+    }
+  }, [searchQuery, documents]);
 
   const showMessage = (message: FeedbackMessage) => {
     setMessage(message);
@@ -111,7 +124,7 @@ const DocumentsPage: React.FC = () => {
       });
   };
 
-  const handleStudentUpload = (documentId: string, file: File) => {
+  const handleStudentUpload = (document: DocumentInfo, file: File) => {
     if (!documentInfoService) {
       return Promise.resolve();
     }
@@ -121,7 +134,7 @@ const DocumentsPage: React.FC = () => {
     }
 
     return documentInfoService
-      .uploadStudentDocument(user.id, documentId, file)
+      .uploadStudentDocument(user.id, document, file)
       .then(() => {
         showMessage({ message: 'המסמך הועלה בהצלחה', variant: 'success' });
       })
@@ -134,24 +147,33 @@ const DocumentsPage: React.FC = () => {
     <>
       {message && <FeedbackSnackbar key={buildNumber.toString()} feedBackMessage={message} />}
       <DocumentFormModal open={show} handleClose={() => setShow(false)} onSaveDocument={handleDocumentAdd} />
-      <Card sx={{ maxWidth: 600, margin: '1rem' }}>
-        <CardActions>
-          <Button variant="contained" color="primary" startIcon={<Add />} onClick={handleShow}>
-            הוסף מסמך
-          </Button>
-        </CardActions>
-        <CardContent>
-          {documents?.map((doc) => (
-            <DocumentCard
-              key={doc.id}
-              documentInfo={doc}
-              onDocumentDelete={handleDocumentDelete}
-              onDocumentUpdate={handleDocumentUpdate}
-              onStudentUpload={handleStudentUpload}
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Card sx={{ minWidth: '1500px', minHeight: '700px', margin: '1rem', backgroundColor: 'background.default' }}>
+          <CardActions>
+            <Button variant="contained" color="primary" startIcon={<Add />} onClick={handleShow}>
+              הוסף מסמך
+            </Button>
+            <TextField
+              label="חפש מסמך"
+              variant="outlined"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{ marginLeft: '1rem' }}
             />
-          ))}
-        </CardContent>
-      </Card>
+          </CardActions>
+          <CardContent>
+            {filteredDocuments.map((doc) => (
+              <DocumentCard
+                key={doc.id}
+                documentInfo={doc}
+                onDocumentDelete={handleDocumentDelete}
+                onDocumentUpdate={handleDocumentUpdate}
+                onStudentUpload={handleStudentUpload}
+              />
+            ))}
+          </CardContent>
+        </Card>
+      </div>
     </>
   );
 };

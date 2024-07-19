@@ -15,7 +15,6 @@ type EventContainer = {
 
 const EventContainer = () => {
   const [events, setEvents] = useState<EventProps[] | null>(null);
-  console.log(events);
   const [animatingEvents, setAnimatingEvents] = useState<{ [key: string]: boolean }>({});
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -143,63 +142,67 @@ const EventContainer = () => {
   }
 
   return (
-    <div className="events">
-      <div className="events-header-button">
-        <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
-          <AddEvent addEvent={addEvent} />
-        </RoleBasedAccessControl>
-        <Input
-          placeholder="חיפוש אירועים לפי שם או תאריך או פרטים..."
-          onChange={(e) => setSearchQuery(e.target.value)}
-          style={{ width: '50%' }}
-        />
-        <Button
-          onClick={() => {
-            setSortField('date');
-            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-          }}>
-          מיין לפי תאריך {sortDirection === 'asc' && sortField === 'date' ? '↑' : '↓'}
-        </Button>
-        <Button
-          onClick={() => {
-            setSortField('title');
-            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-          }}>
-          מיין לפי כותרת {sortDirection === 'asc' && sortField === 'title' ? '↑' : '↓'}
-        </Button>
+    <Box className="mat-in-box" sx={{ marginTop: '20px', borderRadius: '5px' }}>
+      <div className="events">
+        <div className="events-all">
+          <div className="events-header-button">
+            <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
+              <AddEvent addEvent={addEvent} />
+            </RoleBasedAccessControl>
+            <Input
+              placeholder="חיפוש אירועים לפי שם או תאריך או פרטים..."
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{ width: '70%' }}
+            />
+            <Button
+              onClick={() => {
+                setSortField('date');
+                setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+              }}>
+              מיין לפי תאריך {sortDirection === 'asc' && sortField === 'date' ? '↑' : '↓'}
+            </Button>
+            <Button
+              onClick={() => {
+                setSortField('title');
+                setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+              }}>
+              מיין לפי כותרת {sortDirection === 'asc' && sortField === 'title' ? '↑' : '↓'}
+            </Button>
+          </div>
+          <div className="events-container-show-all-events-style">
+            {filteredEvents
+              ? filteredEvents.map((event) => (
+                  <EventCard
+                    key={event.id}
+                    id={event.id}
+                    startDate={event.startDate}
+                    endDate={event.endDate}
+                    title={event.title}
+                    details={event.details}
+                    image={event.image}
+                    onEventDelete={onEventDelete}
+                    onEventEdit={onEventEdit}
+                    animating={animatingEvents[event.id]}
+                  />
+                ))
+              : events?.map((event) => (
+                  <EventCard
+                    key={event.id}
+                    id={event.id}
+                    startDate={event.startDate}
+                    endDate={event.endDate}
+                    title={event.title}
+                    details={event.details}
+                    image={event.image}
+                    onEventDelete={onEventDelete}
+                    onEventEdit={onEventEdit}
+                    animating={animatingEvents[event.id]}
+                  />
+                ))}
+          </div>
+        </div>
       </div>
-      <div className="events-container-show-all-events-style">
-        {filteredEvents
-          ? filteredEvents.map((event) => (
-              <EventCard
-                key={event.id}
-                id={event.id}
-                startDate={event.startDate}
-                endDate={event.endDate}
-                title={event.title}
-                details={event.details}
-                image={event.image}
-                onEventDelete={onEventDelete}
-                onEventEdit={onEventEdit}
-                animating={animatingEvents[event.id]}
-              />
-            ))
-          : events?.map((event) => (
-              <EventCard
-                key={event.id}
-                id={event.id}
-                startDate={event.startDate}
-                endDate={event.endDate}
-                title={event.title}
-                details={event.details}
-                image={event.image}
-                onEventDelete={onEventDelete}
-                onEventEdit={onEventEdit}
-                animating={animatingEvents[event.id]}
-              />
-            ))}
-      </div>
-    </div>
+    </Box>
   );
 };
 

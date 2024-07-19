@@ -94,6 +94,11 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
       return;
     }
 
+    if (event.startDate > event.endDate) {
+      alert('תאריך התחלה צריך להיות לפני תאריך סיום');
+      return;
+    }
+
     setShowModalEdit(false);
     if (file) {
       storageService.upload(file, '/event-img/' + id).then(() => {

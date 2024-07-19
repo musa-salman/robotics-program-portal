@@ -1,8 +1,40 @@
+.boxBar {
+  display: flex;
+  align-items: center;
+  height: 80%;
+  min-height: fit-content;
+  width: 100%;
+  padding: 20px;
+  backdrop-filter: blur(20px);
+  /* background-color: rgb(15, 14, 14); */
+  background-color: transparent;
+
+  /* border-bottom: 2px solid; */
+  /* border: 8px solid rgba(255, 255, 255, 0.2); */
+  /* border-radius: 10px; */
+  /* box-shadow: 2px 2px 1px 3px rgba(235, 19, 19, 0.2); */
+  /* rgba(235, 19, 19, 0.2); */
+}
+
 .logo {
-  margin-left: 20px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer; /* Makes it clear the avatar is clickable */
+  border-radius: 50%; /* Ensures the avatar is always circular, even if the source image isn't */
+  object-fit: cover; /* Ensures the image covers the area without being stretched */
+  transition: transform 0.3s ease; /* Adds a smooth transition effect on hover */
+}
+
+.logo:hover {
+  transform: scale(1.1); /* Slightly enlarges the avatar on hover */
 }
 
 .nav-links a {
   text-decoration: none;
   margin-right: 20px;
+  color: #ffffff;
+}
+
+.nav-links a:hover {
+  color: #ff5100;
 }

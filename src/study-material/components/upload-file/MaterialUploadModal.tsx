@@ -245,7 +245,7 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
                   startAdornment: (
                     <InputAdornment position="start">
                       <input
-                        accept="*"
+                        accept="image/*,.pdf,.ppt,.pptx,.zip"
                         style={{ display: 'none' }}
                         id="upload-file"
                         type="file"

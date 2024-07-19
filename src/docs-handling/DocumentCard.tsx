@@ -14,7 +14,7 @@ interface DocumentCardProps {
   documentInfo: DocumentInfo;
   onDocumentDelete: (documentId: string) => void;
   onDocumentUpdate: (document: DocumentInfo, file?: File) => Promise<void>;
-  onStudentUpload: (documentId: string, file: File) => Promise<void>;
+  onStudentUpload: (document: DocumentInfo, file: File) => Promise<void>;
 }
 
 const DocumentCard: React.FC<DocumentCardProps> = ({
@@ -60,10 +60,11 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
   };
 
   const handleUpload = () => {
-    onStudentUpload(documentInfo.id, file!)
+    onStudentUpload(documentInfo, file!)
       .then(() => {
         setIsFileUploaded(true);
         setFile(null);
+
         showMessage({ message: 'הקובץ הועלה בהצלחה', variant: 'success' });
       })
       .catch(() => {

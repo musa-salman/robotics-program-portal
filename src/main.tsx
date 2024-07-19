@@ -17,14 +17,16 @@ const theme = createTheme({
       main: '#F2542D'
     },
     secondary: {
-      main: '#f48fb1'
+      main: '#aeb29b'
+      // b6b8a9
     },
     error: {
       main: '#f44336'
     },
     background: {
-      default: '#3f3f3f',
-      paper: '#082032'
+      default: '#242424',
+      paper: '#3d3d3d'
+      // 6e6e6d
     },
     text: {
       primary: '#fff',
@@ -72,6 +74,13 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           direction: 'rtl'
+        }
+      }
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          color: 'black'
         }
       }
     }

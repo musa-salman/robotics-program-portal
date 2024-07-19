@@ -33,7 +33,9 @@ const Footer: React.FC<FooterProps> = ({ socialMedia, copyright }) => {
           ))}
         </div>
         <div className="footer-links">
-          <Typography variant="body2" style={{ marginTop: '10px', color: 'white' }}>
+          <Typography
+            variant="body2"
+            style={{ marginTop: '10px', color: 'white', display: 'flex', alignItems: 'center' }}>
             {copyright}
           </Typography>
         </div>
