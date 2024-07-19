@@ -11,7 +11,6 @@ import DeleteModal from '../DeleteModal';
 import { useTheme } from '@mui/material/styles';
 import FeedbackSnackbar, { FeedbackMessage } from '../../components/snackbar/SnackBar';
 import EditModel from './EditModel';
-import customColor from '../../utils/customTheme';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -178,8 +177,12 @@ function MaterialCard({
                 isEditing={isEditing}
               />
             }
-            title={studyMaterial.title}
             className="title-card"
+            title={
+              <Typography variant="h5" component="div" style={{ color: theme.palette.primary.main }}>
+                {studyMaterial.title}
+              </Typography>
+            }
           />
           <Divider component="div" variant="fullWidth" style={{ backgroundColor: 'black', height: '2px' }} />
           <div>

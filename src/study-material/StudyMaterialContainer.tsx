@@ -160,6 +160,14 @@ function StudyMaterialContainer() {
             />
           )}
           <div className="btn-search">
+            <div className="btns">
+              <Button variant="contained" aria-label="add" onClick={handleShow}>
+                <AddIcon />
+              </Button>
+              <Button variant="outlined" aria-label="edit" onClick={handleShowEdit}>
+                <SettingsIcon />
+              </Button>
+            </div>
             <div className="search">
               <SearchBar
                 studyMaterials={studyMaterials || []}
@@ -167,14 +175,6 @@ function StudyMaterialContainer() {
                 query={query}
                 setQuery={setQuery}
               />
-            </div>
-            <div className="btns">
-              <Button variant="outlined" aria-label="edit" onClick={handleShowEdit}>
-                <SettingsIcon />
-              </Button>
-              <Button variant="contained" aria-label="add" onClick={handleShow}>
-                <AddIcon />
-              </Button>
             </div>
           </div>
 
