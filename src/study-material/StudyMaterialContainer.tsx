@@ -58,9 +58,7 @@ function StudyMaterialContainer() {
         .find()
         .then((categories) => {
           setCategoryList(categories);
-          if (firstButtonRef.current) {
-            // firstButtonRef.current.focus();
-          }
+          setSelectedCategories(categories.map((category) => category.category));
         })
         .catch(() => {
           showMessage({
@@ -189,7 +187,7 @@ function StudyMaterialContainer() {
             <NoResultFound />
           ) : (
             (categories || [])
-              .filter((category) => selectedCategories.includes('הכל'))
+              .filter((category) => selectedCategories.includes(category))
               .filter((category) => {
                 if (category === 'הכל') {
                   return false; // Skip this iteration
