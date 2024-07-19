@@ -48,7 +48,7 @@ function StudyMaterialContainer() {
       return materialService.studyMaterialRepository
         .find()
         .then((materials) => {
-          const sortedMaterials = materials.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+          const sortedMaterials = materials.sort((b, a) => new Date(b.date).getTime() - new Date(a.date).getTime());
           setStudyMaterials(sortedMaterials);
         })
         .catch(() => {
@@ -166,6 +166,16 @@ function StudyMaterialContainer() {
             />
           )}
           <div className="btn-search">
+            <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
+              <div className="btns">
+                <Button variant="contained" aria-label="add" onClick={handleShow}>
+                  <AddIcon />
+                </Button>
+                <Button variant="outlined" aria-label="edit" onClick={handleShowEdit}>
+                  <SettingsIcon />
+                </Button>
+              </div>
+            </RoleBasedAccessControl>
             <div className="search">
               <SearchBar
                 studyMaterials={studyMaterials || []}
@@ -174,16 +184,6 @@ function StudyMaterialContainer() {
                 setQuery={setQuery}
               />
             </div>
-            <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
-              <div className="btns">
-                <Button variant="outlined" aria-label="edit" onClick={handleShowEdit}>
-                  <SettingsIcon />
-                </Button>
-                <Button variant="contained" aria-label="add" onClick={handleShow}>
-                  <AddIcon />
-                </Button>
-              </div>
-            </RoleBasedAccessControl>
           </div>
 
           <div className="con-taf">

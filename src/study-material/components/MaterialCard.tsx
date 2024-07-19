@@ -11,7 +11,6 @@ import DeleteModal from '../DeleteModal';
 import { useTheme } from '@mui/material/styles';
 import FeedbackSnackbar, { FeedbackMessage } from '../../components/snackbar/SnackBar';
 import EditModel from './EditModel';
-import customColor from '../../utils/customTheme';
 import RoleBasedAccessControl from '../../authentication/components/RoleBasedAccessControl';
 import Role from '../../authentication/components/Roles';
 
@@ -184,9 +183,12 @@ function MaterialCard({
                 />
               </RoleBasedAccessControl>
             }
-            title={studyMaterial.title}
-            style={{ color: theme.palette.primary.main }}
             className="title-card"
+            title={
+              <Typography variant="h5" component="div" style={{ color: theme.palette.primary.main }}>
+                {studyMaterial.title}
+              </Typography>
+            }
           />
           <Divider component="div" variant="fullWidth" style={{ backgroundColor: 'black', height: '2px' }} />
           <div>
