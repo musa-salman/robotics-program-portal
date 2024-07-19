@@ -13,6 +13,7 @@ import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { CircularProgress } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 export interface EventProps {
   startDate: Date;
@@ -38,6 +39,7 @@ const EventCard: React.FC<EventProps> = ({
   animating
 }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const theme = useTheme();
 
   return (
     <div className={`event-card ${animating ? 'zoom-out' : 'zoom-in'}`}>
@@ -59,7 +61,7 @@ const EventCard: React.FC<EventProps> = ({
             </IconButton>
           }
           title={
-            <Typography variant="h5" component="div" style={{ minHeight: '32px' }}>
+            <Typography variant="h5" component="div" style={{ minHeight: '32px', color: theme.palette.primary.main }}>
               {title}
             </Typography>
           }
