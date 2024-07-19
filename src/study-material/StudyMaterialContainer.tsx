@@ -47,7 +47,7 @@ function StudyMaterialContainer() {
       return materialService.studyMaterialRepository
         .find()
         .then((materials) => {
-          const sortedMaterials = materials.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+          const sortedMaterials = materials.sort((b, a) => new Date(b.date).getTime() - new Date(a.date).getTime());
           setStudyMaterials(sortedMaterials);
         })
         .catch(() => {
