@@ -5,6 +5,7 @@ import Header from './Header';
 
 const Layout = () => {
   const headerLinks = [
+    { name: 'בית', path: '/' },
     { name: 'אירועים', path: '/events' },
     { name: 'חומרי למידה', path: '/study-materials' },
     { name: 'נהול תלמדים', path: '/students-management' },

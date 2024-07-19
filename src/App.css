@@ -1,3 +1,28 @@
 #root {
   width: 100%;
 }
+
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #3d3d3d; /* Same as paper background */
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #3d3d3d;
+  border-radius: 10px;
+  border: 3px solid #f2542d;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #aeb29b; /* Secondary color on hover */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #f2542d #3d3d3d;
+}
