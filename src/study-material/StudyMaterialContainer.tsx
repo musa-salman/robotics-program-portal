@@ -48,7 +48,7 @@ function StudyMaterialContainer() {
       return materialService.studyMaterialRepository
         .find()
         .then((materials) => {
-          const sortedMaterials = materials.sort((b, a) => new Date(b.date).getTime() - new Date(a.date).getTime());
+          const sortedMaterials = sortStudyMaterials(materials);
           setStudyMaterials(sortedMaterials);
         })
         .catch(() => {
@@ -76,6 +76,14 @@ function StudyMaterialContainer() {
     if (categoryList === null) getCategories();
   }, [materialService, studyMaterials, categoryList]);
 
+  const sortCategories = (categories: string[]) => {
+    return categories.sort((a, b) => a.localeCompare(b));
+  };
+
+  const sortStudyMaterials = (materials: StudyMaterial[]) => {
+    return materials.sort((a, b) => b.title.localeCompare(a.title));
+  };
+
   const showMessage = (message: FeedbackMessage) => {
     setMessage(message);
     setBuildNumber(buildNumber + 1);
@@ -86,16 +94,16 @@ function StudyMaterialContainer() {
     const updatedMaterials = (studyMaterials || []).map((material) =>
       material.id === updatedMaterial.id ? updatedMaterial : material
     );
-    setStudyMaterials(updatedMaterials);
+    setStudyMaterials(sortStudyMaterials(updatedMaterials));
   };
 
   const handleDelete = (deletedStudy: StudyMaterial) => {
     const updatedMaterials = (studyMaterials || []).filter((material) => material.id !== deletedStudy.id);
-    setStudyMaterials(updatedMaterials);
+    setStudyMaterials(sortStudyMaterials(updatedMaterials));
   };
 
   const handleAdd = (studyMaterial: StudyMaterial) => {
-    setStudyMaterials((prevMaterials) => [...(prevMaterials || []), studyMaterial]);
+    setStudyMaterials((prevMaterials) => sortStudyMaterials([studyMaterial, ...(prevMaterials || [])]));
   };
 
   const handleCategorySelect = (category: string) => {
@@ -123,7 +131,7 @@ function StudyMaterialContainer() {
         const updatedStudyMaterials = studyMaterials!.map((material) =>
           material.id === selectedMaterial!.id ? { ...material, category: categorySelected.category } : material
         );
-        setStudyMaterials(updatedStudyMaterials);
+        setStudyMaterials(sortStudyMaterials(updatedStudyMaterials));
         showMessage({
           message: 'החומר הועבר בהצלחה!',
           variant: 'success'
@@ -151,8 +159,6 @@ function StudyMaterialContainer() {
 
   categories = ['הכל', ...categories.filter((c) => c !== 'הכל')];
 
-  console.log('catergories', categories);
-  console.log('catergory list', categoryList);
   return (
     <>
       {message && <FeedbackSnackbar key={message.message} feedBackMessage={message} />}
