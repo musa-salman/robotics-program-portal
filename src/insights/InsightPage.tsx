@@ -8,7 +8,6 @@ import registerInsights from '../registers-management/RegisterInsights';
 import userInsights from '../users/UserInsights';
 import InsightCard from './InsightCard';
 import studyMaterialInsights from '../study-material/StudyMaterialInsights';
-import documentInsights from '../docs-handling/DocumentInsights';
 import eventInsights from '../events/EventInsights';
 
 interface InsightCardProps {

@@ -20,7 +20,6 @@ const registerInsightList: InsightData = {
           }
         }, [registerService]);
 
-        console.log(majorRegistrations);
         return (
           <PieChart
             series={[
