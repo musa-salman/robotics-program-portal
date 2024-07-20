@@ -29,7 +29,6 @@ const registerInsightList: InsightData = {
                 faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
               }
             ]}
-            height={200}
           />
         );
       }
