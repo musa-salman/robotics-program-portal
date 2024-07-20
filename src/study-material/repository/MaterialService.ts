@@ -3,6 +3,7 @@ import { StudyMaterialRepository } from './StudyMaterialRepository';
 import { WriteBatch, doc, writeBatch } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { StudyMaterial } from './StudyMaterial';
+import { Category } from './Category';
 
 export interface IMaterialService {
   /**
@@ -22,11 +23,11 @@ export interface IMaterialService {
 
   /**
    * Renames a category.
-   * @param oldCategory - The current name of the category.
+   * @param oldCategory - The old category to rename.
    * @param newCategory - The new name for the category.
    * @returns A promise that resolves when the category is renamed.
    */
-  renameCategory(oldCategory: string, newCategory: string): Promise<void>;
+  renameCategory(oldCategory: Category, newCategory: string): Promise<void>;
 }
 
 /**
@@ -72,17 +73,11 @@ export class MaterialService implements IMaterialService {
     return this.studyMaterialRepository.update(studyMaterial.id, { ...studyMaterial, category: newCategory });
   }
 
-  async renameCategory(oldCategory: string, newCategory: string): Promise<void> {
+  async renameCategory(oldCategory: Category, newCategory: string): Promise<void> {
     const batch = writeBatch(db);
 
-    const category = await this.categoryRepository
-      .find()
-      .then((categories) => categories.find((category) => category.category === oldCategory));
-    if (!category) {
-      return;
-    }
-    this._moveStudyMaterials(oldCategory, newCategory, batch);
-    batch.update(doc(this.categoryRepository._collection, category.id), { category: newCategory });
+    this._moveStudyMaterials(oldCategory.category, newCategory, batch);
+    batch.update(doc(this.categoryRepository._collection, oldCategory.id), { category: newCategory });
     return batch.commit();
   }
 }

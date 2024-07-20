@@ -99,13 +99,17 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
 
   const handleSaveItem = (item: Category) => {
     if (!checkRepeat(selectedCategory) && selectedCategory !== item.category) {
+      showMessage({
+        message: 'הקטגוריה קיימת כבר',
+        variant: 'error'
+      });
     } else if (item.category === updatedCategory?.category && selectedCategory !== '') {
       const edit: Category = {
         category: selectedCategory,
         id: item.id
       };
       studyMaterialManagement
-        .renameCategory(item.id, selectedCategory)
+        .renameCategory(item, selectedCategory)
         .then(() => {
           setCategories((prevCategories) => {
             if (prevCategories === null) {
@@ -122,6 +126,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
           });
         })
         .catch(() => {
+          console.log('error', item.category, selectedCategory);
           showMessage({
             message: 'הקטגוריה לא עודכנה',
             variant: 'error'
