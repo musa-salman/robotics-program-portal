@@ -171,7 +171,6 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
   return (
     <>
       {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
-      {/* {showDeleteModal && <DeleteModal onDelete={handleDelete} onCancel={() => setShowDeleteModal(false)} message={"האם אתה בטוח שברצונך למחוק את קטגוריה הזו"}/>} */}
       <Box
         sx={{
           position: 'absolute',
@@ -219,6 +218,8 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
                 .filter((item) => item.category !== 'הכל')
                 .map((item) => (
                   <>
+                    {showDeleteModal && <DeleteModal onDelete={()=>{setShowDeleteModal(false);handleDeleteCategory(item);}} onCancel={() => setShowDeleteModal(false)} message={"האם אתה בטוח שברצונך למחוק את קטגוריה הזו"}/>}
+
                     <Grid xs={11.6} key={item.category} style={{ paddingTop: '1rem' }}>
                       <TextField
                         fullWidth
@@ -248,7 +249,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
                                   <SaveIcon />
                                 </Button>
                               )}
-                              <Button onClick={() => handleDeleteCategory(item)}>
+                              <Button onClick={() => setShowDeleteModal(true)}>
                                 <DeleteIcon />
                               </Button>
                             </InputAdornment>
