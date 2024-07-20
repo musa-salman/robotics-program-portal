@@ -20,7 +20,7 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
   );
 
   const [file, setFile] = useState<File | undefined>(undefined);
-
+  const [isDone, setIsDone] = useState(false);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     setFile(e.target.files[0]);
@@ -39,6 +39,10 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
   };
 
   const handleSubmit = () => {
+    if (!documentInfo.name || (!file && !initialDocument)) {
+      return;
+    }
+
     onSaveDocument(documentInfo, file).then(() => {
       handleFileCancel();
 
@@ -86,7 +90,15 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
           flexDirection: 'column',
           gap: 2
         }}>
-        <TextField label="שם המסמך" name="name" value={documentInfo.name} onChange={handleChange} fullWidth />
+        <TextField
+          label="שם המסמך"
+          name="name"
+          value={documentInfo.name}
+          onChange={handleChange}
+          fullWidth
+          error={!documentInfo.name}
+          helperText={!documentInfo.name ? 'שדה חובה' : ''}
+        />
 
         <InputLabel htmlFor="upload-file">
           <Typography variant="body2" component="span">
@@ -99,6 +111,7 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
             id="upload-file"
             type="file"
             hidden
+            error={!file && !initialDocument}
             inputProps={{
               accept:
                 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'

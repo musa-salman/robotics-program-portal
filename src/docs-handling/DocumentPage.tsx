@@ -7,6 +7,8 @@ import DocumentFormModal from './DocumentForm';
 import { AuthContext } from '../authentication/services/AuthContext';
 import { DocumentInfo } from './service/DocumentInfo';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
+import Role from '../authentication/components/Roles';
+import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
 
 const DocumentsPage: React.FC = () => {
   const [documents, setDocuments] = useState<DocumentInfo[] | undefined>(undefined);
@@ -147,12 +149,17 @@ const DocumentsPage: React.FC = () => {
     <>
       {message && <FeedbackSnackbar key={buildNumber.toString()} feedBackMessage={message} />}
       <DocumentFormModal open={show} handleClose={() => setShow(false)} onSaveDocument={handleDocumentAdd} />
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', border: '4px solid black' }}>
         <Card sx={{ minWidth: '1500px', minHeight: '700px', margin: '1rem', backgroundColor: 'background.default' }}>
           <CardActions>
-            <Button variant="contained" color="primary" startIcon={<Add />} onClick={handleShow}>
-              הוסף מסמך
-            </Button>
+            <RoleBasedAccessControl
+              allowedRoles={[Role.Admin, Role.Owner]}
+              unauthorizedAuthenticatedComponent={<></>}
+              unauthorizedUnauthenticatedComponent={<></>}>
+              <Button variant="contained" color="primary" startIcon={<Add />} onClick={handleShow}>
+                הוסף מסמך
+              </Button>
+            </RoleBasedAccessControl>
             <TextField
               label="חפש מסמך"
               variant="outlined"

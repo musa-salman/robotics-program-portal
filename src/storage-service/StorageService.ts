@@ -7,7 +7,7 @@ export class StorageService implements IStorageService {
 
   upload(file: File, path: string): Promise<UploadResult> {
     return uploadBytes(ref(storage, path), file).then((uploadResult) => {
-      this.existingPaths.set(path, true);
+      // this.existingPaths.set(path, true);
       return uploadResult;
     });
   }
@@ -39,22 +39,22 @@ export class StorageService implements IStorageService {
 
   delete(path: string): Promise<void> {
     return deleteObject(ref(storage, path)).then(() => {
-      this.existingPaths.delete(path);
+      // this.existingPaths.delete(path);
     });
   }
 
   exists(path: string): Promise<boolean> {
-    if (this.existingPaths.has(path)) {
-      return Promise.resolve(this.existingPaths.get(path)!);
-    }
+    // if (this.existingPaths.has(path)) {
+    //   return Promise.resolve(this.existingPaths.get(path)!);
+    // }
 
     return getDownloadURL(ref(storage, path))
       .then(() => {
-        this.existingPaths.set(path, true);
+        // this.existingPaths.set(path, true);
         return true;
       })
       .catch(() => {
-        this.existingPaths.set(path, false);
+        // this.existingPaths.set(path, false);
         return false;
       });
   }

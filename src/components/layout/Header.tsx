@@ -46,6 +46,18 @@ const Header: React.FC<HeaderProps> = ({ links }) => {
                   </Link>
                 </RoleBasedAccessControl>
               ))}
+              <RoleBasedAccessControl
+                allowedRoles={[Role.Admin, Role.Owner]}
+                unauthorizedAuthenticatedComponent={<></>}
+                unauthorizedUnauthenticatedComponent={<></>}>
+                <Link to="/students-management">ניהול משתמשים</Link>
+              </RoleBasedAccessControl>
+              <RoleBasedAccessControl
+                allowedRoles={[Role.Admin, Role.Owner]}
+                unauthorizedAuthenticatedComponent={<></>}
+                unauthorizedUnauthenticatedComponent={<></>}>
+                <Link to="/deep-inspection">סטטיסטיקות</Link>
+              </RoleBasedAccessControl>
             </nav>
             <Box flexGrow={1} />
             {user === null ? <LoginButton /> : <LogoutButton />}
