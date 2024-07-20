@@ -36,26 +36,33 @@ function StudyMaterialContainer() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const handleCloseAddEdit = () => setShowAddEdit(false);
   const handleShowEdit = () => setShowAddEdit(true);
   const [query, setQuery] = useState('');
 
   const [message, setMessage] = useState<FeedbackMessage | null>(null);
   const [buildNumber, setBuildNumber] = useState<number>(0);
 
+  const [reload, setReload] = useState(false);
+  const handleCloseAddEdit = () => {
+    setShowAddEdit(false);
+    setReload(true);
+  };
+
   useEffect(() => {
     const getStudyMaterials = () => {
       return materialService.studyMaterialRepository
         .find()
         .then((materials) => {
-          const sortedMaterials = materials.sort((b, a) => new Date(b.date).getTime() - new Date(a.date).getTime());
+          const sortedMaterials = sortStudyMaterials(materials);
           setStudyMaterials(sortedMaterials);
+          setReload(false);
         })
         .catch(() => {
           showMessage({
             message: 'התרחשה שגיעה בעת הבאת החומרים. אנא נסה שנית.',
             variant: 'error'
           });
+          setReload(false);
         });
     };
     const getCategories = () => {
@@ -64,17 +71,27 @@ function StudyMaterialContainer() {
         .then((categories) => {
           setCategoryList(categories);
           setSelectedCategories(categories.map((category) => category.category));
+          setReload(false);
         })
         .catch(() => {
           showMessage({
             message: 'התרחשה שגיעה בעת הבאת הקטגוריות. אנא נסה שנית.',
             variant: 'error'
           });
+          setReload(false);
         });
     };
-    if (studyMaterials === null) getStudyMaterials();
-    if (categoryList === null) getCategories();
-  }, [materialService, studyMaterials, categoryList]);
+    if (studyMaterials === null || reload) getStudyMaterials();
+    if (categoryList === null || reload) getCategories();
+  }, [materialService, studyMaterials, categoryList, reload]);
+
+  const sortCategories = (categories: string[]) => {
+    return categories.sort((a, b) => a.localeCompare(b));
+  };
+
+  const sortStudyMaterials = (materials: StudyMaterial[]) => {
+    return materials.sort((a, b) => b.title.localeCompare(a.title));
+  };
 
   const showMessage = (message: FeedbackMessage) => {
     setMessage(message);
@@ -86,16 +103,16 @@ function StudyMaterialContainer() {
     const updatedMaterials = (studyMaterials || []).map((material) =>
       material.id === updatedMaterial.id ? updatedMaterial : material
     );
-    setStudyMaterials(updatedMaterials);
+    setStudyMaterials(sortStudyMaterials(updatedMaterials));
   };
 
   const handleDelete = (deletedStudy: StudyMaterial) => {
     const updatedMaterials = (studyMaterials || []).filter((material) => material.id !== deletedStudy.id);
-    setStudyMaterials(updatedMaterials);
+    setStudyMaterials(sortStudyMaterials(updatedMaterials));
   };
 
   const handleAdd = (studyMaterial: StudyMaterial) => {
-    setStudyMaterials((prevMaterials) => [...(prevMaterials || []), studyMaterial]);
+    setStudyMaterials((prevMaterials) => sortStudyMaterials([studyMaterial, ...(prevMaterials || [])]));
   };
 
   const handleCategorySelect = (category: string) => {
@@ -123,7 +140,7 @@ function StudyMaterialContainer() {
         const updatedStudyMaterials = studyMaterials!.map((material) =>
           material.id === selectedMaterial!.id ? { ...material, category: categorySelected.category } : material
         );
-        setStudyMaterials(updatedStudyMaterials);
+        setStudyMaterials(sortStudyMaterials(updatedStudyMaterials));
         showMessage({
           message: 'החומר הועבר בהצלחה!',
           variant: 'success'
@@ -135,6 +152,11 @@ function StudyMaterialContainer() {
           variant: 'error'
         });
       });
+  };
+
+  const invalidateCache = () => {
+    setStudyMaterials(null);
+    setCategoryList(null);
   };
 
   if (studyMaterials === null) {
@@ -151,8 +173,6 @@ function StudyMaterialContainer() {
 
   categories = ['הכל', ...categories.filter((c) => c !== 'הכל')];
 
-  console.log('catergories', categories);
-  console.log('catergory list', categoryList);
   return (
     <>
       {message && <FeedbackSnackbar key={message.message} feedBackMessage={message} />}
@@ -241,9 +261,8 @@ function StudyMaterialContainer() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
             <CategoryManagement
-              categories={categoryList}
+              categoryList={categoryList}
               handleCloseCategoryManagement={handleCloseAddEdit}
-              setCategories={setCategoryList}
               handleSelect={() => {}}
             />
           </Modal>

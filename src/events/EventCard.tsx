@@ -46,8 +46,8 @@ const EventCard: React.FC<EventProps> = ({
       <Card
         className="cardIconButton"
         sx={{
-          maxWidth: 380,
-          minWidth: 380,
+          maxWidth: 480,
+          minWidth: 480,
           background: theme.palette.background.paper,
           boxShadow: `0 4px 8px ${theme.palette.primary.main}`
         }}>
@@ -99,12 +99,10 @@ const EventCard: React.FC<EventProps> = ({
             {details}
           </Typography>
         </CardContent>
-        <div className="register-button">
+        <CardActions disableSpacing>
           <RoleBasedAccessControl allowedRoles={[Role.Student]} unauthorizedAuthenticatedComponent={<></>}>
             <RegisterStudentToEvent eventId={id} eventDate={endDate} />
           </RoleBasedAccessControl>
-        </div>
-        <CardActions disableSpacing>
           <IconButton aria-label="show-registered-students">
             <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
               <ShowRegisteredStudents eventId={id} />

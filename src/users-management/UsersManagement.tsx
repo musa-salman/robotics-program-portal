@@ -132,7 +132,8 @@ const UsersManagement = () => {
               />
             )}
           </>
-        )
+        ),
+        valueGetter: (_, row) => row.roles.map((role: Role) => roleNames[role]).join(', ')
       },
       {
         field: 'actions',

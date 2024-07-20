@@ -6,9 +6,10 @@ import {
   GridRowModel,
   GridRowModesModel,
   GridValidRowModel,
-  GridRowSelectionModel
+  GridRowSelectionModel,
+  GridColumnVisibilityModel
 } from '@mui/x-data-grid';
-import { Box, Button, Dialog, DialogActions, DialogTitle, Modal, Typography } from '@mui/material';
+import { Box, Dialog, DialogTitle } from '@mui/material';
 import { heIL } from '@mui/x-data-grid/locales';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 import { BaseRepository } from '../repositories/BaseRepository';
@@ -55,6 +56,7 @@ interface CollectionTableProps<T> {
   messageFormat: MessageFormat<T>;
   onRowSelected?: (row: GridRowModel | null) => void;
   onDelete?: (item: T) => Promise<void>;
+  columnVisibilityModel?: GridColumnVisibilityModel;
 }
 
 const CollectionTable = <T extends { id: string }>({
@@ -64,10 +66,12 @@ const CollectionTable = <T extends { id: string }>({
   getItems,
   messageFormat,
   onRowSelected,
-  onDelete
+  onDelete,
+  columnVisibilityModel
 }: CollectionTableProps<T>) => {
   const [rows, setRows] = useState<(T & { isNew: boolean })[] | null>(null);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+  const [columnVisibility, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>(columnVisibilityModel || {});
   const [message, setMessage] = useState<FeedbackMessage | null>(null);
   const [buildNumber, setBuildNumber] = useState<number>(0);
   const [showAddItemForm, setShowItemForm] = useState(false);
@@ -130,7 +134,7 @@ const CollectionTable = <T extends { id: string }>({
       const selected = rows?.find((register) => register.id === selectedId) || null;
 
       const { isNew, ...selectedRow } = selected as any;
-      setSelectionModel([selectedId]);
+      setSelectionModel(selection.map((id) => id));
       onRowSelected(selectedRow);
     },
     [rows]
@@ -207,72 +211,68 @@ const CollectionTable = <T extends { id: string }>({
 
   return (
     <>
-      <Box className="mat-in-box" sx={{ marginTop: '20px', borderRadius: '5px' }}>
-        {itemDeletionConfirmation && (
-          <DeleteModal
-            onDelete={handleDelete}
-            onCancel={() => setDeleteConfirmation(undefined)}
-            message={messageFormat.deleteConfirmation(itemDeletionConfirmation!)}
-          />
-        )}
+      {itemDeletionConfirmation && (
+        <DeleteModal
+          onDelete={handleDelete}
+          onCancel={() => setDeleteConfirmation(undefined)}
+          message={messageFormat.deleteConfirmation(itemDeletionConfirmation!)}
+        />
+      )}
 
-        <Dialog
-          open={showAddItemForm}
-          onClose={() => setShowItemForm(false)}
-          fullWidth
-          maxWidth="sm"
-          className="dialog-container">
-          <DialogTitle
-            sx={{ fontSize: '40px', border: 'none', textAlign: 'center', backgroundColor: 'background.paper' }}>
-            עריכת פריט
-          </DialogTitle>
-          {FormComponent && initialItem && (
-            <FormComponent saveItem={updateItem} initialItem={initialItem} setShowItemForm={setShowItemForm} />
-          )}
-          {/* <DialogActions>
-          <Button onClick={() => setShowItemForm(false)} color="secondary">
-            בטל
-          </Button>
-        </DialogActions> */}
-        </Dialog>
-        <Box className="table-container">
-          <div className="data-grid-container">
-            <DataGrid
-              rows={rows || []}
-              columns={columns}
-              pageSizeOptions={[5, 10, 20, 50]}
-              editMode="row"
-              initialState={{
-                density: 'comfortable'
-              }}
-              slots={{
-                toolbar: CustomToolbar
-              }}
-              slotProps={{
-                toolbar: {
-                  onRefreshClick: handleRefresh,
-                  showQuickFilter: true
-                }
-              }}
-              rowModesModel={rowModesModel}
-              onRowModesModelChange={handleRowModesModelChange}
-              processRowUpdate={processRowUpdate}
-              onRowSelectionModelChange={handleRowSelection}
-              rowSelectionModel={selectionModel}
-              onProcessRowUpdateError={(error) => console.error(error)}
-              localeText={{
-                ...heIL.components.MuiDataGrid.defaultProps.localeText,
-                noRowsLabel: 'אין ניתונים להצגה',
-                columnsManagementReset: 'איפוס',
-                columnsManagementSearchTitle: 'חיפוש',
-                columnsManagementShowHideAllText: 'הצג/הסתר הכל'
-              }}
-              className="data-grid"
-            />
-          </div>
-        </Box>
-        {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
+      <Dialog
+        open={showAddItemForm}
+        onClose={() => setShowItemForm(false)}
+        fullWidth
+        maxWidth="sm"
+        className="dialog-container">
+        <DialogTitle
+          sx={{ fontSize: '40px', border: 'none', textAlign: 'center', backgroundColor: 'background.paper' }}>
+          עריכת פריט
+        </DialogTitle>
+        {FormComponent && initialItem && (
+          <FormComponent saveItem={updateItem} initialItem={initialItem} setShowItemForm={setShowItemForm} />
+        )}
+      </Dialog>
+      <Box className="table-container">
+        <div className="data-grid-container">
+          <DataGrid
+            rows={rows || []}
+            columns={columns}
+            pageSizeOptions={[5, 10, 20, 50]}
+            editMode="row"
+            initialState={{
+              density: 'comfortable'
+            }}
+            slots={{
+              toolbar: CustomToolbar
+            }}
+            slotProps={{
+              toolbar: {
+                onRefreshClick: handleRefresh,
+                showQuickFilter: true
+              }
+            }}
+            rowModesModel={rowModesModel}
+            onRowModesModelChange={handleRowModesModelChange}
+            processRowUpdate={processRowUpdate}
+            onRowSelectionModelChange={handleRowSelection}
+            rowSelectionModel={selectionModel}
+            onProcessRowUpdateError={(error) => console.error(error)}
+            localeText={{
+              ...heIL.components.MuiDataGrid.defaultProps.localeText,
+              noRowsLabel: 'אין ניתונים להצגה',
+              columnsManagementReset: 'איפוס',
+              columnsManagementSearchTitle: 'חיפוש',
+              columnsManagementShowHideAllText: 'הצג/הסתר הכל'
+            }}
+            columnVisibilityModel={columnVisibility}
+            onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
+            checkboxSelection
+            className="data-grid"
+          />
+        </div>
       </Box>
+      {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
     </>
   );
 };
