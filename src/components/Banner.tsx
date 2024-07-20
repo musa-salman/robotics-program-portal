@@ -8,7 +8,7 @@ import './Banner.css';
 import EventContainer from '../events/EventContainer';
 import BannerButton from './BannerButton';
 import { Assignment, Insights, RestoreFromTrash, School } from '@mui/icons-material';
-import { Container } from 'react-bootstrap';
+import { Container } from '@mui/material';
 
 const PRIMARY_STUDENT_LINKS = [
   { icon: <BookIcon />, label: 'חומרי לימוד', path: '/study-materials' },
