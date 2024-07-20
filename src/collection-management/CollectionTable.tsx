@@ -233,7 +233,7 @@ const CollectionTable = <T extends { id: string }>({
           <FormComponent saveItem={updateItem} initialItem={initialItem} setShowItemForm={setShowItemForm} />
         )}
       </Dialog>
-      <Box className="table-container">
+      <Box className="table-container" sx={{ bgcolor: '#1d1b1b' }}>
         <div className="data-grid-container">
           <DataGrid
             rows={rows || []}

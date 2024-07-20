@@ -48,10 +48,10 @@ const eventInsights: InsightData = {
                   { id: 'event3', value: 20, label: 'אירוע 3' }
                 ],
                 highlightScope: { faded: 'global', highlighted: 'item' },
-                faded: { innerRadius: 150, additionalRadius: -30, color: 'gray' }
+                faded: { innerRadius: 30, additionalRadius: -30, color: 'black' }
               }
             ]}
-            height={400}
+            height={300}
           />
         );
       }

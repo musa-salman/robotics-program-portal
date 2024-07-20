@@ -125,10 +125,10 @@ const studyMaterialInsights: InsightData = {
                 {
                   data: categoryInsights,
                   highlightScope: { faded: 'global', highlighted: 'item' },
-                  faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
+                  faded: { innerRadius: 30, additionalRadius: -30, color: 'black' }
                 }
               ]}
-              height={200}
+              height={300}
             />
           </>
         );

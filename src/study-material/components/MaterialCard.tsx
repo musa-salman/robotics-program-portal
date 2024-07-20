@@ -191,7 +191,11 @@ function MaterialCard({
               </Typography>
             }
           />
-          <Divider component="div" variant="fullWidth" style={{ backgroundColor: 'black', height: '2px' }} />
+          <Divider
+            component="div"
+            variant="fullWidth"
+            style={{ backgroundColor: 'black', height: '3px', marginBottom: '5px' }}
+          />
           <div>
             <Typography
               variant="body1"
