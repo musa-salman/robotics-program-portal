@@ -87,10 +87,10 @@ const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId
                   <TableHead>
                     <TableRow>
                       <TableCell sx={{ width: '20%' }}>#</TableCell>
-                      <TableCell sx={{ width: '20%' }}>Name</TableCell>
-                      <TableCell sx={{ width: '20%' }}>Phone</TableCell>
-                      <TableCell sx={{ width: '20%' }}>Email</TableCell>
-                      <TableCell sx={{ width: '20%' }}>Actions</TableCell>
+                      <TableCell sx={{ width: '20%' }}>שם</TableCell>
+                      <TableCell sx={{ width: '20%' }}>טלפון</TableCell>
+                      <TableCell sx={{ width: '20%' }}>אימייל</TableCell>
+                      <TableCell sx={{ width: '20%' }}>פעולות</TableCell>
                     </TableRow>
                   </TableHead>
                 </TableHead>
