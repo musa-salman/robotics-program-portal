@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Student } from './Student';
 import StudentForm from './StudentForm';
 import './StudentsManagement.css';
-import { Box, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { useUserService } from '../users/UserContext';
 import StudentDetails from '../registers-management/RegisterDetails';
 import { useCallback, useState } from 'react';
@@ -18,31 +18,36 @@ const StudentsManagement = () => {
   const handleDelete = (student: Student) => {
     return userService.deleteUser(student.id);
   };
+
   const generateColumns = (
     /// show form, set initial values, save item
     rows: (Student & { isNew: boolean })[] | null,
-    setRows: React.Dispatch<React.SetStateAction<(Student & { isNew: boolean })[] | null>>,
+    _setRows: React.Dispatch<React.SetStateAction<(Student & { isNew: boolean })[] | null>>,
     setShowItemForm: React.Dispatch<React.SetStateAction<boolean>>,
     setInitialItem: React.Dispatch<React.SetStateAction<Student | null>>,
-    showMessage: (message: FeedbackMessage) => void,
+    _showMessage: (message: FeedbackMessage) => void,
     onRowDeleted: (row: GridRowModel) => void
   ): GridColDef[] => {
     return [
-      { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1, editable: true },
-      { field: 'studentAddress', type: 'string', headerName: 'כתובת', flex: 1, editable: true },
       {
         field: 'studentName',
         type: 'string',
         headerName: 'שם תלמיד',
         flex: 1,
         renderCell: ({ row }) => (
-          <div>
-            <Typography>
-              {row.firstName} {row.lastName}
-            </Typography>
-          </div>
-        )
+          <Typography>
+            {row.firstName} {row.lastName}
+          </Typography>
+        ),
+        valueGetter: (_, row) => `${row.firstName} ${row.lastName}`
       },
+      { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1 },
+      { field: 'studentPhoneNumber', type: 'string', headerName: 'טלפון תלמיד', flex: 1 },
+      { field: 'parentPhoneNumber', type: 'string', headerName: 'טלפון הורה', flex: 1 },
+      { field: 'studentEmail', type: 'string', headerName: 'אימייל תלמיד', flex: 1 },
+      { field: 'parentEmail', type: 'string', headerName: 'אימייל הורה', flex: 1 },
+      { field: 'studentAddress', type: 'string', headerName: 'כתובת', flex: 1 },
+      { field: 'studentSchool', type: 'string', headerName: 'בית ספר', flex: 1 },
       {
         field: 'actions',
         type: 'actions',
@@ -96,6 +101,11 @@ const StudentsManagement = () => {
             messageFormat={messageFormat}
             onRowSelected={handleRowSelected}
             onDelete={handleDelete}
+            columnVisibilityModel={{
+              parentPhoneNumber: false,
+              parentEmail: false,
+              studentSchool: false
+            }}
           />
         </Grid>
         <Grid item xs={4}>
