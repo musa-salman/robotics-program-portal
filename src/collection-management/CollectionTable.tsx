@@ -6,7 +6,8 @@ import {
   GridRowModel,
   GridRowModesModel,
   GridValidRowModel,
-  GridRowSelectionModel
+  GridRowSelectionModel,
+  GridColumnVisibilityModel
 } from '@mui/x-data-grid';
 import { Box, Dialog, DialogTitle } from '@mui/material';
 import { heIL } from '@mui/x-data-grid/locales';
@@ -55,6 +56,7 @@ interface CollectionTableProps<T> {
   messageFormat: MessageFormat<T>;
   onRowSelected?: (row: GridRowModel | null) => void;
   onDelete?: (item: T) => Promise<void>;
+  columnVisibilityModel?: GridColumnVisibilityModel;
 }
 
 const CollectionTable = <T extends { id: string }>({
@@ -64,10 +66,12 @@ const CollectionTable = <T extends { id: string }>({
   getItems,
   messageFormat,
   onRowSelected,
-  onDelete
+  onDelete,
+  columnVisibilityModel
 }: CollectionTableProps<T>) => {
   const [rows, setRows] = useState<(T & { isNew: boolean })[] | null>(null);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+  const [columnVisibility, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>(columnVisibilityModel || {});
   const [message, setMessage] = useState<FeedbackMessage | null>(null);
   const [buildNumber, setBuildNumber] = useState<number>(0);
   const [showAddItemForm, setShowItemForm] = useState(false);
@@ -130,7 +134,7 @@ const CollectionTable = <T extends { id: string }>({
       const selected = rows?.find((register) => register.id === selectedId) || null;
 
       const { isNew, ...selectedRow } = selected as any;
-      setSelectionModel([selectedId]);
+      setSelectionModel(selection);
       onRowSelected(selectedRow);
     },
     [rows]
@@ -228,11 +232,6 @@ const CollectionTable = <T extends { id: string }>({
         {FormComponent && initialItem && (
           <FormComponent saveItem={updateItem} initialItem={initialItem} setShowItemForm={setShowItemForm} />
         )}
-        {/* <DialogActions>
-          <Button onClick={() => setShowItemForm(false)} color="secondary">
-            בטל
-          </Button>
-        </DialogActions> */}
       </Dialog>
       <Box className="table-container">
         <div className="data-grid-container">
@@ -266,6 +265,9 @@ const CollectionTable = <T extends { id: string }>({
               columnsManagementSearchTitle: 'חיפוש',
               columnsManagementShowHideAllText: 'הצג/הסתר הכל'
             }}
+            columnVisibilityModel={columnVisibility}
+            onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
+            checkboxSelection
             className="data-grid"
           />
         </div>
