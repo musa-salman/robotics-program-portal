@@ -134,7 +134,7 @@ const CollectionTable = <T extends { id: string }>({
       const selected = rows?.find((register) => register.id === selectedId) || null;
 
       const { isNew, ...selectedRow } = selected as any;
-      setSelectionModel(selection);
+      setSelectionModel(selection.map((id) => id));
       onRowSelected(selectedRow);
     },
     [rows]
