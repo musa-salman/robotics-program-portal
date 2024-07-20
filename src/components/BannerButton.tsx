@@ -22,7 +22,7 @@ const ButtonIcon: React.FC<ButtonIconProps> = ({ icon, label, type, path, classN
           }}
           variant="outlined"
           className={className}
-          color="primary"
+          color={type}
           startIcon={icon}>
           {label}
         </Button>

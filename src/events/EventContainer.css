@@ -1,7 +1,8 @@
 .events-container-default-style {
   display: flex;
-  max-width: 1400px;
   margin: auto;
+  text-align: right;
+  flex-wrap: wrap;
 }
 
 .events-all {
@@ -28,7 +29,7 @@
   padding: 10px;
   border-radius: 10px;
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: space-around;
   margin: 10px;
   gap: 20px;

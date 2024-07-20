@@ -99,7 +99,7 @@ const EventCard: React.FC<EventProps> = ({
             {details}
           </Typography>
         </CardContent>
-        <CardActions disableSpacing>
+        <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <RoleBasedAccessControl allowedRoles={[Role.Student]} unauthorizedAuthenticatedComponent={<></>}>
             <RegisterStudentToEvent eventId={id} eventDate={endDate} />
           </RoleBasedAccessControl>

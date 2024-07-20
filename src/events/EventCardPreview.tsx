@@ -30,7 +30,7 @@ const EventCardPreview: React.FC<EventProps> = ({ startDate, endDate, title, det
       sx={{
         maxWidth: 380,
         minWidth: 380,
-        background: 'linear-gradient(45deg, #000000 60%, #2B2B2B 60%)',
+        background: theme.palette.background.paper,
         boxShadow: `0 4px 8px ${theme.palette.primary.main}`
       }}>
       <CardHeader
@@ -45,7 +45,7 @@ const EventCardPreview: React.FC<EventProps> = ({ startDate, endDate, title, det
           </Typography>
         }
         subheader={
-          <Typography variant="h7" component="div" style={{ minHeight: '50px' }}>
+          <Typography variant="body2" component="div" style={{ minHeight: '50px' }}>
             {formatDateTimeRange(startDate, endDate)}
           </Typography>
         }

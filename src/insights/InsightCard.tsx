@@ -10,9 +10,12 @@ const InsightCard: React.FC<InsightCardProps> = ({ question, generateGraph }) =>
   return (
     <Card>
       <CardContent
-        sx={{
-          height: 'auto'
-        }}>
+        sx={
+          {
+            // width:'100%',
+            // height: '100%'
+          }
+        }>
         <Typography variant="h6">{question}</Typography>
         {generateGraph()}
       </CardContent>
