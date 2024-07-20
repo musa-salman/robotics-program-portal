@@ -8,15 +8,16 @@ interface InsightCardProps {
 
 const InsightCard: React.FC<InsightCardProps> = ({ question, generateGraph }) => {
   return (
-    <Card>
+    <Card sx={{ height: '100%' }}>
       <CardContent
-        sx={
-          {
-            // width:'100%',
-            // height: '100%'
-          }
-        }>
-        <Typography variant="h6">{question}</Typography>
+        sx={{
+          // width:'100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center'
+        }}>
+        <Typography variant="h3">{question}</Typography>
         {generateGraph()}
       </CardContent>
     </Card>
