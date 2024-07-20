@@ -47,6 +47,7 @@ const StudentForm: React.FC<AddStudentFormProps> = ({
   const [isParentEmailValid, setIsParentEmailValid] = useState(true);
 
   const [isStudentAddressValid, setIsStudentAddressValid] = useState(true);
+  const [isStudentSchoolValid, setIsStudentSchoolValid] = useState(true);
 
   const handleSubmit = (e: React.FormEvent) => {
     if (
@@ -59,11 +60,22 @@ const StudentForm: React.FC<AddStudentFormProps> = ({
       isMobilePhone(student.parentPhoneNumber) &&
       isEmail(student.studentEmail) &&
       isEmail(student.parentEmail) &&
-      student.studentSchool !== '' &&
-      student.studentAddress !== ''
+      isHebrewOnly(student.studentAddress) &&
+      isHebrewOnly(student.studentSchool)
     ) {
       e.preventDefault();
       saveStudent(student);
+      setShowItemForm(false);
+    } else {
+      setIsIdValid(isIdentityCard(student.studentId, 'he-IL'));
+      setIsFirstNameValid(isHebrewOnly(student.firstName) && !isEmpty(student.firstName));
+      setIsLastNameValid(isHebrewOnly(student.lastName) && !isEmpty(student.lastName));
+      setIsStudentPhoneNumberValid(isMobilePhone(student.studentPhoneNumber));
+      setIsParentPhoneNumberValid(isMobilePhone(student.parentPhoneNumber));
+      setIsStudentEmailValid(isEmail(student.studentEmail));
+      setIsParentEmailValid(isEmail(student.parentEmail));
+      setIsStudentAddressValid(isHebrewOnly(student.studentAddress) && !isEmpty(student.studentAddress));
+      setIsStudentSchoolValid(isHebrewOnly(student.studentSchool) && !isEmpty(student.studentSchool));
     }
   };
 
@@ -91,7 +103,7 @@ const StudentForm: React.FC<AddStudentFormProps> = ({
               value={student.firstName}
               onChange={(e) => setStudent({ ...student, firstName: e.target.value })}
               error={!isFirstNameValid}
-              helperText={!isFirstNameValid ? 'יש להזין שם פרטי תקין' : ''}
+              helperText={!isFirstNameValid ? 'אותיות בעברית בלבד' : ''}
               onBlur={(e) => setIsFirstNameValid(isHebrewOnly(e.target.value) && !isEmpty(e.target.value))}
               fullWidth
               required
@@ -107,7 +119,7 @@ const StudentForm: React.FC<AddStudentFormProps> = ({
               value={student.lastName}
               onChange={(e) => setStudent({ ...student, lastName: e.target.value })}
               error={!isLastNameValid}
-              helperText={!isLastNameValid ? 'יש להזין שם משפחה תקין' : ''}
+              helperText={!isLastNameValid ? 'אותיות בעברית בלבד' : ''}
               onBlur={(e) => setIsLastNameValid(isHebrewOnly(e.target.value) && !isEmpty(e.target.value))}
               fullWidth
               required
@@ -194,6 +206,9 @@ const StudentForm: React.FC<AddStudentFormProps> = ({
               InputProps={{
                 startAdornment: <School />
               }}
+              error={!isStudentSchoolValid}
+              helperText={!isStudentSchoolValid ? 'אותיות בעברית בלבד' : ''}
+              onBlur={(e) => setIsStudentSchoolValid(isHebrewOnly(e.target.value) && !isEmpty(e.target.value))}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -202,7 +217,7 @@ const StudentForm: React.FC<AddStudentFormProps> = ({
               value={student.studentAddress}
               onChange={(e) => setStudent({ ...student, studentAddress: e.target.value })}
               error={!isStudentAddressValid}
-              helperText={!isStudentAddressValid ? 'יש להזין כתובת תקינה' : ''}
+              helperText={!isStudentAddressValid ? 'אותיות בעברית בלבד' : ''}
               onBlur={(e) => setIsStudentAddressValid(isHebrewOnly(e.target.value) && !isEmpty(e.target.value))}
               fullWidth
               required
@@ -226,7 +241,8 @@ const StudentForm: React.FC<AddStudentFormProps> = ({
                 paddingLeft: '1.50rem',
                 paddingRight: '1.50rem'
               }}
-              type="submit">
+              type="button"
+              onClick={handleSubmit}>
               שמור
             </Button>
           </Grid>
