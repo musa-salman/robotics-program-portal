@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react';
 import { InsightData } from '../insights/InsightPage';
-import { BarChart, Gauge, LineChart, PieChart, PieValueType } from '@mui/x-charts';
+import { PieChart, PieValueType } from '@mui/x-charts';
 import { useEventService } from './repository/EventContext';
-import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Select } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { Moment } from 'moment';
 import { IEvent } from './repository/Event';
-import { error } from 'console';
 
 const eventInsights: InsightData = {
   title: 'תובנות על אירועים',
@@ -52,10 +48,10 @@ const eventInsights: InsightData = {
                   { id: 'event3', value: 20, label: 'אירוע 3' }
                 ],
                 highlightScope: { faded: 'global', highlighted: 'item' },
-                faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
+                faded: { innerRadius: 150, additionalRadius: -30, color: 'gray' }
               }
             ]}
-            height={200}
+            height={400}
           />
         );
       }

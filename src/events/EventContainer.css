@@ -1,13 +1,15 @@
 .events-container-default-style {
   display: flex;
-  max-width: 1400px;
   margin: auto;
+  text-align: right;
+  flex-wrap: wrap;
 }
 
 .events-all {
+  display: flex;
   align-items: center;
-  margin-right: 20%;
-  margin-left: 20%;
+  margin-right: 10%;
+  margin-left: 10%;
 }
 
 .events-container-show-all-events-style {
@@ -27,7 +29,7 @@
   padding: 10px;
   border-radius: 10px;
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: space-around;
   margin: 10px;
   gap: 20px;
@@ -37,7 +39,6 @@
 /* Styling for the shift buttons*/
 .shift-buttons {
   border: none;
-  cursor: pointer;
   transition: background-color 0.3s ease;
   min-height: 50px;
   min-width: 50px;

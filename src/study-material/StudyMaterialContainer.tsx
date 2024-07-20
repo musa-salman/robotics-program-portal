@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import './StudyMaterialContainer.css';
 import { useMaterialService } from './repository/StudyMaterialContext';
 import { StudyMaterial } from './repository/StudyMaterial';
 import MaterialUploadModal from './components/upload-file/MaterialUploadModal';
 import AddIcon from '@mui/icons-material/Add';
-import { Box, Button, CardContent, Modal } from '@mui/material';
+import { Box, Button, CardContent, Modal, Typography } from '@mui/material';
 import NoResultFound from './components/NoResultFound';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Category } from './repository/Category';
@@ -15,6 +15,8 @@ import CategorySelector from './components/CategorySelector';
 import CategoryButtons from './components/CaregoryButtons';
 import { CategoryManagement } from './components/upload-file/CategoryManagement';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
+import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
+import Role from '../authentication/components/Roles';
 
 function StudyMaterialContainer() {
   const materialService = useMaterialService();
@@ -30,27 +32,36 @@ function StudyMaterialContainer() {
   const [show, setShow] = useState(false);
   const [showAddEdit, setShowAddEdit] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
+  const [isAll, setIsAll] = useState(true);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const handleCloseAddEdit = () => setShowAddEdit(false);
   const handleShowEdit = () => setShowAddEdit(true);
   const [query, setQuery] = useState('');
 
   const [message, setMessage] = useState<FeedbackMessage | null>(null);
   const [buildNumber, setBuildNumber] = useState<number>(0);
-  const firstButtonRef = useRef(null);
+
+  const [reload, setReload] = useState(false);
+  const handleCloseAddEdit = () => {
+    setShowAddEdit(false);
+    setReload(true);
+  };
 
   useEffect(() => {
     const getStudyMaterials = () => {
       return materialService.studyMaterialRepository
         .find()
-        .then((materials) => setStudyMaterials(materials))
+        .then((materials) => {
+          const sortedMaterials = sortStudyMaterials(materials);
+          setStudyMaterials(sortedMaterials);
+          setReload(false);
+        })
         .catch(() => {
           showMessage({
             message: 'התרחשה שגיעה בעת הבאת החומרים. אנא נסה שנית.',
             variant: 'error'
           });
+          setReload(false);
         });
     };
     const getCategories = () => {
@@ -58,20 +69,24 @@ function StudyMaterialContainer() {
         .find()
         .then((categories) => {
           setCategoryList(categories);
-          if (firstButtonRef.current) {
-            // firstButtonRef.current.focus();
-          }
+          setSelectedCategories(categories.map((category) => category.category));
+          setReload(false);
         })
         .catch(() => {
           showMessage({
             message: 'התרחשה שגיעה בעת הבאת הקטגוריות. אנא נסה שנית.',
             variant: 'error'
           });
+          setReload(false);
         });
     };
-    if (studyMaterials === null) getStudyMaterials();
-    if (categoryList === null) getCategories();
-  }, [materialService, studyMaterials, categoryList]);
+    if (studyMaterials === null || reload) getStudyMaterials();
+    if (categoryList === null || reload) getCategories();
+  }, [materialService, studyMaterials, categoryList, reload]);
+
+  const sortStudyMaterials = (materials: StudyMaterial[]) => {
+    return materials.sort((a, b) => b.title.localeCompare(a.title)).reverse();
+  };
 
   const showMessage = (message: FeedbackMessage) => {
     setMessage(message);
@@ -83,27 +98,40 @@ function StudyMaterialContainer() {
     const updatedMaterials = (studyMaterials || []).map((material) =>
       material.id === updatedMaterial.id ? updatedMaterial : material
     );
-    setStudyMaterials(updatedMaterials);
+    setStudyMaterials(sortStudyMaterials(updatedMaterials));
+
+    if (searchResults) {
+      const updatedSearchResults = searchResults.map((material) =>
+        material.id === updatedMaterial.id ? updatedMaterial : material
+      );
+      setSearchResults(updatedSearchResults);
+    }
   };
 
   const handleDelete = (deletedStudy: StudyMaterial) => {
     const updatedMaterials = (studyMaterials || []).filter((material) => material.id !== deletedStudy.id);
-    setStudyMaterials(updatedMaterials);
+    setStudyMaterials(sortStudyMaterials(updatedMaterials));
+    if (searchResults) {
+      const updatedSearchResults = searchResults.filter((material) => material.id !== deletedStudy.id);
+      setSearchResults(updatedSearchResults);
+    }
   };
 
   const handleAdd = (studyMaterial: StudyMaterial) => {
-    setStudyMaterials((prevMaterials) => [...(prevMaterials || []), studyMaterial]);
+    setStudyMaterials((prevMaterials) => sortStudyMaterials([studyMaterial, ...(prevMaterials || [])]));
+    if (searchResults) {
+      setSearchResults((prevMaterials) => [studyMaterial, ...(prevMaterials || [])]);
+    }
   };
 
-  console.log('the selected  berfore cat ', selectedCategories);
   const handleCategorySelect = (category: string) => {
     // setSelectedCategories([]);
     if (category === 'הכל') {
       setSelectedCategories(categories);
-      console.log('the selected cat ', selectedCategories);
+      setIsAll(true);
     } else {
       setSelectedCategories([category]);
-      console.log('the selected cat ', selectedCategories);
+      setIsAll(false);
     }
   };
 
@@ -120,7 +148,13 @@ function StudyMaterialContainer() {
         const updatedStudyMaterials = studyMaterials!.map((material) =>
           material.id === selectedMaterial!.id ? { ...material, category: categorySelected.category } : material
         );
-        setStudyMaterials(updatedStudyMaterials);
+        setStudyMaterials(sortStudyMaterials(updatedStudyMaterials));
+        if (searchResults) {
+          const updatedSearchResults = searchResults.map((material) =>
+            material.id === selectedMaterial!.id ? { ...material, category: categorySelected.category } : material
+          );
+          setSearchResults(updatedSearchResults);
+        }
         showMessage({
           message: 'החומר הועבר בהצלחה!',
           variant: 'success'
@@ -144,12 +178,12 @@ function StudyMaterialContainer() {
 
   let categories: string[] = (searchResults || studyMaterials || [])
     .map((s) => s.category)
-    .filter((item, index, arr) => arr.indexOf(item) === index);
+    .filter((item, index, arr) => arr.indexOf(item) === index)
+    .sort((a, b) => a.localeCompare(b))
+    .reverse();
 
   categories = ['הכל', ...categories.filter((c) => c !== 'הכל')];
 
-  console.log('catergories', categories);
-  console.log('catergory list', categoryList);
   return (
     <>
       {message && <FeedbackSnackbar key={message.message} feedBackMessage={message} />}
@@ -163,6 +197,16 @@ function StudyMaterialContainer() {
             />
           )}
           <div className="btn-search">
+            <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
+              <div className="btns">
+                <Button variant="contained" aria-label="add" onClick={handleShow}>
+                  <AddIcon />
+                </Button>
+                <Button variant="outlined" aria-label="edit" onClick={handleShowEdit}>
+                  <SettingsIcon />
+                </Button>
+              </div>
+            </RoleBasedAccessControl>
             <div className="search">
               <SearchBar
                 studyMaterials={studyMaterials || []}
@@ -170,14 +214,6 @@ function StudyMaterialContainer() {
                 query={query}
                 setQuery={setQuery}
               />
-            </div>
-            <div className="btns">
-              <Button variant="outlined" aria-label="edit" onClick={handleShowEdit}>
-                <SettingsIcon />
-              </Button>
-              <Button variant="contained" aria-label="add" onClick={handleShow}>
-                <AddIcon />
-              </Button>
             </div>
           </div>
 
@@ -193,6 +229,13 @@ function StudyMaterialContainer() {
               .map((category) => (
                 <Box key={category}>
                   <CardContent>
+                    {isAll &&
+                      category !== 'הכל' &&
+                      (searchResults || studyMaterials).some((s) => s.category === category) && (
+                        <Typography variant="h6" component="h2" style={{ marginBottom: '20px' }}>
+                          {category}
+                        </Typography>
+                      )}
                     <div className="study-materials-container">
                       {(searchResults || studyMaterials || [])
                         .filter((s) => s.category === category)
@@ -225,9 +268,8 @@ function StudyMaterialContainer() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
             <CategoryManagement
-              categories={categoryList}
+              categoryList={categoryList}
               handleCloseCategoryManagement={handleCloseAddEdit}
-              setCategories={setCategoryList}
               handleSelect={() => {}}
             />
           </Modal>

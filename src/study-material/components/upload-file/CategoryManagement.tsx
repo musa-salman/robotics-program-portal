@@ -11,16 +11,14 @@ import FeedbackSnackbar, { FeedbackMessage } from '../../../components/snackbar/
 import DeleteModal from '../../DeleteModal';
 
 interface CategoryManagementProps {
-  categories: Category[] | null;
+  categoryList: Category[] | null;
   handleCloseCategoryManagement: () => void;
   handleSelect: (eventKey: string | null) => void;
-  setCategories: React.Dispatch<React.SetStateAction<Category[] | null>>;
 }
 
 const CategoryManagement: React.FC<CategoryManagementProps> = ({
-  categories,
+  categoryList,
   handleCloseCategoryManagement,
-  setCategories,
   handleSelect
 }) => {
   const [newCategory, setNewCategory] = useState('');
@@ -33,6 +31,8 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
   const [isValid, setIsValid] = useState({
     category: true
   });
+
+  const [categories, setCategories] = useState<Category[] | null>(categoryList);
 
   const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
   const [buildNumber, setBuildNumber] = useState(0);
@@ -99,13 +99,17 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
 
   const handleSaveItem = (item: Category) => {
     if (!checkRepeat(selectedCategory) && selectedCategory !== item.category) {
+      showMessage({
+        message: 'הקטגוריה קיימת כבר',
+        variant: 'error'
+      });
     } else if (item.category === updatedCategory?.category && selectedCategory !== '') {
       const edit: Category = {
         category: selectedCategory,
         id: item.id
       };
       studyMaterialManagement
-        .renameCategory(item.id, selectedCategory)
+        .renameCategory(item, selectedCategory)
         .then(() => {
           setCategories((prevCategories) => {
             if (prevCategories === null) {
@@ -122,6 +126,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
           });
         })
         .catch(() => {
+          console.log('error', item.category, selectedCategory);
           showMessage({
             message: 'הקטגוריה לא עודכנה',
             variant: 'error'

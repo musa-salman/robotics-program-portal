@@ -26,11 +26,7 @@ const AvatarMenu = () => {
     <>
       <div onClick={handleAvatarClick} className="avatar-menu-container">
         <Avatar>
-          {auth.currentUser?.photoURL ? (
-            <img src={auth.currentUser?.photoURL} referrerPolicy="no-referrer" alt="avatar" />
-          ) : (
-            <AccountCircleIcon style={{ fontSize: 60, color: '#3f51b5' }} />
-          )}
+          <AccountCircleIcon style={{ fontSize: 60, color: '#3f51b5' }} />
         </Avatar>
         {auth.currentUser?.displayName && <span className="avatar-name">{auth.currentUser?.displayName}</span>}
       </div>

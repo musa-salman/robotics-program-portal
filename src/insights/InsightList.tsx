@@ -19,7 +19,7 @@ const InsightList: React.FC<InsightListProps> = ({ list }) => {
   return (
     <>
       {(list || []).map((listItem, index) => (
-        <Grid item xs={11.6} key={index} style={{ paddingTop: '1rem' }}>
+        <Grid item xs={8} key={index} style={{ paddingTop: '1rem', border: '4px solid ', fontSize: '1.2rem' }}>
           <listItem.Item {...listItem.props} />
         </Grid>
       ))}

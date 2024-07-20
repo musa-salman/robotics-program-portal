@@ -144,10 +144,6 @@ function App() {
     ],
     publicRoutes: [
       {
-        path: '/splash',
-        element: <SplashScreen />
-      },
-      {
         path: '/401',
         element: <UnauthorizedPage />
       },
@@ -164,6 +160,7 @@ function App() {
 
   return (
     <Routes>
+      <Route path="/splash" element={<SplashScreen />} />
       <Route path="/" element={isDev ? <TestingLayout /> : <Layout />}>
         {routeConfigurations.authorizedRoutes.map((route) => (
           <Route

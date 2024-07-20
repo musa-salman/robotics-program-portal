@@ -24,7 +24,7 @@ const CategoryButtons: React.FC<CategoryButtonsProps> = ({ categories, onCategor
           allowScrollButtonsMobile
           aria-label="scrollable force tabs example">
           {categories.map((category, index) => (
-            <Tab key={index} label={category} onClick={() => onCategorySelect(category)} className="category-tab" />
+            <Tab key={index} label={category} onClick={() => onCategorySelect(category)} sx={{ fontSize: '1.2rem' }} />
           ))}
         </Tabs>
       </Box>

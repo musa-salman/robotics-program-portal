@@ -27,8 +27,6 @@ const RegisterManagement = () => {
     onRowDeleted: (row: GridRowModel) => void
   ): GridColDef[] => {
     return [
-      { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1, editable: true },
-      { field: 'studentAddress', type: 'string', headerName: 'כתובת', flex: 1, editable: true },
       {
         field: 'studentName',
         type: 'string',
@@ -38,8 +36,15 @@ const RegisterManagement = () => {
           <Typography>
             {row.firstName} {row.lastName}
           </Typography>
-        )
+        ),
+        valueGetter: (_, row) => `${row.firstName} ${row.lastName}`
       },
+      { field: 'studentId', type: 'string', headerName: 'תעודת זהות', flex: 1 },
+      { field: 'studentPhoneNumber', type: 'string', headerName: 'טלפון תלמיד', flex: 1 },
+      { field: 'parentPhoneNumber', type: 'string', headerName: 'טלפון הורה', flex: 1 },
+      { field: 'studentEmail', type: 'string', headerName: 'אימייל תלמיד', flex: 1 },
+      { field: 'parentEmail', type: 'string', headerName: 'אימייל הורה', flex: 1 },
+      { field: 'studentAddress', type: 'string', headerName: 'כתובת', flex: 1 },
       {
         field: 'actions',
         type: 'actions',
@@ -107,6 +112,11 @@ const RegisterManagement = () => {
             messageFormat={messageFormat}
             onRowSelected={handleRowSelected}
             onDelete={handleDelete}
+            columnVisibilityModel={{
+              parentPhoneNumber: false,
+              parentEmail: false,
+              studentSchool: false
+            }}
           />
         </Grid>
         <Grid item xs={4}>

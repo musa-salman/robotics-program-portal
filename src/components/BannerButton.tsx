@@ -16,10 +16,13 @@ const ButtonIcon: React.FC<ButtonIconProps> = ({ icon, label, type, path, classN
     <>
       <Link to={path} className="link">
         <Button
-          sx={{ fontSize: 'large' }}
+          sx={{
+            fontSize: 'large',
+            borderRadius: '4px' // Optional: Adds rounded corners
+          }}
           variant="outlined"
-          color={type === 'primary' ? 'primary' : 'secondary'}
           className={className}
+          color={type}
           startIcon={icon}>
           {label}
         </Button>

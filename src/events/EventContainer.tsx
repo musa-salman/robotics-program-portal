@@ -9,7 +9,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useTheme } from '@mui/material/styles';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 import SkeletonEventCard from './EventCardSkeleton';
-import { Box } from '@mui/material';
+import { IconButton } from '@mui/material';
 
 type EventContainer = {
   eventsProps: EventProps[];
@@ -129,7 +129,9 @@ const EventContainer = () => {
       <div className="events">
         <div className="events-container-default-style">
           <div className="shift-buttons" style={{ backgroundColor: theme.palette.primary.main }}>
-            <ArrowForwardIosIcon onClick={handleShiftEventsLeft} />
+            <IconButton onClick={handleShiftEventsLeft} disabled={currentIndex === 0}>
+              <ArrowForwardIosIcon />
+            </IconButton>
           </div>
           <div className="events-show">
             {events === null
@@ -152,7 +154,9 @@ const EventContainer = () => {
                 ))}
           </div>
           <div className="shift-buttons" style={{ backgroundColor: theme.palette.primary.main }}>
-            <ArrowBackIosIcon onClick={handleShiftEventsRight} />
+            <IconButton onClick={handleShiftEventsRight} disabled={currentIndex >= (events?.length || 0) - 3}>
+              <ArrowBackIosIcon />
+            </IconButton>
           </div>
         </div>
       </div>

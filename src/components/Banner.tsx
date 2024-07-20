@@ -8,6 +8,7 @@ import './Banner.css';
 import EventContainer from '../events/EventContainer';
 import BannerButton from './BannerButton';
 import { Assignment, Insights, RestoreFromTrash, School } from '@mui/icons-material';
+import { Container } from '@mui/material';
 
 const PRIMARY_STUDENT_LINKS = [
   { icon: <BookIcon />, label: 'חומרי לימוד', path: '/study-materials' },
@@ -16,7 +17,7 @@ const PRIMARY_STUDENT_LINKS = [
 
 const PRIMARY_ADMIN_LINKS = [
   { icon: <School />, label: 'ניהול תלמידים', path: '/students-management' },
-  { icon: <Insights />, label: 'בחינה מעמיקה', path: '/deep-inspection' }
+  { icon: <Insights />, label: 'סטטיסטיקות', path: '/deep-inspection' }
 ];
 
 const STUDENT_LINKS = [{ icon: <PictureAsPdfIcon />, label: 'מסמכים', path: '/documents' }];
@@ -76,9 +77,9 @@ const Banner: React.FC = () => {
             />
           ))}
         </div>
-        <div className="event">
+        <Container className="event">
           <EventContainer />
-        </div>
+        </Container>
       </div>
     </>
   );

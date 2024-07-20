@@ -4,6 +4,7 @@
   align-items: center;
   padding: 2.5%;
   overflow: hidden;
+  /* border: 5px solid; */
 }
 
 .full-width {
@@ -12,8 +13,10 @@
 }
 
 .event {
+  display: flex;
+  /* flex-direction: column; */
+  border: 2px solid;
   margin: 2%;
-  width: 100%;
 }
 
 .button-group {
@@ -24,6 +27,7 @@
   padding: 1%;
   gap: 20px;
   width: 100%;
+  margin-top: 1%;
 }
 
 .button-group .banner-button {

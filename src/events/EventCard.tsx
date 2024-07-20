@@ -13,6 +13,7 @@ import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { CircularProgress } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 export interface EventProps {
   startDate: Date;
@@ -38,12 +39,18 @@ const EventCard: React.FC<EventProps> = ({
   animating
 }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const theme = useTheme();
 
   return (
     <div className={`event-card ${animating ? 'zoom-out' : 'zoom-in'}`}>
       <Card
         className="cardIconButton"
-        sx={{ maxWidth: 380, minWidth: 380, background: 'linear-gradient(45deg, #000000 60%, #2B2B2B 60%)' }}>
+        sx={{
+          maxWidth: 480,
+          minWidth: 480,
+          background: theme.palette.background.paper,
+          boxShadow: `0 4px 8px ${theme.palette.primary.main}`
+        }}>
         <CardHeader
           action={
             <IconButton aria-label="settings">
@@ -59,12 +66,12 @@ const EventCard: React.FC<EventProps> = ({
             </IconButton>
           }
           title={
-            <Typography variant="h5" component="div" style={{ minHeight: '32px' }}>
+            <Typography variant="h4" component="div" style={{ minHeight: '32px', color: theme.palette.primary.main }}>
               {title}
             </Typography>
           }
           subheader={
-            <Typography variant="h7" component="div" style={{ minHeight: '64px' }}>
+            <Typography variant="body2" component="div" style={{ minHeight: '64px' }}>
               {formatDateTimeRange(startDate, endDate)}
             </Typography>
           }
@@ -92,12 +99,10 @@ const EventCard: React.FC<EventProps> = ({
             {details}
           </Typography>
         </CardContent>
-        <div className="register-button">
+        <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <RoleBasedAccessControl allowedRoles={[Role.Student]} unauthorizedAuthenticatedComponent={<></>}>
             <RegisterStudentToEvent eventId={id} eventDate={endDate} />
           </RoleBasedAccessControl>
-        </div>
-        <CardActions disableSpacing>
           <IconButton aria-label="show-registered-students">
             <RoleBasedAccessControl allowedRoles={[Role.Admin, Role.Owner]} unauthorizedAuthenticatedComponent={<></>}>
               <ShowRegisteredStudents eventId={id} />

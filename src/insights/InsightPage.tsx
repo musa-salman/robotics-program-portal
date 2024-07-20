@@ -8,7 +8,6 @@ import registerInsights from '../registers-management/RegisterInsights';
 import userInsights from '../users/UserInsights';
 import InsightCard from './InsightCard';
 import studyMaterialInsights from '../study-material/StudyMaterialInsights';
-import documentInsights from '../docs-handling/DocumentInsights';
 import eventInsights from '../events/EventInsights';
 
 interface InsightCardProps {
@@ -36,42 +35,13 @@ function TabPanel(props: TabPanelProps) {
 
   return (
     <div
+      style={{ width: '100%', height: '100%' }}
       role="tabpanel"
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
       {...other}>
-      {value === index && (
-        <Box
-          sx={{
-            // backgroundColor: 'black', //FIXME:
-            boxShadow: 24,
-            // width: '90rem',
-            borderRadius: 1,
-            // outline: 'none',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-
-            height: 500,
-            width: '60rem',
-            outline: 'none'
-          }}>
-          <Typography
-            sx={{
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              paddingTop: '6rem',
-
-              height: 500,
-              width: '60rem',
-
-              outline: 'none'
-            }}
-            component="div">
-            {children}
-          </Typography>
-        </Box>
-      )}
+      {value === index && children}
     </div>
   );
 }
@@ -109,11 +79,14 @@ const InsightPage = () => {
       <Box
         sx={{
           boxShadow: 24,
-          width: '90rem',
+          width: '90%',
+          height: '35rem',
           borderRadius: 1,
           outline: 'none',
           marginLeft: 'auto',
-          marginRight: 'auto'
+          marginRight: 'auto',
+          marginTop: '2%',
+          padding: '20px'
         }}>
         <Box sx={{ p: 2, bgcolor: 'background.paper', display: 'flex', justifyContent: 'center' }}>
           <Tabs
@@ -123,11 +96,19 @@ const InsightPage = () => {
             scrollButtons={true}
             aria-label="scrollable prevent tabs example">
             {insightsList.insightCategories.map((category, index) => (
-              <Tab label={category.title} key={index} />
+              <Tab label={category.title} key={index} sx={{ fontSize: '1.3rem' }} />
             ))}
           </Tabs>
         </Box>
-        <Box sx={{ bgcolor: 'background.paper', display: 'flex', height: 600 }}>
+        <Box
+          sx={{
+            bgcolor: 'GrayText',
+            display: 'flex',
+            flexDirection: 'row',
+            height: '100%',
+            width: '100%',
+            padding: '20px'
+          }}>
           <Tabs
             orientation="vertical"
             variant="scrollable"
@@ -136,7 +117,11 @@ const InsightPage = () => {
             aria-label="Vertical tabs example"
             sx={{ borderRight: 1 }}>
             {detailsCategory.insights.map((Item, index) => (
-              <Tab label={Item.question} key={index} />
+              <Tab
+                label={Item.question}
+                key={index}
+                sx={{ fontSize: '1.3rem', margin: '20px', justifyContent: 'right' }}
+              />
             ))}
           </Tabs>
           {detailsCategory.insights.map(

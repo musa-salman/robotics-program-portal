@@ -6,8 +6,8 @@
   width: 100%;
   padding: 20px;
   backdrop-filter: blur(20px);
-  /* background-color: rgb(15, 14, 14); */
-  background-color: transparent;
+  background-color: #1d1b1b;
+  /* background-color: transparent; */
 
   /* border-bottom: 2px solid; */
   /* border: 8px solid rgba(255, 255, 255, 0.2); */
@@ -19,22 +19,39 @@
 .logo {
   width: 40px;
   height: 40px;
-  cursor: pointer; /* Makes it clear the avatar is clickable */
-  border-radius: 50%; /* Ensures the avatar is always circular, even if the source image isn't */
-  object-fit: cover; /* Ensures the image covers the area without being stretched */
-  transition: transform 0.3s ease; /* Adds a smooth transition effect on hover */
+  cursor: pointer;
+  /* Makes it clear the avatar is clickable */
+  border-radius: 50%;
+  /* Ensures the avatar is always circular, even if the source image isn't */
+  object-fit: cover;
+  /* Ensures the image covers the area without being stretched */
+  transition: transform 0.3s ease;
+  /* Adds a smooth transition effect on hover */
 }
 
 .logo:hover {
-  transform: scale(1.1); /* Slightly enlarges the avatar on hover */
+  transform: scale(1.1);
+  /* Slightly enlarges the avatar on hover */
 }
 
 .nav-links a {
   text-decoration: none;
-  margin-right: 20px;
+  margin-right: 60px;
   color: #ffffff;
 }
 
 .nav-links a:hover {
   color: #ff5100;
+  text-shadow: 0 0 8px rgba(255, 81, 0, 0.7);
+  /* Adds a glowing effect */
+  padding: 10px;
+  /* Adds space around the text */
+  background-color: rgba(255, 81, 0, 0.2);
+  /* Semi-transparent background */
+  border-radius: 5px;
+  /* Rounded corners */
+  box-shadow: 0 0 8px rgba(255, 81, 0, 0.7);
+  /* Adds a glowing box shadow */
+  transition: all 0.3s ease;
+  /* Smooth transition for all properties */
 }

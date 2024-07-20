@@ -11,7 +11,8 @@ import DeleteModal from '../DeleteModal';
 import { useTheme } from '@mui/material/styles';
 import FeedbackSnackbar, { FeedbackMessage } from '../../components/snackbar/SnackBar';
 import EditModel from './EditModel';
-import customColor from '../../utils/customTheme';
+import RoleBasedAccessControl from '../../authentication/components/RoleBasedAccessControl';
+import Role from '../../authentication/components/Roles';
 
 type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
@@ -81,6 +82,7 @@ function MaterialCard({
             message: 'החומר נמחק בהצלחה',
             variant: 'success'
           });
+          setShowDeleteModal(false);
         });
       })
       .catch(() => {
@@ -159,7 +161,7 @@ function MaterialCard({
         className="Card"
         sx={{
           borderRadius: '15px',
-          backgroundColor: theme.palette.background.paper,
+          background: theme.palette.background.paper,
           boxShadow: `0 4px 8px ${theme.palette.primary.main}`
         }}>
         <CardContent className="bodycard">
@@ -170,22 +172,30 @@ function MaterialCard({
               textAlign: 'left'
             }}
             action={
-              <MySpeedDial
-                handleEditToggle={handleEditToggle}
-                handleMoveToggle={handleMoveToggle}
-                handleSave={handleSave}
-                handleDelete={isDelete}
-                isEditing={isEditing}
-              />
+              <RoleBasedAccessControl
+                allowedRoles={[Role.Admin, Role.Owner]}
+                unauthorizedAuthenticatedComponent={<></>}>
+                <MySpeedDial
+                  handleEditToggle={handleEditToggle}
+                  handleMoveToggle={handleMoveToggle}
+                  handleSave={handleSave}
+                  handleDelete={isDelete}
+                  isEditing={isEditing}
+                />
+              </RoleBasedAccessControl>
             }
-            title={studyMaterial.title}
             className="title-card"
+            title={
+              <Typography variant="h5" component="div" style={{ color: theme.palette.primary.main }}>
+                {studyMaterial.title}
+              </Typography>
+            }
           />
           <Divider component="div" variant="fullWidth" style={{ backgroundColor: 'black', height: '2px' }} />
           <div>
             <Typography
-              variant="body2"
-              className="description"
+              variant="body1"
+              // className="description"
               style={{
                 minHeight: '100px',
                 maxHeight: '100px',
