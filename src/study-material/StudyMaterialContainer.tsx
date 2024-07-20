@@ -84,12 +84,8 @@ function StudyMaterialContainer() {
     if (categoryList === null || reload) getCategories();
   }, [materialService, studyMaterials, categoryList, reload]);
 
-  const sortCategories = (categories: string[]) => {
-    return categories.sort((a, b) => a.localeCompare(b));
-  };
-
   const sortStudyMaterials = (materials: StudyMaterial[]) => {
-    return materials.sort((a, b) => b.title.localeCompare(a.title));
+    return materials.sort((a, b) => b.title.localeCompare(a.title)).reverse();
   };
 
   const showMessage = (message: FeedbackMessage) => {
@@ -183,7 +179,8 @@ function StudyMaterialContainer() {
   let categories: string[] = (searchResults || studyMaterials || [])
     .map((s) => s.category)
     .filter((item, index, arr) => arr.indexOf(item) === index)
-    .sort((a, b) => a.localeCompare(b));
+    .sort((a, b) => a.localeCompare(b))
+    .reverse();
 
   categories = ['הכל', ...categories.filter((c) => c !== 'הכל')];
 
