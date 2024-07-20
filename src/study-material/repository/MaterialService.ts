@@ -4,6 +4,7 @@ import { WriteBatch, doc, writeBatch } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { StudyMaterial } from './StudyMaterial';
 import { Category } from './Category';
+import { CachingRepository } from '../../repositories/caching/CachingRepository';
 
 export interface IMaterialService {
   /**
@@ -43,7 +44,7 @@ export class MaterialService implements IMaterialService {
   }
 
   _moveStudyMaterials(oldCategory: string, newCategory: string, batch: WriteBatch): Promise<void> {
-    this.studyMaterialRepository.find().then((studyMaterials) => {
+    return this.studyMaterialRepository.find().then((studyMaterials) => {
       studyMaterials.forEach((studyMaterial) => {
         if (studyMaterial.category === oldCategory) {
           const ref = doc(this.studyMaterialRepository._collection, studyMaterial.id);
@@ -51,8 +52,6 @@ export class MaterialService implements IMaterialService {
         }
       });
     });
-
-    return Promise.resolve();
   }
 
   async deleteCategory(categoryId: string): Promise<void> {
@@ -65,7 +64,14 @@ export class MaterialService implements IMaterialService {
     }
     return this._moveStudyMaterials(category.category, defaultCategory, batch).then(() => {
       batch.delete(doc(this.categoryRepository._collection, categoryId));
-      return batch.commit();
+      return batch.commit().then(() => {
+        if (this.categoryRepository instanceof CachingRepository) {
+          this.categoryRepository.invalidateCache();
+        }
+        if (this.studyMaterialRepository instanceof CachingRepository) {
+          this.studyMaterialRepository.invalidateCache();
+        }
+      });
     });
   }
 
@@ -76,8 +82,16 @@ export class MaterialService implements IMaterialService {
   async renameCategory(oldCategory: Category, newCategory: string): Promise<void> {
     const batch = writeBatch(db);
 
-    this._moveStudyMaterials(oldCategory.category, newCategory, batch);
-    batch.update(doc(this.categoryRepository._collection, oldCategory.id), { category: newCategory });
-    return batch.commit();
+    return this._moveStudyMaterials(oldCategory.category, newCategory, batch).then(() => {
+      batch.update(doc(this.categoryRepository._collection, oldCategory.id), { category: newCategory });
+      return batch.commit().then(() => {
+        if (this.categoryRepository instanceof CachingRepository) {
+          this.categoryRepository.invalidateCache();
+        }
+        if (this.studyMaterialRepository instanceof CachingRepository) {
+          this.studyMaterialRepository.invalidateCache();
+        }
+      });
+    });
   }
 }
