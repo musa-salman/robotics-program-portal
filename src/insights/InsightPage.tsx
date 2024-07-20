@@ -35,36 +35,13 @@ function TabPanel(props: TabPanelProps) {
 
   return (
     <div
+      style={{ width: '100%', height: '100%' }}
       role="tabpanel"
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
       {...other}>
-      {value === index && (
-        // <Box
-        //   sx={{
-        //     flexWrap:'wrap',
-        //     backgroundColor: 'black', //FIXME:
-        //     boxShadow: 20,
-        //     borderRadius: 1,
-        //     width:'100%',
-        //     height:'100%',
-        //     marginLeft: 'auto',
-        //     marginRight: 'auto',
-        //     outline: 'none'
-        //   }}>
-        <Typography
-          sx={{
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            paddingTop: '6rem',
-            outline: 'none'
-          }}
-          component="div">
-          {children}
-        </Typography>
-        // </Box>
-      )}
+      {value === index && children}
     </div>
   );
 }
@@ -103,7 +80,7 @@ const InsightPage = () => {
         sx={{
           boxShadow: 24,
           width: '90%',
-          height: '90%',
+          height: '35rem',
           borderRadius: 1,
           outline: 'none',
           marginLeft: 'auto',
@@ -147,16 +124,14 @@ const InsightPage = () => {
               />
             ))}
           </Tabs>
-          <div>
-            {detailsCategory.insights.map(
-              (item, idx) =>
-                idx === value2 && (
-                  <TabPanel value={value2} index={idx} key={value}>
-                    <InsightCard {...item} />
-                  </TabPanel>
-                )
-            )}
-          </div>
+          {detailsCategory.insights.map(
+            (item, idx) =>
+              idx === value2 && (
+                <TabPanel value={value2} index={idx} key={value}>
+                  <InsightCard {...item} />
+                </TabPanel>
+              )
+          )}
         </Box>
       </Box>
     </>
