@@ -5,7 +5,6 @@ import './NoResultFound.css';
 function NoResultFound() {
   return (
     <>
-      {/* <CssBaseline /> */}
       <Container className="container">
         <SearchOffIcon className="SearchOffIcon" />
         <Typography className="tex">אין תוצאות למה בקשת להראות</Typography>

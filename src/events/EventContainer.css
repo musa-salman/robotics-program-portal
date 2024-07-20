@@ -39,7 +39,6 @@
 /* Styling for the shift buttons*/
 .shift-buttons {
   border: none;
-  cursor: pointer;
   transition: background-color 0.3s ease;
   min-height: 50px;
   min-width: 50px;

@@ -1,27 +1,41 @@
-import { Button, Alert } from 'react-bootstrap';
+import { IconButton, Typography } from '@mui/material';
 import { useAuth } from '../services/useAuth';
 import { useState } from 'react';
+import FeedbackSnackbar, { FeedbackMessage } from '../../components/snackbar/SnackBar';
+import { ExitToApp } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const LogoutButton = () => {
   const { authService } = useAuth();
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState<FeedbackMessage | null>(null);
+  const [buildNumber, setBuildNumber] = useState<number>(0);
+  const navigate = useNavigate();
 
   return (
     <>
-      <Button
-        variant="danger"
+      {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
+      <IconButton
         onClick={() =>
           authService
             .logout()
-            .then(() => window.location.reload())
+            .then(() => {
+              setMessage({
+                message: 'התנתקת בהצלחה',
+                variant: 'success'
+              });
+              navigate('/splash');
+            })
             .catch((error) => {
-              console.error(error);
-              setError('ישנה בעיה בהתנתקות מהמערכת. אנא נסה שוב מאוחר יותר.');
+              setMessage({
+                message: error.message,
+                variant: 'error'
+              });
+              setBuildNumber(buildNumber + 1);
             })
         }>
-        התנתק
-      </Button>
-      {error && <Alert variant="danger">{error}</Alert>}
+        <ExitToApp fontSize="medium" />
+        <Typography variant="h6">התנתק</Typography>
+      </IconButton>
     </>
   );
 };

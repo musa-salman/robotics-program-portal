@@ -82,6 +82,7 @@ function MaterialCard({
             message: 'החומר נמחק בהצלחה',
             variant: 'success'
           });
+          setShowDeleteModal(false);
         });
       })
       .catch(() => {
@@ -193,8 +194,8 @@ function MaterialCard({
           <Divider component="div" variant="fullWidth" style={{ backgroundColor: 'black', height: '2px' }} />
           <div>
             <Typography
-              variant="body2"
-              className="description"
+              variant="body1"
+              // className="description"
               style={{
                 minHeight: '100px',
                 maxHeight: '100px',

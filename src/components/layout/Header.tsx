@@ -1,11 +1,11 @@
 import React from 'react';
 import { Toolbar, Container, Box, Avatar } from '@mui/material';
-import AvatarMenu from './AvatarMenu';
 import './Header.css';
 import LoginButton from '../../authentication/components/Login/Login';
 import { useAuth } from '../../authentication/services/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
+import LogoutButton from '../../authentication/components/Logout';
 
 interface HeaderProps {
   links: { name: string; path: string }[];
@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ links }) => {
               ))}
             </nav>
             <Box flexGrow={1} />
-            {user === null ? <LoginButton /> : <AvatarMenu />}
+            {user === null ? <LoginButton /> : <LogoutButton />}
           </Toolbar>
         </Container>
       </Box>

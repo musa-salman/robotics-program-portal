@@ -32,8 +32,7 @@ function StudyMaterialContainer() {
   const [show, setShow] = useState(false);
   const [showAddEdit, setShowAddEdit] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [isAll, setIsAll] = useState(false);
-
+  const [isAll, setIsAll] = useState(true);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleShowEdit = () => setShowAddEdit(true);
@@ -85,12 +84,8 @@ function StudyMaterialContainer() {
     if (categoryList === null || reload) getCategories();
   }, [materialService, studyMaterials, categoryList, reload]);
 
-  const sortCategories = (categories: string[]) => {
-    return categories.sort((a, b) => a.localeCompare(b));
-  };
-
   const sortStudyMaterials = (materials: StudyMaterial[]) => {
-    return materials.sort((a, b) => b.title.localeCompare(a.title));
+    return materials.sort((a, b) => b.title.localeCompare(a.title)).reverse();
   };
 
   const showMessage = (message: FeedbackMessage) => {
@@ -104,15 +99,29 @@ function StudyMaterialContainer() {
       material.id === updatedMaterial.id ? updatedMaterial : material
     );
     setStudyMaterials(sortStudyMaterials(updatedMaterials));
+
+    if (searchResults) {
+      const updatedSearchResults = searchResults.map((material) =>
+        material.id === updatedMaterial.id ? updatedMaterial : material
+      );
+      setSearchResults(updatedSearchResults);
+    }
   };
 
   const handleDelete = (deletedStudy: StudyMaterial) => {
     const updatedMaterials = (studyMaterials || []).filter((material) => material.id !== deletedStudy.id);
     setStudyMaterials(sortStudyMaterials(updatedMaterials));
+    if (searchResults) {
+      const updatedSearchResults = searchResults.filter((material) => material.id !== deletedStudy.id);
+      setSearchResults(updatedSearchResults);
+    }
   };
 
   const handleAdd = (studyMaterial: StudyMaterial) => {
     setStudyMaterials((prevMaterials) => sortStudyMaterials([studyMaterial, ...(prevMaterials || [])]));
+    if (searchResults) {
+      setSearchResults((prevMaterials) => [studyMaterial, ...(prevMaterials || [])]);
+    }
   };
 
   const handleCategorySelect = (category: string) => {
@@ -122,7 +131,6 @@ function StudyMaterialContainer() {
       setIsAll(true);
     } else {
       setSelectedCategories([category]);
-      console.log('the selected cat ', selectedCategories);
       setIsAll(false);
     }
   };
@@ -141,6 +149,12 @@ function StudyMaterialContainer() {
           material.id === selectedMaterial!.id ? { ...material, category: categorySelected.category } : material
         );
         setStudyMaterials(sortStudyMaterials(updatedStudyMaterials));
+        if (searchResults) {
+          const updatedSearchResults = searchResults.map((material) =>
+            material.id === selectedMaterial!.id ? { ...material, category: categorySelected.category } : material
+          );
+          setSearchResults(updatedSearchResults);
+        }
         showMessage({
           message: 'החומר הועבר בהצלחה!',
           variant: 'success'
@@ -154,11 +168,6 @@ function StudyMaterialContainer() {
       });
   };
 
-  const invalidateCache = () => {
-    setStudyMaterials(null);
-    setCategoryList(null);
-  };
-
   if (studyMaterials === null) {
     return <>loading</>;
   }
@@ -169,7 +178,9 @@ function StudyMaterialContainer() {
 
   let categories: string[] = (searchResults || studyMaterials || [])
     .map((s) => s.category)
-    .filter((item, index, arr) => arr.indexOf(item) === index);
+    .filter((item, index, arr) => arr.indexOf(item) === index)
+    .sort((a, b) => a.localeCompare(b))
+    .reverse();
 
   categories = ['הכל', ...categories.filter((c) => c !== 'הכל')];
 
@@ -215,20 +226,16 @@ function StudyMaterialContainer() {
           ) : (
             (categories || [])
               .filter((category) => selectedCategories.includes(category))
-              .filter((category) => {
-                if (category === 'הכל') {
-                  return false;
-                }
-                return true;
-              })
               .map((category) => (
                 <Box key={category}>
                   <CardContent>
-                    {isAll && (
-                      <Typography variant="h6" component="h2" style={{ marginBottom: '20px' }}>
-                        {category}
-                      </Typography>
-                    )}
+                    {isAll &&
+                      category !== 'הכל' &&
+                      (searchResults || studyMaterials).some((s) => s.category === category) && (
+                        <Typography variant="h6" component="h2" style={{ marginBottom: '20px' }}>
+                          {category}
+                        </Typography>
+                      )}
                     <div className="study-materials-container">
                       {(searchResults || studyMaterials || [])
                         .filter((s) => s.category === category)
