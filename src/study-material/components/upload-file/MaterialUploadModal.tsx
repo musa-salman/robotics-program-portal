@@ -37,7 +37,6 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
   const [categories, setCategories] = useState<Category[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [showCategoryManagement, setShowCategoryManagement] = useState(false);
-  const handleCloseCategoryManagement = () => setShowCategoryManagement(false);
   const handleShowCategoryManagement = () => setShowCategoryManagement(true);
   const studyMaterialManagement = useMaterialService();
   const [isValid, setIsValid] = useState({
@@ -47,6 +46,11 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
     title: true,
     description: true
   });
+  const [reload, setReload] = useState(false);
+  const handleCloseCategoryManagement = () => {
+    setReload(true);
+    setShowCategoryManagement(false);
+  };
   const ITEM_HEIGHT = 40;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -77,20 +81,27 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
   const MAX_CHARS_Details = 100;
 
   useEffect(() => {
-    const getCategory = async () => {
-      try {
-        const data: Category[] = await studyMaterialManagement.categoryRepository.find();
-        setCategories(data);
-      } catch (error) {
-        console.error('Error fetching items:', error);
-      }
+    const getCategory = () => {
+      studyMaterialManagement.categoryRepository
+        .find()
+        .then((data) => {
+          setCategories(data);
+          setReload(false);
+        })
+        .catch(() => {
+          showMessage({
+            message: 'שגיאה בטעינת הקטגוריות',
+            variant: 'error'
+          });
+          setReload(false);
+        });
     };
 
-    if (loading && categories === null) {
+    if ((loading && categories === null) || reload) {
       getCategory();
       setLoading(false);
     }
-  }, [categories]);
+  }, [categories, reload]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -306,9 +317,8 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description">
           <CategoryManagement
-            categories={categories}
+            categoryList={categories}
             handleCloseCategoryManagement={handleCloseCategoryManagement}
-            setCategories={setCategories}
             handleSelect={() => {}}
           />
         </Modal>

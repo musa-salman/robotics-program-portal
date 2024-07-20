@@ -36,12 +36,17 @@ function StudyMaterialContainer() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const handleCloseAddEdit = () => setShowAddEdit(false);
   const handleShowEdit = () => setShowAddEdit(true);
   const [query, setQuery] = useState('');
 
   const [message, setMessage] = useState<FeedbackMessage | null>(null);
   const [buildNumber, setBuildNumber] = useState<number>(0);
+
+  const [reload, setReload] = useState(false);
+  const handleCloseAddEdit = () => {
+    setShowAddEdit(false);
+    setReload(true);
+  };
 
   useEffect(() => {
     const getStudyMaterials = () => {
@@ -50,12 +55,14 @@ function StudyMaterialContainer() {
         .then((materials) => {
           const sortedMaterials = sortStudyMaterials(materials);
           setStudyMaterials(sortedMaterials);
+          setReload(false);
         })
         .catch(() => {
           showMessage({
             message: 'התרחשה שגיעה בעת הבאת החומרים. אנא נסה שנית.',
             variant: 'error'
           });
+          setReload(false);
         });
     };
     const getCategories = () => {
@@ -64,17 +71,19 @@ function StudyMaterialContainer() {
         .then((categories) => {
           setCategoryList(categories);
           setSelectedCategories(categories.map((category) => category.category));
+          setReload(false);
         })
         .catch(() => {
           showMessage({
             message: 'התרחשה שגיעה בעת הבאת הקטגוריות. אנא נסה שנית.',
             variant: 'error'
           });
+          setReload(false);
         });
     };
-    if (studyMaterials === null) getStudyMaterials();
-    if (categoryList === null) getCategories();
-  }, [materialService, studyMaterials, categoryList]);
+    if (studyMaterials === null || reload) getStudyMaterials();
+    if (categoryList === null || reload) getCategories();
+  }, [materialService, studyMaterials, categoryList, reload]);
 
   const sortCategories = (categories: string[]) => {
     return categories.sort((a, b) => a.localeCompare(b));
@@ -143,6 +152,11 @@ function StudyMaterialContainer() {
           variant: 'error'
         });
       });
+  };
+
+  const invalidateCache = () => {
+    setStudyMaterials(null);
+    setCategoryList(null);
   };
 
   if (studyMaterials === null) {
@@ -247,9 +261,8 @@ function StudyMaterialContainer() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
             <CategoryManagement
-              categories={categoryList}
+              categoryList={categoryList}
               handleCloseCategoryManagement={handleCloseAddEdit}
-              setCategories={setCategoryList}
               handleSelect={() => {}}
             />
           </Modal>
