@@ -82,6 +82,7 @@ function MaterialCard({
             message: 'החומר נמחק בהצלחה',
             variant: 'success'
           });
+          setShowDeleteModal(false);
         });
       })
       .catch(() => {
