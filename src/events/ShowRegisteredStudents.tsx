@@ -15,10 +15,8 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  ListItem,
   List,
-  Collapse,
-  ListItemText
+  Collapse
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
