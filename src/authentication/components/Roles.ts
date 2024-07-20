@@ -55,5 +55,43 @@ const ALLOW_AUTHED_ROLES = [Role.Owner, Role.Admin, Role.Student];
 
 const SKIP_TO_ADMIN_ROLES = [Role.Pending, Role.PreEnrollment, Role.Rejected];
 
+interface HelpRole {
+  name: string;
+  permissions: string[];
+}
+
+const roles: HelpRole[] = [
+  {
+    name: 'תלמיד',
+    permissions: ['הצגת חומרים לימודיים', 'הורדת חומרים לימודיים', 'הצגת אירועים', 'רישום לאירועים']
+  },
+  {
+    name: 'מנהל',
+    permissions: [
+      'הצגת חומרים לימודיים',
+      'הורדת חומרים לימודיים',
+      'הצגת אירועים',
+      'הוספה, עריכה ומחיקה של אירועים',
+      'הוספה, עריכה ומחיקה של חומרים לימודיים',
+      'הוספה, עריכה ומחיקה של קטגוריות',
+      'העברת חומרים בין קטגוריות',
+      'קבלת או דחיית רישומים ממתינים',
+      'עריכת ומחיקת תלמידים'
+    ]
+  },
+  {
+    name: 'בעלים',
+    permissions: ['הוספה, מחיקה של מנהלים', 'מתן גישת על']
+  }
+];
+
 export default Role;
-export { ALLOW_AUTHED_ROLES, SKIP_TO_ADMIN_ROLES, roleNames, selectableRoles, roleColorsLevel, AuthorizationStatus };
+export {
+  ALLOW_AUTHED_ROLES,
+  SKIP_TO_ADMIN_ROLES,
+  roleNames,
+  selectableRoles,
+  roleColorsLevel,
+  AuthorizationStatus,
+  roles
+};

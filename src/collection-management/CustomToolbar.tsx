@@ -25,14 +25,16 @@ const CustomToolbar: React.JSXElementConstructor<GridToolbarProps & ToolbarProps
         <GridToolbarExport />
       </div>
       <div className="custom-toolbar__right">
+        {onHelpClick && (
+          <Tooltip title="עזרה">
+            <IconButton color="primary" onClick={onHelpClick} className="custom-toolbar__button">
+              ?
+            </IconButton>
+          </Tooltip>
+        )}
         <Tooltip title="רענון">
           <IconButton color="primary" onClick={onRefreshClick} className="custom-toolbar__button">
             <Refresh />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="עזרה">
-          <IconButton color="primary" onClick={onHelpClick} className="custom-toolbar__button">
-            ?
           </IconButton>
         </Tooltip>
       </div>

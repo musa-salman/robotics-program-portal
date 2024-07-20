@@ -57,6 +57,7 @@ interface CollectionTableProps<T> {
   onRowSelected?: (row: GridRowModel | null) => void;
   onDelete?: (item: T) => Promise<void>;
   columnVisibilityModel?: GridColumnVisibilityModel;
+  onHelpClick?: () => void;
 }
 
 const CollectionTable = <T extends { id: string }>({
@@ -67,7 +68,8 @@ const CollectionTable = <T extends { id: string }>({
   messageFormat,
   onRowSelected,
   onDelete,
-  columnVisibilityModel
+  columnVisibilityModel,
+  onHelpClick
 }: CollectionTableProps<T>) => {
   const [rows, setRows] = useState<(T & { isNew: boolean })[] | null>(null);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
@@ -249,6 +251,7 @@ const CollectionTable = <T extends { id: string }>({
             slotProps={{
               toolbar: {
                 onRefreshClick: handleRefresh,
+                onHelpClick: onHelpClick,
                 showQuickFilter: true
               }
             }}
