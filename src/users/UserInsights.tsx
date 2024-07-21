@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { User } from './User';
 
 const userInsights: InsightData = {
-  title: 'תובנות על משתמשים',
+  title: 'סטטיסטיקות משתמשים',
   insights: [
     {
       question: 'מה התפלגות התפקידים של המשתמשים?',

@@ -9,6 +9,7 @@ export interface Register {
   parentEmail: string;
   studentAddress: string;
   studentSchool: string;
+
   studyUnitsMajor: string;
   numStudyUnitsMath: string;
   hearAboutUs: string;

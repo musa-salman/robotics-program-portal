@@ -69,7 +69,7 @@ interface CategoryInsights {
 }
 
 const studyMaterialInsights: InsightData = {
-  title: 'תובנות על חומרי לימוד',
+  title: 'סטטיסטיקות חומרי לימוד',
   insights: [
     {
       question: 'איך מחולקים חומרי הלימוד לפי קטגוריות?',
@@ -133,7 +133,7 @@ const studyMaterialInsights: InsightData = {
           </>
         );
       }
-    },
+    }
     // {
     //   question: 'כיצד השתנו ההוספות של חומרי לימוד לאורך זמן?',
     //   generateGraph: () => {
