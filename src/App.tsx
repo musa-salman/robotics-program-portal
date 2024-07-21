@@ -57,7 +57,7 @@ function App() {
         path: '/students-management',
         element: <Management />,
         allowedRoles: [Role.Admin, Role.Owner],
-        title: 'ניהול סטודנטים',
+        title: 'ניהול משתמשים',
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />,
           [Role.Pending]: <WaitApprovalPage />
@@ -106,7 +106,8 @@ function App() {
         title: 'ממתין לאישור',
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />,
-          [Role.Rejected]: <RejectionPage />
+          [Role.Rejected]: <RejectionPage />,
+          [Role.Student]: <Banner />
         }
       },
       {

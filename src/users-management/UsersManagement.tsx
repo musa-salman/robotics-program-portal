@@ -8,9 +8,11 @@ import Role, { roleColorsLevel, roleNames, SKIP_TO_ADMIN_ROLES } from '../authen
 import { useState } from 'react';
 import RoleSelector from './RoleSelector';
 import { FeedbackMessage } from '../components/snackbar/SnackBar';
+import RolesDialog from './RolesDialog';
 
 const UsersManagement = () => {
   const [showAddRoleDialog, setShowAddRoleDialog] = useState(false);
+  const [show, setShow] = useState(false);
   const [userToAddRole, setUserToAddRole] = useState<User | null>(null);
   const userService = useUserService();
 
@@ -166,6 +168,7 @@ const UsersManagement = () => {
 
   return (
     <>
+      <RolesDialog open={show} onClose={() => setShow(false)} />
       <CollectionTable<User>
         generateColumns={generateColumns}
         getItems={() => {
@@ -175,6 +178,7 @@ const UsersManagement = () => {
         }}
         messageFormat={messageFormat}
         onDelete={handleDeleteUser}
+        onHelpClick={() => setShow(true)}
       />
     </>
   );

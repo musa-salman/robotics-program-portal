@@ -9,6 +9,8 @@ import DocumentFormModal from './DocumentForm';
 import { AuthContext } from '../authentication/services/AuthContext';
 import Role from '../authentication/components/Roles';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
+import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
+import DeleteModal from '../study-material/DeleteModal';
 
 interface DocumentCardProps {
   documentInfo: DocumentInfo;
@@ -30,6 +32,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
   const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);
   const [buildNumber, setBuildNumber] = useState<number>(0);
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const storage = useContext(StorageServiceContext);
   const { user } = useContext(AuthContext);
 
@@ -110,6 +113,13 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
   return (
     <>
       {message && <FeedbackSnackbar key={buildNumber} feedBackMessage={message} />}
+      {showDeleteModal && (
+        <DeleteModal
+          message="האם אתה בטוח שברצונך למחוק את המסמך?"
+          onDelete={handleDelete}
+          onCancel={() => setShowDeleteModal(false)}
+        />
+      )}
       <DocumentFormModal
         open={show}
         handleClose={() => setShow(false)}
@@ -130,25 +140,41 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
             <Button variant="contained" color="primary" startIcon={<GetAppIcon />} onClick={handleDownload}>
               הורד
             </Button>
-            {!isFileUploaded ? (
-              <Button variant="contained" component="label" color="secondary" startIcon={<CloudUploadIcon />}>
-                העלה קובץ
-                <input id={`file-upload-${documentInfo.id}`} type="file" hidden onChange={handleFileChange} />
-              </Button>
-            ) : (
-              <Button variant="contained" color="error" startIcon={<Delete />} onClick={handleDeleteFile}>
-                מחק קובץ
-              </Button>
-            )}
+            <RoleBasedAccessControl
+              allowedRoles={[Role.Student]}
+              unauthorizedAuthenticatedComponent={<></>}
+              unauthorizedUnauthenticatedComponent={<></>}>
+              {!isFileUploaded ? (
+                <Button variant="contained" component="label" color="secondary" startIcon={<CloudUploadIcon />}>
+                  העלה קובץ
+                  <input
+                    id={`file-upload-${documentInfo.id}`}
+                    type="file"
+                    hidden
+                    onChange={handleFileChange}
+                    accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                  />
+                </Button>
+              ) : (
+                <Button variant="contained" color="error" startIcon={<Delete />} onClick={handleDeleteFile}>
+                  מחק קובץ
+                </Button>
+              )}
+            </RoleBasedAccessControl>
           </CardActions>
-          <CardActions>
-            <IconButton color="default" onClick={handleDelete}>
-              <Delete />
-            </IconButton>
-            <IconButton color="default" onClick={() => setShow(true)}>
-              <Edit />
-            </IconButton>
-          </CardActions>
+          <RoleBasedAccessControl
+            allowedRoles={[Role.Admin, Role.Owner]}
+            unauthorizedAuthenticatedComponent={<></>}
+            unauthorizedUnauthenticatedComponent={<></>}>
+            <CardActions>
+              <IconButton color="default" onClick={() => setShowDeleteModal(true)}>
+                <Delete />
+              </IconButton>
+              <IconButton color="default" onClick={() => setShow(true)}>
+                <Edit />
+              </IconButton>
+            </CardActions>
+          </RoleBasedAccessControl>
         </Box>
         {file && (
           <Box sx={{ p: 2 }}>

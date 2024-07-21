@@ -6,6 +6,8 @@ import { useAuth } from '../../authentication/services/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import LogoutButton from '../../authentication/components/Logout';
+import RoleBasedAccessControl from '../../authentication/components/RoleBasedAccessControl';
+import Role from '../../authentication/components/Roles';
 
 interface HeaderProps {
   links: { name: string; path: string }[];
@@ -35,10 +37,27 @@ const Header: React.FC<HeaderProps> = ({ links }) => {
             />
             <nav className="nav-links">
               {links.map((link) => (
-                <Link key={link.name} to={link.path}>
-                  {link.name}
-                </Link>
+                <RoleBasedAccessControl
+                  key={link.name}
+                  allowedRoles={[Role.Admin, Role.Owner, Role.Student]}
+                  unauthorizedAuthenticatedComponent={<></>}>
+                  <Link key={link.name} to={link.path}>
+                    {link.name}
+                  </Link>
+                </RoleBasedAccessControl>
               ))}
+              <RoleBasedAccessControl
+                allowedRoles={[Role.Admin, Role.Owner]}
+                unauthorizedAuthenticatedComponent={<></>}
+                unauthorizedUnauthenticatedComponent={<></>}>
+                <Link to="/students-management">ניהול משתמשים</Link>
+              </RoleBasedAccessControl>
+              <RoleBasedAccessControl
+                allowedRoles={[Role.Admin, Role.Owner]}
+                unauthorizedAuthenticatedComponent={<></>}
+                unauthorizedUnauthenticatedComponent={<></>}>
+                <Link to="/deep-inspection">סטטיסטיקות</Link>
+              </RoleBasedAccessControl>
             </nav>
             <Box flexGrow={1} />
             {user === null ? <LoginButton /> : <LogoutButton />}

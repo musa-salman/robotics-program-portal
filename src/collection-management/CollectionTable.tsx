@@ -57,6 +57,7 @@ interface CollectionTableProps<T> {
   onRowSelected?: (row: GridRowModel | null) => void;
   onDelete?: (item: T) => Promise<void>;
   columnVisibilityModel?: GridColumnVisibilityModel;
+  onHelpClick?: () => void;
 }
 
 const CollectionTable = <T extends { id: string }>({
@@ -67,7 +68,8 @@ const CollectionTable = <T extends { id: string }>({
   messageFormat,
   onRowSelected,
   onDelete,
-  columnVisibilityModel
+  columnVisibilityModel,
+  onHelpClick
 }: CollectionTableProps<T>) => {
   const [rows, setRows] = useState<(T & { isNew: boolean })[] | null>(null);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
@@ -233,7 +235,7 @@ const CollectionTable = <T extends { id: string }>({
           <FormComponent saveItem={updateItem} initialItem={initialItem} setShowItemForm={setShowItemForm} />
         )}
       </Dialog>
-      <Box className="table-container">
+      <Box className="table-container" sx={{ bgcolor: '#1d1b1b' }}>
         <div className="data-grid-container">
           <DataGrid
             rows={rows || []}
@@ -249,6 +251,7 @@ const CollectionTable = <T extends { id: string }>({
             slotProps={{
               toolbar: {
                 onRefreshClick: handleRefresh,
+                onHelpClick: onHelpClick,
                 showQuickFilter: true
               }
             }}

@@ -2,7 +2,6 @@ import { ReactNode, useState } from 'react';
 import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import registerInsights from '../registers-management/RegisterInsights';
 import userInsights from '../users/UserInsights';
@@ -59,7 +58,6 @@ const InsightPage = () => {
   const [value2, setValue2] = useState(0);
 
   const updateTabValue = (_event: React.SyntheticEvent, newValue: number) => {
-    console.log('newValue', newValue);
     setValue(newValue);
     setValue2(0);
     const exam: InsightData = {
@@ -88,7 +86,7 @@ const InsightPage = () => {
           marginTop: '2%',
           padding: '20px'
         }}>
-        <Box sx={{ p: 2, bgcolor: 'background.paper', display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ p: 2, bgcolor: 'background.default', display: 'flex', justifyContent: 'center' }}>
           <Tabs
             value={value}
             onChange={updateTabValue}
@@ -102,7 +100,7 @@ const InsightPage = () => {
         </Box>
         <Box
           sx={{
-            bgcolor: 'GrayText',
+            bgcolor: 'background.default',
             display: 'flex',
             flexDirection: 'row',
             height: '100%',

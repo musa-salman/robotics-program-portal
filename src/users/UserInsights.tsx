@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { User } from './User';
 
 const userInsights: InsightData = {
-  title: 'תובנות על משתמשים',
+  title: 'סטטיסטיקות משתמשים',
   insights: [
     {
       question: 'מה התפלגות התפקידים של המשתמשים?',
@@ -59,7 +59,7 @@ const userInsights: InsightData = {
                 faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
               }
             ]}
-            height={200}
+            height={300}
           />
         );
       }

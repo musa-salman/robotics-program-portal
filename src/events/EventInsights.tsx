@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import { InsightData } from '../insights/InsightPage';
 import { PieChart, PieValueType } from '@mui/x-charts';
 import { useEventService } from './repository/EventContext';
-import { Moment } from 'moment';
-import { IEvent } from './repository/Event';
+import { Spinner } from 'react-bootstrap';
 
 const eventInsights: InsightData = {
-  title: 'תובנות על אירועים',
+  title: 'סטטיסטיקות אירועים',
   insights: [
     {
       question: 'מהי חלוקת התלמידים בין האירועים?',
@@ -36,26 +35,22 @@ const eventInsights: InsightData = {
           }
         }, [registrationStats, eventService]);
         if (registrationStats === null) {
-          return <div>Loading...</div>;
+          return <Spinner animation="border" />;
         }
         return (
           <PieChart
             series={[
               {
-                data: [
-                  { id: 'event1', value: 5, label: 'אירוע 1' },
-                  { id: 'event2', value: 10, label: 'אירוע 2' },
-                  { id: 'event3', value: 20, label: 'אירוע 3' }
-                ],
+                data: registrationStats,
                 highlightScope: { faded: 'global', highlighted: 'item' },
-                faded: { innerRadius: 150, additionalRadius: -30, color: 'gray' }
+                faded: { innerRadius: 30, additionalRadius: -30, color: 'black' }
               }
             ]}
-            height={400}
+            height={300}
           />
         );
       }
-    },
+    }
     // {
     //   question: 'כמה תלמידים נרשמו לכל אירוע?',
     //   generateGraph: () => {

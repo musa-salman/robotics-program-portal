@@ -2,12 +2,13 @@ import { PieChart, PieValueType } from '@mui/x-charts';
 import { InsightData } from '../insights/InsightPage';
 import { useContext, useEffect, useState } from 'react';
 import { RegisterContext } from '../register/service/RegisterContext';
+import { hearAboutUsOptions, studyUnitsMajorOptions } from '../register/info';
 
 const registerInsightList: InsightData = {
-  title: 'תובנות על נרשמים',
+  title: 'סטטיסטיקות נרשמים',
   insights: [
     {
-      question: 'איך התלמידים מגיעים למגמה?',
+      question: 'איך התלמידים מגיעים למגמה? בכמויות',
       generateGraph: () => {
         const registerService = useContext(RegisterContext);
         const [majorRegistrations, setMajorRegistrations] = useState<PieValueType[] | null>(null);
@@ -26,15 +27,16 @@ const registerInsightList: InsightData = {
               {
                 data: majorRegistrations || [],
                 highlightScope: { faded: 'global', highlighted: 'item' },
-                faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
+                faded: { innerRadius: 30, additionalRadius: -30, color: 'black' }
               }
             ]}
+            height={300}
           />
         );
       }
     },
     {
-      question: 'כמה יחידות לימוד במתמטיקה לומדים התלמידים?',
+      question: 'כמה יחידות לימוד במתמטיקה לומדים התלמידים? בכמויות',
       generateGraph: () => {
         const registerService = useContext(RegisterContext);
         const [studyUnitsRegistrations, setStudyUnitsRegistrations] = useState<PieValueType[] | null>(null);
@@ -62,7 +64,7 @@ const registerInsightList: InsightData = {
       }
     },
     {
-      question: 'מה התלמידים מעדיפים ללמוד?',
+      question: 'מה התלמידים מעדיפים ללמוד? בכמויות',
       generateGraph: () => {
         const registerService = useContext(RegisterContext);
         const [preferencesRegistrations, setPreferencesRegistrations] = useState<PieValueType[] | null>(null);
@@ -70,7 +72,13 @@ const registerInsightList: InsightData = {
         useEffect(() => {
           if (preferencesRegistrations === null) {
             registerService.countMajorRegistrations().then((data) => {
-              setPreferencesRegistrations(Object.entries(data).map(([key, value]) => ({ id: key, value, label: key })));
+              setPreferencesRegistrations(
+                Object.entries(data).map(([key, value]) => ({
+                  id: key,
+                  value,
+                  label: studyUnitsMajorOptions[parseInt(key)]
+                }))
+              );
             });
           }
         }, [registerService]);

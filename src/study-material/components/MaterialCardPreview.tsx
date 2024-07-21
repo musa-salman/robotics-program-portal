@@ -1,6 +1,5 @@
 import './MaterialCard.css';
 import DownloadIcon from '@mui/icons-material/Download';
-import MySpeedDial from './MySpeedDial';
 import { Button, Card, CardActions, CardContent, CardHeader, Divider, Typography } from '@mui/material';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import { useTheme } from '@mui/material/styles';
@@ -25,23 +24,22 @@ function MaterialCardPreview({ studyMaterial }: { studyMaterial: StudyMaterial }
               marginTop: '5px',
               textAlign: 'left'
             }}
-            action={
-              <MySpeedDial
-                handleEditToggle={() => {}}
-                handleMoveToggle={() => {}}
-                handleSave={() => {}}
-                handleDelete={() => {}}
-                isEditing={false}
-              />
-            }
-            title={studyMaterial.title}
             className="title-card"
+            title={
+              <Typography variant="h5" component="div" style={{ color: theme.palette.primary.main }}>
+                {studyMaterial.title}
+              </Typography>
+            }
           />
-          <Divider component="div" variant="fullWidth" style={{ backgroundColor: '#F2542D' }} />
+          <Divider
+            component="div"
+            variant="fullWidth"
+            style={{ backgroundColor: 'black', height: '3px', marginBottom: '5px' }}
+          />
           <div>
             <Typography
-              variant="body2"
-              className="description"
+              variant="body1"
+              // className="description"
               style={{
                 minHeight: '100px',
                 maxHeight: '100px',
@@ -51,10 +49,10 @@ function MaterialCardPreview({ studyMaterial }: { studyMaterial: StudyMaterial }
             </Typography>
           </div>
           <Typography className="date"> {formatDate(studyMaterial.date)}</Typography>
-          <CardActions>
-            <Button sx={{ display: 'flex', justifyItems: 'flex-end', alignItems: 'flex-end' }}>
+          <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Button sx={{ width: '10rem', fontSize: '20px' }}>
               הורדה
-              <DownloadIcon />
+              <DownloadIcon sx={{ margin: '10px' }} />
             </Button>
           </CardActions>
         </CardContent>

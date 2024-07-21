@@ -23,7 +23,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [showModalDelete, setShowModalDelete] = useState(false);
-  const [isForward, setIsForward] = useState(false); //FIXME: validation
+  const [isForward] = useState(false); //FIXME: validation
 
   const handleCloseEdit = () => setShowModalEdit(false);
   const handleCloseDelete = () => setShowModalDelete(false);

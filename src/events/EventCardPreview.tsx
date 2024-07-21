@@ -3,7 +3,6 @@ import './EventCard.css';
 import { formatDateTimeRange } from '../utils/dateFormatter';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
@@ -28,32 +27,34 @@ const EventCardPreview: React.FC<EventProps> = ({ startDate, endDate, title, det
     <Card
       className="cardIconButton"
       sx={{
-        maxWidth: 380,
-        minWidth: 380,
+        maxWidth: 480,
+        minWidth: 480,
         background: theme.palette.background.paper,
         boxShadow: `0 4px 8px ${theme.palette.primary.main}`
       }}>
       <CardHeader
         action={
           <IconButton aria-label="settings">
-            <MoreVertIcon />
+            <div className="adminOptions">
+              <MoreVertIcon />
+            </div>
           </IconButton>
         }
         title={
-          <Typography variant="h5" component="div" style={{ minHeight: '32px', color: theme.palette.primary.main }}>
+          <Typography variant="h4" component="div" style={{ minHeight: '32px', color: theme.palette.primary.main }}>
             {title}
           </Typography>
         }
         subheader={
-          <Typography variant="body2" component="div" style={{ minHeight: '50px' }}>
+          <Typography variant="body2" component="div" style={{ minHeight: '64px' }}>
             {formatDateTimeRange(startDate, endDate)}
           </Typography>
         }
       />
-      <CardMedia component="img" height="150" image={image} alt={title} />
+      <img style={{ display: 'block', height: '150px', width: '100%', objectFit: 'cover' }} src={image} alt={title} />{' '}
       <CardContent>
         <Typography
-          variant="body1"
+          variant="h6"
           color="text.secondary"
           style={{
             minHeight: '100px',
@@ -63,13 +64,10 @@ const EventCardPreview: React.FC<EventProps> = ({ startDate, endDate, title, det
           {details}
         </Typography>
       </CardContent>
-
-      <div className="register-button">
+      <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button variant="contained" color="primary">
           הירשם
         </Button>
-      </div>
-      <CardActions disableSpacing>
         <IconButton aria-label="show-registered-students">
           <GroupsIcon />
         </IconButton>
