@@ -16,7 +16,13 @@ const registerInsightList: InsightData = {
         useEffect(() => {
           if (majorRegistrations === null) {
             registerService.countMajorRegistrations().then((data) => {
-              setMajorRegistrations(Object.entries(data).map(([key, value]) => ({ id: key, value, label: key })));
+              setMajorRegistrations(
+                Object.entries(data).map(([key, value]) => ({
+                  id: key,
+                  value,
+                  label: hearAboutUsOptions[parseInt(key)]
+                }))
+              );
             });
           }
         }, [registerService]);
@@ -34,69 +40,69 @@ const registerInsightList: InsightData = {
           />
         );
       }
-    },
-    {
-      question: 'כמה יחידות לימוד במתמטיקה לומדים התלמידים? בכמויות',
-      generateGraph: () => {
-        const registerService = useContext(RegisterContext);
-        const [studyUnitsRegistrations, setStudyUnitsRegistrations] = useState<PieValueType[] | null>(null);
-
-        useEffect(() => {
-          if (studyUnitsRegistrations === null) {
-            registerService.collectMathUnitStatistics().then((data) => {
-              setStudyUnitsRegistrations(Object.entries(data).map(([key, value]) => ({ id: key, value, label: key })));
-            });
-          }
-        }, [registerService]);
-
-        return (
-          <PieChart
-            series={[
-              {
-                data: studyUnitsRegistrations || [],
-                highlightScope: { faded: 'global', highlighted: 'item' },
-                faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
-              }
-            ]}
-            height={200}
-          />
-        );
-      }
-    },
-    {
-      question: 'מה התלמידים מעדיפים ללמוד? בכמויות',
-      generateGraph: () => {
-        const registerService = useContext(RegisterContext);
-        const [preferencesRegistrations, setPreferencesRegistrations] = useState<PieValueType[] | null>(null);
-
-        useEffect(() => {
-          if (preferencesRegistrations === null) {
-            registerService.countMajorRegistrations().then((data) => {
-              setPreferencesRegistrations(
-                Object.entries(data).map(([key, value]) => ({
-                  id: key,
-                  value,
-                  label: studyUnitsMajorOptions[parseInt(key)]
-                }))
-              );
-            });
-          }
-        }, [registerService]);
-
-        return (
-          <PieChart
-            series={[
-              {
-                data: preferencesRegistrations || [],
-                highlightScope: { faded: 'global', highlighted: 'item' },
-                faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
-              }
-            ]}
-            height={200}
-          />
-        );
-      }
     }
+    // {
+    //   question: 'כמה יחידות לימוד במתמטיקה לומדים התלמידים? בכמויות',
+    //   generateGraph: () => {
+    //     const registerService = useContext(RegisterContext);
+    //     const [studyUnitsRegistrations, setStudyUnitsRegistrations] = useState<PieValueType[] | null>(null);
+
+    //     useEffect(() => {
+    //       if (studyUnitsRegistrations === null) {
+    //         registerService.collectMathUnitStatistics().then((data) => {
+    //           setStudyUnitsRegistrations(Object.entries(data).map(([key, value]) => ({ id: key, value, label: key })));
+    //         });
+    //       }
+    //     }, [registerService]);
+
+    //     return (
+    //       <PieChart
+    //         series={[
+    //           {
+    //             data: studyUnitsRegistrations || [],
+    //             highlightScope: { faded: 'global', highlighted: 'item' },
+    //             faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
+    //           }
+    //         ]}
+    //         height={200}
+    //       />
+    //     );
+    //   }
+    // },
+    // {
+    //   question: 'מה התלמידים מעדיפים ללמוד? בכמויות',
+    //   generateGraph: () => {
+    //     const registerService = useContext(RegisterContext);
+    //     const [preferencesRegistrations, setPreferencesRegistrations] = useState<PieValueType[] | null>(null);
+
+    //     useEffect(() => {
+    //       if (preferencesRegistrations === null) {
+    //         registerService.countMajorRegistrations().then((data) => {
+    //           setPreferencesRegistrations(
+    //             Object.entries(data).map(([key, value]) => ({
+    //               id: key,
+    //               value,
+    //               label: studyUnitsMajorOptions[parseInt(key)]
+    //             }))
+    //           );
+    //         });
+    //       }
+    //     }, [registerService]);
+
+    //     return (
+    //       <PieChart
+    //         series={[
+    //           {
+    //             data: preferencesRegistrations || [],
+    //             highlightScope: { faded: 'global', highlighted: 'item' },
+    //             faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
+    //           }
+    //         ]}
+    //         height={200}
+    //       />
+    //     );
+    //   }
+    // }
   ]
 };
 
