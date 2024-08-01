@@ -2,7 +2,7 @@ import { PieChart, PieValueType } from '@mui/x-charts';
 import { InsightData } from '../insights/InsightPage';
 import { useContext, useEffect, useState } from 'react';
 import { RegisterContext } from '../register/service/RegisterContext';
-import { hearAboutUsOptions, studyUnitsMajorOptions } from '../register/info';
+import { hearAboutUsOptions } from '../register/info';
 
 const registerInsightList: InsightData = {
   title: 'סטטיסטיקות נרשמים',

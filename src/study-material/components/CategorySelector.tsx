@@ -1,6 +1,5 @@
 import { Box, Button, List, ListItemButton, ListItemText, Modal, Typography } from '@mui/material';
 import './CategorySelector.css';
-import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { Category } from '../repository/Category';
 import { useTheme } from '@mui/material/styles';
@@ -12,18 +11,15 @@ interface CategorySelectorProps {
 }
 
 const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, onMove, onCancel }) => {
-  // const [selectedCategory, setSelectedCategory] = useState<Category[] | null>(null);
-  const [open, setOpen] = useState(true);
   const theme = useTheme();
 
   const moveHandler = (category: Category) => {
-    // setSelectedCategory(category);
     onMove(category);
   };
 
   return (
     <>
-      <Modal open={open} onClose={onCancel}>
+      <Modal open={true} onClose={onCancel}>
         <Box className="move-list-container" sx={{ bgcolor: 'background.paper' }}>
           <List className="move-list">
             <Typography variant="h4" style={{ color: theme.palette.primary.main, display: 'block' }}>

@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
-import Footer from './Footer';
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
+import Footer from './Footer';
 
 const Layout = () => {
   const headerLinks = [
@@ -9,13 +9,6 @@ const Layout = () => {
     { name: 'אירועים', path: '/events' },
     { name: 'חומרי למידה', path: '/study-materials' }
   ].filter((link) => link !== undefined);
-
-  const socialMedia = [
-    {
-      platform: 'facebook',
-      url: 'https://www.facebook.com/teamstreak7067/'
-    }
-  ];
 
   return (
     <>
@@ -36,7 +29,7 @@ const Layout = () => {
           }}>
           <Outlet />
         </Box>
-        <Footer socialMedia={socialMedia} copyright="© 2024 פיקו קידס" />
+        <Footer />
       </Box>
     </>
   );

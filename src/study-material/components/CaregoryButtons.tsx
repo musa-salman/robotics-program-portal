@@ -1,5 +1,4 @@
-import { Box, Button, Divider, Grid, Tab, Tabs, Typography } from '@mui/material';
-import { Category } from '../repository/Category';
+import { Box, Tab, Tabs } from '@mui/material';
 import './CaregoryButtons.css';
 import React from 'react';
 interface CategoryButtonsProps {
@@ -10,7 +9,7 @@ interface CategoryButtonsProps {
 const CategoryButtons: React.FC<CategoryButtonsProps> = ({ categories, onCategorySelect }) => {
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (newValue: number) => {
     setValue(newValue);
   };
   return (
@@ -18,7 +17,7 @@ const CategoryButtons: React.FC<CategoryButtonsProps> = ({ categories, onCategor
       <Box className="category-box" sx={{ bgcolor: 'background.paper' }}>
         <Tabs
           value={value}
-          onChange={handleChange}
+          onChange={(_, newValue) => handleChange(newValue)}
           variant="scrollable"
           scrollButtons
           allowScrollButtonsMobile

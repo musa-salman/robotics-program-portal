@@ -44,7 +44,6 @@ const EditModal: React.FC<EditModalProps> = ({
     title: true,
     description: true
   });
-  const [isForward, setIsForward] = useState(false);
   const [categories, setCategories] = useState<Category[] | null>(null);
   const [showCategoryManagement, setShowCategoryManagement] = useState(false);
   const handleCloseCategoryManagement = () => setShowCategoryManagement(false);
@@ -132,7 +131,7 @@ const EditModal: React.FC<EditModalProps> = ({
                           setForm({ ...form, title: e.target.value });
                         }}
                         required
-                        error={!isValid.title || isForward}
+                        error={!isValid.title}
                         onBlur={() => {
                           setIsValid((prevData) => ({ ...prevData, title: studyMaterial.title !== '' }));
                         }}
@@ -159,7 +158,7 @@ const EditModal: React.FC<EditModalProps> = ({
                         }}
                         required
                         MenuProps={MenuProps}
-                        error={!isValid.category || isForward}
+                        error={!isValid.category}
                         onBlur={() => {
                           setIsValid((prevData) => ({ ...prevData, title: studyMaterial.category !== '' }));
                         }}>
@@ -175,7 +174,7 @@ const EditModal: React.FC<EditModalProps> = ({
                           הוספה/שינוי
                         </Button>
                       </Select>
-                      <FormHelperText>{studyMaterial.category === '' || isForward ? 'נה לבחור' : ''}</FormHelperText>
+                      <FormHelperText>{studyMaterial.category === '' || 'נה לבחור'}</FormHelperText>
                     </FormControl>
                   </Grid>
 
@@ -186,7 +185,7 @@ const EditModal: React.FC<EditModalProps> = ({
                       disabled
                       value={studyMaterial.filename}
                       placeholder="שם קובץ"
-                      error={!isValid.filename || isForward}
+                      error={!isValid.filename}
                       onBlur={() => {
                         setIsValid((prevData) => ({ ...prevData, title: studyMaterial.filename !== '' }));
                       }}
@@ -260,10 +259,9 @@ const EditModal: React.FC<EditModalProps> = ({
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description">
                 <CategoryManagement
-                  categories={categories}
                   handleCloseCategoryManagement={handleCloseCategoryManagement}
-                  setCategories={setCategories}
-                  handleSelect={() => {}}
+                  categoryList={categories || []}
+                  handleSelect={handleInputChange}
                 />
               </Modal>
             </Box>

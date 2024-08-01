@@ -1,4 +1,4 @@
-import { Button, Container, CssBaseline, Modal, Typography } from '@mui/material';
+import { Button, Container, Modal, Typography } from '@mui/material';
 import './EmptyStudyMaterials.css';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import FolderOffIcon from '@mui/icons-material/FolderOff';

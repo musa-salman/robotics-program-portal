@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Card, CardActions, CardContent, TextField } from '@mui/material';
+import { Button, Card, CardActions, CardContent } from '@mui/material';
 import { useDocumentInfoService } from './service/DocumentInfoContext';
 import DocumentCard from './DocumentCard';
 import AddIcon from '@mui/icons-material/Add';
@@ -13,7 +13,6 @@ import { SearchBar } from './searchBar';
 
 const DocumentsPage: React.FC = () => {
   const [documents, setDocuments] = useState<DocumentInfo[] | undefined>(undefined);
-  const [searchResults, setSearchResults] = useState<DocumentInfo[] | null>(null);
 
   const [filteredDocuments, setFilteredDocuments] = useState<DocumentInfo[]>([]);
   const [show, setShow] = useState(false);
@@ -157,24 +156,19 @@ const DocumentsPage: React.FC = () => {
           <CardActions>
             <div className="btn-search">
               <div className="search">
-                <SearchBar
-                  documents={documents || []}
-                  onSearchResults={setSearchResults}
-                  query={searchQuery}
-                  setQuery={setSearchQuery}
-                />
+                <SearchBar documents={documents || []} query={searchQuery} setQuery={setSearchQuery} />
               </div>
-                <RoleBasedAccessControl
-                  allowedRoles={[Role.Admin, Role.Owner]}
-                  unauthorizedAuthenticatedComponent={<></>}
-                  unauthorizedUnauthenticatedComponent={<></>}>
-                  <div className="btns">
-                    <Button variant="contained" aria-label="add" onClick={handleShow}>
-                      <AddIcon />
-                    </Button>
-                  </div>
-                </RoleBasedAccessControl>
-              </div>
+              <RoleBasedAccessControl
+                allowedRoles={[Role.Admin, Role.Owner]}
+                unauthorizedAuthenticatedComponent={<></>}
+                unauthorizedUnauthenticatedComponent={<></>}>
+                <div className="btns">
+                  <Button variant="contained" aria-label="add" onClick={handleShow}>
+                    <AddIcon />
+                  </Button>
+                </div>
+              </RoleBasedAccessControl>
+            </div>
           </CardActions>
           <CardContent>
             {filteredDocuments.map((doc) => (

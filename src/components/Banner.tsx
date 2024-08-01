@@ -1,5 +1,4 @@
 import React from 'react';
-
 import BookIcon from '@mui/icons-material/Book';
 import EventIcon from '@mui/icons-material/Event';
 import PeopleIcon from '@mui/icons-material/People';
@@ -52,34 +51,34 @@ const Banner: React.FC = () => {
               />
             ))}
           </RoleBasedAccessControl>
+          <div className="button-group">
+            {STUDENT_LINKS.map((link, index) => (
+              <BannerButton
+                key={index}
+                icon={link.icon}
+                label={link.label}
+                type="secondary"
+                path={link.path}
+                className={'std-btn'}
+              />
+            ))}
+            <RoleBasedAccessControl
+              allowedRoles={[Role.Admin, Role.Owner]}
+              unauthorizedAuthenticatedComponent={<></>}
+              unauthorizedUnauthenticatedComponent={<></>}>
+              <BannerButton
+                icon={<Insights />}
+                label="סטטיסטיקות"
+                type="secondary"
+                path="/deep-inspection"
+                className={'std-btn'}
+              />
+            </RoleBasedAccessControl>
+          </div>
         </div>
         <Container className="event">
           <EventContainer />
         </Container>
-        <div className="button-group">
-          {STUDENT_LINKS.map((link, index) => (
-            <BannerButton
-              key={index}
-              icon={link.icon}
-              label={link.label}
-              type="secondary"
-              path={link.path}
-              className={'std-btn'}
-            />
-          ))}
-          <RoleBasedAccessControl
-            allowedRoles={[Role.Admin, Role.Owner]}
-            unauthorizedAuthenticatedComponent={<></>}
-            unauthorizedUnauthenticatedComponent={<></>}>
-            <BannerButton
-              icon={<Insights />}
-              label="סטטיסטיקות"
-              type="secondary"
-              path="/deep-inspection"
-              className={'std-btn'}
-            />
-          </RoleBasedAccessControl>
-        </div>
       </div>
     </>
   );
