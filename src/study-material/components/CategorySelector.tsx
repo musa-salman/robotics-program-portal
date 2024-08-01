@@ -3,6 +3,7 @@ import './CategorySelector.css';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { Category } from '../repository/Category';
+import { useTheme } from '@mui/material/styles';
 
 interface CategorySelectorProps {
   categories: Category[];
@@ -13,6 +14,7 @@ interface CategorySelectorProps {
 const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, onMove, onCancel }) => {
   // const [selectedCategory, setSelectedCategory] = useState<Category[] | null>(null);
   const [open, setOpen] = useState(true);
+  const theme = useTheme();
 
   const moveHandler = (category: Category) => {
     // setSelectedCategory(category);
@@ -24,12 +26,17 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, onMove,
       <Modal open={open} onClose={onCancel}>
         <Box className="move-list-container" sx={{ bgcolor: 'background.paper' }}>
           <List className="move-list">
-            <Typography variant="h4">עבור לקטגוריה</Typography>
-            {categories.map((category, index) => (
-              <ListItemButton key={index} className="move-list-item-button" onClick={() => moveHandler(category)}>
-                <ListItemText primary={category.category} className="move-list-item-text" />
-              </ListItemButton>
-            ))}
+            <Typography variant="h4" style={{ color: theme.palette.primary.main, display: 'block' }}>
+              עבור לקטגוריה
+            </Typography>
+            <br />
+            <div style={{ maxHeight: '40vh', overflowY: 'auto' }}>
+              {categories.map((category, index) => (
+                <ListItemButton key={index} className="move-list-item-button" onClick={() => moveHandler(category)}>
+                  <ListItemText primary={category.category} className="move-list-item-text" />
+                </ListItemButton>
+              ))}
+            </div>
           </List>
           <Button className="clo-btn" onClick={onCancel}>
             <CloseIcon className="close-icn" />
