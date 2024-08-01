@@ -2,7 +2,7 @@
   width: 30rem;
   height: fit-content;
   position: fixed;
-  top: 10%;
+  top: 20%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -12,8 +12,6 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   padding: 16px;
-  max-height: 80vh;
-  overflow-y: auto;
 }
 
 .move-list {
@@ -29,12 +27,11 @@
   cursor: pointer;
   padding: 8px 16px;
   border-radius: 4px;
-  transition: background-color 0.3s ease;
+  transition: 0.3s ease;
 }
 
 .move-list-item-text {
   text-align: center;
-  /* color: black; */
 }
 
 .move-list-container .clo-btn {
