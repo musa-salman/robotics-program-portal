@@ -73,17 +73,37 @@ function MaterialCard({
   };
 
   const handleDelete = () => {
-    storageService
-      .delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename)
-      .then(() => {
-        materialService.studyMaterialRepository.delete(studyMaterial.id).then(() => {
-          onDelete(studyMaterial);
-          showMessage({
-            message: 'החומר נמחק בהצלחה',
-            variant: 'success'
-          });
-          setShowDeleteModal(false);
+    materialService.studyMaterialRepository
+      .delete(studyMaterial.id)
+      .then(async () => {
+        const isExists = await storageService.exists(
+          '/study-material/' + studyMaterial.id + '-' + studyMaterial.filename
+        );
+        if (isExists) {
+          storageService
+            .delete('/study-material/' + studyMaterial.id + '-' + studyMaterial.filename)
+            .then(() => {
+              onDelete(studyMaterial);
+              showMessage({
+                message: 'החומר נמחק בהצלחה',
+                variant: 'success'
+              });
+              setShowDeleteModal(false);
+            })
+            .catch(() => {
+              showMessage({
+                message: 'שגיאה במחיקת החומר',
+                variant: 'error'
+              });
+            });
+          return;
+        }
+        onDelete(studyMaterial);
+        showMessage({
+          message: 'החומר נמחק בהצלחה',
+          variant: 'success'
         });
+        setShowDeleteModal(false);
       })
       .catch(() => {
         showMessage({

@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Typography, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import Footer from './layout/Footer';
 
 interface PageContainerProps {
   title: string;
@@ -30,7 +29,6 @@ const PageContainer: React.FC<PageContainerProps> = ({ title, children }) => {
         {title}
       </Typography>
       <Box sx={{ padding: 2 }}>{children}</Box>
-      <Footer />
     </Box>
   );
 };

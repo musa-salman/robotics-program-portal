@@ -8,6 +8,10 @@ const Footer: React.FC = () => {
     {
       platform: 'facebook',
       url: 'https://www.facebook.com/teamstreak7067/'
+    },
+    {
+      platform: 'instagram',
+      url: 'https://www.instagram.com/teamstreak7067/'
     }
   ];
   return (
