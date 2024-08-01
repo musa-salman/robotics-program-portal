@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 import RoleBasedAccessControl from './authentication/components/RoleBasedAccessControl';
 import EventContainer from './events/EventContainerShowALL';
 import Layout from './components/layout/Layout';
-import TestingLayout from './components/layout/TestingLayout';
 import Role from './authentication/components/Roles';
 import Banner from './components/Banner';
 import NotFoundPage from './components/NotFoundPage';
@@ -23,8 +22,6 @@ import InsightPage from './insights/InsightPage';
 import Management from './students-management/Management';
 
 function App() {
-  const isDev = process.env.NODE_ENV === 'developments';
-
   const routeConfigurations = {
     authorizedRoutes: [
       {
@@ -162,7 +159,7 @@ function App() {
   return (
     <Routes>
       <Route path="/splash" element={<SplashScreen />} />
-      <Route path="/" element={isDev ? <TestingLayout /> : <Layout />}>
+      <Route path="/" element={<Layout />}>
         {routeConfigurations.authorizedRoutes.map((route) => (
           <Route
             key={route.path}
