@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Modal, Box, TextField, Button, Typography, Input, InputLabel } from '@mui/material';
+import { Modal, Box, TextField, Button, Typography, Input, InputLabel, Grid, InputAdornment } from '@mui/material';
 import { DocumentInfo } from './service/DocumentInfo';
-
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 interface DocumentFormProps {
   initialDocument?: DocumentInfo;
   open: boolean;
@@ -74,81 +74,157 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
     }
   };
 
+  
+  //       <form style={{ marginTop: '0.25rem' }}>
+  //         <div className="card">
+  //           <Grid xs={12} md={4}>
+  //             <MaterialCardPreview studyMaterial={studyMaterial} />
+  //           </Grid>
+  //         </div>
+  //         <Grid container spacing={3}>
+  //           <Grid item xs={11.6}>
+  //             <GPT
+  //               initialValue=""
+  //               getData={() => suggestMaterialTitles(studyMaterial)}
+  //               options={{ simplify: false, improve: false, shorten: false }}>
+  //               <TextField
+  //                 fullWidth
+  //                 label="כותרת"
+  //                 name="title"
+  //                 value={studyMaterial.title}
+  //                 onChange={handleInput}
+  //                 required
+  //                 error={!isValid.title || isForward}
+  //                 onBlur={() => {
+  //                   setIsValid((prevData) => ({ ...prevData, title: studyMaterial.title !== '' }));
+  //                 }}
+  //                 helperText={!isValid.title ? 'יש למלה' : `${studyMaterial.title.length}/${MAX_CHARS_Title} אותיות`}
+  //                 inputProps={{ maxLength: MAX_CHARS_Title }}
+  //               />
+  //             </GPT>
+  //           </Grid>
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
         sx={{
-          position: 'absolute' as 'absolute',
+          position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 400,
-          bgcolor: 'background.paper',
+          width: '40rem',
           boxShadow: 24,
+          backgroundColor: 'background.paper',
           p: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2
+          borderRadius: 1,
+          outline: 'none'
         }}>
-        <TextField
-          label="שם המסמך"
-          name="name"
-          value={documentInfo.name}
-          onChange={handleChange}
-          fullWidth
-          error={!documentInfo.name}
-          helperText={!documentInfo.name ? 'שדה חובה' : ''}
-        />
+        <Typography id="modal-modal-title" variant="h1" sx={{ fontSize: '40px', border: 'none', textAlign: 'center' }}>
+          העלת קובץ
+        </Typography>
+        <form style={{ marginTop: '1rem' }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextField
+                label="שם המסמך"
+                name="name"
+                value={documentInfo.name}
+                onChange={handleChange}
+                fullWidth
+                error={!documentInfo.name}
+                helperText={!documentInfo.name ? 'שדה חובה' : ''}
+              />
+            </Grid>
 
-        <InputLabel htmlFor="upload-file">
-          <Typography variant="body2" component="span">
-            קובץ
-          </Typography>
-        </InputLabel>
-        <Button variant="contained" component="label" color="secondary">
-          העלה קובץ
-          <Input
-            id="upload-file"
-            type="file"
-            hidden
-            error={!file && !initialDocument}
-            inputProps={{
-              accept:
-                'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-            }}
-            onChange={handleFileChange}
-            fullWidth
-          />
-        </Button>
-        {file && (
-          <Box sx={{ p: 2 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Typography variant="body2" color="textSecondary">
-                קובץ נבחר: {file.name}
-              </Typography>
-              <Button color="error" onClick={handleFileCancel}>
-                בטל
+            <Grid xs={12}>
+              <TextField
+                style={{ marginTop: '1.50rem', paddingLeft: '0.25rem', paddingRight: '1.3rem' }}
+                fullWidth
+                disabled
+                value={initialDocument?.filename}
+                placeholder="שם קובץ"
+                error={!file && !initialDocument}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <input
+                        id="upload-file"
+                        type="file"
+                        hidden
+                        accept= 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                        onChange={handleFileChange}
+                        />
+                      <label htmlFor="upload-file">
+                        <Button variant="contained" component="label" htmlFor="upload-file">
+                          <CloudUploadIcon />
+                          לעלות קובץ
+                        </Button>
+                      </label>
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </Grid>
+              
+            <Grid xs={12} style={{ paddingLeft: '0.25rem', paddingRight: '1.25rem' }}>
+              <TextField
+                style={{ marginTop: '1.50rem' }}
+                name="description"
+                label="תיאור"
+                placeholder="הכנס תיאור כאן"
+                variant="outlined"
+                fullWidth
+                value={documentInfo.description}
+                onChange={handleChange}
+                margin="normal"
+                multiline
+                rows={3}
+              />
+            </Grid>
+          </Grid>
+        </form>
+             
+            {/* <Button variant="contained" component="label" color="secondary">
+              העלה קובץ
+              <Input
+                id="upload-file"
+                type="file"
+                hidden
+                error={!file && !initialDocument}
+                inputProps={{
+                  accept:
+                    'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                }}
+                onChange={handleFileChange}
+                fullWidth
+              />
+            </Button> */}
+            {/* {file && (
+              <Box sx={{ p: 2 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <Typography variant="body2" color="textSecondary">
+                    קובץ נבחר: {file.name}
+                  </Typography>
+                  <Button color="error" onClick={handleFileCancel}>
+                    בטל
+                  </Button>
+                </Box>
+              </Box>
+            )} */}
+
+            
+
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+              <Button variant="contained" color="primary" onClick={handleSubmit}>
+                {documentInfo.id === '' ? 'הוסף' : 'עדכן'}
+              </Button>
+              <Button variant="outlined" onClick={handleClose}>
+                ביטול
               </Button>
             </Box>
           </Box>
-        )}
-
-        <TextField
-          label="תיאור"
-          name="description"
-          value={documentInfo.description}
-          onChange={handleChange}
-          fullWidth
-        />
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
-            {documentInfo.id === '' ? 'הוסף' : 'עדכן'}
-          </Button>
-          <Button variant="outlined" onClick={handleClose}>
-            ביטול
-          </Button>
-        </Box>
-      </Box>
+        
+        
     </Modal>
   );
 };
