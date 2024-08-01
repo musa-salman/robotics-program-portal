@@ -84,7 +84,7 @@ const RoleBasedAccessControl: React.FC<RoleBasedAccessControlProps> = ({
     return loadingComponent ? loadingComponent : <span className="loading loading-dots loading-lg"></span>;
   }
 
-  if (authorization === AuthorizationStatus.AuthorizedUser) {
+  if (authorization === AuthorizationStatus.AuthorizedUser || allowedRoles.includes(Role.Unauthenticated)) {
     return children;
   } else if (authorization === AuthorizationStatus.UnauthorizeUnauthenticatedUser) {
     return unauthorizedUnauthenticatedComponent ? unauthorizedUnauthenticatedComponent : <Navigate to="/splash" />;
