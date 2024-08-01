@@ -2,16 +2,19 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Card, CardActions, CardContent, TextField } from '@mui/material';
 import { useDocumentInfoService } from './service/DocumentInfoContext';
 import DocumentCard from './DocumentCard';
-import { Add } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
 import DocumentFormModal from './DocumentForm';
 import { AuthContext } from '../authentication/services/AuthContext';
 import { DocumentInfo } from './service/DocumentInfo';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 import Role from '../authentication/components/Roles';
 import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
+import { SearchBar } from './searchBar';
 
 const DocumentsPage: React.FC = () => {
   const [documents, setDocuments] = useState<DocumentInfo[] | undefined>(undefined);
+  const [searchResults, setSearchResults] = useState<DocumentInfo[] | null>(null);
+
   const [filteredDocuments, setFilteredDocuments] = useState<DocumentInfo[]>([]);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
@@ -152,21 +155,26 @@ const DocumentsPage: React.FC = () => {
       <div style={{ display: 'flex', justifyContent: 'center', border: '4px solid black' }}>
         <Card sx={{ minWidth: '1500px', minHeight: '700px', margin: '1rem', backgroundColor: 'background.default' }}>
           <CardActions>
-            <RoleBasedAccessControl
-              allowedRoles={[Role.Admin, Role.Owner]}
-              unauthorizedAuthenticatedComponent={<></>}
-              unauthorizedUnauthenticatedComponent={<></>}>
-              <Button variant="contained" color="primary" startIcon={<Add />} onClick={handleShow}>
-                הוסף מסמך
-              </Button>
-            </RoleBasedAccessControl>
-            <TextField
-              label="חפש מסמך"
-              variant="outlined"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{ marginLeft: '1rem' }}
-            />
+            <div className="btn-search">
+              <div className="search">
+                <SearchBar
+                  documents={documents || []}
+                  onSearchResults={setSearchResults}
+                  query={searchQuery}
+                  setQuery={setSearchQuery}
+                />
+              </div>
+                <RoleBasedAccessControl
+                  allowedRoles={[Role.Admin, Role.Owner]}
+                  unauthorizedAuthenticatedComponent={<></>}
+                  unauthorizedUnauthenticatedComponent={<></>}>
+                  <div className="btns">
+                    <Button variant="contained" aria-label="add" onClick={handleShow}>
+                      <AddIcon />
+                    </Button>
+                  </div>
+                </RoleBasedAccessControl>
+              </div>
           </CardActions>
           <CardContent>
             {filteredDocuments.map((doc) => (
