@@ -1,12 +1,7 @@
 import React from 'react';
-import { Container, Grid, Link, Typography } from '@mui/material';
+import { Link as MUILink, Typography } from '@mui/material';
 import { Facebook, Twitter, Instagram, YouTube } from '@mui/icons-material';
 import './Footer.css';
-
-interface Link {
-  name: string;
-  path: string;
-}
 
 interface SocialMedia {
   platform: string;
@@ -24,20 +19,21 @@ const Footer: React.FC<FooterProps> = ({ socialMedia, copyright }) => {
       <div className="footer-items">
         <div className="social-links">
           {socialMedia.map((social) => (
-            <Link key={social.platform} href={social.url} style={{ marginLeft: '15px' }}>
-              {social.platform === 'facebook' && <Facebook style={{ color: 'white' }} />}
-              {social.platform === 'twitter' && <Twitter style={{ color: 'white' }} />}
-              {social.platform === 'instagram' && <Instagram style={{ color: 'white' }} />}
-              {social.platform === 'youtube' && <YouTube style={{ color: 'white' }} />}
-            </Link>
+            <MUILink
+              key={social.platform}
+              href={social.url}
+              aria-label={social.platform}
+              target="_blank"
+              rel="noopener noreferrer">
+              {social.platform === 'facebook' && <Facebook />}
+              {social.platform === 'twitter' && <Twitter />}
+              {social.platform === 'instagram' && <Instagram />}
+              {social.platform === 'youtube' && <YouTube />}
+            </MUILink>
           ))}
         </div>
         <div className="footer-links">
-          <Typography
-            variant="body2"
-            style={{ marginTop: '10px', color: 'white', display: 'flex', alignItems: 'center' }}>
-            {copyright}
-          </Typography>
+          <Typography variant="body2">{copyright}</Typography>
         </div>
       </div>
     </footer>
