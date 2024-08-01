@@ -3,22 +3,13 @@ import { Link, Typography } from '@mui/material';
 import { Facebook, Twitter, Instagram, YouTube } from '@mui/icons-material';
 import './Footer.css';
 
-interface Link {
-  name: string;
-  path: string;
-}
-
-interface SocialMedia {
-  platform: string;
-  url: string;
-}
-
-interface FooterProps {
-  socialMedia: SocialMedia[];
-  copyright: string;
-}
-
-const Footer: React.FC<FooterProps> = ({ socialMedia, copyright }) => {
+const Footer: React.FC = () => {
+  const socialMedia = [
+    {
+      platform: 'facebook',
+      url: 'https://www.facebook.com/teamstreak7067/'
+    }
+  ];
   return (
     <footer className="footer">
       <div className="footer-items">
@@ -36,7 +27,7 @@ const Footer: React.FC<FooterProps> = ({ socialMedia, copyright }) => {
           <Typography
             variant="body2"
             style={{ marginTop: '10px', color: 'white', display: 'flex', alignItems: 'center' }}>
-            {copyright}
+            {`© ${new Date().getFullYear()} המגמה העל איזורית ברובוטיקה מכטרוניקה`}
           </Typography>
         </div>
       </div>

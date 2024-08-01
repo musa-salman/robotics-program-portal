@@ -11,6 +11,7 @@ import { Insights } from '@mui/icons-material';
 import { Container } from 'react-bootstrap';
 import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
 import Role from '../authentication/components/Roles';
+import Footer from './layout/Footer';
 
 const PRIMARY_STUDENT_LINKS = [
   { icon: <BookIcon />, label: 'חומרי לימוד', path: '/study-materials' },
@@ -81,6 +82,7 @@ const Banner: React.FC = () => {
           <EventContainer />
         </Container>
       </div>
+      <Footer />
     </>
   );
 };
