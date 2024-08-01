@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Box, TextField, Button, Typography, Input, InputLabel, Grid, InputAdornment } from '@mui/material';
+import { Modal, Box, TextField, Button, Typography, Grid, InputAdornment } from '@mui/material';
 import { DocumentInfo } from './service/DocumentInfo';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 interface DocumentFormProps {
@@ -20,7 +20,6 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
   );
 
   const [file, setFile] = useState<File | undefined>(undefined);
-  const [isDone, setIsDone] = useState(false);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     setFile(e.target.files[0]);
@@ -74,7 +73,6 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
     }
   };
 
-  
   //       <form style={{ marginTop: '0.25rem' }}>
   //         <div className="card">
   //           <Grid xs={12} md={4}>
@@ -150,9 +148,9 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
                         id="upload-file"
                         type="file"
                         hidden
-                        accept= 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                        accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                         onChange={handleFileChange}
-                        />
+                      />
                       <label htmlFor="upload-file">
                         <Button variant="contained" component="label" htmlFor="upload-file">
                           <CloudUploadIcon />
@@ -164,7 +162,7 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
                 }}
               />
             </Grid>
-              
+
             <Grid xs={12} style={{ paddingLeft: '0.25rem', paddingRight: '1.25rem' }}>
               <TextField
                 style={{ marginTop: '1.50rem' }}
@@ -182,8 +180,8 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
             </Grid>
           </Grid>
         </form>
-             
-            {/* <Button variant="contained" component="label" color="secondary">
+
+        {/* <Button variant="contained" component="label" color="secondary">
               העלה קובץ
               <Input
                 id="upload-file"
@@ -198,7 +196,7 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
                 fullWidth
               />
             </Button> */}
-            {/* {file && (
+        {/* {file && (
               <Box sx={{ p: 2 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                   <Typography variant="body2" color="textSecondary">
@@ -211,20 +209,15 @@ const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open,
               </Box>
             )} */}
 
-            
-
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-              <Button variant="contained" color="primary" onClick={handleSubmit}>
-                {documentInfo.id === '' ? 'הוסף' : 'עדכן'}
-              </Button>
-              <Button variant="outlined" onClick={handleClose}>
-                ביטול
-              </Button>
-            </Box>
-          </Box>
-        
-        
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
+            {documentInfo.id === '' ? 'הוסף' : 'עדכן'}
+          </Button>
+          <Button variant="outlined" onClick={handleClose}>
+            ביטול
+          </Button>
+        </Box>
+      </Box>
     </Modal>
   );
 };

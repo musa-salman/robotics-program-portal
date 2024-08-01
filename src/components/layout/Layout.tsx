@@ -36,7 +36,10 @@ const Layout = () => {
           }}>
           <Outlet />
         </Box>
-        <Footer socialMedia={socialMedia} copyright="© 2024 פיקו קידס" />
+        <Footer
+          socialMedia={socialMedia}
+          copyright={`© ${new Date().getFullYear()} המגמה העל איזורית ברובוטיקה מכטרוניקה`}
+        />
       </Box>
     </>
   );

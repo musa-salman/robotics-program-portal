@@ -1,72 +1,9 @@
-import { PieChart, BarChart, LineChart } from '@mui/x-charts';
+import { PieChart } from '@mui/x-charts';
 import { StudyMaterial } from './repository/StudyMaterial';
 import { Category } from './repository/Category';
 import { InsightData } from '../insights/InsightPage';
 import { useEffect, useState } from 'react';
 import { useMaterialService } from './repository/StudyMaterialContext';
-import formatDate from '../utils/dateFormatter';
-
-// const categories: Category[] = [
-//   { id: '1', category: 'מתמטיקה' },
-//   { id: '2', category: 'מדע' },
-//   { id: '3', category: 'היסטוריה' }
-// ];
-
-// const studyMaterials: StudyMaterial[] = [
-//   {
-//     id: '1',
-//     filename: 'algebra.pdf',
-//     category: 'מתמטיקה',
-//     title: 'יסודות האלגברה',
-//     description: 'מבוא לאלגברה',
-//     date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 5)
-//   },
-//   {
-//     id: '2',
-//     filename: 'biology.pdf',
-//     category: 'מדע',
-//     title: 'ביולוגיה 101',
-//     description: 'מושגי ביולוגיה בסיסיים',
-//     date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 3)
-//   },
-//   {
-//     id: '3',
-//     filename: 'world-history.pdf',
-//     category: 'היסטוריה',
-//     title: 'היסטוריה עולמית',
-//     description: 'סקירה של היסטוריה עולמית',
-//     date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 2)
-//   },
-//   {
-//     id: '4',
-//     filename: 'geometry.pdf',
-//     category: 'מתמטיקה',
-//     title: 'גיאומטריה לתלמידי חטיבה',
-//     description: 'מבוא לגיאומטריה',
-//     date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1)
-//   },
-//   {
-//     id: '5',
-//     filename: 'chemistry.pdf',
-//     category: 'מדע',
-//     title: 'כימיה לתלמידי תיכון',
-//     description: 'מבוא לכימיה',
-//     date: new Date()
-//   },
-//   {
-//     id: '6',
-//     filename: 'ancient-history.pdf',
-//     category: 'היסטוריה',
-//     title: 'היסטוריה עתיקה',
-//     description: 'סקירה של ההיסטוריה העתיקה',
-//     date: new Date()
-//   }
-// ];
-
-interface CategoryInsights {
-  category: Category;
-  count: number;
-}
 
 const studyMaterialInsights: InsightData = {
   title: 'סטטיסטיקות חומרי לימוד',
@@ -85,7 +22,7 @@ const studyMaterialInsights: InsightData = {
               .then((data) => {
                 setCategories(data);
               })
-              .catch((error) => {
+              .catch(() => {
                 console.log('error while git categories');
               });
           }
@@ -95,7 +32,7 @@ const studyMaterialInsights: InsightData = {
               .then((data) => {
                 setStudyMaterials(data);
               })
-              .catch((error) => {
+              .catch(() => {
                 console.log('error while git studyMaterial');
               });
           }

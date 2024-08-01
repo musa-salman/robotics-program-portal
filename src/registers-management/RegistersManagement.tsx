@@ -9,8 +9,6 @@ import StudentForm from '../students-management/StudentForm';
 import { Close, Done } from '@mui/icons-material';
 import StudentDetails from './RegisterDetails';
 import { FeedbackMessage } from '../components/snackbar/SnackBar';
-import BannerButton from '../components/BannerButton';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 const RegisterManagement = () => {
   const [selectedRegister, setSelectedRegister] = useState<Register | null>(null);

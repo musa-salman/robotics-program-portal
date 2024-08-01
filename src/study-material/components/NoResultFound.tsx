@@ -1,4 +1,4 @@
-import { Container, CssBaseline, Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import './NoResultFound.css';
 

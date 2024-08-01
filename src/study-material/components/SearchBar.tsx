@@ -3,8 +3,7 @@ import React, { ChangeEvent } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 // import './SearchBar.css';
 import { StudyMaterial } from '../repository/StudyMaterial';
-import { backdropClasses, Container, IconButton, Input, InputAdornment, TextField } from '@mui/material';
-import { start } from 'repl';
+import { Input } from '@mui/material';
 
 interface SearchBarProps {
   studyMaterials: StudyMaterial[];
@@ -34,7 +33,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({ studyMaterials, onSearchRe
   };
 
   return (
-
     <div>
       <Input
         placeholder="  חיפוש..."
@@ -44,7 +42,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({ studyMaterials, onSearchRe
         value={query}
         startAdornment={<SearchIcon />}
       />
-      
     </div>
   );
 };
