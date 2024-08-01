@@ -194,7 +194,7 @@ function MaterialCard({
           <Divider
             component="div"
             variant="fullWidth"
-            style={{ backgroundColor: 'black', height: '3px', marginBottom: '5px' }}
+            style={{ backgroundColor: 'black', height: '3px', marginBottom: '2%' }}
           />
           <div>
             <Typography
