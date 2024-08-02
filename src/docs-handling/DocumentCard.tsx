@@ -3,7 +3,6 @@ import { Card, CardContent, CardActions, Button, Typography, Box, IconButton } f
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { Delete, Edit } from '@mui/icons-material';
-import { StorageServiceContext } from '../storage-service/StorageContext';
 import { DocumentInfo } from './service/DocumentInfo';
 import DocumentFormModal from './DocumentForm';
 import { AuthContext } from '../authentication/services/AuthContext';
@@ -11,6 +10,7 @@ import Role from '../authentication/components/Roles';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
 import DeleteModal from '../study-material/DeleteModal';
+import { useDocumentInfoService } from './service/DocumentInfoContext';
 
 interface DocumentCardProps {
   documentInfo: DocumentInfo;
@@ -33,16 +33,16 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
   const [buildNumber, setBuildNumber] = useState<number>(0);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const storage = useContext(StorageServiceContext);
+  const documentInfoService = useDocumentInfoService();
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    if (!storage || !documentInfo.id || !user || !user.roles.includes(Role.Student)) {
+    if (!documentInfo.id || !user || !user.roles.includes(Role.Student)) {
       return;
     }
 
-    storage
-      .exists(`documents/${documentInfo.id}/${user.id}`)
+    documentInfoService
+      .isDocumentUploadedByStudent(user.id, documentInfo.id)
       .then((exists) => {
         setIsFileUploaded(exists);
       })
@@ -80,12 +80,12 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
   };
 
   const handleDeleteFile = () => {
-    if (!user || !storage) {
+    if (!user || !documentInfo.id) {
       return;
     }
 
-    storage
-      .delete(`documents/${documentInfo.id}/${user.id}`)
+    documentInfoService
+      .deleteStudentDocument(user.id, documentInfo.id)
       .then(() => {
         setIsFileUploaded(false);
         showMessage({ message: 'הקובץ נמחק בהצלחה', variant: 'success' });
@@ -96,7 +96,11 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
   };
 
   const handleDownload = () => {
-    storage.download(`documents/${documentInfo.id}`, documentInfo.filename).catch(() => {
+    if (!user) {
+      return;
+    }
+
+    documentInfoService.downloadDocument(documentInfo).catch(() => {
       showMessage({ message: 'שגיאה בהורדת הקובץ', variant: 'error' });
     });
   };
