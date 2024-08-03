@@ -12,6 +12,7 @@ interface IDocumentInfoService {
   addDocument(document: DocumentInfo, file: File): Promise<DocumentReference<DocumentInfo, DocumentData>>;
   updateDocument(document: DocumentInfo, file?: File): Promise<void>;
   deleteDocument(documentId: string): Promise<void>;
+  downloadDocument(document: DocumentInfo): Promise<void>;
 
   uploadStudentDocument(studentId: string, document: DocumentInfo, file: File): Promise<void>;
   deleteStudentDocument(studentId: string, documentId: string): Promise<void>;
@@ -43,7 +44,7 @@ class DocumentInfoService implements IDocumentInfoService {
   }
 
   uploadStudentDocument(studentId: string, document: DocumentInfo, file: File): Promise<void> {
-    return this.storage.upload(file, `documents/${document.id}/${studentId}`).then(() => {
+    return this.storage.upload(file, `documents/${document.id}/students/${studentId}`).then(() => {
       return this.studentDocumentRepositories.getStudentDocumentRepository(studentId).createWithId(document.id, {
         studentId,
         documentId: document.id,
@@ -54,25 +55,25 @@ class DocumentInfoService implements IDocumentInfoService {
   }
 
   deleteStudentDocument(studentId: string, documentId: string): Promise<void> {
-    return this.storage.delete(`documents/${documentId}/${studentId}`).then(() => {
+    return this.storage.delete(`documents/${documentId}/students/${studentId}`).then(() => {
       return this.studentDocumentRepositories.getStudentDocumentRepository(documentId).delete(studentId);
     });
   }
 
   addDocument(document: DocumentInfo, file: File): Promise<DocumentReference<DocumentInfo, DocumentData>> {
     return this.documentRepository.create(document).then((doc) => {
-      this.storage.upload(file, `documents/${doc.id}`);
+      this.storage.upload(file, `documents/${doc.id}/document`);
 
       return doc;
     });
   }
 
   isDocumentUploadedByStudent(studentId: string, documentId: string): Promise<boolean> {
-    return this.storage.exists(`documents/${documentId}/${studentId}`);
+    return this.storage.exists(`documents/${documentId}/students/${studentId}`);
   }
 
   downloadStudentDocument(studentId: string, document: DocumentInfo): Promise<void> {
-    return this.storage.download(`documents/${document.id}/${studentId}`, document.filename);
+    return this.storage.download(`documents/${document.id}/students/${studentId}`, document.filename);
   }
 
   updateDocument(document: DocumentInfo, file?: File | undefined): Promise<void> {
@@ -81,7 +82,7 @@ class DocumentInfoService implements IDocumentInfoService {
         return;
       }
 
-      this.storage.upload(file, `documents/${document.id}`);
+      this.storage.upload(file, `documents/${document.id}/document`);
     });
   }
 
@@ -98,6 +99,10 @@ class DocumentInfoService implements IDocumentInfoService {
 
         throw error;
       });
+  }
+
+  downloadDocument(document: DocumentInfo): Promise<void> {
+    return this.storage.download(`documents/${document.id}/document`, document.filename);
   }
 }
 
