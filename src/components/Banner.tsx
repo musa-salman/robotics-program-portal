@@ -12,7 +12,7 @@ import RoleBasedAccessControl from '../authentication/components/RoleBasedAccess
 import Role from '../authentication/components/Roles';
 
 const PRIMARY_STUDENT_LINKS = [
-  { icon: <BookIcon />, label: 'חומרי לימוד', path: '/study-materials' },
+  { icon: <BookIcon />, label: 'חומרי למידה', path: '/study-materials' },
   { icon: <EventIcon />, label: 'אירועים', path: '/events' }
 ];
 

@@ -28,7 +28,7 @@ function App() {
         path: '/study-materials',
         element: <StudyMaterialContainer />,
         allowedRoles: [Role.Admin, Role.Owner, Role.Student],
-        title: 'חומרי לימוד',
+        title: 'חומרי למידה',
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />,
           [Role.Pending]: <WaitApprovalPage />

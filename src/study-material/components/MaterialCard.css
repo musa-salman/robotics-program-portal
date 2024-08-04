@@ -8,13 +8,12 @@
 }
 
 .Card {
-  min-width: 20rem;
-  max-width: 20rem;
+  min-width: 28rem;
+  max-width: 28rem;
   margin: 0px;
 }
 
 .bu-more {
-  /* width: fit-content; */
   border: none;
   border-radius: 20px;
   padding: 4px;
@@ -24,7 +23,7 @@
 .Card .title-card {
   max-height: 6vh;
   min-height: 6%;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   width: 100%;
   margin-bottom: 5%;
   padding: 0px;
@@ -33,13 +32,13 @@
 .Card .description {
   max-height: 20vh;
   min-height: 2vh;
-  font-size: 15px;
+  font-size: 20px;
   text-align: right;
 }
 
 .Card .date {
   min-height: 5vh;
-  font-size: 16px;
+  font-size: 20px;
   text-align: right;
   margin: 10px;
 }
