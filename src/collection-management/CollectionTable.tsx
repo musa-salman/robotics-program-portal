@@ -125,6 +125,7 @@ const CollectionTable = <T extends { id: string }>({
     }
 
     if (!rows) fetchItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows, repository]);
 
   const handleDelete = () => {
@@ -166,7 +167,7 @@ const CollectionTable = <T extends { id: string }>({
       const selectedId = selection[0];
       const selected = rows?.find((register) => register.id === selectedId) || null;
 
-      const { isNew, ...selectedRow } = selected as any;
+      const { _, ...selectedRow } = selected as any;
       setSelectionModel(selection.map((id) => id));
       onRowSelected(selectedRow);
     },

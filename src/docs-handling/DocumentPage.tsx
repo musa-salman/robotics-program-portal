@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Card, CardActions, CardContent } from '@mui/material';
-import { useDocumentInfoService } from './service/DocumentInfoContext';
 import DocumentCard from './DocumentCard';
 import AddIcon from '@mui/icons-material/Add';
 import DocumentFormModal from './DocumentForm';
@@ -10,6 +9,7 @@ import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackB
 import Role from '../authentication/components/Roles';
 import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
 import { SearchBar } from './searchBar';
+import { useDocumentInfoService } from './service/useDocumentInfoService';
 
 /**
  * Represents a page component for managing documents.

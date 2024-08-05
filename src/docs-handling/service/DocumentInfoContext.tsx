@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 import { IDocumentInfoService } from './IDocumentInfoService';
 
 /**
@@ -25,18 +25,4 @@ function DocumentProvider({ children, documentService }: DocumentProviderProps):
   return <DocumentInfoContext.Provider value={documentService}>{children}</DocumentInfoContext.Provider>;
 }
 
-/**
- * Custom hook that provides access to the DocumentInfoService.
- *
- * @returns The DocumentInfoService instance.
- * @throws {Error} If used outside of a DocumentProvider.
- */
-function useDocumentInfoService() {
-  const documentInfoService = useContext(DocumentInfoContext);
-  if (documentInfoService === undefined) {
-    throw new Error('useDocumentInfoService must be used within a DocumentProvider');
-  }
-  return documentInfoService;
-}
-
-export { DocumentProvider, useDocumentInfoService };
+export { DocumentProvider, DocumentInfoContext };

@@ -89,6 +89,7 @@ function StudyMaterialContainer() {
     };
     if (studyMaterials === null || reload) getStudyMaterials();
     if (categoryList === null || reload) getCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [materialService, studyMaterials, categoryList, reload]);
 
   const sortStudyMaterials = (materials: StudyMaterial[]) => {

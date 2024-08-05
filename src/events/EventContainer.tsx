@@ -41,6 +41,7 @@ const EventContainer = () => {
       }, 500);
       return () => clearTimeout(timeout);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animationClass]);
 
   const [message, setMessage] = useState<FeedbackMessage | undefined>(undefined);

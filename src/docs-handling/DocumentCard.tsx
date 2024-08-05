@@ -10,7 +10,7 @@ import Role from '../authentication/components/Roles';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
 import DeleteModal from '../study-material/DeleteModal';
-import { useDocumentInfoService } from './service/DocumentInfoContext';
+import { useDocumentInfoService } from './service/useDocumentInfoService';
 
 /**
  * Props for the DocumentCard component.
@@ -66,6 +66,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
       .catch(() => {
         showMessage({ message: 'שגיאה בטעינת המסמך', variant: 'error' });
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const showMessage = (message: FeedbackMessage) => {

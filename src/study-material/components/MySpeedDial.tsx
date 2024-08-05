@@ -30,7 +30,7 @@ function MySpeedDial({ handleEditToggle, handleMoveToggle, handleDelete }: MySpe
 
   const handleOpen = () => setOpen(!open);
 
-  let actions = [
+  const actions = [
     { icon: <EditIcon />, name: 'לַעֲרוֹך', action: handleEditToggle, className: '' },
     { icon: <DeleteIcon />, name: 'לִמְחוֹק', action: handleDelete, className: 'delete-action' },
     { icon: <DriveFileMoveIcon />, name: 'לעבור', action: handleMoveToggle, className: '' }

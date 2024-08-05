@@ -49,12 +49,13 @@ const studyMaterialInsights: InsightData = {
               label: index.category.category
             }));
             setCategoryInsights(categoryCount);
-            console.log('ca', categoryCount);
           }
         }, [categories, studyMaterials]);
+
         if (categories === null || studyMaterials === null) {
           return <div>Loading...</div>;
         }
+
         return (
           <>
             <PieChart

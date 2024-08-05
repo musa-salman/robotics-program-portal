@@ -43,7 +43,6 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
       loading: loading,
       authService: authService.authService
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [user, loading, authService]
   );
 
@@ -78,6 +77,7 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
       getUser();
     });
     return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;

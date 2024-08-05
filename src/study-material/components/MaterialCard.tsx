@@ -55,7 +55,7 @@ function MaterialCard({
   const [formData, setFormData] = useState<StudyMaterial>(studyMaterial);
   const [file, setFile] = useState<File | null>(null);
 
-  const handleInput = (event: any) => {
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
