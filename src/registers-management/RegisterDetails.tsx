@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Register } from '../register/Register';
-import { hearAboutUsOptions, studyUnitsMajorOptions } from '../register/info';
+import { hearAboutUsOptions, mathUnits, studyUnitsMajorOptions } from '../register/info';
 import { Student } from '../students-management/Student';
 import { hasOwn } from 'groq-sdk/core.mjs';
 import { useEffect, useState } from 'react';
@@ -145,7 +145,7 @@ const StudentDetails: React.FC<DetailsProps> = ({ registrationData, onClose }) =
 
               <Grid item xs={12}>
                 <Typography variant="body1" color="textSecondary">
-                  מספר יחידות במתמטיקה: {(registrationData as Register).numStudyUnitsMath}
+                  מספר יחידות במתמטיקה: {mathUnits[Number((registrationData as Register).numStudyUnitsMath)]}
                 </Typography>
               </Grid>
 
