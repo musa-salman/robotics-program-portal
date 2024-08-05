@@ -7,4 +7,6 @@ const studyUnitsMajorOptions = [
 
 const hearAboutUsOptions = ['בית הספר', 'עלון מנח"י', 'קרוב משפחה שלמד במגמה', 'חיפוש עצמי באינטרנט', 'אחרת'];
 
-export { studyUnitsMajorOptions, hearAboutUsOptions };
+const mathUnits = ['3', '4', '5', 'אחר'];
+
+export { studyUnitsMajorOptions, hearAboutUsOptions, mathUnits };
