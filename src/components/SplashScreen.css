@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: url(2.png);
+  background: url(../assets/2.png);
   /* border: 2px; */
   background-repeat: no-repeat;
   background-size: cover;
