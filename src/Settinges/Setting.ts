@@ -1,5 +1,4 @@
 export interface Setting {
-    id: string;
-    gptApi: string;
-  }
-  
+  id: string;
+  gptApi: string;
+}
