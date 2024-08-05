@@ -3,12 +3,23 @@ import { DocumentInfo } from './service/DocumentInfo';
 import { StudentDocument } from './service/StudentDocument';
 import { InsightData } from '../insights/InsightPage';
 
+/**
+ * Represents an array of documents.
+ *
+ * @remarks
+ * This array contains information about various documents.
+ *
+ * @public
+ */
 const documents: DocumentInfo[] = [
   { id: '1', name: 'טופס הרשמה', filename: 'registration_form.pdf', description: 'טופס הרשמה למערכת' },
   { id: '2', name: 'אישור רפואי', filename: 'medical_certificate.pdf', description: 'אישור רפואי תקף' },
   { id: '3', name: 'הצהרת הורים', filename: 'parent_declaration.pdf', description: 'הצהרת הורים מאושרת' }
 ];
 
+/**
+ * Represents a collection of student documents.
+ */
 const studentDocuments: StudentDocument[] = [
   { id: '1', studentId: '1', documentId: '1', documentName: 'טופס הרשמה', filename: 'registration_form_signed.pdf' },
   { id: '2', studentId: '2', documentId: '2', documentName: 'אישור רפואי', filename: 'medical_certificate_signed.pdf' },
@@ -16,6 +27,12 @@ const studentDocuments: StudentDocument[] = [
   { id: '4', studentId: '3', documentId: '1', documentName: 'טופס הרשמה', filename: 'registration_form_signed.pdf' }
 ];
 
+/**
+ * Represents the document insights data.
+ *
+ * @remarks
+ * This data structure contains insights about documents.
+ */
 const documentInsights: InsightData = {
   title: 'תובנות על מסמכים',
   insights: [

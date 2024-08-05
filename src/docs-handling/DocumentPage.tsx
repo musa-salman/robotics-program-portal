@@ -11,6 +11,15 @@ import Role from '../authentication/components/Roles';
 import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
 import { SearchBar } from './searchBar';
 
+/**
+ * Represents a page component for managing documents.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <DocumentsPage />
+ * ```
+ */
 const DocumentsPage: React.FC = () => {
   const [documents, setDocuments] = useState<DocumentInfo[] | undefined>(undefined);
 

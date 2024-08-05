@@ -2,6 +2,11 @@ import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import './TestingLayout.css';
 
+/**
+ * Represents a testing layout component.
+ * This component renders a navigation menu with links to different pages.
+ * It also renders the content of the current page.
+ */
 const TestingLayout: React.FC = () => {
   const links = [
     { name: 'Home', path: '/' },

@@ -2,8 +2,13 @@ import React from 'react';
 import { Container, Typography, Button, Box } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from 'react-router-dom';
-import RobotImage from '/planet.png';
 
+/**
+ * Renders the NotFoundPage component.
+ *
+ * This component displays a page with a message indicating that the requested page was not found.
+ * It provides a button to navigate back to the home page.
+ */
 const NotFoundPage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -13,9 +18,6 @@ const NotFoundPage: React.FC = () => {
 
   return (
     <Container sx={{ textAlign: 'center', mt: 5, marginBottom: '20px' }}>
-      <Box>
-        <img src={RobotImage} alt="Robot" style={{ maxWidth: '90%', height: 'auto' }} />
-      </Box>
       <Typography variant="h3" component="h1" gutterBottom>
         אופס! איבדנו את העמוד
       </Typography>

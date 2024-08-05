@@ -15,6 +15,14 @@ import Typography from '@mui/material/Typography';
 import { CircularProgress } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
+/**
+ * Represents the properties for an event.
+ *
+ * @remarks
+ * This interface defines the properties required to render an event card.
+ *
+ * @public
+ */
 export interface EventProps {
   startDate: Date;
   endDate: Date;
@@ -27,6 +35,25 @@ export interface EventProps {
   animating?: boolean; // New prop for animation state
 }
 
+/**
+ * EventCard component displays information about an event.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <EventCard
+ *   startDate={new Date()}
+ *   endDate={new Date()}
+ *   title="Event Title"
+ *   details="Event details"
+ *   image="event-image.jpg"
+ *   onEventDelete={handleEventDelete}
+ *   onEventEdit={handleEventEdit}
+ *   id={1}
+ *   animating={false}
+ * />
+ * ```
+ */
 const EventCard: React.FC<EventProps> = ({
   startDate,
   endDate,

@@ -22,6 +22,16 @@ import { Category } from '../repository/Category';
 import { useMaterialService } from '../repository/StudyMaterialContext';
 import MaterialCardPreview from './MaterialCardPreview';
 
+/**
+ * Props for the EditModal component.
+ *
+ * @interface EditModalProps
+ * @property {() => void} handleClose - Callback function to handle closing the modal.
+ * @property {() => void} handleSave - Callback function to handle saving changes.
+ * @property {(e: any) => void} handleInputChange - Callback function to handle input changes.
+ * @property {(e: any) => void} handleFileChange - Callback function to handle file changes.
+ * @property {StudyMaterial} studyMaterial - The study material object.
+ */
 interface EditModalProps {
   handleClose: () => void;
   handleSave: () => void;
@@ -30,6 +40,21 @@ interface EditModalProps {
   studyMaterial: StudyMaterial;
 }
 
+/**
+ * EditModal component for editing study material.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <EditModal
+ *   handleClose={handleClose}
+ *   handleSave={handleSave}
+ *   studyMaterial={studyMaterial}
+ *   handleInputChange={handleInputChange}
+ *   handleFileChange={handleFileChange}
+ * />
+ * ```
+ */
 const EditModal: React.FC<EditModalProps> = ({
   handleClose,
   handleSave,

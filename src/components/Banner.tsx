@@ -11,15 +11,36 @@ import { Container } from 'react-bootstrap';
 import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
 import Role from '../authentication/components/Roles';
 
+/**
+ * Represents an array of primary student links.
+ * Each link object contains an icon, label, and path.
+ */
 const PRIMARY_STUDENT_LINKS = [
   { icon: <BookIcon />, label: 'חומרי למידה', path: '/study-materials' },
   { icon: <EventIcon />, label: 'אירועים', path: '/events' }
 ];
 
+/**
+ * Represents an array of primary admin links.
+ * Each link object contains an icon, label, and path.
+ */
 const PRIMARY_ADMIN_LINKS = [{ icon: <PeopleIcon />, label: 'ניהול משתמשים', path: '/students-management' }];
 
+/**
+ * Represents an array of student links.
+ * Each link object contains an icon, label, and path.
+ */
 const STUDENT_LINKS = [{ icon: <PictureAsPdfIcon />, label: 'מסמכים', path: '/documents' }];
 
+/**
+ * Renders a banner component.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <Banner />
+ * ```
+ */
 const Banner: React.FC = () => {
   return (
     <>

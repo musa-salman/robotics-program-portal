@@ -4,22 +4,11 @@ import { DocumentInfo } from './DocumentInfo';
 import { DocumentRepository } from './DocumentRepository';
 import { StudentDocumentRepositories } from './DocumentStudentRepositories';
 import { StudentDocumentRepository } from './StudentDocumentRepository';
+import { IDocumentInfoService } from './IDocumentInfoService';
 
-interface IDocumentInfoService {
-  getDocumentRepository(): DocumentRepository;
-  getStudentDocumentRepository(studentId: string): StudentDocumentRepository;
-
-  addDocument(document: DocumentInfo, file: File): Promise<DocumentReference<DocumentInfo, DocumentData>>;
-  updateDocument(document: DocumentInfo, file?: File): Promise<void>;
-  deleteDocument(documentId: string): Promise<void>;
-  downloadDocument(document: DocumentInfo): Promise<void>;
-
-  uploadStudentDocument(studentId: string, document: DocumentInfo, file: File): Promise<void>;
-  deleteStudentDocument(studentId: string, documentId: string): Promise<void>;
-  isDocumentUploadedByStudent(studentId: string, documentId: string): Promise<boolean>;
-  downloadStudentDocument(studentId: string, document: DocumentInfo): Promise<void>;
-}
-
+/**
+ * Service for handling document-related operations.
+ */
 class DocumentInfoService implements IDocumentInfoService {
   private readonly documentRepository: DocumentRepository;
   private readonly studentDocumentRepositories: StudentDocumentRepositories;
@@ -107,4 +96,3 @@ class DocumentInfoService implements IDocumentInfoService {
 }
 
 export { DocumentInfoService };
-export type { IDocumentInfoService };

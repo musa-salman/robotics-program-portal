@@ -18,6 +18,13 @@ import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackB
 import RoleBasedAccessControl from '../authentication/components/RoleBasedAccessControl';
 import Role from '../authentication/components/Roles';
 
+/**
+ * StudyMaterialContainer component is responsible for managing study materials and categories.
+ * It provides functionality to add, update, delete, and move study materials.
+ * It also allows searching for study materials and filtering them by category.
+ *
+ * @returns The StudyMaterialContainer component.
+ */
 function StudyMaterialContainer() {
   const materialService = useMaterialService();
 

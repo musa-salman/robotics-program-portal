@@ -26,11 +26,26 @@ import { useDocumentInfoService } from '../docs-handling/service/DocumentInfoCon
 import { DocumentInfo } from '../docs-handling/service/DocumentInfo';
 import { Delete, Download } from '@mui/icons-material';
 
+/**
+ * Represents the props for the Details component.
+ *
+ * @remarks
+ * This component is used to display the details of a registration data or a student.
+ */
 interface DetailsProps {
   registrationData: Register | Student;
   onClose: () => void;
 }
 
+/**
+ * Renders the details of a student registration.
+ *
+ * @component
+ * @param {DetailsProps} props - The component props.
+ * @param {RegistrationData} props.registrationData - The registration data.
+ * @param {Function} props.onClose - The function to close the details.
+ * @returns {JSX.Element} The rendered component.
+ */
 const StudentDetails: React.FC<DetailsProps> = ({ registrationData, onClose }) => {
   const [open, setOpen] = useState(false);
   const [documents, setDocuments] = useState<StudentDocument[] | null>(null);
@@ -48,6 +63,11 @@ const StudentDetails: React.FC<DetailsProps> = ({ registrationData, onClose }) =
     setOpen(false);
   };
 
+  /**
+   * Downloads a student document.
+   *
+   * @param document - The student document to download.
+   */
   const handleDownload = (document: StudentDocument) => {
     documentService.downloadStudentDocument(registrationData.id, {
       id: document.documentId,
@@ -58,6 +78,11 @@ const StudentDetails: React.FC<DetailsProps> = ({ registrationData, onClose }) =
     } as DocumentInfo);
   };
 
+  /**
+   * Deletes a student document.
+   *
+   * @param document - The document to be deleted.
+   */
   const handleDelete = (document: StudentDocument) => {
     documentService.deleteStudentDocument(registrationData.id, document.documentId).then(() => {
       setDocuments((prev) => prev!.filter((doc) => doc.documentId !== document.documentId));

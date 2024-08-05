@@ -10,12 +10,28 @@ import { Box, Button, Grid, InputAdornment, TextField, Typography } from '@mui/m
 import FeedbackSnackbar, { FeedbackMessage } from '../../../components/snackbar/SnackBar';
 import DeleteModal from '../../DeleteModal';
 
+/**
+ * Props for the CategoryManagement component.
+ */
 interface CategoryManagementProps {
   categoryList: Category[] | null;
   handleCloseCategoryManagement: () => void;
   handleSelect: (eventKey: string | null) => void;
 }
 
+/**
+ * Component for managing categories.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <CategoryManagement
+ *   categoryList={categories}
+ *   handleCloseCategoryManagement={handleClose}
+ *   handleSelect={handleSelect}
+ * />
+ * ```
+ */
 const CategoryManagement: React.FC<CategoryManagementProps> = ({
   categoryList,
   handleCloseCategoryManagement,
@@ -218,7 +234,16 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
                 .filter((item) => item.category !== 'הכל')
                 .map((item) => (
                   <>
-                    {showDeleteModal && <DeleteModal onDelete={()=>{setShowDeleteModal(false);handleDeleteCategory(item);}} onCancel={() => setShowDeleteModal(false)} message={"האם אתה בטוח שברצונך למחוק את קטגוריה הזו"}/>}
+                    {showDeleteModal && (
+                      <DeleteModal
+                        onDelete={() => {
+                          setShowDeleteModal(false);
+                          handleDeleteCategory(item);
+                        }}
+                        onCancel={() => setShowDeleteModal(false)}
+                        message={'האם אתה בטוח שברצונך למחוק את קטגוריה הזו'}
+                      />
+                    )}
 
                     <Grid xs={11.6} key={item.category} style={{ paddingTop: '1rem' }}>
                       <TextField

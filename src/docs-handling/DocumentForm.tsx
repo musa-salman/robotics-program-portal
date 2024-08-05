@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 import { Modal, Box, TextField, Button, Typography, Grid, InputAdornment } from '@mui/material';
 import { DocumentInfo } from './service/DocumentInfo';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
+/**
+ * Props for the DocumentForm component.
+ *
+ * @interface DocumentFormProps
+ * @property {DocumentInfo} [initialDocument] - The initial document information.
+ * @property {boolean} open - Indicates whether the form is open or not.
+ * @property {() => void} handleClose - Callback function to handle form close event.
+ * @property {(document: DocumentInfo, file?: File) => Promise<void>} onSaveDocument - Callback function to save the document.
+ */
 interface DocumentFormProps {
   initialDocument?: DocumentInfo;
   open: boolean;
@@ -9,6 +19,17 @@ interface DocumentFormProps {
   onSaveDocument: (document: DocumentInfo, file?: File) => Promise<void>;
 }
 
+/**
+ * Modal component for handling document forms.
+ *
+ * @component
+ * @param {DocumentFormProps} props - The component props.
+ * @param {DocumentInfo} props.initialDocument - The initial document information.
+ * @param {boolean} props.open - Flag indicating whether the modal is open or not.
+ * @param {() => void} props.handleClose - Function to handle modal close event.
+ * @param {(documentInfo: DocumentInfo, file: File | undefined) => Promise<void>} props.onSaveDocument - Function to handle document save event.
+ * @returns {JSX.Element} The DocumentFormModal component.
+ */
 const DocumentFormModal: React.FC<DocumentFormProps> = ({ initialDocument, open, handleClose, onSaveDocument }) => {
   const [documentInfo, setDocumentInfo] = useState<DocumentInfo>(
     initialDocument || {

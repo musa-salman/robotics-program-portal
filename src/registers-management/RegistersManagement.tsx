@@ -10,14 +10,36 @@ import { Close, Done } from '@mui/icons-material';
 import StudentDetails from './RegisterDetails';
 import { FeedbackMessage } from '../components/snackbar/SnackBar';
 
+/**
+ * Component for managing registers.
+ *
+ * @returns JSX.Element
+ */
 const RegisterManagement = () => {
   const [selectedRegister, setSelectedRegister] = useState<Register | null>(null);
   const registerService = useContext(RegisterContext);
 
+  /**
+   * Handles the deletion of a register.
+   *
+   * @param register - The register to be deleted.
+   * @returns A promise that resolves when the register is successfully deleted.
+   */
   const handleDelete = (register: Register) => {
     return registerService.rejectRegister(register.id);
   };
 
+  /**
+   * Generates the columns configuration for a data grid.
+   *
+   * @param rows - The array of rows to be displayed in the grid.
+   * @param setRows - The state setter function for the rows.
+   * @param setShowItemForm - The state setter function for showing the item form.
+   * @param setInitialItem - The state setter function for setting the initial item.
+   * @param showMessage - The function for displaying feedback messages.
+   * @param onRowDeleted - The function to be called when a row is deleted.
+   * @returns An array of GridColDef objects representing the columns configuration.
+   */
   const generateColumns = (
     rows: (Register & { isNew: boolean })[] | null,
     setRows: React.Dispatch<React.SetStateAction<(Register & { isNew: boolean })[] | null>>,
@@ -89,6 +111,17 @@ const RegisterManagement = () => {
     ];
   };
 
+  /**
+   * Defines the message format for the RegistersManagement component.
+   *
+   * @template Register - The type of the register object.
+   *
+   * @property {() => string} deleteError - A function that returns the error message for deleting a candidate.
+   * @property {() => string} deleteSuccess - A function that returns the success message for deleting a candidate.
+   * @property {(item: Register) => string} deleteConfirmation - A function that returns the confirmation message for deleting a candidate.
+   * @property {() => string} updateError - A function that returns the error message for updating a candidate.
+   * @property {() => string} updateSuccess - A function that returns the success message for updating a candidate.
+   */
   const messageFormat: MessageFormat<Register> = {
     deleteError: () => 'התרחשה שגיאה במחיקת המועמד',
     deleteSuccess: () => 'המועמד נמחק בהצלחה',

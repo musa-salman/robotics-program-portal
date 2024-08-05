@@ -12,11 +12,23 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 
+/**
+ * Props for registering a student to an event.
+ */
 interface RegisterStudentToEventProps {
   eventId: string;
   eventDate: Date;
 }
 
+/**
+ * Registers a student to an event.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.eventId - The ID of the event.
+ * @param {Date} props.eventDate - The date of the event.
+ * @returns {JSX.Element} The RegisterStudentToEvent component.
+ */
 const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId, eventDate }) => {
   const [isRegistered, setRegister] = useState<boolean | null>(null);
   const [student, setStudent] = useState<Student | null>(null);

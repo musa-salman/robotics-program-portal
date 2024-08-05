@@ -11,6 +11,15 @@ import StudentDetails from '../registers-management/RegisterDetails';
 import { useCallback, useState } from 'react';
 import { FeedbackMessage } from '../components/snackbar/SnackBar';
 
+/**
+ * Component for managing students.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <StudentsManagement />
+ * ```
+ */
 const StudentsManagement = () => {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const userService = useUserService();

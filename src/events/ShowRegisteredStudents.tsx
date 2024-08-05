@@ -20,10 +20,22 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+/**
+ * Props for registering a student to an event.
+ */
 interface RegisterStudentToEventProps {
   eventId: string;
 }
 
+/**
+ * Component that displays the registered students for an event.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <ShowRegisteredStudents eventId="123" />
+ * ```
+ */
 const ShowRegisteredStudents: React.FC<RegisterStudentToEventProps> = ({ eventId }) => {
   const [registeredStudents, setRegisteredStudents] = useState<BriefStudent[] | null>(null);
   const [showDetails, setShowDetails] = useState(false);

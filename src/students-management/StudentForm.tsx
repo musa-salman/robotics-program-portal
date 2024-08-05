@@ -11,12 +11,28 @@ import isEmail from 'validator/lib/isEmail';
 import { isHebrewOnly } from '../register/InputValidator';
 import { School } from '@mui/icons-material';
 
+/**
+ * Props for the AddStudentForm component.
+ */
 interface AddStudentFormProps {
   initialItem?: Student;
   saveItem: (student: Student) => void;
   setShowItemForm: (value: boolean) => void;
 }
 
+/**
+ * StudentForm component represents a form for adding or editing a student.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <StudentForm
+ *   initialItem={initialStudent}
+ *   saveItem={saveStudent}
+ *   setShowItemForm={setShowItemForm}
+ * />
+ * ```
+ */
 const StudentForm: React.FC<AddStudentFormProps> = ({
   initialItem: initialStudent,
   saveItem: saveStudent,

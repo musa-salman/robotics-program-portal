@@ -25,12 +25,28 @@ import { useMaterialService } from '../../repository/StudyMaterialContext';
 import FeedbackSnackbar, { FeedbackMessage } from '../../../components/snackbar/SnackBar';
 import MaterialCardPreview from '../MaterialCardPreview';
 
+/**
+ * Props for the MaterialUploadModal component.
+ */
 interface MaterialUploadModalProps {
   handleClose: () => void;
   handleAdd: (studyMaterial: StudyMaterial) => void | null;
   initialValue: StudyMaterial | null;
 }
 
+/**
+ * MaterialUploadModal component is responsible for rendering a modal for uploading study materials.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <MaterialUploadModal
+ *   handleClose={handleClose}
+ *   handleAdd={handleAdd}
+ *   initialValue={initialValue}
+ * />
+ * ```
+ */
 const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, handleAdd, initialValue }) => {
   const [isForward, setIsForward] = useState(false);
   const [file, setFile] = useState<File | null>(null);

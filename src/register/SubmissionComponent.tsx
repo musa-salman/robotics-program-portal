@@ -13,16 +13,33 @@ import {
 
 import { Register } from './Register';
 
+/**
+ * Props for the SubmissionForm component.
+ */
 interface SubmissionFormProps {
   setRegister: React.Dispatch<React.SetStateAction<Register>>;
   register: Register;
 }
 
+/**
+ * SubmissionForm component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.setRegister - The function to update the register state.
+ * @param {Object} props.register - The register state object.
+ * @returns {JSX.Element} The rendered SubmissionForm component.
+ */
 const SubmissionForm: React.FC<SubmissionFormProps> = ({ setRegister, register }) => {
   const [isValid, setIsValid] = useState({
     hearAboutUs: true
   });
 
+  /**
+   * Handles the change event of an input element.
+   *
+   * @param event - The change event object.
+   */
   const handleChange = (event: any) => {
     const { name, value } = event.target;
     setRegister((prevData) => ({ ...prevData, [name]: value }));

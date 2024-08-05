@@ -9,10 +9,21 @@ import RoleBasedAccessControl from '../authentication/components/RoleBasedAccess
 import Role from '../authentication/components/Roles';
 import { useEffect, useState } from 'react';
 
+/**
+ * Represents a container for events.
+ *
+ * @remarks
+ * This type is used to store an array of `EventProps` objects.
+ */
 type EventContainer = {
   eventsProps: EventProps[];
 };
 
+/**
+ * EventContainer component displays a list of events and provides functionality for sorting, searching, adding, editing, and deleting events.
+ *
+ * @returns The EventContainer component.
+ */
 const EventContainer = () => {
   const [events, setEvents] = useState<EventProps[] | null>(null);
   const [animatingEvents, setAnimatingEvents] = useState<{ [key: string]: boolean }>({});

@@ -10,6 +10,15 @@ import RoleSelector from './RoleSelector';
 import { FeedbackMessage } from '../components/snackbar/SnackBar';
 import RolesDialog from './RolesDialog';
 
+/**
+ * Component for managing users.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <UsersManagement />
+ * ```
+ */
 const UsersManagement = () => {
   const [showAddRoleDialog, setShowAddRoleDialog] = useState(false);
   const [show, setShow] = useState(false);

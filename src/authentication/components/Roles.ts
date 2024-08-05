@@ -15,6 +15,9 @@ enum Role {
 
 const selectableRoles = [Role.Owner, Role.Admin];
 
+/**
+ * Represents the mapping of role names to their corresponding values.
+ */
 const roleNames = {
   [Role.Owner]: 'בעלים',
   [Role.Admin]: 'מנהל',
@@ -60,6 +63,9 @@ interface HelpRole {
   permissions: string[];
 }
 
+/**
+ * Represents the roles in the system.
+ */
 const roles: HelpRole[] = [
   {
     name: 'תלמיד',

@@ -1,5 +1,9 @@
 import ICacheManager from './ICacheManager';
 
+/**
+ * CacheManager class for managing a cache of items.
+ * @template T - The type of items stored in the cache.
+ */
 class CacheManager<T> implements ICacheManager<T> {
   private _cache: Map<string, T> | null = null;
 

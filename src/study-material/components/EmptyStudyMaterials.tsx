@@ -6,10 +6,18 @@ import { useState } from 'react';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import MaterialUploadModal from './upload-file/MaterialUploadModal';
 
+/**
+ * Props for the EmptyStudyMaterials component.
+ */
 interface EmptyStudyMaterialsProps {
   handleAdd: (studyMaterial: StudyMaterial) => void;
 }
 
+/**
+ * Renders a component for displaying empty study materials.
+ *
+ * @param handleAdd - The function to handle adding study materials.
+ */
 function EmptyStudyMaterials({ handleAdd }: EmptyStudyMaterialsProps) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);

@@ -7,12 +7,22 @@ import StudentsManagement from './StudentsManagement';
 import RegisterManagement from '../registers-management/RegistersManagement';
 import UsersManagement from '../users-management/UsersManagement';
 
+/**
+ * Props for the TabPanel component.
+ */
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
 
+/**
+ * CustomTabPanel component represents a tab panel for managing custom tabs.
+ *
+ * @component
+ * @param {TabPanelProps} props - The props for the CustomTabPanel component.
+ * @returns {JSX.Element} The rendered CustomTabPanel component.
+ */
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -28,6 +38,12 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
+/**
+ * Generates accessibility props for a tab.
+ *
+ * @param index - The index of the tab.
+ * @returns An object containing the id and aria-controls properties for the tab.
+ */
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
@@ -35,6 +51,9 @@ function a11yProps(index: number) {
   };
 }
 
+/**
+ * Component for managing students, roles, and registrations.
+ */
 const Management = () => {
   const [value, setValue] = useState(0);
 

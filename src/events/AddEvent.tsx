@@ -11,10 +11,22 @@ import { Modal } from '@mui/material';
 import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 import { Moment } from 'moment';
 
+/**
+ * Props for the AddEvent component.
+ */
 interface AddEventProps {
   addEvent: (event: EventProps) => void;
 }
 
+/**
+ * Component for adding an event.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <AddEvent addEvent={handleAddEvent} />
+ * ```
+ */
 const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
   const MAX_CHARS_Title = 17;
   const MAX_CHARS_Details = 100;

@@ -11,12 +11,18 @@ import {
 import { GPTServiceContext } from './GPTContext';
 import './GPT.css';
 
+/**
+ * Represents the options for the GPT component.
+ */
 interface GPTOptions {
   simplify?: boolean;
   improve?: boolean;
   shorten?: boolean;
 }
 
+/**
+ * Represents the props for the GPTComponent.
+ */
 interface GPTProps {
   initialValue: string;
   getData?: () => string;
@@ -24,6 +30,16 @@ interface GPTProps {
   options?: GPTOptions;
 }
 
+/**
+ * SuggestedText component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.suggestedValue - The suggested value.
+ * @param {Function} props.onAccept - The callback function to handle accepting the suggestion.
+ * @param {Function} props.onDiscard - The callback function to handle discarding the suggestion.
+ * @returns {JSX.Element} The rendered SuggestedText component.
+ */
 const SuggestedText: React.FC<{
   suggestedValue: string;
   onAccept: () => void;
@@ -54,6 +70,10 @@ const SuggestedText: React.FC<{
   </Box>
 );
 
+/**
+ * LoadingComponent is a functional component that displays a loading animation.
+ * It renders a box with a rotating icon to indicate that content is being loaded.
+ */
 const LoadingComponent: React.FC = () => (
   <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
     <AutoAwesome sx={{ fontSize: 40, animation: 'rotate 2s linear infinite' }} className="ai-icon-loading" />
@@ -72,6 +92,17 @@ const LoadingComponent: React.FC = () => (
   </Box>
 );
 
+/**
+ * GPT Component
+ *
+ * A React functional component that provides text manipulation and generation capabilities using GPT (Generative Pre-trained Transformer).
+ *
+ * @param initialValue - The initial value of the text input.
+ * @param getData - A function that returns the data needed for text generation.
+ * @param children - The child component that renders the text input.
+ * @param options - An object containing options for text manipulation (simplify, improve, shorten).
+ * @returns The GPT component.
+ */
 const GPT: React.FC<GPTProps> = ({
   initialValue,
   getData,

@@ -6,6 +6,9 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import './MySpeedDial.css';
 import { MouseEventHandler, useState } from 'react';
 
+/**
+ * Props for the MySpeedDial component.
+ */
 interface MySpeedDialProps {
   handleEditToggle: MouseEventHandler<HTMLDivElement> | undefined;
   handleMoveToggle: MouseEventHandler<HTMLDivElement> | undefined;
@@ -15,6 +18,13 @@ interface MySpeedDialProps {
   isEditing: boolean;
 }
 
+/**
+ * Renders a speed dial component with customizable actions.
+ *
+ * @param handleEditToggle - The function to handle the edit action.
+ * @param handleMoveToggle - The function to handle the move action.
+ * @param handleDelete - The function to handle the delete action.
+ */
 function MySpeedDial({ handleEditToggle, handleMoveToggle, handleDelete }: MySpeedDialProps) {
   const [open, setOpen] = useState(false);
 

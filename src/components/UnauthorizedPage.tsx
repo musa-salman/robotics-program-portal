@@ -6,6 +6,15 @@ import './UnauthorizedPage.css';
 import { useAuth } from '../authentication/services/useAuth';
 import LoginButton from '../authentication/components/Login/Login';
 
+/**
+ * Renders the UnauthorizedPage component.
+ *
+ * This component is responsible for displaying a page indicating that the user is unauthorized.
+ * It shows a message in Hebrew stating that the user does not have the required permissions.
+ * If the user is not logged in, it displays a login button. Otherwise, it displays a button to go back to the home page.
+ *
+ * @returns The UnauthorizedPage component.
+ */
 const UnauthorizedPage: React.FC = () => {
   const { user } = useAuth();
 

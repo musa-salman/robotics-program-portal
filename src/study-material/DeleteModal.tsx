@@ -2,12 +2,25 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Box, Button, Divider, Modal, Typography } from '@mui/material';
 import { useState } from 'react';
 
+/**
+ * Props for the DeleteModal component.
+ */
 interface DeleteModalProps {
   onDelete: () => void;
   onCancel: () => void;
   message: string;
 }
 
+/**
+ * Renders a delete confirmation modal.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.onDelete - The function to be called when delete is confirmed.
+ * @param {Function} props.onCancel - The function to be called when delete is cancelled.
+ * @param {string} props.message - The message to be displayed in the modal.
+ * @returns {JSX.Element} The delete confirmation modal component.
+ */
 function DeleteModal({ onDelete, onCancel, message }: DeleteModalProps) {
   const [open] = useState(true);
 

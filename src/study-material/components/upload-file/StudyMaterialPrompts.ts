@@ -1,5 +1,11 @@
 import { StudyMaterial } from '../../repository/StudyMaterial';
 
+/**
+ * Generates a material description for a study material.
+ *
+ * @param studyMaterial - The study material object.
+ * @returns The generated material description.
+ */
 const generateMaterialDescription = (studyMaterial: StudyMaterial): string => {
   let text: string = '';
 
@@ -22,6 +28,13 @@ const generateMaterialDescription = (studyMaterial: StudyMaterial): string => {
   );
 };
 
+/**
+ * Suggests the most appropriate category for a study material based on the provided data.
+ *
+ * @param studyMaterial - The study material object.
+ * @param categories - An array of existing categories.
+ * @returns A string representing the suggested category.
+ */
 const suggestCategory = (studyMaterial: StudyMaterial, categories: string[]): string => {
   let text: string = '';
 
@@ -47,6 +60,12 @@ const suggestCategory = (studyMaterial: StudyMaterial, categories: string[]): st
   );
 };
 
+/**
+ * Generates a suggested title based on the given study material.
+ *
+ * @param studyMaterial - The study material object.
+ * @returns The suggested title in Hebrew without quotation marks.
+ */
 const suggestMaterialTitles = (studyMaterial: StudyMaterial): string => {
   let text: string = '';
 

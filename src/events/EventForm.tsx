@@ -11,6 +11,23 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DateTimePicker } from '@mui/x-date-pickers';
 
+/**
+ * Props for the EventForm component.
+ *
+ * @interface EventFormProps
+ * @property {() => void} handleSaveAdd - Callback function for saving and adding event.
+ * @property {(event: React.ChangeEvent<HTMLTextAreaElement>) => void} handleTitleChange - Callback function for handling title change.
+ * @property {(event: Moment) => void} handleStartDateChange - Callback function for handling start date change.
+ * @property {(event: Moment) => void} handleEndDateChange - Callback function for handling end date change.
+ * @property {(event: React.ChangeEvent<HTMLInputElement>) => void} handleImageChange - Callback function for handling image change.
+ * @property {(event: React.ChangeEvent<HTMLTextAreaElement>) => void} handleDetailsChange - Callback function for handling details change.
+ * @property {() => void} handleCloseAddEvent - Callback function for closing add event.
+ * @property {any} formData - The data for the form. Replace 'any' with the actual type of formData.
+ * @property {number} MAX_CHARS_Title - The maximum number of characters allowed for the title.
+ * @property {number} MAX_CHARS_Details - The maximum number of characters allowed for the details.
+ * @property {{ add: boolean }} requiredFields - Object containing the required fields for adding an event.
+ * @property {boolean} isForward - Indicates if the event is moving forward.
+ */
 interface EventFormProps {
   handleSaveAdd: () => void;
   handleTitleChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -28,6 +45,28 @@ interface EventFormProps {
   isForward: boolean;
 }
 
+/**
+ * Represents a form for creating or editing an event.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <EventForm
+ *   handleSaveAdd={handleSaveAdd}
+ *   handleTitleChange={handleTitleChange}
+ *   handleStartDateChange={handleStartDateChange}
+ *   handleEndDateChange={handleEndDateChange}
+ *   handleImageChange={handleImageChange}
+ *   handleDetailsChange={handleDetailsChange}
+ *   handleCloseAddEvent={handleCloseAddEvent}
+ *   formData={formData}
+ *   MAX_CHARS_Title={MAX_CHARS_Title}
+ *   MAX_CHARS_Details={MAX_CHARS_Details}
+ *   requiredFields={requiredFields}
+ *   isForward={isForward}
+ * />
+ * ```
+ */
 const EventForm: React.FC<EventFormProps> = ({
   handleSaveAdd,
   handleTitleChange,

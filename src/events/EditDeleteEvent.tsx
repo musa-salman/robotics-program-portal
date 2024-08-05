@@ -11,19 +11,35 @@ import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackB
 import DeleteModal from '../study-material/DeleteModal';
 import { Moment } from 'moment';
 
+/**
+ * Props for the EditDeleteEvent component.
+ */
 interface EditDeleteEventProps {
   event: EventProps;
   editEvent: (event: EventProps) => void;
   deleteEvent: (id: string) => void;
 }
 
+/**
+ * Component for editing and deleting an event.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <EditDeleteEvent
+ *   event={event}
+ *   editEvent={editEvent}
+ *   deleteEvent={deleteEvent}
+ * />
+ * ```
+ */
 const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, deleteEvent }) => {
   const { id } = event;
   const [formData, setFormData] = useState<EventProps>(event);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [showModalDelete, setShowModalDelete] = useState(false);
-  const [isForward] = useState(false); //FIXME: validation
+  const [isForward] = useState(false);
 
   const handleCloseEdit = () => setShowModalEdit(false);
   const handleCloseDelete = () => setShowModalDelete(false);

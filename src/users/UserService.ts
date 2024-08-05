@@ -22,6 +22,9 @@ export interface IUserService {
   getUserRoles(userId: string): Promise<Role[]>;
 }
 
+/**
+ * Represents a service for managing users.
+ */
 export class UserService implements IUserService {
   private readonly userRepository: UserRepository;
   private readonly studentRepository: StudentRepository;

@@ -14,12 +14,30 @@ import {
 import SchoolIcon from '@mui/icons-material/School';
 import { Register } from './Register';
 
+/**
+ * Props for the AcademicForm component.
+ *
+ * @remarks
+ * This interface defines the props required for the AcademicForm component.
+ *
+ * @public
+ */
 interface AcademicFormProps {
   setRegister: React.Dispatch<React.SetStateAction<Register>>;
   register: Register;
   isForward: boolean;
 }
 
+/**
+ * AcademicForm component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.setRegister - The function to update the register state.
+ * @param {Object} props.register - The register state object.
+ * @param {boolean} props.isForward - A flag indicating if the form is being submitted forward.
+ * @returns {JSX.Element} The rendered AcademicForm component.
+ */
 const AcademicForm: React.FC<AcademicFormProps> = ({ setRegister, register, isForward }) => {
   const [isValid, setIsValid] = useState({
     studentSchool: true,

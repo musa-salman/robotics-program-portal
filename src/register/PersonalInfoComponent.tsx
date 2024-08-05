@@ -10,12 +10,28 @@ import { isIdentityCard, isMobilePhone } from 'validator';
 import isEmail from 'validator/lib/isEmail';
 import { useState } from 'react';
 
+/**
+ * Represents the props for the PersonalInfoComponent.
+ */
 interface PersonalInfoProps {
   setRegister: React.Dispatch<React.SetStateAction<Register>>;
   register: Register;
   isForward: boolean;
 }
 
+/**
+ * Represents the Personal Info Step component.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <PersonalInfoStep
+ *   setRegister={setRegister}
+ *   register={register}
+ *   isForward={isForward}
+ * />
+ * ```
+ */
 const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register, isForward }) => {
   const [isValid, setIsValid] = useState({
     firstName: true,

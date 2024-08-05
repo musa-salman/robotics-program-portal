@@ -2,6 +2,9 @@ import { UploadResult, deleteObject, getDownloadURL, ref, uploadBytes } from 'fi
 import { storage } from '../firebase';
 import { IStorageService } from './IStorageService';
 
+/**
+ * StorageService class provides methods for uploading, downloading, deleting, and checking the existence of files in a storage.
+ */
 export class StorageService implements IStorageService {
   upload(file: File, path: string): Promise<UploadResult> {
     return uploadBytes(ref(storage, path), file).then((uploadResult) => {

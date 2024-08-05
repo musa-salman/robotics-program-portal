@@ -6,6 +6,9 @@ import { StudyMaterial } from './StudyMaterial';
 import { Category } from './Category';
 import { CachingRepository } from '../../repositories/caching/CachingRepository';
 
+/**
+ * Represents a material service that provides operations for managing study materials and categories.
+ */
 export interface IMaterialService {
   /**
    * Deletes a category.

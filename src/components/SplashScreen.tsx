@@ -6,6 +6,11 @@ import { useAuth } from '../authentication/services/useAuth';
 import { useState } from 'react';
 import FeedbackSnackbar, { FeedbackMessage } from './snackbar/SnackBar';
 
+/**
+ * Renders the splash screen component.
+ *
+ * @returns The rendered splash screen component.
+ */
 function SplashScreen() {
   const { authService } = useAuth();
   const [message, setMessage] = useState<FeedbackMessage | null>(null);

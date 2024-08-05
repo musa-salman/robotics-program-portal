@@ -5,6 +5,15 @@ import SearchIcon from '@mui/icons-material/Search';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import { Input } from '@mui/material';
 
+/**
+ * Props for the SearchBar component.
+ *
+ * @interface SearchBarProps
+ * @property {StudyMaterial[]} studyMaterials - The list of study materials.
+ * @property {(results: StudyMaterial[] | null) => void} onSearchResults - Callback function to handle search results.
+ * @property {string} query - The search query.
+ * @property {React.Dispatch<React.SetStateAction<string>>} setQuery - Function to update the search query.
+ */
 interface SearchBarProps {
   studyMaterials: StudyMaterial[];
   onSearchResults: (results: StudyMaterial[] | null) => void;
@@ -12,6 +21,27 @@ interface SearchBarProps {
   setQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
+/**
+ * SearchBar component for filtering study materials based on a search query.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <SearchBar
+ *   studyMaterials={studyMaterials}
+ *   onSearchResults={handleSearchResults}
+ *   query={searchQuery}
+ *   setQuery={setSearchQuery}
+ * />
+ * ```
+ *
+ * @param {Object} props - The component props.
+ * @param {Array<StudyMaterial>} props.studyMaterials - The array of study materials to filter.
+ * @param {Function} props.onSearchResults - The callback function to handle search results.
+ * @param {string} props.query - The current search query.
+ * @param {Function} props.setQuery - The function to update the search query.
+ * @returns {JSX.Element} The rendered SearchBar component.
+ */
 export const SearchBar: React.FC<SearchBarProps> = ({ studyMaterials, onSearchResults, query, setQuery }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const searchText = e.target.value;

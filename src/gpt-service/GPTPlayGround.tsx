@@ -19,6 +19,16 @@ import ShortenIcon from '@mui/icons-material/ShortText';
 import ImproveIcon from '@mui/icons-material/Upgrade';
 import CloseIcon from '@mui/icons-material/Close';
 
+/**
+ * GPTPlayGround component.
+ *
+ * This component represents a playground for interacting with the GPT service.
+ * It allows the developer to enter text and perform actions such as simplifying, shortening, and improving the text using the GPT service.
+ * The component displays a menu with options for each action, and a result section to display the output of the selected action.
+ * It also includes a snackbar to show error messages.
+ *
+ * @returns The GPTPlayGround component.
+ */
 const GPTPlayGround: React.FC = () => {
   const gptService = useContext(GPTServiceContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

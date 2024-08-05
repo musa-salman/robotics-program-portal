@@ -7,6 +7,12 @@ import { IUserService } from './UserService';
  */
 const UserContext: React.Context<IUserService | undefined> = createContext<IUserService | undefined>(undefined);
 
+/**
+ * IUserProviderProps interface represents the props required for the UserProvider component.
+ * @template T - The type of the user service.
+ * @property {React.ReactNode} children - The children components.
+ * @property {T} userService - The user service.
+ */
 interface IUserProviderProps {
   children: React.ReactNode;
   userService: IUserService;
@@ -22,6 +28,11 @@ function UserProvider({ children, userService }: IUserProviderProps): JSX.Elemen
   return <UserContext.Provider value={userService}>{children}</UserContext.Provider>;
 }
 
+/**
+ * Custom hook that provides the user service from the UserContext.
+ * @returns The user service from the UserContext.
+ * @throws {Error} If used outside of a UserProvider.
+ */
 export function useUserService(): IUserService {
   const userService = useContext(UserContext);
   if (!userService) {

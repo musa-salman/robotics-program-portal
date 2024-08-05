@@ -3,6 +3,11 @@ import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 
+/**
+ * Represents the layout component.
+ *
+ * @returns The rendered layout component.
+ */
 const Layout = () => {
   const headerLinks = [
     { name: 'בית', path: '/' },

@@ -1,5 +1,11 @@
 import { DocumentData, FirestoreDataConverter, QueryDocumentSnapshot, SnapshotOptions } from 'firebase/firestore';
 
+/**
+ * Creates a Firestore data converter for the specified type.
+ *
+ * @returns The Firestore data converter object.
+ * @template T - The type of data to convert.
+ */
 export function createConverter<T>(): FirestoreDataConverter<T, DocumentData> {
   return {
     toFirestore(data: T): DocumentData {

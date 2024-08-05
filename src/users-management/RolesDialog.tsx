@@ -19,6 +19,14 @@ interface RolesDialogProps {
   onClose: () => void;
 }
 
+/**
+ * Represents a dialog component for managing roles and permissions.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {boolean} props.open - Determines whether the dialog is open or not.
+ * @param {Function} props.onClose - The function to be called when the dialog is closed.
+ * @returns {JSX.Element} The rendered RolesDialog component.
+ */
 const RolesDialog: React.FC<RolesDialogProps> = ({ open, onClose }) => {
   return (
     <>

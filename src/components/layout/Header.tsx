@@ -9,10 +9,22 @@ import LogoutButton from '../../authentication/components/Logout';
 import RoleBasedAccessControl from '../../authentication/components/RoleBasedAccessControl';
 import Role from '../../authentication/components/Roles';
 
+/**
+ * Represents the props for the Header component.
+ */
 interface HeaderProps {
   links: { name: string; path: string }[];
 }
 
+/**
+ * Represents the header component of the application.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <Header links={headerLinks} />
+ * ```
+ */
 const Header: React.FC<HeaderProps> = ({ links }) => {
   const { user } = useAuth();
   const theme = useTheme();

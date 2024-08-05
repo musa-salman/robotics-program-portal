@@ -12,6 +12,9 @@ import RoleBasedAccessControl from '../authentication/components/RoleBasedAccess
 import DeleteModal from '../study-material/DeleteModal';
 import { useDocumentInfoService } from './service/DocumentInfoContext';
 
+/**
+ * Props for the DocumentCard component.
+ */
 interface DocumentCardProps {
   documentInfo: DocumentInfo;
   onDocumentDelete: (documentId: string) => void;
@@ -19,6 +22,20 @@ interface DocumentCardProps {
   onStudentUpload: (document: DocumentInfo, file: File) => Promise<void>;
 }
 
+/**
+ * Represents a document card component.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <DocumentCard
+ *   documentInfo={documentInfo}
+ *   onDocumentDelete={handleDocumentDelete}
+ *   onDocumentUpdate={handleDocumentUpdate}
+ *   onStudentUpload={handleStudentUpload}
+ * />
+ * ```
+ */
 const DocumentCard: React.FC<DocumentCardProps> = ({
   documentInfo,
   onDocumentDelete,

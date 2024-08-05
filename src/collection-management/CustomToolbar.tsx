@@ -12,6 +12,15 @@ import { IconButton, Tooltip } from '@mui/material';
 import Refresh from '@mui/icons-material/Refresh';
 import './CustomToolbar.css';
 
+/**
+ * CustomToolbar component.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <CustomToolbar onRefreshClick={handleRefreshClick} onHelpClick={handleHelpClick} />
+ * ```
+ */
 const CustomToolbar: React.JSXElementConstructor<GridToolbarProps & ToolbarPropsOverrides> = ({
   onRefreshClick,
   onHelpClick

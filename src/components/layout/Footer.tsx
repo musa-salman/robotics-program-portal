@@ -3,6 +3,15 @@ import { Link, Typography } from '@mui/material';
 import { Facebook, Twitter, Instagram, YouTube } from '@mui/icons-material';
 import './Footer.css';
 
+/**
+ * Footer component.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <Footer />
+ * ```
+ */
 const Footer: React.FC = () => {
   const socialMedia = [
     {

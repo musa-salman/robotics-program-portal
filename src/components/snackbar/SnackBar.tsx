@@ -4,15 +4,38 @@ import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from 'react';
 import { Alert, Slide } from '@mui/material';
 
+/**
+ * Represents a feedback message.
+ *
+ * @interface FeedbackMessage
+ * @property {string} message - The message content.
+ * @property {'success' | 'error' | 'info' | 'warning'} variant - The variant of the message.
+ */
 interface FeedbackMessage {
   message: string;
   variant: 'success' | 'error' | 'info' | 'warning';
 }
 
+/**
+ * Props for the FeedbackSnackbar component.
+ */
 interface FeedbackSnackbarProps {
   feedBackMessage: FeedbackMessage;
 }
 
+/**
+ * FeedbackSnackbar component displays a feedback message in a Snackbar.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <FeedbackSnackbar feedBackMessage={feedback} />
+ * ```
+ *
+ * @param {FeedbackSnackbarProps} props - The props for the FeedbackSnackbar component.
+ * @param {FeedbackMessage} props.feedBackMessage - The feedback message to be displayed.
+ * @returns {JSX.Element} The rendered FeedbackSnackbar component.
+ */
 const FeedbackSnackbar: React.FC<FeedbackSnackbarProps> = ({ feedBackMessage }) => {
   const [open, setOpen] = useState(true);
 

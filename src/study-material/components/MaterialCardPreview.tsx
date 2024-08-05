@@ -5,6 +5,11 @@ import { StudyMaterial } from '../repository/StudyMaterial';
 import { useTheme } from '@mui/material/styles';
 import formatDate from '../../utils/dateFormatter';
 
+/**
+ * Renders a preview card for a study material.
+ *
+ * @param studyMaterial - The study material object to display.
+ */
 function MaterialCardPreview({ studyMaterial }: { studyMaterial: StudyMaterial }) {
   const theme = useTheme();
 

@@ -5,6 +5,11 @@ import FeedbackSnackbar, { FeedbackMessage } from '../../components/snackbar/Sna
 import { ExitToApp } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * LogoutButton component.
+ *
+ * @returns The LogoutButton component.
+ */
 const LogoutButton = () => {
   const { authService } = useAuth();
   const [message, setMessage] = useState<FeedbackMessage | null>(null);

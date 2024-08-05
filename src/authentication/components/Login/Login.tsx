@@ -4,6 +4,16 @@ import { useAuth } from '../../services/useAuth';
 import { Login } from '@mui/icons-material';
 import FeedbackSnackbar, { FeedbackMessage } from '../../../components/snackbar/SnackBar';
 
+/**
+ * LoginButton component.
+ *
+ * This component renders a button that allows the user to login.
+ * It uses the `authService` from the `useAuth` hook to handle the login process.
+ * The button displays different text and is disabled based on the `loading` state.
+ * It also displays a feedback message using the `FeedbackSnackbar` component.
+ *
+ * @returns The rendered LoginButton component.
+ */
 const LoginButton: React.FC = () => {
   const { authService } = useAuth();
   const [message, setMessage] = useState<FeedbackMessage | null>(null);

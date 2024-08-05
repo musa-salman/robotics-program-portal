@@ -1,6 +1,9 @@
 import { IGPTService } from './IGPTService';
 import Groq from 'groq-sdk';
 
+/**
+ * GPTService class that provides methods for generating and manipulating text using GPT models.
+ */
 export class GPTService implements IGPTService {
   readonly groq: Groq;
 

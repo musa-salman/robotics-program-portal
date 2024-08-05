@@ -1,5 +1,8 @@
 import { UploadResult } from 'firebase/storage';
 
+/**
+ * Interface for a storage service.
+ */
 interface IStorageService {
   upload(file: File, path: string): Promise<UploadResult>;
 

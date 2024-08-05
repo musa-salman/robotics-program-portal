@@ -18,6 +18,20 @@ type UpdateHandler = (updatedMaterial: StudyMaterial) => void;
 type DeleteHandler = (studyMaterial: StudyMaterial) => void;
 type MoveHandler = (studyMaterial: StudyMaterial) => void;
 
+/**
+ * Represents a MaterialCard component.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <MaterialCard
+ *   studyMaterial={studyMaterial}
+ *   onUpdate={handleUpdate}
+ *   onDelete={handleDelete}
+ *   onMove={handleMove}
+ * />
+ * ```
+ */
 function MaterialCard({
   studyMaterial,
   onUpdate,

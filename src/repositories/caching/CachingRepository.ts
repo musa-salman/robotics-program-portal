@@ -3,9 +3,18 @@ import { BaseRepository } from '../BaseRepository';
 import ICacheManager from './ICacheManager';
 import CacheManager from './CacheManager';
 
+/**
+ * Represents a caching repository that extends the BaseRepository class.
+ * It provides caching functionality for retrieving, creating, updating, and deleting items.
+ * @template T - The type of items stored in the repository.
+ */
 export class CachingRepository<T> extends BaseRepository<T> {
   private readonly repositoryBase: BaseRepository<T>;
   private cacheManager: ICacheManager<T>;
+  /**
+   * Indicates whether the cache is fully populated or not.
+   * This flag is used to determine whether to fetch data from the cache or the data source.
+   */
   private isCacheFullyPopulated = false;
 
   constructor(repositoryBase: BaseRepository<T>, cacheManager?: ICacheManager<T>) {

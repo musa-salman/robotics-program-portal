@@ -11,10 +11,24 @@ import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackB
 import SkeletonEventCard from './EventCardSkeleton';
 import { IconButton } from '@mui/material';
 
+/**
+ * Represents a container for events.
+ *
+ * @remarks
+ * This type is used to store an array of `EventProps` objects.
+ */
 type EventContainer = {
   eventsProps: EventProps[];
 };
 
+/**
+ * EventContainer component displays a container for events.
+ * It fetches events from the event repository and renders them in a carousel-like fashion.
+ * The component supports shifting events left and right, adding new events, deleting events, and editing events.
+ * It also displays a feedback message using a snackbar component.
+ *
+ * @returns The EventContainer component.
+ */
 const EventContainer = () => {
   const [events, setEvents] = useState<EventProps[] | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);

@@ -18,6 +18,11 @@ import { CachingRepository } from '../repositories/caching/CachingRepository';
 import './CollectionTable.css';
 import DeleteModal from '../study-material/DeleteModal';
 
+/**
+ * Represents the format of messages used in the CollectionTable component.
+ *
+ * @template T - The type of item in the collection.
+ */
 interface MessageFormat<T> {
   deleteSuccess: () => string;
   deleteError: () => string;
@@ -26,6 +31,9 @@ interface MessageFormat<T> {
   updateError: (item: T) => string;
 }
 
+/**
+ * Actions interface for managing collection table.
+ */
 interface Actions {
   handleEditClick: (id: GridRowId) => () => void;
   handleSaveClick: (id: GridRowId) => () => void;
@@ -33,6 +41,11 @@ interface Actions {
   deleteItem: (id: GridRowId) => void;
 }
 
+/**
+ * Props for the CollectionTable component.
+ *
+ * @template T - The type of the items in the collection.
+ */
 interface CollectionTableProps<T> {
   generateColumns: (
     rows: (T & { isNew: boolean })[] | null,
@@ -60,6 +73,24 @@ interface CollectionTableProps<T> {
   onHelpClick?: () => void;
 }
 
+/**
+ * Represents a table component for managing collections.
+ *
+ * @template T - The type of items in the collection.
+ *
+ * @param {CollectionTableProps<T>} props - The props for the CollectionTable component.
+ * @param {Function} props.generateColumns - A function that generates the columns for the table.
+ * @param {Repository<T>} props.repository - The repository for accessing the collection data.
+ * @param {React.ComponentType<FormComponentProps<T>>} props.FormComponent - The form component for adding/editing items.
+ * @param {Function} props.getItems - A function that retrieves the items for the table.
+ * @param {MessageFormat} props.messageFormat - The message format for displaying feedback messages.
+ * @param {Function} props.onRowSelected - A callback function for when a row is selected.
+ * @param {Function} props.onDelete - A callback function for deleting an item.
+ * @param {GridColumnVisibilityModel} props.columnVisibilityModel - The column visibility model for the table.
+ * @param {Function} props.onHelpClick - A callback function for when the help button is clicked.
+ *
+ * @returns {JSX.Element} The rendered CollectionTable component.
+ */
 const CollectionTable = <T extends { id: string }>({
   generateColumns,
   repository,
