@@ -29,6 +29,7 @@ import { IStorageService } from './storage-service/IStorageService';
 import { StorageService } from './storage-service/StorageService';
 import { StudentDocumentRepositories } from './docs-handling/service/DocumentStudentRepositories';
 import { DocumentRepository } from './docs-handling/service/DocumentRepository';
+import SettingProvider from './Settinges/SettingContext';
 
 interface IProps {
   theme: Theme;
@@ -73,18 +74,20 @@ function bootstrap({ theme, cacheRtl }: IProps) {
             <DocumentProvider documentService={documentService}>
               <UserProvider userService={userService}>
                 <GPTServiceProvider>
-                  <MaterialProvider materialService={materialService}>
-                    <EventProvider eventService={eventService}>
-                      <StorageProvider>
-                        <RegisterProvider registerService={registerService}>
-                          <AuthProvider>
-                            <CssBaseline />
-                            <App />
-                          </AuthProvider>
-                        </RegisterProvider>
-                      </StorageProvider>
-                    </EventProvider>
-                  </MaterialProvider>
+                  <SettingProvider>
+                    <MaterialProvider materialService={materialService}>
+                      <EventProvider eventService={eventService}>
+                        <StorageProvider>
+                          <RegisterProvider registerService={registerService}>
+                            <AuthProvider>
+                              <CssBaseline />
+                              <App />
+                            </AuthProvider>
+                          </RegisterProvider>
+                        </StorageProvider>
+                      </EventProvider>
+                    </MaterialProvider>
+                  </SettingProvider>
                 </GPTServiceProvider>
               </UserProvider>
             </DocumentProvider>
