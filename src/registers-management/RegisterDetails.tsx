@@ -128,6 +128,13 @@ const StudentDetails: React.FC<DetailsProps> = ({ registrationData, onClose }) =
               בית ספר: {registrationData.studentSchool}
             </Typography>
           </Grid>
+          {!isRegister && (
+            <Grid item xs={12}>
+              <Button variant="contained" color="primary" onClick={handleOpen}>
+                הצג מסמכים
+              </Button>
+            </Grid>
+          )}
           {isRegister && (
             <>
               <Grid item xs={12}>
@@ -155,11 +162,6 @@ const StudentDetails: React.FC<DetailsProps> = ({ registrationData, onClose }) =
               </Grid>
             </>
           )}
-          <Grid item xs={12}>
-            <Button variant="contained" color="primary" onClick={handleOpen}>
-              הצג מסמכים
-            </Button>
-          </Grid>
         </Grid>
       </CardContent>
 
