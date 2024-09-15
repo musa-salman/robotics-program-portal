@@ -46,7 +46,7 @@ interface DetailsProps {
  * @param {Function} props.onClose - The function to close the details.
  * @returns {JSX.Element} The rendered component.
  */
-const StudentDetails: React.FC<DetailsProps> = ({ registrationData, onClose }) => {
+const StudentDetails: React.FC<DetailsProps> = ({ registrationData, onClose }: DetailsProps): JSX.Element => {
   const [open, setOpen] = useState(false);
   const [documents, setDocuments] = useState<StudentDocument[] | null>(null);
   const isRegister = hasOwn(registrationData, 'hearAboutUs');
