@@ -1,7 +1,10 @@
+import Role from '../authentication/components/Roles';
+
 /**
  * Represents a user in the system.
  */
 export interface User {
   id: string;
-  role: string;
+  roles: Role[];
+  email: string;
 }

@@ -1,69 +1,81 @@
-.primary {
-  border: none;
-  border-radius: none;
-  background-color: transparent;
+.mat-out-box {
+  height: 100%;
+  width: 100%;
+  padding: 30px;
+  padding: 30px;
   display: flex;
-  margin: 20px;
+  justify-content: center;
+  align-content: center;
 }
 
-.study-materials-container {
+.mat-in-box {
+  height: 90%;
+  width: 100rem;
+  min-width: fit-content;
+  padding: 20px;
   display: flex;
+  justify-content: center;
+  flex-direction: column;
   flex-wrap: wrap;
-  align-content: space-between;
-  justify-content: right;
-  gap: 20px;
+  background-color: transparent;
+  backdrop-filter: blur(20px);
+  border: 8px solid black;
+  /* rgba(0, 0, 0, 0.2) */
 }
 
 .btn-search {
   display: flex;
+  height: fit-content;
+  max-height: 80vh;
+  width: 100%;
+  min-width: fit-content;
   align-items: center;
-  padding: 20px;
-  flex-wrap: wrap;
-  column-gap: 10px;
-  justify-content: space-between;
+  justify-content: space-around;
+  padding: 4px;
+}
+
+.search {
+  width: 100%;
 }
 
 .btns {
-  margin-left: 14px;
-}
-
-.btn-search .adde-btn {
-  background-color: rgb(236, 222, 66);
-  color: whitesmoke;
-  margin-left: 18px;
-}
-
-.btn-search .adde-btn:hover {
-  background-color: rgb(226, 211, 47);
-}
-
-.btn-search .del-btn {
-  color: whitesmoke;
-  background-color: rgb(222, 86, 86);
-}
-
-.btn-search .del-btn:hover {
-  background-color: rgb(195, 64, 64);
-}
-
-.Card-Header .edit-button {
-  background-color: #e0b1cb;
-  color: whitesmoke;
-}
-
-.Card-Header .edit-button:hover {
-  background-color: #ee9bc9;
-}
-
-.Card-Header {
+  height: fit-content;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: row;
+  margin-right: 20px;
+  gap: 10px;
 }
 
-.header-text {
-  text-align: right;
-  font-size: 20px;
-  color: black;
-  font-weight: bold;
+.btns .edit-button {
+  transition: 0.5s ease-in;
+}
+
+.btns .edit-button:hover {
+  padding: 2px;
+}
+
+.btns .adde-btn {
+  transition: 0.5s ease-in;
+}
+
+.btns .adde-btn:hover {
+}
+
+.con-taf {
+  width: 100%;
+  min-width: 20rem;
+}
+
+.primary {
+  display: flex;
+  width: 100%;
+  min-width: fit-content;
+}
+
+.study-materials-container {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
 }

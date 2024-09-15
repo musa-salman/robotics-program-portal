@@ -1,22 +1,9 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
 import './index.css';
-import ThemeProvider from 'react-bootstrap/esm/ThemeProvider';
-import { BrowserRouter } from 'react-router-dom';
-import UserProvider from './users/UserContext.tsx';
-import CategoryProvider from './upload-file/CategoryContext.tsx';
-import MaterialProvider from './study-material/repository/StudyMaterialContext.tsx';
-import StorageServiceProvider from './storage-service/StorageContext.tsx';
-import EventManagerProvider from './events/repository/EventManagerContext.tsx';
-import { AuthProvider } from './authentication/AuthContext.tsx';
-import StudentProvider from './students-management/StudentContext.tsx';
-import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import rtlPlugin from 'stylis-plugin-rtl';
-import createTheme from '@mui/material/styles/createTheme';
-import RegisterProvider from './register/RegisterContext.tsx';
-import GPTServiceProvider from './gpt-service/GPTContext.tsx';
+import bootstrap from './appInitializer.tsx';
+import { createTheme } from '@mui/material/styles';
 
 const cacheRtl = createCache({
   key: 'muirtl',
@@ -24,44 +11,81 @@ const cacheRtl = createCache({
 });
 
 const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#F2542D'
+    },
+    secondary: {
+      main: '#DB9941'
+      // b6b8a9  aeb29b
+    },
+    error: {
+      main: '#f44336'
+    },
+    background: {
+      default: '#242424',
+      paper: '#3d3d3d'
+      // 6e6e6d
+    },
+    text: {
+      primary: '#fff',
+      secondary: '#aaa',
+      disabled: '#666'
+    },
+    divider: '#333',
+    action: {
+      active: '#fff',
+      hover: '#555',
+      selected: '#666',
+      disabled: '#333',
+      disabledBackground: '#555',
+      focus: '#777'
+    },
+    success: {
+      main: '#4caf50'
+    },
+    warning: {
+      main: '#ff9800'
+    },
+    info: {
+      main: '#2196f3'
+    },
+    tonalOffset: 0.2,
+    common: {
+      black: '#000',
+      white: '#fff'
+    },
+    contrastThreshold: 3
+  },
   components: {
     MuiPagination: {
       defaultProps: {
         dir: 'ltr'
+      },
+      variants: [
+        {
+          props: { dir: 'rtl' },
+          style: {
+            direction: 'rtl'
+          }
+        }
+      ],
+      styleOverrides: {
+        root: {
+          direction: 'rtl'
+        }
+      }
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          color: 'black'
+        }
       }
     }
   },
   direction: 'rtl'
 });
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <ThemeProvider dir="rtl">
-      <CacheProvider value={cacheRtl}>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter>
-            <UserProvider>
-              <GPTServiceProvider>
-                <CategoryProvider>
-                  <MaterialProvider>
-                    <EventManagerProvider>
-                      <StudentProvider>
-                        <StorageServiceProvider>
-                          <RegisterProvider>
-                            <AuthProvider>
-                              <App />
-                            </AuthProvider>
-                          </RegisterProvider>
-                        </StorageServiceProvider>
-                      </StudentProvider>
-                    </EventManagerProvider>
-                  </MaterialProvider>
-                </CategoryProvider>
-              </GPTServiceProvider>
-            </UserProvider>
-          </BrowserRouter>
-        </ThemeProvider>
-      </CacheProvider>
-    </ThemeProvider>
-  </React.StrictMode>
-);
+ReactDOM.createRoot(document.getElementById('root')!).render(bootstrap({ theme, cacheRtl }));

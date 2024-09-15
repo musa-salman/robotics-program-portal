@@ -8,13 +8,42 @@ import { Register } from './Register';
 import { isHebrewOnly } from './InputValidator';
 import { isIdentityCard, isMobilePhone } from 'validator';
 import isEmail from 'validator/lib/isEmail';
+import { useState } from 'react';
 
+/**
+ * Represents the props for the PersonalInfoComponent.
+ */
 interface PersonalInfoProps {
   setRegister: React.Dispatch<React.SetStateAction<Register>>;
   register: Register;
+  isForward: boolean;
 }
 
-const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }) => {
+/**
+ * Represents the Personal Info Step component.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <PersonalInfoStep
+ *   setRegister={setRegister}
+ *   register={register}
+ *   isForward={isForward}
+ * />
+ * ```
+ */
+const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register, isForward }) => {
+  const [isValid, setIsValid] = useState({
+    firstName: true,
+    lastName: true,
+    studentPhoneNumber: true,
+    parentPhoneNumber: true,
+    studentId: true,
+    studentEmail: true,
+    parentEmail: true,
+    studentAddress: true
+  });
+
   const handleChange = (event: any) => {
     const { name, value } = event.target;
     setRegister((prevData) => ({ ...prevData, [name]: value }));
@@ -28,12 +57,19 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
             <TextField
               fullWidth
               label="שם פרטי"
-              name="studentFirstName"
+              name="firstName"
               value={register.firstName}
               onChange={handleChange}
               required
-              error={!isHebrewOnly(register.firstName)}
-              helperText={!isHebrewOnly(register.firstName) ? 'יש להזין רק אותיות עבריות' : ''}
+              error={!isValid.firstName || (isForward && !isHebrewOnly(register.firstName))}
+              onBlur={() => {
+                setIsValid((prevData) => ({ ...prevData, firstName: isHebrewOnly(register.firstName) }));
+              }}
+              helperText={
+                !isValid.firstName || (isForward && !isHebrewOnly(register.firstName))
+                  ? 'יש להזין רק אותיות עבריות'
+                  : ''
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -48,12 +84,17 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
             <TextField
               fullWidth
               label="שם משפחה"
-              name="studentLastName"
+              name="lastName"
               value={register.lastName}
               onChange={handleChange}
               required
-              error={!isHebrewOnly(register.lastName)}
-              helperText={!isHebrewOnly(register.lastName) ? 'יש להזין רק אותיות עבריות' : ''}
+              error={!isValid.lastName || (isForward && !isHebrewOnly(register.lastName))}
+              onBlur={() => {
+                setIsValid((prevData) => ({ ...prevData, lastName: isHebrewOnly(register.lastName) }));
+              }}
+              helperText={
+                !isValid.lastName || (isForward && !isHebrewOnly(register.lastName)) ? 'יש להזין רק אותיות עבריות' : ''
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -68,12 +109,22 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
             <TextField
               fullWidth
               label="טלפון הורה"
-              name="parentPhone"
+              name="parentPhoneNumber"
               value={register.parentPhoneNumber}
               onChange={handleChange}
               required
-              error={!isMobilePhone(register.parentPhoneNumber, 'he-IL')}
-              helperText={!isMobilePhone(register.parentPhoneNumber) ? 'יש להזין מספר טלפון תקין' : ''}
+              error={!isValid.parentPhoneNumber || (isForward && !isMobilePhone(register.parentPhoneNumber, 'he-IL'))}
+              onBlur={() => {
+                setIsValid((prevData) => ({
+                  ...prevData,
+                  parentPhoneNumber: isMobilePhone(register.parentPhoneNumber, 'he-IL')
+                }));
+              }}
+              helperText={
+                !isValid.parentPhoneNumber || (isForward && !isMobilePhone(register.parentPhoneNumber, 'he-IL'))
+                  ? 'יש להזין מספר טלפון תקין'
+                  : ''
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -88,12 +139,22 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
             <TextField
               fullWidth
               label="פלאפון תלמיד\ה"
-              name="studentPhone"
+              name="studentPhoneNumber"
               value={register.studentPhoneNumber}
               onChange={handleChange}
               required
-              error={!isMobilePhone(register.studentPhoneNumber)}
-              helperText={!isMobilePhone(register.studentPhoneNumber) ? 'יש להזין מספר טלפון תקין' : ''}
+              error={!isValid.studentPhoneNumber || (isForward && !isMobilePhone(register.studentPhoneNumber, 'he-IL'))}
+              onBlur={() => {
+                setIsValid((prevData) => ({
+                  ...prevData,
+                  studentPhoneNumber: isMobilePhone(register.studentPhoneNumber, 'he-IL')
+                }));
+              }}
+              helperText={
+                !isValid.studentPhoneNumber || (isForward && !isMobilePhone(register.studentPhoneNumber, 'he-IL'))
+                  ? 'יש להזין מספר טלפון תקין'
+                  : ''
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -112,8 +173,18 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
               value={register.studentId}
               onChange={handleChange}
               required
-              error={!isIdentityCard(register.studentId || '', 'he-IL')} // FIXME:
-              helperText={!isIdentityCard(register.studentId || '', 'he-IL') ? 'יש להזין ת.ז תקין' : ''}
+              error={!isValid.studentId || (isForward && !isIdentityCard(register.studentId || '', 'he-IL'))}
+              onBlur={() => {
+                setIsValid((prevData) => ({
+                  ...prevData,
+                  studentId: isIdentityCard(register.studentId || '', 'he-IL')
+                }));
+              }}
+              helperText={
+                !isValid.studentId || (isForward && !isIdentityCard(register.studentId || '', 'he-IL'))
+                  ? 'יש להזין ת.ז תקין'
+                  : ''
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -132,8 +203,15 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
               value={register.parentEmail}
               onChange={handleChange}
               required
-              error={!isEmail(register.parentEmail)}
-              helperText={!isEmail(register.parentEmail) ? 'יש להזין כתובת דואר אלקטרוני Gmail תקינה' : ''}
+              error={!isValid.parentEmail || (isForward && !isEmail(register.parentEmail))}
+              onBlur={() => {
+                setIsValid((prevData) => ({ ...prevData, parentEmail: isEmail(register.parentEmail) }));
+              }}
+              helperText={
+                !isValid.parentEmail || (isForward && !isEmail(register.parentEmail))
+                  ? 'יש להזין כתובת דואר אלקטרוני Gmail תקינה'
+                  : ''
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -152,8 +230,15 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
               value={register.studentEmail}
               onChange={handleChange}
               required
-              error={!isEmail(register.studentEmail)}
-              helperText={!isEmail(register.studentEmail) ? 'יש להזין כתובת דואר אלקטרוני Gmail תקינה' : ''}
+              error={!isValid.studentEmail || (isForward && !isEmail(register.studentEmail))}
+              onBlur={() => {
+                setIsValid((prevData) => ({ ...prevData, studentEmail: isEmail(register.studentEmail) }));
+              }}
+              helperText={
+                !isValid.studentEmail || (isForward && !isEmail(register.studentEmail))
+                  ? 'יש להזין כתובת דואר אלקטרוני תקינה'
+                  : ''
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -172,7 +257,11 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register }
               value={register.studentAddress}
               onChange={handleChange}
               required
-              error={register.studentAddress === ''}
+              error={!isValid.studentAddress || (isForward && register.studentAddress === '')}
+              onBlur={() => {
+                setIsValid((prevData) => ({ ...prevData, studentAddress: register.studentAddress !== '' }));
+              }}
+              helperText={!isValid.studentAddress || (isForward && register.studentAddress === '') ? 'יש למלה' : ''}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">

@@ -6,6 +6,11 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import './Page1.css';
 import { Box, Container, Link, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
 
+/**
+ * Renders the introduction component.
+ *
+ * @returns The JSX element representing the introduction component.
+ */
 const IntroComponent = () => {
   return (
     <>

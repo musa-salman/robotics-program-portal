@@ -1,3 +1,9 @@
+/**
+ * Represents a student.
+ *
+ * @remarks
+ * This interface defines the properties of a student object.
+ */
 export interface Student {
   id: string;
   studentId: string;
@@ -8,4 +14,5 @@ export interface Student {
   studentEmail: string;
   parentEmail: string;
   studentAddress: string;
+  studentSchool: string;
 }

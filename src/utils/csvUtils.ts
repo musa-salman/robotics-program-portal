@@ -1,3 +1,11 @@
+/**
+ * Handles the import of a CSV file and processes the data.
+ *
+ * @template T - The type of data to be processed.
+ * @param processData - A function that processes the data.
+ * @param headers - An array of strings representing the headers of the CSV file.
+ * @returns A promise that resolves when the CSV file is imported and the data is processed.
+ */
 const handleImportCSV = async <T>(processData: (data: T[]) => void, headers: string[]): Promise<void> => {
   const input = document.createElement('input');
   input.type = 'file';

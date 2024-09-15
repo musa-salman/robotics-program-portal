@@ -1,0 +1,32 @@
+.testing-layout {
+  padding: 20px;
+}
+
+.links-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  direction: ltr;
+  padding: 0;
+  margin: 0;
+}
+
+.link-item {
+  margin: 5px;
+  width: calc(20% - 10px); /* Adjust the width for 5 items per row, accounting for margins */
+  box-sizing: border-box;
+}
+
+.link-item a {
+  display: block;
+  padding: 10px;
+  background-color: #f0f0f0;
+  text-align: center;
+  text-decoration: none;
+  color: #000;
+  border-radius: 5px;
+}
+
+.link-item a:hover {
+  background-color: #ddd;
+}

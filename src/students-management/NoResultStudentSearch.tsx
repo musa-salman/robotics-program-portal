@@ -1,6 +1,9 @@
 import { Box, Typography } from '@mui/material';
 import { SearchOff } from '@mui/icons-material';
 
+/**
+ * Component that renders a message when no search results are found for students.
+ */
 const NoResultsStudentSearch = () => {
   return (
     <Box

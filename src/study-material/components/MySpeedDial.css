@@ -1,0 +1,24 @@
+.speedDial {
+  background-color: transparent;
+  display: flex;
+}
+
+.speedDial .MuiSpeedDial-fab {
+  margin: auto;
+  background-color: transparent;
+  box-shadow: none;
+  width: fit-content;
+  height: fit-content;
+}
+
+.speedDial .MuiSpeedDial-fab:hover {
+  border-radius: 50%;
+}
+
+.speedDial .MuiFab-sizeSmall {
+  size: small;
+}
+
+.speedDial .delete-action:hover {
+  /* Add specific hover styles if needed */
+}
