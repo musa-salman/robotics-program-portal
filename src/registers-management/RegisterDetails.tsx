@@ -22,9 +22,9 @@ import { Student } from '../students-management/Student';
 import { hasOwn } from 'groq-sdk/core.mjs';
 import { useEffect, useState } from 'react';
 import { StudentDocument } from '../docs-handling/service/StudentDocument';
-import { useDocumentInfoService } from '../docs-handling/service/DocumentInfoContext';
 import { DocumentInfo } from '../docs-handling/service/DocumentInfo';
 import { Delete, Download } from '@mui/icons-material';
+import { useDocumentInfoService } from '../docs-handling/service/useDocumentInfoService';
 
 /**
  * Represents the props for the Details component.
