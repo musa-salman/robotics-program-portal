@@ -13,6 +13,14 @@ export interface IWrite<T> {
   create(item: T): Promise<DocumentReference<T, DocumentData>>;
 
   /**
+   * Creates a new item in the data source with a specific ID.
+   * @param id - The ID of the item to be created.
+   * @param item - The item to be created.
+   * @returns A promise that resolves when the creation is complete.
+   */
+  createWithId(id: string, item: T): Promise<void>;
+
+  /**
    * Creates multiple items in the data source.
    * @param items - The items to be created.
    * @returns A promise that resolves to the references of the created items.

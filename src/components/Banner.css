@@ -1,8 +1,36 @@
 .banner {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
-  background-image: url('/robor.webp');
-  background-size: cover;
+  padding-top: 2px;
+  padding-left: 100px;
+  padding-right: 100px;
+  overflow: hidden;
+  /* border: 5px solid; */
+}
+
+.full-width {
+  width: 100%;
+  border: 5px solid;
+}
+
+.event {
+  display: flex;
+  border: 2px solid;
+  /* margin: 2%; */
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  justify-content: center;
+  padding: 1%;
+  gap: 20px;
+  width: 100%;
+  margin-top: 1%;
+}
+
+.button-group .banner-button {
+  margin-right: 5%;
 }

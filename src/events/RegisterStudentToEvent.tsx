@@ -1,28 +1,52 @@
 import { useContext, useEffect, useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
-import { eventManagerContext } from './repository/EventManagerContext';
-import { AuthContext } from '../authentication/AuthContext';
+import { useEventService } from './repository/EventContext';
+import { AuthContext } from '../authentication/services/AuthContext';
 import { StudentContext } from '../students-management/StudentContext';
 import { Student } from '../students-management/Student';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import DialogContent from '@mui/material/DialogContent';
+import FormGroup from '@mui/material/FormGroup';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import FeedbackSnackbar, { FeedbackMessage } from '../components/snackbar/SnackBar';
 
+/**
+ * Props for registering a student to an event.
+ */
 interface RegisterStudentToEventProps {
   eventId: string;
+  eventDate: Date;
 }
 
-const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId }) => {
+/**
+ * Registers a student to an event.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.eventId - The ID of the event.
+ * @param {Date} props.eventDate - The date of the event.
+ * @returns {JSX.Element} The RegisterStudentToEvent component.
+ */
+const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId, eventDate }) => {
   const [isRegistered, setRegister] = useState<boolean | null>(null);
   const [student, setStudent] = useState<Student | null>(null);
   const [showModalRegister, setShowModalRegister] = useState(false);
+
+  const [message, setMessage] = useState<FeedbackMessage | null>(null);
+  const [buildNumber, setBuildNumber] = useState<number>(0);
+
   const handleCloseRegister = () => setShowModalRegister(false);
   const handleShowRegister = () => setShowModalRegister(true);
 
-  const eventManager = useContext(eventManagerContext);
+  const eventService = useEventService();
   const studentRepository = useContext(StudentContext);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const checkIfRegistered = () => {
-      eventManager.isStudentRegistered(user?.id, eventId).then((isRegistered) => {
+      eventService.isStudentRegistered(user?.id, eventId).then((isRegistered) => {
         setRegister(isRegistered);
       });
     };
@@ -35,26 +59,44 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
     };
 
     if (user && student === null) fetchStudent();
-    if (user && isRegistered === null) checkIfRegistered();
+    if (student && isRegistered === null) checkIfRegistered();
   }, [isRegistered, student]);
+
+  const showMessage = (message: FeedbackMessage) => {
+    setMessage(message);
+    setBuildNumber(buildNumber + 1);
+  };
 
   function handleRegister() {
     handleShowRegister();
   }
 
-  const handleSaveRegister = async () => {
+  const handleSaveRegister = () => {
     setShowModalRegister(false);
     if (!student) return;
-    eventManager.registerStudentForEvent(
-      {
-        id: student.id,
-        name: student.firstName + ' ' + student.lastName,
-        email: student.studentEmail,
-        phone: student.studentPhoneNumber
-      } as BriefStudent,
-      eventId
-    );
-    setRegister(true);
+    eventService
+      .registerStudentForEvent(
+        {
+          id: student.id,
+          name: student.firstName + ' ' + student.lastName,
+          email: student.studentEmail,
+          phone: student.studentPhoneNumber
+        } as BriefStudent,
+        eventId
+      )
+      .then(() => {
+        setRegister(true);
+        showMessage({
+          message: 'הרשמתך לאירוע בוצעה בהצלחה',
+          variant: 'success'
+        });
+      })
+      .catch(() => {
+        showMessage({
+          message: 'הרשמתך לאירוע לא בוצעה',
+          variant: 'error'
+        });
+      });
   };
 
   function RegisterWindow() {
@@ -64,40 +106,40 @@ const RegisterStudentToEvent: React.FC<RegisterStudentToEventProps> = ({ eventId
     };
 
     return (
-      <>
-        <Modal show={showModalRegister} onHide={handleCloseRegister} style={{ display: 'center' }}>
-          <Form onSubmit={handleSubmitRegister}>
-            <Modal.Header closeButton>
-              <Modal.Title>האם אתה בטוח שאתה רוצה להירשם לאירוע</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <Form.Check required aria-label="option 1" feedback="You must agree before submitting." />
-                אני מאשר שאני רוצה להירשם לאירוע
-              </div>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseRegister}>
-                  סגור
-                </Button>
-                <Button variant="primary" type="submit">
-                  מאשר
-                </Button>
-              </Modal.Footer>
-            </Modal.Body>
-          </Form>
-        </Modal>
-      </>
+      <Dialog open={showModalRegister} onClose={handleCloseRegister} aria-labelledby="form-dialog-title">
+        <form onSubmit={handleSubmitRegister}>
+          <DialogTitle id="form-dialog-title">האם אתה בטוח שאתה רוצה להירשם לאירוע</DialogTitle>
+          <DialogContent>
+            <FormGroup style={{ display: 'flex', gap: '10px' }}>
+              <FormControlLabel control={<></>} label="אני מאשר שאני רוצה להירשם לאירוע" />
+            </FormGroup>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseRegister} color="secondary">
+              סגור
+            </Button>
+            <Button type="submit" color="primary">
+              מאשר
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     );
   }
 
   return (
     <>
+      {message && <FeedbackSnackbar key={message.message} feedBackMessage={message} />}
       {isRegistered ? (
-        <Button variant="secondary" disabled>
+        <Button variant="contained" color="secondary" disabled>
           רשום
         </Button>
+      ) : new Date() > new Date(eventDate) ? (
+        <Button variant="contained" color="secondary" disabled>
+          התאריך עבר
+        </Button>
       ) : (
-        <Button variant="primary" onClick={handleRegister}>
+        <Button variant="contained" color="primary" onClick={handleRegister}>
           הירשם
         </Button>
       )}

@@ -1,14 +1,31 @@
 .button-icon {
   margin: 10px;
   border-radius: 50%;
-  height: 150px;
-  width: 150px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.button-icon .MuiButton-startIcon {
-  margin: 0;
+.primary-button-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.primary-btn {
+  border-radius: 50%;
+  height: 85px;
+  width: 290px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.std-btn {
+  font-size: x-large;
 }

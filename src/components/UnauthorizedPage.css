@@ -1,0 +1,23 @@
+.unauthorized-container {
+  text-align: center;
+  margin-top: 5%;
+}
+
+.robotIcon {
+  font-size: 100px;
+  color: grey;
+}
+
+.button {
+  margin-top: 20px;
+}
+
+.imageContainer {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 20px;
+}
+
+.image {
+  width: 100%;
+}

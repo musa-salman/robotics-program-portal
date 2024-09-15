@@ -1,34 +1,49 @@
 .events-container-default-style {
-  padding: 10px;
-  border-radius: 10px;
+  display: flex;
+  margin: auto;
+  text-align: right;
+  flex-wrap: wrap;
+}
+
+.events-all {
+  display: flex;
+  align-items: center;
+  margin-right: 10%;
+  margin-left: 10%;
+}
+
+.events-container-show-all-events-style {
   display: flex;
   flex-wrap: wrap;
-  align-content: space-between;
-  justify-content: right;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.events-header-button {
+  display: flex;
   margin: 10px;
   gap: 10px;
 }
 
-.events-container-show-all-events-style {
+.events-show {
   padding: 10px;
   border-radius: 10px;
   display: flex;
   flex-wrap: wrap;
-  align-content: space-between;
-  justify-content: right;
+  justify-content: space-around;
   margin: 10px;
-  gap: 10px;
+  gap: 20px;
+  margin: auto;
 }
 
 /* Styling for the shift buttons*/
 .shift-buttons {
   border: none;
-  color: white;
-  background-color: #606365;
-  cursor: pointer;
   transition: background-color 0.3s ease;
-  height: 50px;
-  width: 50px;
+  min-height: 50px;
+  min-width: 50px;
+  max-height: 50px;
+  max-width: 50px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -37,15 +52,75 @@
 }
 
 .shift-buttons:hover {
-  background-color: #00b336;
+  background-color: #3c0e0e;
 }
 
-.show-all {
-  margin-right: 5%;
+.event-card {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 }
 
-.events-header-button {
-  display: flex;
-  margin-top: 10px;
-  margin-right: 10px;
+.event-card.visible {
+  opacity: 1;
+  animation: fade-in 0.5s ease-in-out forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.event-card.fade-out {
+  animation: fade-out 0.5s ease-in-out forwards;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.zoom-in {
+  animation: zoomIn 0.5s forwards;
+}
+
+.zoom-out {
+  animation: zoomOut 0.5s forwards;
 }

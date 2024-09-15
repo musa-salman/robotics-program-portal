@@ -1,5 +1,12 @@
+/**
+ * Represents an event.
+ *
+ * @remarks
+ * This interface defines the structure of an event object.
+ */
 export interface IEvent {
-  date: Date;
+  startDate: Date;
+  endDate: Date;
   title: string;
   details: string;
   imageURL: string;

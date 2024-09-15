@@ -1,0 +1,58 @@
+.study-material-container {
+  height: 100%;
+  background-size: cover;
+  background-attachment: fixed;
+  background-blend-mode: overlay;
+  background-position: inherit;
+  background-repeat: no-repeat;
+}
+
+.Card {
+  min-width: 28rem;
+  max-width: 28rem;
+  margin: 0px;
+}
+
+.bu-more {
+  border: none;
+  border-radius: 20px;
+  padding: 4px;
+  margin: 0px;
+}
+
+.Card .title-card {
+  max-height: 6vh;
+  min-height: 6%;
+  font-size: 1.5rem;
+  width: 100%;
+  margin-bottom: 5%;
+  padding: 0px;
+}
+
+.Card .description {
+  max-height: 20vh;
+  min-height: 2vh;
+  font-size: 20px;
+  text-align: right;
+}
+
+.Card .date {
+  min-height: 5vh;
+  font-size: 20px;
+  text-align: right;
+  margin: 10px;
+}
+
+.Card .dow-button:hover {
+  top: 0;
+}
+
+.Card .dow-icon {
+  margin-right: 50px;
+}
+
+.Card .whenedite {
+  padding: 5px;
+  border: 2px dashed;
+  margin-bottom: 2px;
+}

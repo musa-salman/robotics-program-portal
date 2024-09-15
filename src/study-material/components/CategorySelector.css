@@ -1,0 +1,48 @@
+.move-list-container {
+  width: 30rem;
+  height: fit-content;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.move-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.move-list-item-button {
+  margin: 0 8px;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: 0.3s ease;
+}
+
+.move-list-item-text {
+  text-align: center;
+}
+
+.move-list-container .clo-btn {
+  display: flex;
+  justify-items: right;
+  align-self: start;
+  top: 1;
+  position: absolute;
+}
+
+.close-icn {
+  /* color: rgba(183, 46, 46, 0.622); */
+  width: 20px;
+}

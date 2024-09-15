@@ -1,0 +1,15 @@
+.category-box {
+  /* width: 20rem; */
+  display: block;
+  margin: 20px;
+}
+
+.category-box .tafret {
+  margin: 6px;
+  padding: 6px;
+  border-bottom: 3px solid whitesmoke;
+}
+
+.category-box .divider {
+  margin-bottom: 10px;
+}

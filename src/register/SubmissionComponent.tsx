@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   TextField,
@@ -13,12 +13,33 @@ import {
 
 import { Register } from './Register';
 
+/**
+ * Props for the SubmissionForm component.
+ */
 interface SubmissionFormProps {
   setRegister: React.Dispatch<React.SetStateAction<Register>>;
   register: Register;
 }
 
+/**
+ * SubmissionForm component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.setRegister - The function to update the register state.
+ * @param {Object} props.register - The register state object.
+ * @returns {JSX.Element} The rendered SubmissionForm component.
+ */
 const SubmissionForm: React.FC<SubmissionFormProps> = ({ setRegister, register }) => {
+  const [isValid, setIsValid] = useState({
+    hearAboutUs: true
+  });
+
+  /**
+   * Handles the change event of an input element.
+   *
+   * @param event - The change event object.
+   */
   const handleChange = (event: any) => {
     const { name, value } = event.target;
     setRegister((prevData) => ({ ...prevData, [name]: value }));
@@ -29,7 +50,11 @@ const SubmissionForm: React.FC<SubmissionFormProps> = ({ setRegister, register }
       <Box
         component="form"
         sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: '600px', margin: 'auto', mt: 5 }}>
-        <FormControl error={register.hearAboutUs === ''}>
+        <FormControl
+          error={!isValid.hearAboutUs}
+          onBlur={() => {
+            setIsValid((prevData) => ({ ...prevData, hearAboutUs: register.hearAboutUs === '' }));
+          }}>
           <FormLabel sx={{ fontSize: '30px' }}>איך שמעתם עלינו?</FormLabel>
           <RadioGroup
             aria-labelledby="demo-controlled-radio-buttons-group"
@@ -42,7 +67,7 @@ const SubmissionForm: React.FC<SubmissionFormProps> = ({ setRegister, register }
             <FormControlLabel value="3" control={<Radio />} label="חיפוש עצמי באינטרנט" />
             <FormControlLabel value="4" control={<Radio />} label="אחרת" />
           </RadioGroup>
-          <FormHelperText>{register.hearAboutUs === '' ? 'נה לבחור' : ''}</FormHelperText>
+          <FormHelperText>{!isValid.hearAboutUs ? 'נה לבחור' : ''}</FormHelperText>
         </FormControl>
 
         <FormControl>
