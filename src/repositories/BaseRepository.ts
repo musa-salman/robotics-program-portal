@@ -55,7 +55,6 @@ export abstract class BaseRepository<T> implements IRepositoryBase<T> {
   }
 
   async createMany(items: PartialWithFieldValue<T>[]): Promise<DocumentReference<T, DocumentData>[]> {
-    // TODO: test this method, if it syncs all the items correctly, with the correct IDs.
     return Promise.all(
       items.map((item) => {
         return this.create(item);

@@ -6,9 +6,7 @@ import { IGPTService } from './IGPTService';
  * Context object for the GPTService.
  * @typeParam IGPTService - The type of the GPTService.
  */
-export const GPTServiceContext = createContext<IGPTService>(
-  new GPTService(import.meta.env.VITE_REACT_APP_OPENAI_API_KEY)
-);
+export const GPTServiceContext = createContext<IGPTService>(new GPTService());
 
 /**
  * Provides the GPT service to its children components.

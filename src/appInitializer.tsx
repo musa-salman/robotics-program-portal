@@ -29,7 +29,7 @@ import { IStorageService } from './storage-service/IStorageService';
 import { StorageService } from './storage-service/StorageService';
 import { StudentDocumentRepositories } from './docs-handling/service/DocumentStudentRepositories';
 import { DocumentRepository } from './docs-handling/service/DocumentRepository';
-import SettingProvider from './Settinges/SettingContext';
+import { PreferenceProvider } from './settings/PreferenceContext';
 
 interface IProps {
   theme: Theme;
@@ -73,8 +73,8 @@ function bootstrap({ theme, cacheRtl }: IProps) {
           <BrowserRouter>
             <DocumentProvider documentService={documentService}>
               <UserProvider userService={userService}>
-                <GPTServiceProvider>
-                  <SettingProvider>
+                <PreferenceProvider>
+                  <GPTServiceProvider>
                     <MaterialProvider materialService={materialService}>
                       <EventProvider eventService={eventService}>
                         <StorageProvider>
@@ -87,8 +87,8 @@ function bootstrap({ theme, cacheRtl }: IProps) {
                         </StorageProvider>
                       </EventProvider>
                     </MaterialProvider>
-                  </SettingProvider>
-                </GPTServiceProvider>
+                  </GPTServiceProvider>
+                </PreferenceProvider>
               </UserProvider>
             </DocumentProvider>
           </BrowserRouter>

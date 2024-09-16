@@ -1,3 +1,5 @@
+import { PreferenceRepository } from '../settings/PreferenceRepository';
+import { Setting } from '../settings/Setting';
 import { IGPTService } from './IGPTService';
 import Groq from 'groq-sdk';
 
@@ -5,26 +7,31 @@ import Groq from 'groq-sdk';
  * GPTService class that provides methods for generating and manipulating text using GPT models.
  */
 export class GPTService implements IGPTService {
-  readonly groq: Groq;
+  groq: Groq | undefined;
 
-  constructor(apiKey: string) {
-    this.groq = new Groq({ apiKey: apiKey, dangerouslyAllowBrowser: true });
+  async initialize(): Promise<void> {
+    const settings = new PreferenceRepository();
+    const apiKey = await settings.findOne(Setting.GPT_API_KEY.toString());
+    this.groq = new Groq({ apiKey: apiKey?.value, dangerouslyAllowBrowser: true });
   }
 
   async generateText(prompt: string): Promise<string[]> {
-    return this.groq.chat.completions
-      .create({
-        messages: [
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        model: 'llama3-70b-8192'
-      })
-      .then((response) => {
-        return response.choices.map((choice) => choice.message.content || '');
-      });
+    console.log('Generating text with prompt:', prompt);
+    if (!this.groq) {
+      await this.initialize();
+    }
+    console.log('Groq:', this.groq);
+    return this.groq!.chat.completions.create({
+      messages: [
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      model: 'llama3-70b-8192'
+    }).then((response) => {
+      return response.choices.map((choice) => choice.message.content || '');
+    });
   }
 
   async simplify(text: string): Promise<string> {
