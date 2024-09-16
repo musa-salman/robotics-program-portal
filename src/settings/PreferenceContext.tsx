@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 import { PreferenceRepository } from './PreferenceRepository';
 import { CachingRepository } from '../repositories/caching/CachingRepository';
 
@@ -10,12 +10,4 @@ function PreferenceProvider({ children }: { children: React.ReactNode }) {
   return <PreferenceContext.Provider value={preferenceRepository}>{children}</PreferenceContext.Provider>;
 }
 
-function usePreferenceRepository() {
-  const preferenceRepository = useContext(PreferenceContext);
-  if (preferenceRepository === undefined) {
-    throw new Error('usePreferenceRepository must be used within a PreferenceProvider');
-  }
-  return preferenceRepository;
-}
-
-export { PreferenceContext, PreferenceProvider, usePreferenceRepository };
+export { PreferenceContext, PreferenceProvider };

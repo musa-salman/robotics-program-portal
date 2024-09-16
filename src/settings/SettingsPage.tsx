@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Grid, CircularProgress } from '@mui/material';
 import Preference from './Preference';
-import { usePreferenceRepository } from './PreferenceContext';
 import PreferenceCard from './PreferenceCard';
+import { usePreferenceRepository } from './usePreferenceRepository';
 
 const SettingsPage: React.FC = () => {
   const [preferences, setPreferences] = useState<Preference[] | null>(null);

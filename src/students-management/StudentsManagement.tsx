@@ -68,7 +68,7 @@ const StudentsManagement = () => {
             <GridActionsCellItem
               icon={<EditIcon color="action" />}
               label="ערוך"
-              onClick={(_) => {
+              onClick={() => {
                 setInitialItem(rows!.find((student) => student.id === id) || null);
                 setShowItemForm(true);
               }}
@@ -76,7 +76,7 @@ const StudentsManagement = () => {
             <GridActionsCellItem
               icon={<DeleteIcon color="action" />}
               label="מחק"
-              onClick={(_) => {
+              onClick={() => {
                 onRowDeleted(rows!.find((student) => student.id === id)!);
               }}
             />
@@ -95,6 +95,7 @@ const StudentsManagement = () => {
   };
 
   const handleRowSelected = useCallback((student: GridRowModel | null) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { isNew, ...studentData } = student as any;
     setSelectedStudent(studentData as Student);
   }, []);
