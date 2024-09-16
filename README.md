@@ -67,7 +67,6 @@ The platform supports two main user roles:
    VITE_REACT_APP_APP_ID=your-firebase-app-id
    VITE_REACT_APP_MEASUREMENT_ID=your-firebase-measurement-id
    VITE_REACT_APP_PASSWORD_RESET_REDIRECT=your-password-reset-redirect-url
-   VITE_REACT_APP_OPENAI_API_KEY=your-openai-api-key
    ```
 
 > **Note**:
