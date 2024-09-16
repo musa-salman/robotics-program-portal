@@ -93,10 +93,13 @@ export class EventService implements IEventService, IEventAggregator {
     const batch = writeBatch(db);
 
     batch.delete(eventRef);
-    batch.delete(doc(this.eventRegistrationRepositories.getEventRegistrationRepository(eventId)._collection));
-    registeredStudents.forEach((student) => {
-      batch.delete(doc(this.getStudentEventRepository(student.id)._collection, eventId));
-    });
+
+    if (registeredStudents.length > 0) {
+      batch.delete(doc(this.eventRegistrationRepositories.getEventRegistrationRepository(eventId)._collection));
+      registeredStudents.forEach((student) => {
+        batch.delete(doc(this.getStudentEventRepository(student.id)._collection, eventId));
+      });
+    }
 
     return batch.commit();
   }
