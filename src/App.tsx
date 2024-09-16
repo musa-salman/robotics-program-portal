@@ -20,10 +20,17 @@ import PageContainer from './components/PageContainer';
 import RejectedAndDeletedTable from './users-management/RejectedAndDeletedUsers';
 import InsightPage from './insights/InsightPage';
 import Management from './students-management/Management';
+import SettingsPage from './settings/SettingsPage';
 
 function App() {
   const routeConfigurations = {
     authorizedRoutes: [
+      {
+        path: '/settings',
+        element: <SettingsPage />,
+        allowedRoles: [Role.Owner],
+        title: 'הגדרות'
+      },
       {
         path: '/study-materials',
         element: <StudyMaterialContainer />,
