@@ -111,7 +111,10 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
   async function handleAdd() {
     handleShowAddEvent();
     if (event.startDate > event.endDate) {
-      alert('תאריך התחלה צריך להיות לפני תאריך סיום');
+      showMessage({
+        message: 'תאריך התחלה צריך להיות לפני תאריך סיום',
+        variant: 'error'
+      });
       return;
     }
     if (
