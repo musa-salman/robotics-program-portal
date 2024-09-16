@@ -10,6 +10,12 @@ service cloud.firestore {
         return userDoc != null && roles.hasAny(userDoc.data.roles);
       }
       
+      match /preferences/{preferenceId} {
+        allow list: if request.auth != null && isHasRole([1]);
+        allow read: if request.auth != null && isHasRole([1]);
+        allow update: if request.auth != null && isHasRole([1]);
+      }
+
       match /users/{userId} {
         allow list: if request.auth != null && isHasRole([1, 2]);
         allow read: if request.auth != null && (request.auth.uid == userId || isHasRole([1, 2]));
