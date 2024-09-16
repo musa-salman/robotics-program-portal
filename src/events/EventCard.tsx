@@ -117,7 +117,6 @@ const EventCard: React.FC<EventProps> = ({
         <CardContent>
           <Typography
             variant="h6"
-            color="text.secondary"
             style={{
               minHeight: '100px',
               maxHeight: '100px',
