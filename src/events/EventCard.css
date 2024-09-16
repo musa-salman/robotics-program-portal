@@ -5,7 +5,8 @@
 
 /* CSS for EventCard.tsx */
 .cardIconButton:hover {
-  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 115, 0, 0.23);
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 .cardIconButton {
