@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 import { IUserService } from './UserService';
 
 /**
@@ -28,17 +28,5 @@ function UserProvider({ children, userService }: IUserProviderProps): JSX.Elemen
   return <UserContext.Provider value={userService}>{children}</UserContext.Provider>;
 }
 
-/**
- * Custom hook that provides the user service from the UserContext.
- * @returns The user service from the UserContext.
- * @throws {Error} If used outside of a UserProvider.
- */
-export function useUserService(): IUserService {
-  const userService = useContext(UserContext);
-  if (!userService) {
-    throw new Error('useUserService must be used within a UserProvider');
-  }
-  return userService;
-}
-
 export default UserProvider;
+export { UserContext };

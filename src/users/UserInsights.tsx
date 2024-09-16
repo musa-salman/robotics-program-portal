@@ -1,9 +1,9 @@
 import { PieChart } from '@mui/x-charts';
 import Role, { roleNames } from '../authentication/components/Roles';
 import { InsightData } from '../insights/InsightPage';
-import { useUserService } from './UserContext';
 import { useEffect, useState } from 'react';
 import { User } from './User';
+import { useUserService } from './useUserService';
 
 const userInsights: InsightData = {
   title: 'סטטיסטיקות משתמשים',
@@ -32,13 +32,9 @@ const userInsights: InsightData = {
                   if (role === Role.Student) numStudent++;
                 });
               });
-              console.log('ON', numOwner);
-              console.log('A', numAdmin);
-              console.log('S', numStudent);
               setNumRoleOwner(numOwner);
               setNumRoleAdmin(numAdmin);
               setNumRoleStudent(numStudent);
-              console.log('users', data);
             });
           }
         }, [users]);
