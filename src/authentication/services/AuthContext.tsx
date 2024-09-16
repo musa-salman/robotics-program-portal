@@ -4,8 +4,8 @@ import { browserLocalPersistence, onAuthStateChanged, setPersistence } from 'fir
 import { auth } from '../../firebase';
 import { AuthService } from './AuthService';
 import { User } from '../../users/User';
-import { useUserService } from '../../users/UserContext';
 import Role from '../components/Roles';
+import { useUserService } from '../../users/useUserService';
 
 setPersistence(auth, browserLocalPersistence);
 

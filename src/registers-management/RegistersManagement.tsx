@@ -131,7 +131,8 @@ const RegisterManagement = () => {
   };
 
   const handleRowSelected = useCallback((row: GridRowModel | null) => {
-    setSelectedRegister(row as Register);
+    const { isNew, ...register } = row as Register & { isNew: boolean };
+    setSelectedRegister(register as Register);
   }, []);
 
   return (

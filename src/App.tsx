@@ -17,7 +17,6 @@ import RejectionPage from './authentication/components/rejection-page/RejectionP
 import UsersManagement from './users-management/UsersManagement';
 import DocumentPage from './docs-handling/DocumentPage';
 import PageContainer from './components/PageContainer';
-import RejectedAndDeletedTable from './users-management/RejectedAndDeletedUsers';
 import InsightPage from './insights/InsightPage';
 import Management from './students-management/Management';
 import SettingsPage from './settings/SettingsPage';
@@ -62,16 +61,6 @@ function App() {
         element: <Management />,
         allowedRoles: [Role.Admin, Role.Owner],
         title: 'ניהול משתמשים',
-        roleToComponentMap: {
-          [Role.PreEnrollment]: <RegisterComponent />,
-          [Role.Pending]: <WaitApprovalPage />
-        }
-      },
-      {
-        path: 'rejected-and-deleted-users',
-        element: <RejectedAndDeletedTable />,
-        allowedRoles: [Role.Admin, Role.Owner],
-        title: 'משתמשים נדחים ומחוקים',
         roleToComponentMap: {
           [Role.PreEnrollment]: <RegisterComponent />,
           [Role.Pending]: <WaitApprovalPage />

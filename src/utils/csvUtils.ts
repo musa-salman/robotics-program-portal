@@ -25,6 +25,7 @@ const handleImportCSV = async <T>(processData: (data: T[]) => void, headers: str
       const data: T[] = rows.slice(1).map((row) => {
         const columns = row.split(',');
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const item: any = {};
         headers.forEach((header, index) => {
           item[header] = columns[index];

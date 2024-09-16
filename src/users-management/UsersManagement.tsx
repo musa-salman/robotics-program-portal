@@ -2,13 +2,13 @@ import { GridActionsCellItem, GridColDef, GridRowModel } from '@mui/x-data-grid'
 import CollectionTable, { MessageFormat } from '../collection-management/CollectionTable';
 import { Chip } from '@mui/material';
 import { Delete } from '@mui/icons-material';
-import { useUserService } from '../users/UserContext';
 import { User } from '../users/User';
 import Role, { roleColorsLevel, roleNames, SKIP_TO_ADMIN_ROLES } from '../authentication/components/Roles';
 import { useState } from 'react';
 import RoleSelector from './RoleSelector';
 import { FeedbackMessage } from '../components/snackbar/SnackBar';
 import RolesDialog from './RolesDialog';
+import { useUserService } from '../users/useUserService';
 
 /**
  * Component for managing users.
@@ -157,7 +157,7 @@ const UsersManagement = () => {
             <GridActionsCellItem
               icon={<Delete />}
               label="מחק"
-              onClick={(_) => {
+              onClick={() => {
                 onRowDeleted(rows!.find((user) => user.id === id)!);
               }}
             />

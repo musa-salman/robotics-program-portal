@@ -97,7 +97,7 @@ const EditModal: React.FC<EditModalProps> = ({
       getCategory();
       setLoading(false);
     }
-  }, [categories]);
+  }, [categories, loading]);
 
   const ITEM_HEIGHT = 40;
   const ITEM_PADDING_TOP = 8;

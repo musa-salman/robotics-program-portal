@@ -24,6 +24,7 @@ const RoleSelector: React.FC<RoleSelectorProps> = ({ onSelect, onCancel }) => {
     onSelect(role);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (event: any) => {
     event.preventDefault();
     event.stopPropagation();

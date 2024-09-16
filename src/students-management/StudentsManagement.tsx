@@ -6,10 +6,10 @@ import { Student } from './Student';
 import StudentForm from './StudentForm';
 import './StudentsManagement.css';
 import { Grid, Typography } from '@mui/material';
-import { useUserService } from '../users/UserContext';
 import StudentDetails from '../registers-management/RegisterDetails';
 import { useCallback, useState } from 'react';
 import { FeedbackMessage } from '../components/snackbar/SnackBar';
+import { useUserService } from '../users/useUserService';
 
 /**
  * Component for managing students.
