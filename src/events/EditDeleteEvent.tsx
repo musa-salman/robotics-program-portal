@@ -45,6 +45,7 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
   const handleCloseDelete = () => setShowModalDelete(false);
 
   const eventRepository = useEventService().eventRepository;
+  const eventService = useEventService();
   const storageService = useContext(StorageServiceContext);
 
   const MAX_CHARS_Details = 100;
@@ -111,7 +112,10 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
     }
 
     if (event.startDate > event.endDate) {
-      alert('תאריך התחלה צריך להיות לפני תאריך סיום');
+      showMessage({
+        message: 'תאריך התחלה צריך להיות לפני תאריך סיום',
+        variant: 'error'
+      });
       return;
     }
 
@@ -158,31 +162,37 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
     }
   };
 
-  //FIXME: handleSaveDelete FeedbackMessage is not working well on success
   const handleSaveDelete = () => {
     setShowModalDelete(false);
-    eventRepository
-      .delete(id)
+    eventService
+      .deleteEvent(id)
       .then(async () => {
         const filePath = '/event-img/' + id;
         // Delete the file
-        await storageService.exists(filePath).then((exists) => {
-          if (!exists) {
-            return;
-          }
-          storageService.delete(filePath);
-        });
+        await storageService
+          .exists(filePath)
+          .then((exists) => {
+            if (!exists) return;
+            storageService.delete(filePath);
+          })
+          .catch(() => {
+            showMessage({
+              message: 'התרחשה שגיעה בעת מחיקת האירוע. אנא נסה שנית.',
+              variant: 'error'
+            });
+          });
         deleteEvent(id);
         showMessage({
           message: 'אירוע נמחק בהצלחה!',
           variant: 'success'
         });
       })
-      .catch(() => {
+      .catch((reason) => {
         showMessage({
           message: 'התרחשה שגיעה בעת מחיקת האירוע. אנא נסה שנית.',
           variant: 'error'
         });
+        console.error(reason);
       });
   };
 
