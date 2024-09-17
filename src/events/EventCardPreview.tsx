@@ -41,7 +41,17 @@ const EventCardPreview: React.FC<EventProps> = ({ startDate, endDate, title, det
           </IconButton>
         }
         title={
-          <Typography variant="h4" component="div" style={{ minHeight: '32px', color: theme.palette.primary.main }}>
+          <Typography
+            variant="h4"
+            component="div"
+            style={{
+              minHeight: '32px',
+              maxWidth: '320px',
+              color: theme.palette.primary.main,
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap'
+            }}>
             {title}
           </Typography>
         }
@@ -57,12 +67,16 @@ const EventCardPreview: React.FC<EventProps> = ({ startDate, endDate, title, det
           variant="h6"
           color="text.secondary"
           style={{
-            minHeight: '100px',
-            maxHeight: '100px',
-            wordWrap: 'break-word' // Ensures long words will be broken and wrapped to the next line
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 3,
+            overflow: 'hidden',
+            maxHeight: '4.5em',
+            minHeight: '4.5em'
           }}>
           {details}
         </Typography>
+        <Button size="small">קרא עוד</Button>
       </CardContent>
       <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button variant="contained" color="primary">

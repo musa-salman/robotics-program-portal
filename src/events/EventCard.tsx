@@ -12,7 +12,7 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { CircularProgress } from '@mui/material';
+import { Box, Button, CircularProgress, Modal } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 /**
@@ -66,6 +66,11 @@ const EventCard: React.FC<EventProps> = ({
   animating
 }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
   const theme = useTheme();
 
   return (
@@ -93,7 +98,17 @@ const EventCard: React.FC<EventProps> = ({
             </IconButton>
           }
           title={
-            <Typography variant="h4" component="div" style={{ minHeight: '32px', color: theme.palette.primary.main }}>
+            <Typography
+              variant="h4"
+              component="div"
+              style={{
+                minHeight: '32px',
+                maxWidth: '320px',
+                color: theme.palette.primary.main,
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap'
+              }}>
               {title}
             </Typography>
           }
@@ -105,7 +120,7 @@ const EventCard: React.FC<EventProps> = ({
         />
         {isLoading && (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 150 }}>
-            <CircularProgress /> {/* Loading indicator */}
+            <CircularProgress />
           </div>
         )}
         <img
@@ -118,12 +133,18 @@ const EventCard: React.FC<EventProps> = ({
           <Typography
             variant="h6"
             style={{
-              minHeight: '100px',
-              maxHeight: '100px',
-              wordWrap: 'break-word' // Ensures long words will be broken and wrapped to the next line
+              display: '-webkit-box',
+              WebkitBoxOrient: 'vertical',
+              WebkitLineClamp: 3,
+              overflow: 'hidden',
+              maxHeight: '4.5em',
+              minHeight: '4.5em'
             }}>
             {details}
           </Typography>
+          <Button size="small" onClick={handleOpenModal}>
+            קרא עוד
+          </Button>
         </CardContent>
         <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <RoleBasedAccessControl allowedRoles={[Role.Student]} unauthorizedAuthenticatedComponent={<></>}>
@@ -136,6 +157,38 @@ const EventCard: React.FC<EventProps> = ({
           </IconButton>
         </CardActions>
       </Card>
+      <Modal open={openModal} onClose={handleCloseModal}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '80%',
+            maxWidth: '95%',
+            height: '45%',
+            maxHeight: '95%',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4
+          }}>
+          <Typography
+            variant="h4"
+            component="div"
+            style={{
+              marginBottom: '16px',
+              color: theme.palette.primary.main
+            }}>
+            {title}
+          </Typography>
+          <Typography variant="h6" component="div" style={{ marginBottom: '16px' }}>
+            {details}
+          </Typography>
+          <Button onClick={handleCloseModal} style={{ marginTop: '16px' }}>
+            סגור
+          </Button>
+        </Box>
+      </Modal>
     </div>
   );
 };
