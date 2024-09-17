@@ -138,7 +138,8 @@ const EventCard: React.FC<EventProps> = ({
               WebkitLineClamp: 3,
               overflow: 'hidden',
               maxHeight: '4.5em',
-              minHeight: '4.5em'
+              minHeight: '4.5em',
+              overflowWrap: 'break-word'
             }}>
             {details}
           </Typography>

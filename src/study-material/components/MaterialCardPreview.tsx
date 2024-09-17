@@ -31,7 +31,17 @@ function MaterialCardPreview({ studyMaterial }: { studyMaterial: StudyMaterial }
             }}
             className="title-card"
             title={
-              <Typography variant="h5" component="div" style={{ color: theme.palette.primary.main }}>
+              <Typography
+                variant="h5"
+                component="div"
+                style={{
+                  minHeight: '32px',
+                  maxWidth: '320px',
+                  color: theme.palette.primary.main,
+                  textOverflow: 'ellipsis',
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap'
+                }}>
                 {studyMaterial.title}
               </Typography>
             }
@@ -46,12 +56,19 @@ function MaterialCardPreview({ studyMaterial }: { studyMaterial: StudyMaterial }
               variant="body1"
               // className="description"
               style={{
-                minHeight: '100px',
-                maxHeight: '100px',
-                wordWrap: 'break-word' // Ensures long words will be broken and wrapped to the next line
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 3,
+                overflow: 'hidden',
+                maxHeight: '4.5em',
+                minHeight: '4.5em',
+                overflowWrap: 'break-word'
               }}>
               {studyMaterial.description}
             </Typography>
+            <Button size="small" style={{ color: theme.palette.primary.main }}>
+              קרא עוד
+            </Button>
           </div>
           <Typography className="date"> {formatDate(studyMaterial.date)}</Typography>
           <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>

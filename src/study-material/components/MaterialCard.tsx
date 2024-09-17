@@ -2,7 +2,7 @@ import './MaterialCard.css';
 import { useContext, useState } from 'react';
 import DownloadIcon from '@mui/icons-material/Download';
 import MySpeedDial from './MySpeedDial';
-import { Button, Card, CardActions, CardContent, CardHeader, Divider, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardHeader, Divider, Modal, Typography } from '@mui/material';
 import { StudyMaterial } from '../repository/StudyMaterial';
 import { StorageServiceContext } from '../../storage-service/StorageContext';
 import formatDate from '../../utils/dateFormatter';
@@ -43,6 +43,11 @@ function MaterialCard({
   onDelete: DeleteHandler;
   onMove: MoveHandler;
 }) {
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -220,7 +225,17 @@ function MaterialCard({
             }
             className="title-card"
             title={
-              <Typography variant="h5" component="div" style={{ color: theme.palette.primary.main }}>
+              <Typography
+                variant="h5"
+                component="div"
+                style={{
+                  minHeight: '32px',
+                  maxWidth: '320px',
+                  color: theme.palette.primary.main,
+                  textOverflow: 'ellipsis',
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap'
+                }}>
                 {studyMaterial.title}
               </Typography>
             }
@@ -235,12 +250,19 @@ function MaterialCard({
               variant="body1"
               // className="description"
               style={{
-                minHeight: '100px',
-                maxHeight: '100px',
-                wordWrap: 'break-word' // Ensures long words will be broken and wrapped to the next line
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 3,
+                overflow: 'hidden',
+                maxHeight: '4.5em',
+                minHeight: '4.5em',
+                overflowWrap: 'break-word'
               }}>
               {studyMaterial.description}
             </Typography>
+            <Button size="small" onClick={handleOpenModal} style={{ color: theme.palette.primary.main }}>
+              קרא עוד
+            </Button>
           </div>
           <Typography className="date"> {formatDate(studyMaterial.date)}</Typography>
           <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -251,6 +273,38 @@ function MaterialCard({
           </CardActions>
         </CardContent>
       </Card>
+      <Modal open={openModal} onClose={handleCloseModal}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '80%',
+            maxWidth: '95%',
+            height: '45%',
+            maxHeight: '95%',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4
+          }}>
+          <Typography
+            variant="h4"
+            component="div"
+            style={{
+              marginBottom: '16px',
+              color: theme.palette.primary.main
+            }}>
+            {studyMaterial.title}
+          </Typography>
+          <Typography variant="h6" component="div" style={{ marginBottom: '16px' }}>
+            {studyMaterial.description}
+          </Typography>
+          <Button onClick={handleCloseModal} style={{ marginTop: '16px' }}>
+            סגור
+          </Button>
+        </Box>
+      </Modal>
     </>
   );
 }
