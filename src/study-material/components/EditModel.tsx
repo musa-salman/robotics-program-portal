@@ -35,7 +35,9 @@ import MaterialCardPreview from './MaterialCardPreview';
 interface EditModalProps {
   handleClose: () => void;
   handleSave: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleInputChange: (e: any) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleFileChange: (e: any) => void;
   studyMaterial: StudyMaterial;
 }
@@ -78,8 +80,8 @@ const EditModal: React.FC<EditModalProps> = ({
   const [form, setForm] = useState<StudyMaterial>(studyMaterial);
   console.log(form);
 
-  const MAX_CHARS_Title = 17;
-  const MAX_CHARS_Details = 100;
+  const MAX_CHARS_Title = 100;
+  const MAX_CHARS_Details = 500;
 
   const studyMaterialManagement = useMaterialService();
 
@@ -263,17 +265,17 @@ const EditModal: React.FC<EditModalProps> = ({
                   <Grid xs={7} style={{ marginTop: '0.75rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
                     <Button
                       variant="contained"
-                      style={{ marginRight: '2rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
-                      onClick={handleClose}>
-                      סגירה
+                      style={{ marginRight: '8rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
+                      onClick={handleSave}>
+                      {studyMaterial ? 'שמור' : 'הוסף'}
                     </Button>
                   </Grid>
                   <Grid xs={5} style={{ marginTop: '0.75rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
                     <Button
-                      variant="contained"
-                      style={{ marginRight: '8rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
-                      onClick={handleSave}>
-                      {studyMaterial ? 'שמור' : 'הוסף'}
+                      variant="outlined"
+                      style={{ marginRight: '2rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
+                      onClick={handleClose}>
+                      סגירה
                     </Button>
                   </Grid>
                 </Grid>

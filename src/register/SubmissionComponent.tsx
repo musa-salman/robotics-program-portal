@@ -40,6 +40,7 @@ const SubmissionForm: React.FC<SubmissionFormProps> = ({ setRegister, register }
    *
    * @param event - The change event object.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (event: any) => {
     const { name, value } = event.target;
     setRegister((prevData) => ({ ...prevData, [name]: value }));

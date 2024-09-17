@@ -155,6 +155,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleEditInput = (event: any) => {
     setSelectedCategory(event.target.value);
   };

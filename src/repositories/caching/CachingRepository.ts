@@ -36,6 +36,7 @@ export class CachingRepository<T> extends BaseRepository<T> {
       this.isCacheFullyPopulated = true;
 
       items.forEach((item) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.cacheManager.setItem((item as any).id, item);
       });
 
@@ -52,6 +53,7 @@ export class CachingRepository<T> extends BaseRepository<T> {
 
       return this.repositoryBase.findOne(id).then((item) => {
         if (item) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           this.cacheManager.setItem((item as any).id, item);
         }
         return item;
@@ -61,6 +63,7 @@ export class CachingRepository<T> extends BaseRepository<T> {
     return this.repositoryBase.findOne(id).then((item) => {
       this.cacheManager.initialize();
       if (item) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.cacheManager.setItem((item as any).id, item);
       }
 
@@ -73,6 +76,7 @@ export class CachingRepository<T> extends BaseRepository<T> {
       if (!this.cacheManager.hasCache()) {
         this.cacheManager.initialize();
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.cacheManager.setItem((createdItem as any).id, item);
       return createdItem;
     });
@@ -85,6 +89,7 @@ export class CachingRepository<T> extends BaseRepository<T> {
       }
 
       items.forEach((item, index) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.cacheManager.setItem((createdItems[index] as any).id, item);
       });
 

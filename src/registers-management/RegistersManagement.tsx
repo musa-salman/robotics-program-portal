@@ -78,7 +78,7 @@ const RegisterManagement = () => {
             <GridActionsCellItem
               icon={<EditIcon color="action" />}
               label="ערוך"
-              onClick={(_) => {
+              onClick={() => {
                 setInitialItem(rows!.find((register) => register.id === id) || null);
                 setShowItemForm(true);
               }}
@@ -86,21 +86,21 @@ const RegisterManagement = () => {
             <GridActionsCellItem
               icon={<Close color="error" />}
               label="לדחות"
-              onClick={(_) => {
+              onClick={() => {
                 onRowDeleted(rows!.find((register) => register.id === id)!);
               }}
             />,
             <GridActionsCellItem
               icon={<Done color="success" />}
               label="לאשר"
-              onClick={(_) => {
+              onClick={() => {
                 registerService
                   .approveRegister(rows!.find((register) => register.id === id)!)
                   .then(() => {
                     setRows(rows!.filter((register) => register.id !== id));
                     showMessage({ message: 'המועמד אושר בהצלחה', variant: 'success' });
                   })
-                  .catch((_) => {
+                  .catch(() => {
                     showMessage({ message: 'התרחשה שגיאה באישור המועמד', variant: 'error' });
                   });
               }}
@@ -131,6 +131,7 @@ const RegisterManagement = () => {
   };
 
   const handleRowSelected = useCallback((row: GridRowModel | null) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { isNew, ...register } = row as Register & { isNew: boolean };
     setSelectedRegister(register as Register);
   }, []);

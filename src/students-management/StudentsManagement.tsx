@@ -95,8 +95,12 @@ const StudentsManagement = () => {
   };
 
   const handleRowSelected = useCallback((student: GridRowModel | null) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { isNew, ...studentData } = student as any;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {
+      isNew,
+      ...studentData
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } = student as any;
     setSelectedStudent(studentData as Student);
   }, []);
 

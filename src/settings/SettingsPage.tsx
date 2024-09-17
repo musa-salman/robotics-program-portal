@@ -21,7 +21,7 @@ const SettingsPage: React.FC = () => {
     };
 
     if (!preferences) fetchPreferences();
-  }, []);
+  }, [preferences, preferenceRepo]);
 
   const handlePreferenceChange = (preference: Preference) => {
     preferenceRepo.update(preference.id, preference).then(() => {

@@ -13,8 +13,8 @@ export function createConverter<T>(): FirestoreDataConverter<T, DocumentData> {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const {
         id,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ...rest
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } = data as any;
       return { ...rest } as DocumentData;
     },

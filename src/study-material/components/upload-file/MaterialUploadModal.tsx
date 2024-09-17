@@ -93,8 +93,8 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
   const [message, setMessage] = useState<FeedbackMessage | null>(null);
   const [buildNumber, setBuildNumber] = useState(0);
 
-  const MAX_CHARS_Title = 17;
-  const MAX_CHARS_Details = 100;
+  const MAX_CHARS_Title = 100;
+  const MAX_CHARS_Details = 600;
 
   useEffect(() => {
     const getCategory = () => {
@@ -117,7 +117,8 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
       getCategory();
       setLoading(false);
     }
-  }, [categories, reload]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categories, loading]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -227,13 +228,13 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
 
             <Grid item xs={5.2}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-autowidth-label">בחר מיקום</InputLabel>
+                <InputLabel id="demo-simple-select-autowidth-label">קטגוריה</InputLabel>
                 <Select
                   labelId="demo-simple-select-autowidth-label"
                   id="demo-simple-select-autowidth"
                   value={studyMaterial.category}
                   name="category"
-                  label="בחר מיקום"
+                  label="קטגוריה"
                   onChange={handleInput}
                   required
                   MenuProps={MenuProps}
@@ -312,17 +313,17 @@ const MaterialUploadModal: React.FC<MaterialUploadModalProps> = ({ handleClose, 
             <Grid xs={7} style={{ marginTop: '0.75rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
               <Button
                 variant="contained"
-                style={{ marginRight: '2rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
-                onClick={handleClose}>
-                סגירה
+                style={{ marginRight: '8rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
+                onClick={handleSubmit}>
+                {initialValue ? 'שמור' : 'הוסף'}
               </Button>
             </Grid>
             <Grid xs={5} style={{ marginTop: '0.75rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
               <Button
-                variant="contained"
-                style={{ marginRight: '8rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
-                onClick={handleSubmit}>
-                {initialValue ? 'שמור' : 'הוסף'}
+                variant="outlined"
+                style={{ marginRight: '2rem', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
+                onClick={handleClose}>
+                סגירה
               </Button>
             </Grid>
           </Grid>

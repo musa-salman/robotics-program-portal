@@ -50,6 +50,7 @@ const studyMaterialInsights: InsightData = {
             }));
             setCategoryInsights(categoryCount);
           }
+          // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [categories, studyMaterials]);
 
         if (categories === null || studyMaterials === null) {

@@ -45,6 +45,7 @@ const AcademicForm: React.FC<AcademicFormProps> = ({ setRegister, register, isFo
     numStudyUnitsMath: true
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (event: any) => {
     const { name, value } = event.target;
     setRegister((prevData) => ({ ...prevData, [name]: value }));

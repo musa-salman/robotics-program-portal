@@ -44,6 +44,7 @@ const PersonalInfoStep: React.FC<PersonalInfoProps> = ({ setRegister, register, 
     studentAddress: true
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (event: any) => {
     const { name, value } = event.target;
     setRegister((prevData) => ({ ...prevData, [name]: value }));

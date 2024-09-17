@@ -25,7 +25,7 @@ const registerInsightList: InsightData = {
               );
             });
           }
-        }, [registerService]);
+        }, [registerService, majorRegistrations]);
 
         return (
           <PieChart

@@ -63,6 +63,7 @@ export abstract class BaseRepository<T> implements IRepositoryBase<T> {
   }
 
   async update(id: string, item: PartialWithFieldValue<T>): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((item as any).id) delete (item as Record<string, unknown>).id;
 
     const firestoreItem = this._collection.converter!.toFirestore(item as T);
