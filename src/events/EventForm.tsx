@@ -139,7 +139,7 @@ const EventForm: React.FC<EventFormProps> = ({
               id="modal-modal-title"
               variant="h1"
               sx={{ fontSize: '40px', border: 'none', textAlign: 'center' }}>
-              שינוי אירוע
+              {requiredFields.add ? 'הוספת אירוע' : 'עריכת אירוע'}
             </Typography>
             <form>
               <Grid container spacing={3} sx={{ marginLeft: '0.25rem', marginRight: '0.25rem' }}>
