@@ -28,8 +28,8 @@ interface AddEventProps {
  * ```
  */
 const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
-  const MAX_CHARS_Title = 17;
-  const MAX_CHARS_Details = 100;
+  const MAX_CHARS_Title = 100;
+  const MAX_CHARS_Details = 500;
 
   // Define the feedback message
   const [message, setMessage] = useState<FeedbackMessage | null>(null);
@@ -85,8 +85,8 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
     endDate: new Date(), // Provide initial value for endDate
     title: '', // Provide initial value for title
     details: '', // Provide initial value for details
-    image: './DefultEventImg.png', // Provide initial value for image
-    onEventDelete: (_id: string) => {}, // Change the parameter type from '_id: string' to 'id: number'
+    image: './DefaultEventImg.png', // Provide initial value for image
+    onEventDelete: (_id: string) => {},
     onEventEdit: (_event: EventProps) => {},
     id: '' // Provide initial value for id
   });
@@ -169,7 +169,7 @@ const AddEvent: React.FC<AddEventProps> = ({ addEvent }) => {
       endDate: new Date(),
       title: '',
       details: '',
-      image: './DefultEventImg.png',
+      image: './DefaultEventImg.png',
       onEventDelete: (_id: string) => {},
       onEventEdit: (_event: EventProps) => {},
       id: ''

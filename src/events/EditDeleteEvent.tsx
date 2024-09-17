@@ -48,8 +48,8 @@ const EditDeleteEvent: React.FC<EditDeleteEventProps> = ({ event, editEvent, del
   const eventService = useEventService();
   const storageService = useContext(StorageServiceContext);
 
-  const MAX_CHARS_Details = 100;
-  const MAX_CHARS_Title = 17;
+  const MAX_CHARS_Details = 500;
+  const MAX_CHARS_Title = 100;
 
   const [message, setMessage] = useState<FeedbackMessage | null>(null);
   const [buildNumber, setBuildNumber] = useState<number>(0);

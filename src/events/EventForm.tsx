@@ -36,7 +36,7 @@ interface EventFormProps {
   handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleDetailsChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleCloseAddEvent: () => void;
-  formData: any; // Replace 'any' with the actual type of formData
+  formData: any;
   MAX_CHARS_Title: number;
   MAX_CHARS_Details: number;
   requiredFields: {
@@ -150,7 +150,7 @@ const EventForm: React.FC<EventFormProps> = ({
                       endDate={formDataTemp.endDate}
                       title={formDataTemp.title}
                       details={formDataTemp.details}
-                      image={formDataTemp.image ? formDataTemp.image : './DefultEventImg.png'}
+                      image={formDataTemp.image ? formDataTemp.image : './DefaultEventImg.png'}
                     />
                   </Grid>
                 </div>
@@ -255,6 +255,14 @@ const EventForm: React.FC<EventFormProps> = ({
                 <Grid xs={7} sx={{ marginTop: '0.75rem' }}>
                   <Button
                     variant="contained"
+                    style={{ paddingLeft: '1.50rem', paddingRight: '1.50rem' }}
+                    onClick={handleSaveAdd}>
+                    {requiredFields.add ? 'הוסף' : 'שמור שינויים'}
+                  </Button>
+                </Grid>
+                <Grid xs={5} sx={{ marginTop: '0.75rem' }}>
+                  <Button
+                    variant="outlined"
                     style={{
                       marginLeft: '1.50rem',
                       marginRight: '1.50rem',
@@ -263,14 +271,6 @@ const EventForm: React.FC<EventFormProps> = ({
                     }}
                     onClick={handleCloseAddEvent}>
                     סגור
-                  </Button>
-                </Grid>
-                <Grid xs={5} sx={{ marginTop: '0.75rem' }}>
-                  <Button
-                    variant="contained"
-                    style={{ paddingLeft: '1.50rem', paddingRight: '1.50rem' }}
-                    onClick={handleSaveAdd}>
-                    {requiredFields.add ? 'הוסף' : 'שמור שינויים'}
                   </Button>
                 </Grid>
               </Grid>
